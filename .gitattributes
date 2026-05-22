@@ -1,0 +1,6 @@
+# Unity serializes many asset files with formatting that trips git whitespace checks.
+psycho_unity_client/**/*.mat -whitespace
+psycho_unity_client/**/*.meta -whitespace
+psycho_unity_client/**/*.unity -whitespace
+psycho_unity_client/ProjectSettings/*.asset -whitespace
+psycho_unity_client/ProjectSettings/*.json -whitespace

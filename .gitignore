@@ -4,6 +4,23 @@
 **/bin/
 **/out/
 
+# Unity generated state
+**/Library/
+**/Temp/
+**/Obj/
+**/Logs/
+**/UserSettings/
+**/.vs/
+**/*.csproj
+**/*.sln
+**/*.pidb
+**/*.booproj
+**/*.svd
+**/*.pdb
+**/*.mdb
+**/*.opendb
+**/*.VC.db
+
 # Local runtime state
 run-logs/
 _codex_backups/
