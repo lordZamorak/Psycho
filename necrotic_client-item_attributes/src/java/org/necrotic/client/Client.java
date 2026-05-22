@@ -7165,10 +7165,35 @@ public class Client extends GameRenderer {
 	boolean backButtonHover;
 	boolean[] accountHovers = new boolean[5];
 	boolean[] accountDeletion = new boolean[5];
+	private int loginPanelX;
+	private int loginPanelY;
+	private int loginPanelWidth;
+	private int loginPanelHeight;
+	private int loginUsernameX;
+	private int loginUsernameY;
+	private int loginPasswordY;
+	private int loginInputWidth;
+	private int loginInputHeight;
+	private int loginButtonX;
+	private int loginButtonY;
+	private int loginButtonWidth;
+	private int loginButtonHeight;
+	private int loginRememberX;
+	private int loginRememberY;
+	private int loginAccountStartX;
+	private int loginAccountY;
+	private int loginAccountSlotWidth;
+	private int loginAccountSlotHeight;
+	private int loginAccountPitch;
+	private int alertBackX;
+	private int alertBackY;
+	private int alertBackWidth;
+	private int alertBackHeight;
 	
 	public void handleHovers(boolean alertScreen) {
 		int cursor = -1;
 		oldCursor = null;
+		updateLoginLayout(alertScreen);
 
 		loginHover = rememberMeHover = textArea1Hover = textArea2Hover = backButtonHover = false; //Reset hovers
 		for(int i = 0; i < accountHovers.length; i++) {
@@ -7177,50 +7202,35 @@ public class Client extends GameRenderer {
 		}
 		
 		if(!alertScreen) {
-			
-			if(mouseX >= 402 && mouseX <= 491 && mouseY >= 304 && mouseY <= 334) {
+			if(isMouseWithin(loginButtonX, loginButtonY, loginButtonWidth, loginButtonHeight)) {
 				cursor = Settings.get(Settings.Data.NEW_CURSORS) ? 1061 : Cursor.HAND_CURSOR;
 				loginHover = true;
 			}
 
-			if(mouseX >= 367 && mouseX <= 379 && mouseY >= 310 && mouseY <= 325) {
+			if(isMouseWithin(loginRememberX, loginRememberY, 16, 16)) {
 				cursor = Settings.get(Settings.Data.NEW_CURSORS) ? 1061 : Cursor.HAND_CURSOR;
 				rememberMeHover = true;
 			}
 
-			if(mouseX >= 277 && mouseX <= 491) {
-				if(mouseY >= 223 && mouseY <= 253) {
-					cursor = Cursor.TEXT_CURSOR;
-					textArea1Hover = true;
-				} else if(mouseY >= 265 && mouseY <= 293) {
-					cursor = Cursor.TEXT_CURSOR;
-					textArea2Hover = true;
-				}
+			if(isMouseWithin(loginUsernameX, loginUsernameY, loginInputWidth, loginInputHeight)) {
+				cursor = Cursor.TEXT_CURSOR;
+				textArea1Hover = true;
+			} else if(isMouseWithin(loginUsernameX, loginPasswordY, loginInputWidth, loginInputHeight)) {
+				cursor = Cursor.TEXT_CURSOR;
+				textArea2Hover = true;
 			}
 
-			if(mouseX >= 205 && mouseX <= 565) {
-				if(mouseY >= 434) {
-					accountHovers[0] = mouseX >= 206 + offsetX && mouseX <= 271;
-					accountHovers[1] = mouseX >= 280 + offsetX && mouseX <= 342;
-					accountHovers[2] = mouseX >= 352 + offsetX && mouseX <= 414;
-					accountHovers[3] = mouseX >= 432 + offsetX && mouseX <= 474;
-					accountHovers[4] = mouseX >= 495 + offsetX && mouseX <= 557;
-					accountDeletion[0] = mouseX >= 247 && mouseX <= 268 && mouseY <= 453;
-					accountDeletion[1] = mouseX >= 318 && mouseX <= 340 && mouseY <= 453;
-					accountDeletion[2] = mouseX >= 390 && mouseX <= 411 && mouseY <= 453;
-					accountDeletion[3] = mouseX >= 464 && mouseX <= 490 && mouseY <= 453;
-					accountDeletion[4] = mouseX >= 537 && mouseX <= 563 && mouseY <= 453;
-
-					for(int i = 0; i < accountHovers.length; i++) {
-						if(accountHovers[i] || accountDeletion[i]) {
-							cursor = Settings.get(Settings.Data.NEW_CURSORS) ? 1061 : Cursor.HAND_CURSOR;
-							break;
-						}
-					}
+			for(int i = 0; i < accountHovers.length; i++) {
+				int slotX = getLoginAccountSlotX(i);
+				accountHovers[i] = isMouseWithin(slotX, loginAccountY, loginAccountSlotWidth, loginAccountSlotHeight);
+				accountDeletion[i] = isMouseWithin(slotX + loginAccountSlotWidth - 18, loginAccountY + 4, 14, 14);
+				if(accountHovers[i] || accountDeletion[i]) {
+					cursor = Settings.get(Settings.Data.NEW_CURSORS) ? 1061 : Cursor.HAND_CURSOR;
+					break;
 				}
 			}
 		} else {
-			if(mouseX >= 338 && mouseX <= 430 && mouseY >= 297 && mouseY <= 325) {
+			if(isMouseWithin(alertBackX, alertBackY, alertBackWidth, alertBackHeight)) {
 				cursor = Settings.get(Settings.Data.NEW_CURSORS) ? 1061 : Cursor.HAND_CURSOR;
 				backButtonHover = true;
 			}
@@ -7239,64 +7249,161 @@ public class Client extends GameRenderer {
 		}
 	}
 	
-	private void drawModernLoginChrome(boolean alertScreen) {
-		int panelX = alertScreen ? 205 : 224;
-		int panelY = alertScreen ? 145 : 128;
-		int panelWidth = alertScreen ? 354 : 337;
-		int panelHeight = alertScreen ? 148 : 230;
+	private void updateLoginLayout(boolean alertScreen) {
+		int screenWidth = Math.max(1, getScreenWidth());
+		int screenHeight = Math.max(1, getScreenHeight());
+		loginPanelWidth = clampLoginValue(screenWidth * 3 / 4, 540, screenWidth - 32);
+		loginPanelHeight = clampLoginValue(screenHeight * 3 / 4, alertScreen ? 260 : 360, screenHeight - 32);
+		loginPanelX = (screenWidth - loginPanelWidth) / 2;
+		loginPanelY = (screenHeight - loginPanelHeight) / 2;
 
-		drawSoftLoginPanel(panelX, panelY, panelWidth, panelHeight);
+		loginInputWidth = clampLoginValue(loginPanelWidth * 58 / 100, 300, 390);
+		loginInputHeight = 36;
+		int formCenterX = loginPanelX + loginPanelWidth / 2;
+		if (loginPanelWidth >= 700) {
+			formCenterX = loginPanelX + loginPanelWidth * 64 / 100;
+		}
+		loginUsernameX = formCenterX - loginInputWidth / 2;
+		loginUsernameY = loginPanelY + loginPanelHeight * 41 / 100;
+		loginPasswordY = loginUsernameY + 46;
+		loginRememberX = loginUsernameX;
+		loginRememberY = loginPasswordY + 47;
+		loginButtonWidth = 118;
+		loginButtonHeight = 36;
+		loginButtonX = loginUsernameX + loginInputWidth - loginButtonWidth;
+		loginButtonY = loginPasswordY + 39;
+
+		loginAccountSlotWidth = 56;
+		loginAccountSlotHeight = 60;
+		loginAccountPitch = clampLoginValue(loginPanelWidth / 8, 66, 86);
+		loginAccountStartX = loginPanelX + (loginPanelWidth - (loginAccountPitch * 4 + loginAccountSlotWidth)) / 2;
+		loginAccountY = loginPanelY + loginPanelHeight - 76;
+
+		alertBackWidth = 120;
+		alertBackHeight = 36;
+		alertBackX = loginPanelX + (loginPanelWidth - alertBackWidth) / 2;
+		alertBackY = loginPanelY + loginPanelHeight * 65 / 100;
+	}
+
+	private boolean isMouseWithin(int x, int y, int width, int height) {
+		return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
+	}
+
+	private int getLoginAccountSlotX(int index) {
+		return loginAccountStartX + index * loginAccountPitch;
+	}
+
+	private int clampLoginValue(int value, int min, int max) {
+		if (max < min) {
+			return Math.max(1, max);
+		}
+		return Math.max(min, Math.min(max, value));
+	}
+
+	private void drawModernLoginChrome(boolean alertScreen) {
+		updateLoginLayout(alertScreen);
+		drawSoftLoginPanel(loginPanelX, loginPanelY, loginPanelWidth, loginPanelHeight);
+		drawLoginVistaFrame();
 		if (newBoldFont != null) {
-			newBoldFont.drawCenteredString(Configuration.CLIENT_NAME, panelX + panelWidth / 2, panelY + 31, 0xf3dfb6, 0);
+			newBoldFont.drawCenteredString(Configuration.CLIENT_NAME, loginPanelX + loginPanelWidth / 2, loginPanelY + 38, 0xf6e4bb, 0x1d1206);
 		}
 		if (newSmallFont != null) {
-			newSmallFont.drawCenteredString(alertScreen ? "Connection notice" : "Local test world", panelX + panelWidth / 2, panelY + 52, 0xaeb9c8, 0);
+			newSmallFont.drawCenteredString(alertScreen ? "Connection notice" : "Local test world", loginPanelX + loginPanelWidth / 2, loginPanelY + 58, 0xbfc8d6, 0);
 		}
 
 		if (!alertScreen) {
-			drawModernLoginInput(275, 222, 216, 32, "Username", textArea1Hover, loginScreenCursorPos == 0);
-			drawModernLoginInput(275, 263, 216, 32, "Password", textArea2Hover, loginScreenCursorPos == 1);
-			drawModernLoginCheckbox(367, 308, Configuration.SAVE_ACCOUNTS, rememberMeHover);
-			drawModernLoginButton(402, 302, 90, 33, "Login", loginHover);
+			drawModernLoginInput(loginUsernameX, loginUsernameY, loginInputWidth, loginInputHeight, "Username", textArea1Hover, loginScreenCursorPos == 0);
+			drawModernLoginInput(loginUsernameX, loginPasswordY, loginInputWidth, loginInputHeight, "Password", textArea2Hover, loginScreenCursorPos == 1);
+			drawModernLoginCheckbox(loginRememberX, loginRememberY, Configuration.SAVE_ACCOUNTS, rememberMeHover);
+			if (newSmallFont != null) {
+				newSmallFont.drawBasicString("Remember", loginRememberX + 22, loginRememberY + 13, 0xc4cfda, 0, false);
+			}
+			drawModernLoginButton(loginButtonX, loginButtonY, loginButtonWidth, loginButtonHeight, "Login", loginHover);
+			drawAccountSlotLabels();
+		} else {
+			drawModernLoginButton(alertBackX, alertBackY, alertBackWidth, alertBackHeight, "Back", backButtonHover);
 		}
 	}
 
 	private void drawSoftLoginPanel(int x, int y, int width, int height) {
-		DrawingArea.fillRect(x + 5, y + 7, width, height, 0x000000, 85);
-		DrawingArea.drawFilledPixels(x, y, width, height, 0x111722);
-		DrawingArea.fillRect(x + 8, y + 8, width - 16, height - 16, 0x0b1018, 52);
-		DrawingArea.fillRect(x + 1, y + 1, width - 2, 1, 0xd1aa63, 135);
-		DrawingArea.fillPixels(x, width, height, 0x3b4a60, y);
+		DrawingArea.fillRect(x + 9, y + 11, width, height, 0x000000, 95);
+		DrawingArea.fillRect(x, y, width, height, 0x081018, 218);
+		DrawingArea.fillRect(x + 8, y + 8, width - 16, height - 16, 0x132131, 92);
+		DrawingArea.drawAlphaGradient(x + 1, y + 1, width - 2, Math.max(1, height / 2), 0x30475f, 0x0a1018, 78);
+		DrawingArea.fillRect(x + 2, y + 2, width - 4, 1, 0xf1cf84, 165);
+		DrawingArea.fillPixels(x, width, height, 0xa57a39, y);
+		DrawingArea.fillPixels(x + 5, width - 10, height - 10, 0x26394d, y + 5);
 	}
 
 	private void drawModernLoginInput(int x, int y, int width, int height, String label, boolean hover, boolean focused) {
-		int border = focused ? 0xd7ad5d : hover ? 0x6f849f : 0x3f4f66;
-		DrawingArea.fillRect(x, y, width, height, 0x080d14, focused ? 215 : 185);
-		DrawingArea.fillRect(x + 1, y + 1, width - 2, height - 2, focused ? 0x101924 : 0x0b111a, 215);
+		int border = focused ? 0xf0c877 : hover ? 0x7fa0bd : 0x445b74;
+		DrawingArea.fillRect(x + 2, y + 3, width, height, 0x000000, 55);
+		DrawingArea.fillRect(x, y, width, height, 0x071018, focused ? 224 : 202);
+		DrawingArea.fillRect(x + 1, y + 1, width - 2, height - 2, focused ? 0x132234 : 0x0c1723, 218);
 		DrawingArea.fillPixels(x, width, height, border, y);
 		if (newSmallFont != null) {
-			newSmallFont.drawBasicString(label, x + 9, y - 5, 0xaab4c4, 0, false);
+			newSmallFont.drawBasicString(label, x + 10, y - 6, 0xb8c5d3, 0, false);
 		}
 	}
 
 	private void drawModernLoginCheckbox(int x, int y, boolean checked, boolean hover) {
-		int border = hover ? 0xd7ad5d : 0x596a82;
-		DrawingArea.fillRect(x, y, 13, 13, 0x0b111a, 215);
-		DrawingArea.fillPixels(x, 13, 13, border, y);
+		int border = hover ? 0xf0c877 : 0x657b92;
+		DrawingArea.fillRect(x, y, 16, 16, 0x071018, 215);
+		DrawingArea.fillRect(x + 2, y + 2, 12, 12, 0x132234, 200);
+		DrawingArea.fillPixels(x, 16, 16, border, y);
 		if (checked) {
-			DrawingArea.fillRect(x + 3, y + 3, 7, 7, 0xd7ad5d, 230);
+			DrawingArea.fillRect(x + 4, y + 4, 8, 8, 0xf0c877, 235);
 		}
 	}
 
 	private void drawModernLoginButton(int x, int y, int width, int height, String text, boolean hover) {
-		int fill = hover ? 0x325f76 : 0x253f50;
-		int border = hover ? 0xe0ba6e : 0x7890a8;
-		DrawingArea.fillRect(x, y, width, height, fill, 230);
-		DrawingArea.fillRect(x + 1, y + 1, width - 2, 1, 0xffffff, hover ? 55 : 32);
+		int fill = hover ? 0x3e6f82 : 0x294b61;
+		int border = hover ? 0xf2cb7b : 0x86a0b8;
+		DrawingArea.fillRect(x + 2, y + 3, width, height, 0x000000, 60);
+		DrawingArea.fillRect(x, y, width, height, fill, 232);
+		DrawingArea.drawAlphaGradient(x + 1, y + 1, width - 2, height - 2, hover ? 0x4f91a8 : 0x355d75, 0x152738, 130);
+		DrawingArea.fillRect(x + 1, y + 1, width - 2, 1, 0xffffff, hover ? 72 : 40);
 		DrawingArea.fillPixels(x, width, height, border, y);
 		if (newBoldFont != null) {
-			newBoldFont.drawCenteredString(text, x + width / 2, y + 22, 0xf8edcf, 0);
+			newBoldFont.drawCenteredString(text, x + width / 2, y + 23, 0xfaf0d4, 0);
 		}
+	}
+
+	private void drawLoginVistaFrame() {
+		int dividerX = loginPanelX + loginPanelWidth * 48 / 100;
+		if (loginPanelWidth < 700) {
+			dividerX = loginPanelX + 24;
+		}
+		if (loginPanelWidth >= 700) {
+			DrawingArea.fillRect(loginPanelX + 28, loginPanelY + 84, dividerX - loginPanelX - 48, loginPanelHeight - 130, 0x081018, 88);
+			DrawingArea.fillPixels(loginPanelX + 28, dividerX - loginPanelX - 48, loginPanelHeight - 130, 0x456071, loginPanelY + 84);
+			drawMiniLoginVista(loginPanelX + 34, loginPanelY + 90, dividerX - loginPanelX - 60, loginPanelHeight - 142);
+			DrawingArea.fillRect(dividerX, loginPanelY + 82, 1, loginPanelHeight - 126, 0xf0c877, 90);
+		}
+		int formX = loginUsernameX - 22;
+		int formY = loginUsernameY - 48;
+		int formWidth = loginInputWidth + 44;
+		int formHeight = loginAccountY - formY - 12;
+		DrawingArea.fillRect(formX + 5, formY + 6, formWidth, formHeight, 0x000000, 58);
+		DrawingArea.fillRect(formX, formY, formWidth, formHeight, 0x071018, 145);
+		DrawingArea.fillPixels(formX, formWidth, formHeight, 0x4d6478, formY);
+	}
+
+	private void drawMiniLoginVista(int x, int y, int width, int height) {
+		if (width <= 0 || height <= 0) {
+			return;
+		}
+		drawVerticalGradientBands(x, y, width, height, 0x1c3446, 0x26351f, 32);
+		int baseY = y + height * 68 / 100;
+		drawTriangle(x + width * 18 / 100, baseY, width * 28 / 100, y + height * 28 / 100, 0x172333, 150);
+		drawTriangle(x + width * 48 / 100, baseY + 8, width * 40 / 100, y + height * 20 / 100, 0x101b29, 165);
+		drawTriangle(x + width * 78 / 100, baseY + 4, width * 30 / 100, y + height * 34 / 100, 0x172333, 150);
+		drawCastleSilhouette(x + width * 43 / 100, y + height * 66 / 100, Math.max(38, width / 6), 170);
+		for (int i = 0; i < 10; i++) {
+			int treeX = x + 12 + i * Math.max(1, width - 24) / 9;
+			drawPineTree(treeX, y + height - 16, Math.max(10, height / 8), i, 185);
+		}
+		DrawingArea.fillRect(x, y + height - height / 6, width, height / 6, 0x182a18, 130);
 	}
 
 	private void drawPsychoLoginMapBranding() {
@@ -7327,130 +7434,321 @@ public class Client extends GameRenderer {
 	}
 
 	private void drawModernAccountSlot(int x, int y, boolean hover, boolean deleting, boolean occupied) {
-		int border = deleting ? 0xbc5959 : hover ? 0xd7ad5d : 0x52647c;
-		DrawingArea.fillRect(x, y, 39, 43, occupied ? 0x111923 : 0x0b1118, occupied || hover ? 150 : 95);
-		DrawingArea.fillPixels(x, 39, 43, border, y);
+		drawModernAccountSlot(x, y, loginAccountSlotWidth, loginAccountSlotHeight, hover, deleting, occupied);
+	}
+
+	private void drawModernAccountSlot(int x, int y, int width, int height, boolean hover, boolean deleting, boolean occupied) {
+		int border = deleting ? 0xd06767 : hover ? 0xf0c877 : 0x5b7289;
+		DrawingArea.fillRect(x + 2, y + 3, width, height, 0x000000, 48);
+		DrawingArea.fillRect(x, y, width, height, occupied ? 0x101b27 : 0x0b141d, occupied || hover ? 170 : 120);
+		DrawingArea.drawAlphaGradient(x + 1, y + 1, width - 2, height - 2, occupied ? 0x23344a : 0x182332, 0x081018, 85);
+		DrawingArea.fillPixels(x, width, height, border, y);
+		if (occupied) {
+			drawLoginGlyphX(x + width - 16, y + 6, deleting ? 0xf5b0a5 : 0xa6b4c3);
+		} else {
+			DrawingArea.fillRect(x + width / 2 - 1, y + 18, 2, 16, 0x657b92, 165);
+			DrawingArea.fillRect(x + width / 2 - 8, y + 25, 16, 2, 0x657b92, 165);
+		}
+	}
+
+	private void drawLoginGlyphX(int x, int y, int color) {
+		for (int i = 0; i < 8; i++) {
+			DrawingArea.fillRect(x + i, y + i, 2, 2, color, 210);
+			DrawingArea.fillRect(x + 7 - i, y + i, 2, 2, color, 210);
+		}
+	}
+
+	private void drawAccountSlotLabels() {
+		if (newSmallFont == null) {
+			return;
+		}
+		newSmallFont.drawCenteredString("Saved adventurers", loginPanelX + loginPanelWidth / 2, loginAccountY - 13, 0xb9c6d2, 0);
+	}
+
+	private void drawMedievalLoginBackground() {
+		int width = Math.max(1, getScreenWidth());
+		int height = Math.max(1, getScreenHeight());
+		int horizon = height * 58 / 100;
+		int time = loopCycle;
+
+		drawVerticalGradientBands(0, 0, width, horizon, 0x07101d, 0x526370, 72);
+		drawVerticalGradientBands(0, horizon, width, height - horizon, 0x26351f, 0x09100b, 48);
+		drawSoftEllipse(width * 76 / 100, height * 17 / 100, Math.max(40, width / 13), Math.max(18, height / 20), 0xf0d08a, 42);
+
+		for (int i = 0; i < 6; i++) {
+			int cloudWidth = Math.max(120, width / (5 + i % 2));
+			int lane = height * (9 + i * 6) / 100;
+			int travel = width + cloudWidth;
+			int x = positiveModulo(i * width / 4 + time * (1 + i % 3), travel) - cloudWidth;
+			drawCloud(x, lane, cloudWidth, Math.max(24, height / 24), 0xd8dee7, 30 + i * 3);
+		}
+
+		drawMountainLayer(height * 61 / 100, 0x172336, 205, width, height, 0);
+		drawMountainLayer(height * 66 / 100, 0x223044, 190, width, height, width / 9);
+		drawRollingHills(width, height, time);
+		drawCastleSilhouette(width * 48 / 100, height * 59 / 100, Math.max(90, width / 8), 218);
+		drawLoginRiver(width, height, time);
+		drawForestLine(width, height, time);
+		drawWindGrass(width, height, time);
+		drawLoginEmbers(width, height, time);
+
+		DrawingArea.drawAlphaGradient(0, 0, width, Math.max(1, height / 4), 0x000000, 0x000000, 72);
+		DrawingArea.drawAlphaGradient(0, height - Math.max(1, height / 3), width, Math.max(1, height / 3), 0x000000, 0x000000, 98);
+		DrawingArea.fillRect(0, 0, Math.max(1, width / 8), height, 0x000000, 50);
+		DrawingArea.fillRect(width - Math.max(1, width / 8), 0, Math.max(1, width / 8), height, 0x000000, 50);
+	}
+
+	private void drawVerticalGradientBands(int x, int y, int width, int height, int topColor, int bottomColor, int bands) {
+		if (height <= 0 || width <= 0) {
+			return;
+		}
+		bands = Math.max(1, Math.min(height, bands));
+		for (int band = 0; band < bands; band++) {
+			int bandY = y + band * height / bands;
+			int nextY = y + (band + 1) * height / bands;
+			int color = blendLoginColor(topColor, bottomColor, band, Math.max(1, bands - 1));
+			DrawingArea.drawFilledPixels(x, bandY, width, Math.max(1, nextY - bandY), color);
+		}
+	}
+
+	private int blendLoginColor(int startColor, int endColor, int step, int maxStep) {
+		int inverse = maxStep - step;
+		int red = (((startColor >> 16) & 0xff) * inverse + ((endColor >> 16) & 0xff) * step) / maxStep;
+		int green = (((startColor >> 8) & 0xff) * inverse + ((endColor >> 8) & 0xff) * step) / maxStep;
+		int blue = ((startColor & 0xff) * inverse + (endColor & 0xff) * step) / maxStep;
+		return (red << 16) | (green << 8) | blue;
+	}
+
+	private void drawMountainLayer(int baseY, int color, int alpha, int width, int height, int offset) {
+		int peaks = 7;
+		int peakWidth = Math.max(120, width / 4);
+		for (int i = -1; i < peaks; i++) {
+			int center = i * width / (peaks - 1) + offset % Math.max(1, width / 2);
+			int peakY = height * (22 + (i & 1) * 8) / 100;
+			drawTriangle(center, baseY + (i % 3) * 18, peakWidth, peakY, color, alpha);
+			drawTriangle(center - peakWidth / 5, peakY + (baseY - peakY) / 4, peakWidth / 4, peakY + 8, 0xb4bfca, 38);
+		}
+	}
+
+	private void drawRollingHills(int width, int height, int time) {
+		int hillBase = height * 73 / 100;
+		DrawingArea.fillRect(0, height * 62 / 100, width, height * 16 / 100, 0x1c321e, 190);
+		for (int i = 0; i < 9; i++) {
+			int x = i * width / 8 - width / 10;
+			int y = hillBase - (int) (Math.sin((time + i * 29) * 0.018) * 3.0);
+			drawTriangle(x + width / 8, y, width / 5, height * 55 / 100 + (i % 2) * 18, i % 2 == 0 ? 0x244126 : 0x1a351f, 172);
+		}
+	}
+
+	private void drawCastleSilhouette(int centerX, int baseY, int size, int alpha) {
+		int wallWidth = size;
+		int wallHeight = Math.max(32, size / 3);
+		int x = centerX - wallWidth / 2;
+		int y = baseY - wallHeight;
+		DrawingArea.fillRect(x, y, wallWidth, wallHeight, 0x111923, alpha);
+		DrawingArea.fillPixels(x, wallWidth, wallHeight, 0x2d3f50, y);
+		for (int i = 0; i < 6; i++) {
+			DrawingArea.fillRect(x + i * wallWidth / 6, y - 8, Math.max(5, wallWidth / 13), 9, 0x111923, alpha);
+		}
+		drawCastleTower(x + wallWidth / 7, baseY, Math.max(22, size / 5), Math.max(60, size / 2), alpha);
+		drawCastleTower(x + wallWidth * 5 / 7, baseY, Math.max(24, size / 4), Math.max(72, size * 3 / 5), alpha);
+		drawCastleTower(x + wallWidth / 2, baseY, Math.max(28, size / 4), Math.max(86, size * 2 / 3), alpha);
+		for (int i = 0; i < 5; i++) {
+			DrawingArea.fillRect(x + wallWidth / 5 + i * wallWidth / 8, y + wallHeight / 3, 3, 8, 0xf0c877, 95);
+		}
+	}
+
+	private void drawCastleTower(int centerX, int baseY, int width, int height, int alpha) {
+		int x = centerX - width / 2;
+		int y = baseY - height;
+		DrawingArea.fillRect(x, y, width, height, 0x101821, alpha);
+		DrawingArea.fillPixels(x, width, height, 0x314557, y);
+		for (int i = 0; i < 3; i++) {
+			DrawingArea.fillRect(x + 2 + i * width / 3, y - 8, Math.max(4, width / 5), 9, 0x101821, alpha);
+		}
+		DrawingArea.fillRect(centerX - 2, y + height / 3, 4, 10, 0xf0c877, 92);
+	}
+
+	private void drawLoginRiver(int width, int height, int time) {
+		int riverY = height * 73 / 100;
+		int riverHeight = Math.max(38, height * 12 / 100);
+		drawVerticalGradientBands(0, riverY, width, riverHeight, 0x1d4552, 0x0a1d25, 22);
+		for (int i = 0; i < 18; i++) {
+			int y = riverY + 5 + i * riverHeight / 18;
+			int shift = (int) (Math.sin((time + i * 17) * 0.075) * Math.max(10, width / 130));
+			int rippleWidth = Math.max(80, width / 7);
+			for (int x = -rippleWidth; x < width + rippleWidth; x += rippleWidth + width / 18) {
+				DrawingArea.fillRect(x + shift, y, rippleWidth, 1, i % 2 == 0 ? 0x8fc7d2 : 0x4f8ca0, 52);
+			}
+		}
+	}
+
+	private void drawForestLine(int width, int height, int time) {
+		int baseY = height * 74 / 100;
+		int count = Math.max(18, width / 70);
+		for (int i = 0; i < count; i++) {
+			int x = i * width / Math.max(1, count - 1);
+			int treeHeight = Math.max(28, height / 12 + (i % 5) * 7);
+			drawPineTree(x, baseY + (i % 3) * 3, treeHeight, i + time / 8, 210);
+		}
+	}
+
+	private void drawPineTree(int x, int baseY, int treeHeight, int seed, int alpha) {
+		int sway = (int) (Math.sin((loopCycle + seed * 13) * 0.045) * Math.max(1, treeHeight / 18));
+		DrawingArea.fillRect(x - 2 + sway / 2, baseY - treeHeight / 2, 4, treeHeight / 2, 0x392714, alpha);
+		drawTriangle(x + sway, baseY - treeHeight / 3, treeHeight / 3, baseY - treeHeight, 0x102716, alpha);
+		drawTriangle(x + sway / 2, baseY - treeHeight / 6, treeHeight / 2, baseY - treeHeight * 3 / 4, 0x14351b, alpha);
+		drawTriangle(x, baseY, treeHeight / 2, baseY - treeHeight / 2, 0x173d20, alpha);
+	}
+
+	private void drawWindGrass(int width, int height, int time) {
+		int grassY = height * 82 / 100;
+		DrawingArea.fillRect(0, grassY, width, height - grassY, 0x0f220e, 215);
+		int blades = Math.max(70, width / 12);
+		for (int i = 0; i < blades; i++) {
+			int x = i * width / blades;
+			int bladeHeight = Math.max(9, height / 38 + (i % 7));
+			int baseY = height - 2 - (i % Math.max(1, height / 22));
+			int sway = (int) (Math.sin((time + i * 5) * 0.065) * Math.max(2, bladeHeight / 4));
+			int color = i % 3 == 0 ? 0x4f7934 : i % 3 == 1 ? 0x385f29 : 0x6f8740;
+			for (int p = 0; p < bladeHeight; p += 2) {
+				int px = x + sway * p / bladeHeight;
+				DrawingArea.fillRect(px, baseY - p, 1, 3, color, 175);
+			}
+		}
+	}
+
+	private void drawLoginEmbers(int width, int height, int time) {
+		for (int i = 0; i < 28; i++) {
+			int x = positiveModulo(i * 97 + time * (1 + i % 3), width);
+			int y = positiveModulo(height * 68 / 100 + i * 41 - time * 2, Math.max(1, height));
+			if (y < height * 38 / 100) {
+				continue;
+			}
+			int color = i % 2 == 0 ? 0xf0c877 : 0x8fd0ff;
+			DrawingArea.fillRect(x, y, 2, 2, color, 75);
+		}
+	}
+
+	private void drawCloud(int x, int y, int width, int height, int color, int alpha) {
+		drawSoftEllipse(x + width / 5, y + height / 2, width / 5, height / 2, color, alpha);
+		drawSoftEllipse(x + width / 2, y + height / 3, width / 4, height * 2 / 3, color, alpha);
+		drawSoftEllipse(x + width * 4 / 5, y + height / 2, width / 5, height / 2, color, alpha);
+		DrawingArea.fillRect(x + width / 6, y + height / 2, width * 2 / 3, Math.max(2, height / 3), color, alpha / 2);
+	}
+
+	private void drawSoftEllipse(int centerX, int centerY, int radiusX, int radiusY, int color, int alpha) {
+		radiusX = Math.max(1, radiusX);
+		radiusY = Math.max(1, radiusY);
+		for (int y = -radiusY; y <= radiusY; y++) {
+			double normalized = (double) y / (double) radiusY;
+			int lineWidth = (int) (radiusX * Math.sqrt(Math.max(0.0, 1.0 - normalized * normalized)));
+			DrawingArea.fillRect(centerX - lineWidth, centerY + y, lineWidth * 2, 1, color, alpha);
+		}
+	}
+
+	private void drawTriangle(int centerX, int baseY, int halfWidth, int peakY, int color, int alpha) {
+		if (baseY <= peakY || halfWidth <= 0) {
+			return;
+		}
+		int height = baseY - peakY;
+		for (int y = peakY; y <= baseY; y++) {
+			int lineHalfWidth = halfWidth * (y - peakY) / height;
+			DrawingArea.fillRect(centerX - lineHalfWidth, y, lineHalfWidth * 2 + 1, 1, color, alpha);
+		}
+	}
+
+	private int positiveModulo(int value, int mod) {
+		int result = value % mod;
+		return result < 0 ? result + mod : result;
 	}
 
 	public void drawLoginScreen(boolean flag) {
 		resetImageProducers();
 		titleScreenIP.initDrawingArea();
-		DrawingArea.drawFilledPixels(0, 0, getScreenWidth(), getScreenHeight(), 0x000000);
-		int centerX = getScreenWidth() / 2;
-		int centerY = getScreenHeight() / 2;
-		// titleAlpha = 0;
 		titleAlpha += titleAlpha < 250 ? 8 : 0;
-		if (Configuration.DISPLAY_GAMEWORLD_ON_LOGIN) {
-			drawAnimatedWorldBackground(true);
-		} else {
-			if (titleAlpha < 250) {
-				cacheSprite[449].drawTransparentSprite(centerX - cacheSprite[449].myWidth / 2, centerY - cacheSprite[449].myHeight / 2, titleAlpha);
-				drawPsychoLoginMapBranding();
+		drawMedievalLoginBackground();
+		if (titleAlpha < 250) {
+			DrawingArea.fillRect(0, 0, getScreenWidth(), getScreenHeight(), 0x000000, 250 - titleAlpha);
+		}
+
+		boolean hasLoginAlert = (loginMessage1 != null && !loginMessage1.isEmpty()) || (loginMessage2 != null && !loginMessage2.isEmpty());
+		if(!hasLoginAlert) {
+			handleHovers(false);
+			drawModernLoginChrome(false);
+
+			int usernameTextX = loginUsernameX + 12;
+			int usernameTextY = loginUsernameY + 23;
+			int passwordTextY = loginPasswordY + 23;
+			if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
+				chatTextDrawingArea.drawRegularText(true, usernameTextX, 16777215, myUsername + "|", usernameTextY);
 			} else {
-				if(loginMessage1.isEmpty() && loginMessage2.isEmpty()) {
-					handleHovers(false);
-					cacheSprite[449].drawAdvancedSprite(0, 0);
-					drawPsychoLoginMapBranding();
-					//cacheSprite[1177].drawAdvancedSprite(310, 115);
-
-					if(loginHover) {
-						cacheSprite[1174].drawAdvancedSprite(403, 302);
-					}
-					if(textArea1Hover) {
-						cacheSprite[1175].drawAdvancedSprite(275, 222);
-					} else if(textArea2Hover) {
-						cacheSprite[1175].drawAdvancedSprite(275, 263);
-					}
-					if(Configuration.SAVE_ACCOUNTS) {
-						cacheSprite[1176].drawAdvancedSprite(367, 308);
-					}
-					drawModernLoginChrome(false);
-
-					if(loginScreenCursorPos == 0 && loopCycle % 45 < 10) {
-						chatTextDrawingArea.drawRegularText(true, 280, 16777215, myUsername + "|", 242);
-					} else {
-						chatTextDrawingArea.drawRegularText(true, 280, 16777215, myUsername, 242);
-					}
-
-					if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
-						chatTextDrawingArea.drawRegularText(true, 280, 16777215, getStars(password)+"|", 285);
-					} else {
-						chatTextDrawingArea.drawRegularText(true, 280, 16777215, getStars(password), 285);
-					}
-
-					int drawAccountX = 221;
-					int drawAcountDeletionX = 254;
-					
-					for(int i = 0; i < accountHovers.length; i++) {
-						Account account = accountManager.getAccounts()[i];
-						if(account == null) {
-							if(accountDeletion[i]) {
-								cacheSprite[1180].drawAdvancedSprite(drawAcountDeletionX, 434);
-								cacheSprite[1178].drawAdvancedSprite(drawAccountX, 450);
-							} else {
-								if(accountHovers[i]) {
-									cacheSprite[1179].drawAdvancedSprite(drawAccountX, 450);
-								} else {
-									cacheSprite[1178].drawAdvancedSprite(drawAccountX, 450);
-								}
-							}
-							drawModernAccountSlot(drawAccountX, 450, accountHovers[i], accountDeletion[i], false);
-						} else {
-							if (account.getUsername() == null) {
-								accountManager.getAccounts()[i] = null;
-								continue;
-							}
-							drawModernAccountSlot(drawAccountX, 450, accountHovers[i], accountDeletion[i], true);
-							//drawInterface(0, 0, RSInterface.interfaceCache[31000], 6);
-							//handleAccountHeadRotation();
-							//processInterfaceAnimation(1, 31000);
-
-							int helmet = account.getHelmet() > 0 ? account.getHelmet() : 1139;
-							Sprite s = ItemDefinition.getSprite(helmet, 0, 4, 110);
-							if(s != null) {
-								s.drawSprite(drawAccountX + 2, 450 - 1);
-							}
-
-							String name = account.getUsername() != null ? account.getUsername() : "";
-							if (newSmallFont.getTextWidth(name) > 50) {
-								int width = 0;
-								StringBuilder nameBuilder = new StringBuilder();
-								for (int c : account.getUsername().toCharArray()) {
-									int charWidth = newSmallFont.getTextWidth("" + c);
-									if (width + charWidth < 50) {
-										nameBuilder.append(c);
-										width += charWidth;
-									} else {
-										nameBuilder.append("..");
-										break;
-									}
-								}
-								name = nameBuilder.toString();
-							}
-
-							newSmallFont.drawCenteredString(name, drawAccountX + 18, 492, Integer.MAX_VALUE, 0);
-						}
-						drawAcountDeletionX += 72;
-						drawAccountX += (i == 2 ? 73 : 72);
-					}
-					
-				} else {
-					handleHovers(true);
-					cacheSprite[1183].drawAdvancedSprite(0, 0);
-					cacheSprite[1181].drawAdvancedSprite(215, 150);
-					drawModernLoginChrome(true);
-					if (loginMessage2 == null || loginMessage2.length() == 0) {
-						newBoldFont.drawCenteredString(loginMessage1, 382, 256, 16777215, 0);
-					} else {
-						newBoldFont.drawCenteredString(loginMessage1, 382, 242, 16777215, 0);
-						newBoldFont.drawCenteredString(loginMessage2, 382, 262, 16777215, 0);
-					}
-					if (Configuration.developerMode) {
-						newSmallFont.drawBasicString("Mouse:" + mouseX + ", " + mouseY, 4, 12, Integer.MAX_VALUE, 0, false);
-					}
-				}
-				//normalText.drawText(0xffffff, "MouseX: "+mouseX+", MouseY: "+mouseY, 80, 200);
+				chatTextDrawingArea.drawRegularText(true, usernameTextX, 16777215, myUsername, usernameTextY);
 			}
+
+			if(loginScreenCursorPos == 1 && loopCycle % 45 < 10) {
+				chatTextDrawingArea.drawRegularText(true, usernameTextX, 16777215, getStars(password)+"|", passwordTextY);
+			} else {
+				chatTextDrawingArea.drawRegularText(true, usernameTextX, 16777215, getStars(password), passwordTextY);
+			}
+
+			for(int i = 0; i < accountHovers.length; i++) {
+				Account account = accountManager.getAccounts()[i];
+				int slotX = getLoginAccountSlotX(i);
+				if(account == null) {
+					drawModernAccountSlot(slotX, loginAccountY, accountHovers[i], accountDeletion[i], false);
+					continue;
+				}
+				if (account.getUsername() == null) {
+					accountManager.getAccounts()[i] = null;
+					drawModernAccountSlot(slotX, loginAccountY, accountHovers[i], accountDeletion[i], false);
+					continue;
+				}
+				drawModernAccountSlot(slotX, loginAccountY, accountHovers[i], accountDeletion[i], true);
+
+				int helmet = account.getHelmet() > 0 ? account.getHelmet() : 1139;
+				Sprite s = ItemDefinition.getSprite(helmet, 0, 4, 110);
+				if(s != null) {
+					s.drawSprite(slotX + (loginAccountSlotWidth - 32) / 2, loginAccountY + 8);
+				}
+
+				if (newSmallFont != null) {
+					String name = account.getUsername();
+					int maxNameWidth = loginAccountSlotWidth - 8;
+					if (newSmallFont.getTextWidth(name) > maxNameWidth) {
+						int width = 0;
+						StringBuilder nameBuilder = new StringBuilder();
+						for (int c : account.getUsername().toCharArray()) {
+							int charWidth = newSmallFont.getTextWidth("" + c);
+							if (width + charWidth < maxNameWidth - newSmallFont.getTextWidth("..")) {
+								nameBuilder.append(c);
+								width += charWidth;
+							} else {
+								nameBuilder.append("..");
+								break;
+							}
+						}
+						name = nameBuilder.toString();
+					}
+					newSmallFont.drawCenteredString(name, slotX + loginAccountSlotWidth / 2, loginAccountY + loginAccountSlotHeight - 8, 0xf5f8fb, 0);
+				}
+			}
+		} else {
+			handleHovers(true);
+			drawModernLoginChrome(true);
+			int messageX = loginPanelX + loginPanelWidth / 2;
+			int messageY = loginPanelY + loginPanelHeight / 2;
+			if (newBoldFont != null) {
+				if (loginMessage2 == null || loginMessage2.length() == 0) {
+					newBoldFont.drawCenteredString(loginMessage1, messageX, messageY, 16777215, 0);
+				} else {
+					newBoldFont.drawCenteredString(loginMessage1, messageX, messageY - 12, 16777215, 0);
+					newBoldFont.drawCenteredString(loginMessage2, messageX, messageY + 10, 16777215, 0);
+				}
+			}
+		}
+		if (Configuration.developerMode && newSmallFont != null) {
+			newSmallFont.drawBasicString("Mouse:" + mouseX + ", " + mouseY, 4, 12, Integer.MAX_VALUE, 0, false);
 		}
 
 		if (!resizing) {
