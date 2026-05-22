@@ -1,0 +1,303 @@
+{
+  "npcIds": [
+    1220
+  ],
+  "drops": [
+    {
+      "name": "Vampire dust",
+      "id": 3325,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Kwuarm seed",
+      "id": 5299,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Poison ivy seed",
+      "id": 5106,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Lantadyme seed",
+      "id": 5302,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dwarf weed seed",
+      "id": 5303,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Torstol seed",
+      "id": 5304,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Belladonna seed",
+      "id": 5281,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cactus seed",
+      "id": 5280,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        8
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

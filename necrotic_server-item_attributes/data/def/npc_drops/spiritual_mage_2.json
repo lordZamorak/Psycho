@@ -1,0 +1,186 @@
+{
+  "npcIds": [
+    6221,
+    6231,
+    6257,
+    6278
+  ],
+  "drops": [
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        13
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        9
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        6
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        6
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Astral rune",
+      "id": 9075,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        11
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Body rune",
+      "id": 559,
+      "count": [
+        21
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        7
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        23
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

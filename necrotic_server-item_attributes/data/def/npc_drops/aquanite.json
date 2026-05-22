@@ -1,0 +1,227 @@
+{
+  "npcIds": [
+    9172
+  ],
+  "drops": [
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Seaweed",
+      "id": 402,
+      "count": [
+        6
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Snape grass",
+      "id": 232,
+      "count": [
+        6,
+        8
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Amulet of ranging",
+      "id": 15126,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 212,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 216,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy irit",
+      "id": 210,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dwarf weed seed",
+      "id": 5303,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Lantadyme seed",
+      "id": 5302,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Ranarr seed",
+      "id": 5295,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Torstol seed",
+      "id": 5304,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Water battlestaff",
+      "id": 1395,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        25,
+        30
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Water talisman",
+      "id": 1445,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mystic gloves",
+      "id": 4095,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mystic boots",
+      "id": 4097,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune sq shield",
+      "id": 1185,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune dagger",
+      "id": 1213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel bar",
+      "id": 2354,
+      "count": [
+        1,
+        2,
+        3
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Maple logs",
+      "id": 1518,
+      "count": [
+        25
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        10
+      ],
+      "chance": 15
+    }
+  ]
+}

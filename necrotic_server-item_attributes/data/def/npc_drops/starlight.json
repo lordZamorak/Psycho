@@ -1,0 +1,209 @@
+{
+  "npcIds": [
+    6250,
+    6248,
+    6252
+  ],
+  "drops": [
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Amulet of fury",
+      "id": 6585,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel dart",
+      "id": 808,
+      "count": [
+        100
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        100
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1300
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1300
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1300
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1300
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Snape grass",
+      "id": 231,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Snape grass",
+      "id": 231,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Summer pie",
+      "id": 7218,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin sword",
+      "id": 11730,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    }
+  ]
+}

@@ -1,0 +1,343 @@
+{
+  "npcIds": [
+    10785
+  ],
+  "drops": [
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        14
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Steel warhammer",
+      "id": 1339,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Black warhammer",
+      "id": 1341,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril warhammer",
+      "id": 1343,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant warhammer",
+      "id": 1345,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune warhammer",
+      "id": 1347,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant hatchet",
+      "id": 1357,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant med helm",
+      "id": 1145,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant full helm",
+      "id": 1161,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Granite shield",
+      "id": 3122,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Ball of wool",
+      "id": 1760,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel platebody",
+      "id": 1119,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1625,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut jade",
+      "id": 1627,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Long bone",
+      "id": 10976,
+      "count": [
+        1
+      ],
+      "chance": 5
+    }
+  ]
+}

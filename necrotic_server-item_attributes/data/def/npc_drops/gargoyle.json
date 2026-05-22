@@ -1,0 +1,287 @@
+{
+  "npcIds": [
+    1610
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        85000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Steel 2h sword",
+      "id": 1311,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Steel hatchet",
+      "id": 1353,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel battleaxe",
+      "id": 1365,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant boots",
+      "id": 4129,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mystic robe top",
+      "id": 4101,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Granite maul",
+      "id": 4153,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        37
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        12
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel bar",
+      "id": 2353,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mithril bar",
+      "id": 2359,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Gold bar",
+      "id": 2357,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        35
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragon spear",
+      "id": 1249,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune spear",
+      "id": 1247,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

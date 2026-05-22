@@ -1,0 +1,151 @@
+{
+  "npcIds": [
+    1832
+  ],
+  "drops": [
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        5
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        7
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Swamp weed",
+      "id": 10978,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 15
+    }
+  ]
+}

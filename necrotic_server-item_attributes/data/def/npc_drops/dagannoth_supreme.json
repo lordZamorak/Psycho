@@ -1,0 +1,383 @@
+{
+  "npcIds": [
+    2881
+  ],
+  "drops": [
+    {
+      "name": "Pet Dagannoth supreme",
+      "id": 12005,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Dagannoth hide",
+      "id": 6155,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dagannoth bones",
+      "id": 6729,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant hatchet",
+      "id": 1357,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Fremennik blade",
+      "id": 3757,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Seercull",
+      "id": 6724,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragon hatchet",
+      "id": 6739,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Iron arrow",
+      "id": 884,
+      "count": [
+        200
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        100
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Iron knife",
+      "id": 863,
+      "count": [
+        200
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel knife",
+      "id": 865,
+      "count": [
+        100
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril knife",
+      "id": 866,
+      "count": [
+        50
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune thrownaxe",
+      "id": 805,
+      "count": [
+        7
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Runite bolts",
+      "id": 9144,
+      "count": [
+        14
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Red d\u0027hide vambraces",
+      "id": 2489,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Spined body",
+      "id": 6133,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Spined body",
+      "id": 6133,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Spined chaps",
+      "id": 6135,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fremennik shield",
+      "id": 3758,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fremennik helm",
+      "id": 3748,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Archer helm",
+      "id": 3749,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Archers\u0027 ring (i)",
+      "id": 15019,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Guam seed",
+      "id": 5291,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Marrentill seed",
+      "id": 5292,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Tarromin seed",
+      "id": 5293,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Harralander seed",
+      "id": 5294,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Ranarr seed",
+      "id": 5295,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Kwuarm seed",
+      "id": 5299,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Water talisman",
+      "id": 1444,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fire talisman",
+      "id": 1442,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mind talisman",
+      "id": 1448,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Body talisman",
+      "id": 1446,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        4000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Opal bolt tips",
+      "id": 45,
+      "count": [
+        3
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Oyster pearls",
+      "id": 413,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Raw shark",
+      "id": 383,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Yew logs",
+      "id": 1516,
+      "count": [
+        94
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Maple logs",
+      "id": 1518,
+      "count": [
+        124
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Feather",
+      "id": 314,
+      "count": [
+        200
+      ],
+      "chance": 40
+    }
+  ]
+}

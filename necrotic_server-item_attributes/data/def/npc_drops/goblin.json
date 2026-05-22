@@ -1,0 +1,369 @@
+{
+  "npcIds": [
+    100,
+    101,
+    102
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        2
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        3
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Iron dagger",
+      "id": 1203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bronze dagger",
+      "id": 1205,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze chainbody",
+      "id": 1103,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze sq shield",
+      "id": 1173,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze spear",
+      "id": 1237,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze pickaxe",
+      "id": 1265,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze hatchet",
+      "id": 1351,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze mace",
+      "id": 1422,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze bar",
+      "id": 2350,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze med helm",
+      "id": 1139,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Iron med helm",
+      "id": 1137,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel sword",
+      "id": 1281,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bronze sword",
+      "id": 1277,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Leather gloves",
+      "id": 1059,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Leather boots",
+      "id": 1061,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Leather vambraces",
+      "id": 1063,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Leather chaps",
+      "id": 1095,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Leather body",
+      "id": 1129,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Leather cowl",
+      "id": 1167,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Leather",
+      "id": 1741,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Thread",
+      "id": 1734,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Beer",
+      "id": 1917,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Cabbage",
+      "id": 1965,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Raw chicken",
+      "id": 2138,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bread",
+      "id": 2309,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        21
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        7
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Body rune",
+      "id": 559,
+      "count": [
+        13
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        15
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        6
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        8
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Chef\u0027s hat",
+      "id": 1949,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

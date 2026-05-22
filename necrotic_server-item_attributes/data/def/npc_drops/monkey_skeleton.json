@@ -1,0 +1,119 @@
+{
+  "npcIds": [
+    1471
+  ],
+  "drops": [
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon longsword",
+      "id": 1305,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune platelegs",
+      "id": 1079,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1093,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune platebody",
+      "id": 1127,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamantite ore",
+      "id": 450,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        25
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril ore",
+      "id": 448,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Prayer potion (1)",
+      "id": 143,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Slate tablet",
+      "id": 15105,
+      "count": [
+        1
+      ],
+      "chance": 320
+    }
+  ]
+}

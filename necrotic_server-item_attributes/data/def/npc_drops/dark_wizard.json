@@ -1,0 +1,39 @@
+{
+  "npcIds": [
+    174
+  ],
+  "drops": [
+    {
+      "name": "Dark hood",
+      "id": 12961,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Black robe",
+      "id": 581,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Black skirt",
+      "id": 1015,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Defiled shank",
+      "id": 22039,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

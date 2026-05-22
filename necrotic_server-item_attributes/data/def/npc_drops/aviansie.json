@@ -1,0 +1,287 @@
+{
+  "npcIds": [
+    6246
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Feather",
+      "id": 314,
+      "count": [
+        7
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        30
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        30
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        7
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Body rune",
+      "id": 559,
+      "count": [
+        11
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        6
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Silver ore",
+      "id": 442,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2362,
+      "count": [
+        4
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mithril bar",
+      "id": 2360,
+      "count": [
+        4
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Swordfish",
+      "id": 373,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Antipoison (3)",
+      "id": 175,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

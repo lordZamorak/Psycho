@@ -1,0 +1,95 @@
+{
+  "npcIds": [
+    2611
+  ],
+  "drops": [
+    {
+      "name": "Berserker necklace",
+      "id": 11128,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Tokkul",
+      "id": 6529,
+      "count": [
+        300
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1625,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Broodoo shield",
+      "id": 6258,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Broodoo shield (8)",
+      "id": 6264,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Obsidian cape",
+      "id": 6568,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

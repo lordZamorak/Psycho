@@ -1,0 +1,319 @@
+{
+    "name": "Demonic_gorilla",
+    "npcIds": [
+      37144
+    ],
+    "drops": [
+      {
+        "name": "ashes",
+        "id": 592,
+        "count": [
+          1
+        ],
+        "chance": 0
+      },
+      {
+        "name": "zenyte shard",
+        "id": 49529,
+        "count": [
+          1
+        ],
+        "chance": 300
+      },
+      {
+        "name": "hand cannon",
+        "id": 15241,
+        "count": [
+          1
+        ],
+        "chance": 2000
+      },
+      {
+        "name": "hand cannon shot",
+        "id": 15243,
+        "count": [
+          25,
+          100
+        ],
+        "chance": 15
+      },
+      {
+        "name": "rune platelegs",
+        "id": 1079,
+        "count": [
+          1
+        ],
+        "chance": 15
+      },
+      {
+        "name": "rune plateskirt",
+        "id": 1093,
+        "count": [
+          1
+        ],
+        "chance": 15
+      },
+      {
+        "name": "rune chainbody",
+        "id": 1113,
+        "count": [
+          1
+        ],
+        "chance": 25
+      },
+      {
+        "name": "dragon scimitar",
+        "id": 4587,
+        "count": [
+          1
+        ],
+        "chance": 50
+      },
+      {
+        "name": "law rune",
+        "id": 563,
+        "count": [
+          50,
+          75
+        ],
+        "chance": 15
+      },
+      {
+        "name": "death rune",
+        "id": 560,
+        "count": [
+          50,
+          75
+        ],
+        "chance": 15
+      },
+      {
+        "name": "runite bolts",
+        "id": 9144,
+        "count": [
+          100,
+          150
+        ],
+        "chance": 20
+      },
+      {
+        "name": "grimy kwuarm",
+        "id": 214,
+        "count": [
+          7,
+          13
+        ],
+        "chance": 89
+      },
+      {
+        "name": "grimy cadantine",
+        "id": 216,
+        "count": [
+          7,
+          13
+        ],
+        "chance": 112
+      },
+      {
+        "name": "grimy lantadyme",
+        "id": 2486,
+        "count": [
+          7,
+          13
+        ],
+        "chance": 149
+      },
+      {
+        "name": "grimy dwarf weed",
+        "id": 218,
+        "count": [
+          7,
+          13
+        ],
+        "chance": 112
+      },
+      {
+        "name": "ranarr seed",
+        "id": 5295,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 167
+      },
+      {
+        "name": "snapdragon seed",
+        "id": 5300,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 179
+      },
+      {
+        "name": "torstol seed",
+        "id": 5304,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 228
+      },
+      {
+        "name": "watermelon seed",
+        "id": 5321,
+        "count": [
+          30,
+          30
+        ],
+        "chance": 250
+      },
+      {
+        "name": "willow seed",
+        "id": 5313,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 250
+      },
+      {
+        "name": "maple seed",
+        "id": 5314,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 278
+      },
+      {
+        "name": "yew seed",
+        "id": 5315,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 278
+      },
+      {
+        "name": "papaya tree seed",
+        "id": 5288,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 358
+      },
+      {
+        "name": "magic seed",
+        "id": 5316,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 417
+      },
+      {
+        "name": "palm tree seed",
+        "id": 5289,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 500
+      },
+      {
+        "name": "spirit seed",
+        "id": 5317,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 625
+      },
+      {
+        "name": "prayer potion(3)",
+        "id": 139,
+        "count": [
+          2,
+          2
+        ],
+        "chance": 13
+      },
+      {
+        "name": "shark (noted)",
+        "count": [
+          8,
+          10
+        ],
+        "chance": 15
+      },
+      {
+        "name": "rocktail (noted)",
+        "count": [
+          8,
+          10
+        ],
+        "chance": 15
+      },
+      {
+        "name": "saradomin brew (4) (noted)",
+        "count": [
+          2,
+          3
+        ],
+        "chance": 15
+      },
+      {
+        "name": "coins",
+        "id": 995,
+        "count": [
+          200000,
+          100000
+        ],
+        "chance": 8
+      },
+      {
+        "name": "saradomin brew(2)",
+        "id": 6689,
+        "count": [
+          1
+        ],
+        "chance": 20
+      },
+      {
+        "name": "adamantite bar",
+        "id": 2362,
+        "count": [
+          6,
+          6
+        ],
+        "chance": 25
+      },
+      {
+        "name": "diamond",
+        "id": 1602,
+        "count": [
+          4,
+          6
+        ],
+        "chance": 30
+      },
+      {
+        "name": "runite bar",
+        "id": 2363,
+        "count": [
+          3,
+          3
+        ],
+        "chance": 34
+      },
+      {
+        "name": "uncut dragonstone (noted)",
+        "count": [
+          3
+        ],
+        "chance": 15
+      }
+    ]
+  }

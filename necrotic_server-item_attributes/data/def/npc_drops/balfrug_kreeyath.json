@@ -1,0 +1,265 @@
+{
+  "npcIds": [
+    6208,
+    6206,
+    6204
+  ],
+  "drops": [
+    {
+      "name": "Zamorakian spear",
+      "id": 11716,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Amulet of fury",
+      "id": 6585,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel dart",
+      "id": 808,
+      "count": [
+        98
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Wine of zamorak",
+      "id": 245,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Wine of zamorak",
+      "id": 245,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Wine of zamorak",
+      "id": 245,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Tuna potato",
+      "id": 7060,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Tuna potato",
+      "id": 7060,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Tuna potato",
+      "id": 7060,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        98
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Monkfish",
+      "id": 7946,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Super attack (3)",
+      "id": 145,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Super strength (3)",
+      "id": 157,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Super attack (3)",
+      "id": 145,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Super strength (3)",
+      "id": 157,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Super attack (3)",
+      "id": 145,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Super strength (3)",
+      "id": 157,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Super attack (3)",
+      "id": 145,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Super strength (3)",
+      "id": 157,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1500
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

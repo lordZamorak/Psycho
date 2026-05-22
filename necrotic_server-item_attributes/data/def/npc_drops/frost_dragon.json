@@ -1,0 +1,314 @@
+{
+  "npcIds": [
+    51
+  ],
+  "drops": [
+    {
+      "name": "Pet Frost dragon",
+      "id": 11991,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Dragon dart",
+      "id": 11230,
+      "count": [
+        25,
+        20,
+        15,
+        10
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Frost dragon bones",
+      "id": 18830,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune arrow",
+      "id": 892,
+      "count": [
+        12
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant kiteshield",
+      "id": 1199,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1303,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Water talisman",
+      "id": 1444,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Water talisman",
+      "id": 1445,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        10
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Air talisman",
+      "id": 1438,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Air talisman",
+      "id": 1439,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        50
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        10
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        10
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1200
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2361,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Draconic visage",
+      "id": 11286,
+      "count": [
+        1
+      ],
+      "chance": 320
+    }
+  ]
+}

@@ -1,0 +1,527 @@
+{
+  "npcIds": [
+    1615
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        17500
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon spear",
+      "id": 1249,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune spear",
+      "id": 1247,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black sword",
+      "id": 1283,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Black hatchet",
+      "id": 1361,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel battleaxe",
+      "id": 1365,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Abyssal whip",
+      "id": 4151,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune chainbody",
+      "id": 1113,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune chainbody",
+      "id": 1113,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune chainbody",
+      "id": 1113,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune chainbody",
+      "id": 1113,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune chainbody",
+      "id": 1113,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune chainbody",
+      "id": 1113,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        50
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        7
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        150
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Lobster",
+      "id": 379,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cosmic talisman",
+      "id": 1454,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        60
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2361,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Defence potion (3)",
+      "id": 133,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Silver ore",
+      "id": 443,
+      "count": [
+        100
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune bar",
+      "id": 2363,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Translation manual",
+      "id": 4249,
+      "count": [
+        1
+      ],
+      "chance": 320
+    }
+  ]
+}

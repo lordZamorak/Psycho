@@ -1,0 +1,409 @@
+{
+  "npcIds": [
+    6260
+  ],
+  "drops": [
+    {
+      "name": "Pet General graardor",
+      "id": 11997,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        10,
+        15,
+        30
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Rune 2h sword",
+      "id": 1319,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Rune pickaxe",
+      "id": 1275,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1303,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Rune platebody",
+      "id": 1127,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Rune 2h sword",
+      "id": 1320,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune pickaxe",
+      "id": 1276,
+      "count": [
+        20
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1304,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1374,
+      "count": [
+        15
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune platebody",
+      "id": 1128,
+      "count": [
+        5
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Bandos chestplate",
+      "id": 11724,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos tassets",
+      "id": 11726,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos boots",
+      "id": 11728,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos helmet",
+      "id": 13996,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        370
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        245
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Adamantite ore",
+      "id": 450,
+      "count": [
+        200
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        420
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        100000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        15
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        150
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Super restore (4)",
+      "id": 3024,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 208,
+      "count": [
+        20
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy irit",
+      "id": 210,
+      "count": [
+        15
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        20
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        15
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        15
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 220,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Long bone",
+      "id": 10976,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Curved bone",
+      "id": 10977,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos hilt",
+      "id": 11704,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune sq shield",
+      "id": 1185,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon spear",
+      "id": 1249,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1618,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

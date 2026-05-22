@@ -1,0 +1,143 @@
+{
+  "npcIds": [
+    6365
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        100
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril arrow",
+      "id": 888,
+      "count": [
+        15
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Willow shortbow",
+      "id": 849,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bow string",
+      "id": 1777,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bow string",
+      "id": 1778,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

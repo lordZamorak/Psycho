@@ -1,0 +1,39 @@
+{
+  "npcIds": [
+    3581
+  ],
+  "drops": [
+    {
+      "name": "Necromancy book",
+      "id": 4837,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Skeleton gloves",
+      "id": 9922,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Skeleton boots",
+      "id": 9921,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Defiled shank",
+      "id": 22039,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

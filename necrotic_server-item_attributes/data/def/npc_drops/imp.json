@@ -1,0 +1,256 @@
+{
+  "npcIds": [
+    708,
+    709
+  ],
+  "drops": [
+    {
+      "name": "Ashes",
+      "id": 592,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Ball of wool",
+      "id": 1759,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze bolts",
+      "id": 877,
+      "count": [
+        3
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Bucket",
+      "id": 1925,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Cadava berries",
+      "id": 753,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Egg",
+      "id": 1944,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Hammer",
+      "id": 2347,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mind talisman",
+      "id": 1448,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Tinderbox",
+      "id": 29,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Wizard hat",
+      "id": 579,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Red bead",
+      "id": 1470,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Yellow bead",
+      "id": 1472,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Black bead",
+      "id": 1474,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "White bead",
+      "id": 1476,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bread dough",
+      "id": 2307,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bucket of water",
+      "id": 1929,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Burnt bread",
+      "id": 2311,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Burnt meat",
+      "id": 2146,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Clay",
+      "id": 434,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grain",
+      "id": 1947,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Raw chicken",
+      "id": 2138,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Shears",
+      "id": 1735,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "npcIds": [
+    76
+  ],
+  "drops": [
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        217
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Iron hatchet",
+      "id": 1349,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        4
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Copper ore",
+      "id": 436,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Fishing bait",
+      "id": 313,
+      "count": [
+        27
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze med helm",
+      "id": 1139,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze hatchet",
+      "id": 1351,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        14
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        2
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        3
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

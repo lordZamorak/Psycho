@@ -1,0 +1,423 @@
+{
+  "npcIds": [
+    181
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy wergali",
+      "id": 14836,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy spirit weed",
+      "id": 12174,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        189
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Snape grass",
+      "id": 231,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze longsword",
+      "id": 1291,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Body rune",
+      "id": 559,
+      "count": [
+        9
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        7
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        19
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        11
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril bolts",
+      "id": 9142,
+      "count": [
+        8
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Vial of water",
+      "id": 227,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Nature talisman",
+      "id": 1462,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Chaos talisman",
+      "id": 1452,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune spear",
+      "id": 1247,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Limpwurt root",
+      "id": 225,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Unholy mould",
+      "id": 1594,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1625,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut jade",
+      "id": 1627,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        2
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        3
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

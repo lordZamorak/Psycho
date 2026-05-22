@@ -1,0 +1,183 @@
+{
+  "npcIds": [
+    4275
+  ],
+  "drops": [
+    {
+      "name": "Stone tablet",
+      "id": 15103,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        9
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cape",
+      "id": 1007,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze med helm",
+      "id": 1139,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Brass necklace",
+      "id": 1009,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze sq shield",
+      "id": 1173,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Staff",
+      "id": 1379,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Iron dagger",
+      "id": 1203,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze bolts",
+      "id": 877,
+      "count": [
+        4
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze scimitar",
+      "id": 1321,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze spear",
+      "id": 1237,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        6
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        2
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Body rune",
+      "id": 559,
+      "count": [
+        7
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        4
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        4
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze hatchet",
+      "id": 1351,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Air talisman",
+      "id": 1438,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Goblin mail",
+      "id": 288,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Chef\u0027s hat",
+      "id": 1949,
+      "count": [
+        1
+      ],
+      "chance": 5
+    }
+  ]
+}

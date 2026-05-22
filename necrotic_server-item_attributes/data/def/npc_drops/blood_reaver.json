@@ -1,0 +1,263 @@
+{
+  "npcIds": [
+    13458
+  ],
+  "drops": [
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        20
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        50
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        20
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cosmic rune",
+      "id": 564,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Astral rune",
+      "id": 9075,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        6
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mud rune",
+      "id": 4698,
+      "count": [
+        12
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        4746
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        23
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Super defence (1)",
+      "id": 167,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Prayer potion (2)",
+      "id": 141,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

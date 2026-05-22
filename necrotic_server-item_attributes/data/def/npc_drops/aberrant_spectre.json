@@ -1,0 +1,343 @@
+{
+  "npcIds": [
+    1604
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        47000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Belladonna seed",
+      "id": 5281,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Cactus seed",
+      "id": 5280,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Kwuarm seed",
+      "id": 5299,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Poison ivy seed",
+      "id": 5106,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Lantadyme seed",
+      "id": 5302,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dwarf weed seed",
+      "id": 5303,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Torstol seed",
+      "id": 5304,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Steel hatchet",
+      "id": 1353,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Lava battlestaff",
+      "id": 3053,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mystic robe bottom",
+      "id": 4103,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature talisman",
+      "id": 1462,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 320
+    }
+  ]
+}

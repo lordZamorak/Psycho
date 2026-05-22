@@ -1,0 +1,231 @@
+{
+  "npcIds": [
+    1652
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        5000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Leather gloves",
+      "id": 1059,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Gloves",
+      "id": 2902,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Gloves",
+      "id": 2912,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gloves",
+      "id": 2922,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gloves",
+      "id": 3799,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gloves",
+      "id": 2942,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mystic gloves",
+      "id": 4105,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold ring",
+      "id": 1635,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Sapphire ring",
+      "id": 1637,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Emerald ring",
+      "id": 1639,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Ruby ring",
+      "id": 1641,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Ashes",
+      "id": 592,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Nature talisman",
+      "id": 1462,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

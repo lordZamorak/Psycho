@@ -1,0 +1,191 @@
+{
+  "npcIds": [
+    93
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        15
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grain",
+      "id": 1947,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Iron dagger",
+      "id": 1203,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze arrow",
+      "id": 882,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Iron arrow",
+      "id": 884,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire talisman",
+      "id": 1442,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        4
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1625,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut jade",
+      "id": 1627,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel dagger",
+      "id": 1207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel sword",
+      "id": 1281,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

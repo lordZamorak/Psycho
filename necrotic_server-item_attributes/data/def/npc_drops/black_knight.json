@@ -1,0 +1,463 @@
+{
+  "npcIds": [
+    178
+  ],
+  "drops": [
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black platelegs",
+      "id": 1077,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black plateskirt",
+      "id": 1089,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black chainbody",
+      "id": 1107,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black platebody",
+      "id": 1125,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black med helm",
+      "id": 1151,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black full helm",
+      "id": 1165,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black sq shield",
+      "id": 1179,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black kiteshield",
+      "id": 1195,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black longsword",
+      "id": 1297,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black sword",
+      "id": 1283,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black scimitar",
+      "id": 1327,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black warhammer",
+      "id": 1341,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Black dagger",
+      "id": 1217,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Iron arrow",
+      "id": 884,
+      "count": [
+        80
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Nature talisman",
+      "id": 1462,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cosmic talisman",
+      "id": 1454,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        12
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        21
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        31
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragon spear",
+      "id": 1249,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune spear",
+      "id": 1247,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        2
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        3
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

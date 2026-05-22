@@ -1,0 +1,64 @@
+{
+  "npcIds": [
+    81,
+    2310
+  ],
+  "drops": [
+    {
+      "name": "Cowhide",
+      "id": 1739,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Raw beef",
+      "id": 2132,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        2
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        3
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

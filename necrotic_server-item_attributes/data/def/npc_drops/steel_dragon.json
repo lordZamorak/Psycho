@@ -1,0 +1,879 @@
+{
+  "npcIds": [
+    1592
+  ],
+  "drops": [
+    {
+      "name": "Dragon bones",
+      "id": 536,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel bar",
+      "id": 2354,
+      "count": [
+        5
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon platelegs",
+      "id": 4087,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragon plateskirt",
+      "id": 4585,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Raw swordfish",
+      "id": 371,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Silver ore",
+      "id": 443,
+      "count": [
+        50
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Chocolate cake",
+      "id": 1897,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature talisman",
+      "id": 1462,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        50
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bronze plateskirt",
+      "id": 1087,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant sword",
+      "id": 1287,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bronze plateskirt",
+      "id": 1087,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bronze plateskirt",
+      "id": 1087,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bronze plateskirt",
+      "id": 1087,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bronze plateskirt",
+      "id": 1087,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bronze plateskirt",
+      "id": 1087,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Yew logs",
+      "id": 1516,
+      "count": [
+        100
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant sword",
+      "id": 1287,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Draconic visage",
+      "id": 11286,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamant sword",
+      "id": 1287,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamant sword",
+      "id": 1287,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamant sword",
+      "id": 1287,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Adamant sword",
+      "id": 1287,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Runite limbs",
+      "id": 9431,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant sword",
+      "id": 1287,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant sword",
+      "id": 1287,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune platelegs",
+      "id": 1079,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune sword",
+      "id": 1289,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold bar",
+      "id": 2357,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel pickaxe",
+      "id": 1269,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel hatchet",
+      "id": 1353,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature talisman",
+      "id": 1462,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Chaos talisman",
+      "id": 1452,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril 2h sword",
+      "id": 1315,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant 2h sword",
+      "id": 1317,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune 2h sword",
+      "id": 1319,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2361,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune mace",
+      "id": 1432,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune platelegs",
+      "id": 1079,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1093,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune platebody",
+      "id": 1127,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1303,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune arrow",
+      "id": 892,
+      "count": [
+        32
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        137
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1625,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        2
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        3
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

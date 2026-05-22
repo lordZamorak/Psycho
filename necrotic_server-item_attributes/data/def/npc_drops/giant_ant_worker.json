@@ -1,0 +1,231 @@
+{
+  "npcIds": [
+    6379
+  ],
+  "drops": [
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        4
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Wizard robe",
+      "id": 577,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Wizard hat",
+      "id": 579,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        14
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        7
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Unicorn horn dust",
+      "id": 235,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Strawberry",
+      "id": 5504,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1625,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut jade",
+      "id": 1627,
+      "count": [
+        1
+      ],
+      "chance": 15
+    }
+  ]
+}

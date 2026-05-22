@@ -1,0 +1,223 @@
+{
+  "npcIds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Bronze arrow",
+      "id": 882,
+      "count": [
+        7
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        6
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        4
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Copper ore",
+      "id": 436,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Tin ore",
+      "id": 438,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Fishing bait",
+      "id": 313,
+      "count": [
+        3,
+        7,
+        15
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Bronze med helm",
+      "id": 1139,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Bronze bolts",
+      "id": 877,
+      "count": [
+        13
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        1,
+        2,
+        3,
+        5,
+        7
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        1,
+        2,
+        3,
+        5,
+        7
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        1,
+        2,
+        3,
+        5,
+        7
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

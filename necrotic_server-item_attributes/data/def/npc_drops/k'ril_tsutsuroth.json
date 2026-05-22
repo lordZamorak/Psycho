@@ -1,0 +1,521 @@
+{
+  "npcIds": [
+    6203
+  ],
+  "drops": [
+    {
+      "name": "Pet K\u0027ril tsutsaroth",
+      "id": 12003,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        10,
+        15,
+        30
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Ashes",
+      "id": 592,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Adamant arrow (p++)",
+      "id": 5626,
+      "count": [
+        166
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant javelin",
+      "id": 829,
+      "count": [
+        16
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon dagger (p++)",
+      "id": 5698,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune arrow",
+      "id": 892,
+      "count": [
+        300
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1374,
+      "count": [
+        20
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        110
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1304,
+      "count": [
+        15
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune spear",
+      "id": 1248,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune sword",
+      "id": 1290,
+      "count": [
+        25
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        142
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        370
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        245
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        1800
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        500
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Zamorakian spear",
+      "id": 11716,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Amulet of fury",
+      "id": 6585,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune sq shield",
+      "id": 1185,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune sq shield",
+      "id": 1185,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Rune sq shield",
+      "id": 1185,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Super attack (3)",
+      "id": 145,
+      "count": [
+        3
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Super restore (3)",
+      "id": 3026,
+      "count": [
+        3
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Super strength (3)",
+      "id": 157,
+      "count": [
+        3
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Zamorak brew (3)",
+      "id": 189,
+      "count": [
+        3
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Super attack (3)",
+      "id": 145,
+      "count": [
+        2
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Super restore (3)",
+      "id": 3026,
+      "count": [
+        2
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Super strength (3)",
+      "id": 157,
+      "count": [
+        2
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Zamorak brew (3)",
+      "id": 189,
+      "count": [
+        2
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        50000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        50000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Zamorak hilt",
+      "id": 11708,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Lantadyme seed",
+      "id": 5302,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Lantadyme seed",
+      "id": 5302,
+      "count": [
+        3
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        45
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        120
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        120
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        120
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        65
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        90
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Dragonstone",
+      "id": 1615,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Chaos talisman",
+      "id": 1452,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Chaos talisman",
+      "id": 1452,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        110
+      ],
+      "chance": 5
+    }
+  ]
+}

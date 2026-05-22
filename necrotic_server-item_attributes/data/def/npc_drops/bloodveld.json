@@ -1,0 +1,263 @@
+{
+  "npcIds": [
+    1618
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        34000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel hatchet",
+      "id": 1353,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel full helm",
+      "id": 1157,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel scimitar",
+      "id": 1325,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril sq shield",
+      "id": 1181,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril chainbody",
+      "id": 1109,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Black boots",
+      "id": 4125,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        60
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        8
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold ore",
+      "id": 444,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Meat pizza",
+      "id": 2293,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature talisman",
+      "id": 1462,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        5
+      ],
+      "chance": 40
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "npcIds": [
+    115,
+    113
+  ],
+  "drops": [
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Ogre ribs",
+      "id": 7842,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Long bone",
+      "id": 10976,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Curved bone",
+      "id": 10977,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Guam seed",
+      "id": 5291,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Marrentill seed",
+      "id": 5292,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Tarromin seed",
+      "id": 5293,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Harralander seed",
+      "id": 5294,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Ranarr seed",
+      "id": 5295,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Kwuarm seed",
+      "id": 5299,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

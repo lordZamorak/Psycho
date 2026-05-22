@@ -1,0 +1,322 @@
+{
+  "npcIds": [
+    6219,
+    6229,
+    6255,
+    6277
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        473
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Leather gloves",
+      "id": 1059,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Leather boots",
+      "id": 1061,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril platelegs",
+      "id": 1071,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel longsword",
+      "id": 1295,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel chainbody",
+      "id": 1105,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant full helm",
+      "id": 1161,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel sword",
+      "id": 1281,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Black kiteshield",
+      "id": 1195,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Black warhammer",
+      "id": 1341,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril mace",
+      "id": 1428,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril spear",
+      "id": 1243,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant battleaxe",
+      "id": 1371,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Black dagger",
+      "id": 1217,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril hatchet",
+      "id": 1355,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Iron plateskirt",
+      "id": 1081,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Iron sword",
+      "id": 1279,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Iron scimitar",
+      "id": 1323,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant 2h sword",
+      "id": 1317,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1303,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Rune halberd",
+      "id": 3202,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

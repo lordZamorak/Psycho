@@ -1,0 +1,695 @@
+{
+  "npcIds": [
+    8549
+  ],
+  "drops": [
+    {
+      "name": "Pet Phoenix",
+      "id": 11989,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Potion of flight",
+      "id": 18719,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Ashes",
+      "id": 592,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        90000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        160000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        320000
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        350
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        900
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        2100
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        4700
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        350
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        900
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        2100
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        4700
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Staff of fire",
+      "id": 1387,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Staff of fire",
+      "id": 1387,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire talisman",
+      "id": 1442,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Fire talisman",
+      "id": 1442,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire talisman",
+      "id": 1443,
+      "count": [
+        70
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Phoenix feather",
+      "id": 4621,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Phoenix feather",
+      "id": 4621,
+      "count": [
+        3
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Phoenix feather",
+      "id": 4621,
+      "count": [
+        7
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Antifire (4)",
+      "id": 2452,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Antifire (3)",
+      "id": 2454,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Antifire (2)",
+      "id": 2456,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Antifire (1)",
+      "id": 2458,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Antifire (4)",
+      "id": 2452,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Antifire (3)",
+      "id": 2454,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Antifire (2)",
+      "id": 2456,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Antifire (1)",
+      "id": 2458,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire tiara",
+      "id": 5537,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        270
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        690
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        1100
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Ring of fire",
+      "id": 13659,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Inferno adze",
+      "id": 13661,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy guam",
+      "id": 200,
+      "count": [
+        74
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 202,
+      "count": [
+        69
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 204,
+      "count": [
+        26
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 206,
+      "count": [
+        19
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 216,
+      "count": [
+        17
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 208,
+      "count": [
+        29
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy irit",
+      "id": 210,
+      "count": [
+        58
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 212,
+      "count": [
+        41
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 214,
+      "count": [
+        24
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        35
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 220,
+      "count": [
+        26
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Feather",
+      "id": 314,
+      "count": [
+        300
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Feather",
+      "id": 314,
+      "count": [
+        600
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Feather",
+      "id": 314,
+      "count": [
+        900
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Runite bolts",
+      "id": 9144,
+      "count": [
+        220
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Runite bolts",
+      "id": 9144,
+      "count": [
+        430
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Runite bolts",
+      "id": 9144,
+      "count": [
+        780
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1618,
+      "count": [
+        18
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1620,
+      "count": [
+        26
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1622,
+      "count": [
+        35
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1624,
+      "count": [
+        43
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1626,
+      "count": [
+        67
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1632,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1625,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        170
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        330
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        500
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Gold ore",
+      "id": 445,
+      "count": [
+        300
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon dagger",
+      "id": 1215,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon spear",
+      "id": 1249,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon sq shield",
+      "id": 1187,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon dagger",
+      "id": 1215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon spear",
+      "id": 1249,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon sq shield",
+      "id": 1187,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        170
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        320
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        580
+      ],
+      "chance": 40
+    }
+  ]
+}

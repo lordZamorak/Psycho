@@ -1,0 +1,1639 @@
+{
+  "npcIds": [
+    13465
+  ],
+  "drops": [
+    {
+      "name": "Brawling gloves (prayer)",
+      "id": 13848,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Brawling gloves (agility)",
+      "id": 13849,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Brawling gloves (wc)",
+      "id": 13850,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Brawling gloves (fm)",
+      "id": 13851,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Brawling gloves (mining)",
+      "id": 13852,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Brawling gloves (hunter)",
+      "id": 13853,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Brawling gloves (thieving)",
+      "id": 13854,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Brawling gloves (smithing)",
+      "id": 13855,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Brawling gloves (fishing)",
+      "id": 13856,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Brawling gloves (cooking)",
+      "id": 13857,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Statius\u0027s full helm",
+      "id": 13896,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Statius\u0027s platebody",
+      "id": 13884,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Statius\u0027s platelegs",
+      "id": 13890,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Statius\u0027s warhammer",
+      "id": 13902,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Vesta\u0027s chainbody",
+      "id": 13887,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Vesta\u0027s plateskirt",
+      "id": 13893,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Vesta\u0027s longsword",
+      "id": 13899,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Zuriel\u0027s hood",
+      "id": 13864,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Zuriel\u0027s robe top",
+      "id": 13858,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Zuriel\u0027s robe bottom",
+      "id": 13861,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Zuriel\u0027s staff",
+      "id": 13867,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Morrigan\u0027s coif",
+      "id": 13876,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Morrigan\u0027s leather body",
+      "id": 13870,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Morrigan\u0027s leather chaps",
+      "id": 13873,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Morrigan\u0027s javelin",
+      "id": 13879,
+      "count": [
+        10
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Morrigan\u0027s throwing axe",
+      "id": 13883,
+      "count": [
+        10
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Broken statue headdress",
+      "id": 14892,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Third age carafe",
+      "id": 14891,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bronzed dragon claw",
+      "id": 14890,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ancient psaltery bridge",
+      "id": 14889,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin amphora",
+      "id": 14888,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos scrimshaw",
+      "id": 14887,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin carving",
+      "id": 14886,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak medallion",
+      "id": 14885,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl totem",
+      "id": 14884,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl totem",
+      "id": 14884,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl totem",
+      "id": 14884,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl totem",
+      "id": 14884,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl totem",
+      "id": 14884,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl totem",
+      "id": 14884,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl totem",
+      "id": 14884,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl totem",
+      "id": 14884,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl totem",
+      "id": 14884,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Guthixian brazier",
+      "id": 14883,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Guthixian brazier",
+      "id": 14883,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Guthixian brazier",
+      "id": 14883,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Guthixian brazier",
+      "id": 14883,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Guthixian brazier",
+      "id": 14883,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Guthixian brazier",
+      "id": 14883,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Guthixian brazier",
+      "id": 14883,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Guthixian brazier",
+      "id": 14883,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ruby chalice",
+      "id": 14882,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ruby chalice",
+      "id": 14882,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ruby chalice",
+      "id": 14882,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ruby chalice",
+      "id": 14882,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ruby chalice",
+      "id": 14882,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ruby chalice",
+      "id": 14882,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ruby chalice",
+      "id": 14882,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos statuette",
+      "id": 14881,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos statuette",
+      "id": 14881,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos statuette",
+      "id": 14881,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos statuette",
+      "id": 14881,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos statuette",
+      "id": 14881,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Bandos statuette",
+      "id": 14881,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin statuette",
+      "id": 14880,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin statuette",
+      "id": 14880,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin statuette",
+      "id": 14880,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin statuette",
+      "id": 14880,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin statuette",
+      "id": 14880,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak statuette",
+      "id": 14879,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak statuette",
+      "id": 14879,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak statuette",
+      "id": 14879,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Zamorak statuette",
+      "id": 14879,
+      "count": [
+        1
+      ],
+      "chance": 320
+    }
+  ]
+}

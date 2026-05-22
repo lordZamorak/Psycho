@@ -1,0 +1,23 @@
+{
+  "npcIds": [
+    5414
+  ],
+  "drops": [
+    {
+      "name": "Spade",
+      "id": 952,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    }
+  ]
+}

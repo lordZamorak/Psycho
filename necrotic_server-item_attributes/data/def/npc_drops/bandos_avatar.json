@@ -1,0 +1,231 @@
+{
+  "npcIds": [
+    4540
+  ],
+  "drops": [
+    {
+      "name": "Abyssal whip",
+      "id": 4151,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Crimson\u0027s Katana",
+      "id": 22012,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Korasi\u0027s sword",
+      "id": 19780,
+      "count": [
+        1
+      ],
+      "chance": 680
+    },
+    {
+      "name": "Pet Bandos avatar",
+      "id": 11988,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Amulet of ranging",
+      "id": 15126,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        5
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        5
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        3
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        70000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        210000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        460000
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Ice gloves",
+      "id": 1580,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Runite bolts",
+      "id": 9144,
+      "count": [
+        110
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Runite bolts",
+      "id": 9144,
+      "count": [
+        350
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune bar",
+      "id": 2363,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Rune bar",
+      "id": 2364,
+      "count": [
+        20
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune bar",
+      "id": 2364,
+      "count": [
+        80
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Diamond",
+      "id": 1601,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Diamond",
+      "id": 1602,
+      "count": [
+        40
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        120
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        270
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        600
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Saradomin brew (4)",
+      "id": 6686,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Recover special (2)",
+      "id": 15302,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Extreme defence (3)",
+      "id": 15317,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Extreme magic (3)",
+      "id": 15321,
+      "count": [
+        1
+      ],
+      "chance": 15
+    }
+  ]
+}

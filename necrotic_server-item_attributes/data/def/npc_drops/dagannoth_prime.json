@@ -1,0 +1,407 @@
+{
+  "npcIds": [
+    2882
+  ],
+  "drops": [
+    {
+      "name": "Pet Dagannoth Prime",
+      "id": 12006,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Dagannoth hide",
+      "id": 6155,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dagannoth bones",
+      "id": 6729,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Water battlestaff",
+      "id": 1395,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Air battlestaff",
+      "id": 1397,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth battlestaff",
+      "id": 1399,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mud battlestaff",
+      "id": 6562,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Battlestaff",
+      "id": 1391,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Battlestaff",
+      "id": 1392,
+      "count": [
+        10
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon hatchet",
+      "id": 6739,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Air talisman",
+      "id": 1438,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Water talisman",
+      "id": 1444,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Air talisman",
+      "id": 1438,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Water talisman",
+      "id": 1444,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Air talisman",
+      "id": 1438,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Water talisman",
+      "id": 1444,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Air talisman",
+      "id": 1438,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Water talisman",
+      "id": 1444,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Air talisman",
+      "id": 1439,
+      "count": [
+        20
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1441,
+      "count": [
+        20
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Water talisman",
+      "id": 1445,
+      "count": [
+        20
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        155
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mud rune",
+      "id": 4698,
+      "count": [
+        32
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        22
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fremennik helm",
+      "id": 3748,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fremennik shield",
+      "id": 3758,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Seers\u0027 ring (i)",
+      "id": 15018,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Skeletal top",
+      "id": 6139,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Skeletal bottoms",
+      "id": 6141,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Farseer helm",
+      "id": 3755,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Guam seed",
+      "id": 5291,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Marrentill seed",
+      "id": 5292,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Tarromin seed",
+      "id": 5293,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Harralander seed",
+      "id": 5294,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Ranarr seed",
+      "id": 5295,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Kwuarm seed",
+      "id": 5299,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        150
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        4000
+      ],
+      "chance": 2
+    }
+  ]
+}

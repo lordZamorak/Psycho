@@ -1,0 +1,434 @@
+{
+  "npcIds": [
+    13447
+  ],
+  "drops": [
+    {
+      "name": "Granite tablet",
+      "id": 15104,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Pet Nex",
+      "id": 11987,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        105
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        90
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        75
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        60
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        45
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        30
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        15
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut onyx",
+      "id": 6571,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Torva full helm",
+      "id": 14008,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Torva platebody",
+      "id": 14009,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Torva platelegs",
+      "id": 14010,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Pernix cowl",
+      "id": 14011,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Pernix body",
+      "id": 14012,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Pernix chaps",
+      "id": 14013,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Virtus mask",
+      "id": 14014,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Virtus robe top",
+      "id": 14015,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Virtus robe legs",
+      "id": 14016,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune sq shield",
+      "id": 1185,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Dragon sq shield",
+      "id": 1187,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 220,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        20
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 212,
+      "count": [
+        20
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune platelegs",
+      "id": 1080,
+      "count": [
+        8
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1094,
+      "count": [
+        5
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune platebody",
+      "id": 1128,
+      "count": [
+        6
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        200
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        1500
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Runite ore",
+      "id": 452,
+      "count": [
+        6
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        500000,
+        350000,
+        200000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Torstol seed",
+      "id": 5304,
+      "count": [
+        15
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic seed",
+      "id": 5316,
+      "count": [
+        30
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        4000
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Saradomin brew (4)",
+      "id": 6686,
+      "count": [
+        30
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Super restore (4)",
+      "id": 3025,
+      "count": [
+        30
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon boots",
+      "id": 11733,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        1500
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Onyx bolts (e)",
+      "id": 9245,
+      "count": [
+        100
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        150
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        500
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 220,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        25
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 212,
+      "count": [
+        25
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Green dragonhide",
+      "id": 1754,
+      "count": [
+        200
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1632,
+      "count": [
+        20
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1618,
+      "count": [
+        40
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1,
+        2
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1632,
+      "count": [
+        15
+      ],
+      "chance": 5
+    }
+  ]
+}

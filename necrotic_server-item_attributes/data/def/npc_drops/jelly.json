@@ -1,0 +1,199 @@
+{
+  "npcIds": [
+    1640
+  ],
+  "drops": [
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        120
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        11
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel hatchet",
+      "id": 1353,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel battleaxe",
+      "id": 1365,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel 2h sword",
+      "id": 1311,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril boots",
+      "id": 4127,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold bar",
+      "id": 2357,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Chaos talisman",
+      "id": 1452,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Thread",
+      "id": 1734,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire battlestaff",
+      "id": 1393,
+      "count": [
+        1
+      ],
+      "chance": 15
+    }
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "npcIds": [
+    6261,
+    6263,
+    6265
+  ],
+  "drops": [
+    {
+      "name": "Bandos chestplate",
+      "id": 11724,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Bandos tassets",
+      "id": 11726,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Bandos boots",
+      "id": 11728,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        100
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel dart",
+      "id": 808,
+      "count": [
+        100
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cosmic rune",
+      "id": 564,
+      "count": [
+        25
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        28
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cosmic rune",
+      "id": 564,
+      "count": [
+        25
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        28
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1500
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Combat potion (3)",
+      "id": 9741,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cadava berries",
+      "id": 754,
+      "count": [
+        28
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cadava berries",
+      "id": 754,
+      "count": [
+        28
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cadava berries",
+      "id": 754,
+      "count": [
+        28
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cadava berries",
+      "id": 754,
+      "count": [
+        28
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cadava berries",
+      "id": 754,
+      "count": [
+        28
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cadava berries",
+      "id": 754,
+      "count": [
+        28
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        2
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cadava berries",
+      "id": 754,
+      "count": [
+        28
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

@@ -1,0 +1,352 @@
+{
+  "npcIds": [
+    749,
+    750
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        412
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Iron kiteshield",
+      "id": 1191,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Iron med helm",
+      "id": 1137,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel thrownaxe",
+      "id": 802,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel platelegs",
+      "id": 1069,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel plateskirt",
+      "id": 1083,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel full helm",
+      "id": 1158,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel kiteshield",
+      "id": 1193,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel longsword",
+      "id": 1295,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel scimitar",
+      "id": 1325,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril med helm",
+      "id": 1143,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril sq shield",
+      "id": 1181,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril scimitar",
+      "id": 1329,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant arrow",
+      "id": 890,
+      "count": [
+        5
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        20
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mith grapple",
+      "id": 9418,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Iron bar",
+      "id": 2351,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel bar",
+      "id": 2353,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold bar",
+      "id": 2357,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2361,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Iron bar",
+      "id": 2351,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel bar",
+      "id": 2353,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold bar",
+      "id": 2357,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2361,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+-keep public class org.necrotic.client.Client {
+    public static void main(java.lang.String[]);
+}
+
+-dontwarn java.lang.invoke.StringConcatFactory
+
+-optimizationpasses 3
+-overloadaggressively
+-repackageclasses ''

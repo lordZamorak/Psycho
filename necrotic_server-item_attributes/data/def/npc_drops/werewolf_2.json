@@ -1,0 +1,218 @@
+{
+  "npcIds": [
+    6006,
+    6007,
+    6008,
+    6009,
+    6010,
+    6011,
+    6012,
+    6013,
+    6014,
+    6015,
+    6016,
+    6017,
+    6018,
+    6019,
+    6020,
+    6021,
+    6022,
+    6023,
+    6024,
+    1665
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel scimitar",
+      "id": 1325,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel hatchet",
+      "id": 1353,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel full helm",
+      "id": 1157,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril chainbody",
+      "id": 1109,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril sq shield",
+      "id": 1181,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        183
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grey wolf fur",
+      "id": 958,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Bear fur",
+      "id": 948,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Jug of wine",
+      "id": 1993,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Raw chicken",
+      "id": 2138,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Raw bear meat",
+      "id": 2136,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Raw beef",
+      "id": 2132,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

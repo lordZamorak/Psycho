@@ -1,0 +1,317 @@
+{
+  "npcIds": [
+    2007
+  ],
+  "drops": [
+    {
+      "name": "Kraken tentacle",
+      "id": 22007,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Ancient staff",
+      "id": 4675,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mystic robe top",
+      "id": 4091,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mystic robe bottom",
+      "id": 4093,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Phoenix necklace",
+      "id": 11091,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon dagger",
+      "id": 1215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Dragon spear",
+      "id": 1249,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Shark",
+      "id": 386,
+      "count": [
+        125
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Prayer potion (4)",
+      "id": 2435,
+      "count": [
+        18,
+        14
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Super antipoison (3)",
+      "id": 181,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        2
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1622,
+      "count": [
+        5
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Clean kwuarm",
+      "id": 264,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        250
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Ranarr seed",
+      "id": 5295,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Yew seed",
+      "id": 5315,
+      "count": [
+        6
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Magic seed",
+      "id": 5316,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Raw shark",
+      "id": 384,
+      "count": [
+        122
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Super restore (4)",
+      "id": 3025,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        32222,
+        23032,
+        118000
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1620,
+      "count": [
+        15
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1618,
+      "count": [
+        9
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Coconut",
+      "id": 5975,
+      "count": [
+        90
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Crushed nest",
+      "id": 6694,
+      "count": [
+        30
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cannonball",
+      "id": 2,
+      "count": [
+        450
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        25
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Limpwurt root",
+      "id": 226,
+      "count": [
+        20
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red dragonhide",
+      "id": 1750,
+      "count": [
+        10
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Clean toadflax",
+      "id": 2999,
+      "count": [
+        12
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        8,
+        6,
+        5,
+        3,
+        2
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        5,
+        4,
+        2,
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        4,
+        3,
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        3,
+        2,
+        1
+      ],
+      "chance": 5
+    }
+  ]
+}

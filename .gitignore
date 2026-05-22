@@ -1,0 +1,31 @@
+# Build outputs
+**/build/
+**/.gradle/
+**/bin/
+**/out/
+
+# Local runtime state
+run-logs/
+_codex_backups/
+**/data/saves/
+**/data/logs/
+**/data/backups/
+*.log
+*.tmp
+*.bak
+
+# Large local cache artifacts. Keep these out of regular git; use release
+# artifacts or Git LFS for hosted cache distribution.
+necrotic_client-item_attributes/cache/**
+!necrotic_client-item_attributes/cache/
+!necrotic_client-item_attributes/cache/README.md
+necrotic_server-item_attributes/cache/**
+!necrotic_server-item_attributes/cache/
+!necrotic_server-item_attributes/cache/README.md
+
+# Local IDE and OS files
+.idea/
+.vscode/
+*.iml
+Thumbs.db
+Desktop.ini

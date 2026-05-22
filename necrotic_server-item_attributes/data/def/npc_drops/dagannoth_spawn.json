@@ -1,0 +1,103 @@
+{
+  "npcIds": [
+    2454
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Feather",
+      "id": 314,
+      "count": [
+        2
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Raw tuna",
+      "id": 359,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Raw sardine",
+      "id": 327,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Raw sardine",
+      "id": 327,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        3
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Oyster",
+      "id": 407,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Oyster pearl",
+      "id": 411,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Oyster",
+      "id": 407,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Oyster pearl",
+      "id": 411,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Oyster",
+      "id": 407,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Oyster pearl",
+      "id": 411,
+      "count": [
+        1
+      ],
+      "chance": 15
+    }
+  ]
+}

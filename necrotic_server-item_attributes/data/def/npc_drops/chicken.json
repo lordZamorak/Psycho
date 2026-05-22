@@ -1,0 +1,55 @@
+{
+  "npcIds": [
+    41
+  ],
+  "drops": [
+    {
+      "name": "Feather",
+      "id": 314,
+      "count": [
+        15
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Raw chicken",
+      "id": 2138,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        2
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        3
+      ],
+      "chance": 320
+    }
+  ]
+}

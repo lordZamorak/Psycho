@@ -1,0 +1,215 @@
+{
+  "npcIds": [
+    6380
+  ],
+  "drops": [
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril chainbody",
+      "id": 1109,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril arrow",
+      "id": 888,
+      "count": [
+        6
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril bolts",
+      "id": 9142,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        16
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dust rune",
+      "id": 4696,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Soul rune",
+      "id": 566,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Wizard robe",
+      "id": 577,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Wizard hat",
+      "id": 579,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        18
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Pearl bolts",
+      "id": 880,
+      "count": [
+        14
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1625,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut jade",
+      "id": 1627,
+      "count": [
+        1
+      ],
+      "chance": 15
+    }
+  ]
+}

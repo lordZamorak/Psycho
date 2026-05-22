@@ -1,0 +1,199 @@
+{
+  "npcIds": [
+    1643
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        68
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Staff",
+      "id": 1379,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mystic hat",
+      "id": 4099,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mystic boots",
+      "id": 4107,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Lava battlestaff",
+      "id": 3053,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Staff of fire",
+      "id": 1387,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        12
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        18
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        4
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        6
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        9
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        18
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Body rune",
+      "id": 559,
+      "count": [
+        19
+      ],
+      "chance": 15
+    }
+  ]
+}

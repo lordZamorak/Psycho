@@ -1,0 +1,327 @@
+{
+  "npcIds": [
+    1613
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        99000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Dragon boots",
+      "id": 11732,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Ashes",
+      "id": 592,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Steel 2h sword",
+      "id": 1311,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel hatchet",
+      "id": 1353,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune 2h sword",
+      "id": 1319,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune boots",
+      "id": 4131,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Belladonna seed",
+      "id": 5281,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cactus seed",
+      "id": 5280,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Kwuarm seed",
+      "id": 5299,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Poison ivy seed",
+      "id": 5106,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Lantadyme seed",
+      "id": 5302,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dwarf weed seed",
+      "id": 5303,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        17
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        272
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Thread",
+      "id": 1734,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Tuna",
+      "id": 361,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold bar",
+      "id": 2357,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune arrow",
+      "id": 892,
+      "count": [
+        32
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

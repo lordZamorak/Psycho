@@ -1,0 +1,279 @@
+{
+  "npcIds": [
+    2009
+  ],
+  "drops": [
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Rune pickaxe",
+      "id": 1275,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune 2h sword",
+      "id": 1319,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon pickaxe",
+      "id": 15259,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragon 2h sword",
+      "id": 7158,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tyrannical ring",
+      "id": 12603,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Dragon spear",
+      "id": 1249,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Soul rune",
+      "id": 566,
+      "count": [
+        250
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        350
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        400
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        250
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Ranarr seed",
+      "id": 5295,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Yew seed",
+      "id": 5315,
+      "count": [
+        8
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Magic seed",
+      "id": 5316,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Super restore (4)",
+      "id": 3025,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        58750,
+        38210,
+        23002,
+        23088,
+        9382,
+        2230
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1620,
+      "count": [
+        15
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1618,
+      "count": [
+        9
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Coconut",
+      "id": 5975,
+      "count": [
+        90
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Crushed nest",
+      "id": 6694,
+      "count": [
+        30
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cannonball",
+      "id": 2,
+      "count": [
+        450
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        25
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Limpwurt root",
+      "id": 226,
+      "count": [
+        20
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red dragonhide",
+      "id": 1750,
+      "count": [
+        10
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Clean toadflax",
+      "id": 2999,
+      "count": [
+        20
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        8,
+        6,
+        5,
+        3,
+        2
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        5,
+        4,
+        2,
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        4,
+        3,
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        3,
+        2,
+        1
+      ],
+      "chance": 5
+    }
+  ]
+}

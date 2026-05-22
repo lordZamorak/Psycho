@@ -1,0 +1,324 @@
+{
+  "npcIds": [
+    2042,
+    2043,
+    2044
+  ],
+  "drops": [
+    {
+      "name": "Jar of the swamp",
+      "id": 15109,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Giant snake spine",
+      "id": 22047,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Pet serpentine",
+      "id": 22033,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Pet tanzanite",
+      "id": 22049,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Pet magma",
+      "id": 22050,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Granite tablet",
+      "id": 15104,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Zulrah\u0027s scales",
+      "id": 12934,
+      "count": [
+        20
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Zulrah\u0027s scales",
+      "id": 12934,
+      "count": [
+        150
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Serpentine helm",
+      "id": 12931,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Serpentine helm (uncharged)",
+      "id": 12929,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Toxic blowpipe",
+      "id": 12926,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut onyx",
+      "id": 6571,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon halberd",
+      "id": 3204,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        200
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        300
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        500
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        1500
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy toadflax",
+      "id": 3050,
+      "count": [
+        20
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy snapdragon",
+      "id": 3052,
+      "count": [
+        20
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        20
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 220,
+      "count": [
+        20
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Bow string",
+      "id": 1778,
+      "count": [
+        250
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Flax",
+      "id": 1780,
+      "count": [
+        666
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon bolts (e)",
+      "id": 9244,
+      "count": [
+        12
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Magic logs",
+      "id": 1514,
+      "count": [
+        100
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        300
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Runite ore",
+      "id": 452,
+      "count": [
+        10
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon bones",
+      "id": 537,
+      "count": [
+        30
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Zulrah\u0027s scales",
+      "id": 12934,
+      "count": [
+        500
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Battlestaff",
+      "id": 1392,
+      "count": [
+        10
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Raw shark",
+      "id": 384,
+      "count": [
+        100
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Saradomin brew (4)",
+      "id": 6686,
+      "count": [
+        10
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2362,
+      "count": [
+        25
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        8,
+        6,
+        5,
+        3,
+        2
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        5,
+        4,
+        2,
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        4,
+        3,
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        3,
+        2,
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

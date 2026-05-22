@@ -1,0 +1,325 @@
+{
+  "npcIds": [
+    5363
+  ],
+  "drops": [
+    {
+      "name": "Dragon bones",
+      "id": 536,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril bar",
+      "id": 2360,
+      "count": [
+        3
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy snapdragon",
+      "id": 3051,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mithril 2h sword",
+      "id": 1315,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant 2h sword",
+      "id": 1317,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune 2h sword",
+      "id": 1319,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2361,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune mace",
+      "id": 1432,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune platelegs",
+      "id": 1079,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1093,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune platebody",
+      "id": 1127,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1303,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon full helm",
+      "id": 11335,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1303,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dark bow",
+      "id": 11235,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        30,
+        35,
+        40
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        35,
+        40,
+        45
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        45,
+        50,
+        55
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Soul rune",
+      "id": 566,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Runite bolts",
+      "id": 9144,
+      "count": [
+        18
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune arrow",
+      "id": 892,
+      "count": [
+        8
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        3000
+      ],
+      "chance": 2
+    }
+  ]
+}

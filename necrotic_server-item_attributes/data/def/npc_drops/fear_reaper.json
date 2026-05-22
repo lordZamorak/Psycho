@@ -1,0 +1,15 @@
+{
+  "npcIds": [
+    3665
+  ],
+  "drops": [
+    {
+      "name": "Spooky Box",
+      "id": 13150,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

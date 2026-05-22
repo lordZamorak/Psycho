@@ -1,0 +1,210 @@
+{
+  "npcIds": [
+    6220,
+    6230,
+    6256,
+    6276
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        426
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Adamant arrow",
+      "id": 890,
+      "count": [
+        4
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril arrow",
+      "id": 888,
+      "count": [
+        8
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        14
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Iron arrow",
+      "id": 884,
+      "count": [
+        22
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Bronze arrow",
+      "id": 882,
+      "count": [
+        34
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Headless arrow",
+      "id": 53,
+      "count": [
+        12
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Broken arrow",
+      "id": 687,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel sq shield",
+      "id": 1177,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Oak longbow (u)",
+      "id": 56,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Oak longbow",
+      "id": 845,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel crossbow",
+      "id": 9179,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Maple longbow",
+      "id": 851,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic shortbow",
+      "id": 861,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

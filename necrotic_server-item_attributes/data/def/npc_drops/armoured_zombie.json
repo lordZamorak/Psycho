@@ -1,0 +1,228 @@
+{
+  "npcIds": [
+    8162
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        2000
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Eye of newt",
+      "id": 222,
+      "count": [
+        4
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fishing bait",
+      "id": 313,
+      "count": [
+        7
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Oak plank",
+      "id": 8779,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Teak plank",
+      "id": 8781,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril arrow",
+      "id": 888,
+      "count": [
+        4
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant kiteshield",
+      "id": 1199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cosmic rune",
+      "id": 564,
+      "count": [
+        6
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        12
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel mace",
+      "id": 1424,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

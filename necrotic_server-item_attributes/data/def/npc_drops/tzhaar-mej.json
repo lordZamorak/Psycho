@@ -1,0 +1,127 @@
+{
+  "npcIds": [
+    2591
+  ],
+  "drops": [
+    {
+      "name": "Berserker necklace",
+      "id": 11128,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Fire battlestaff",
+      "id": 1393,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Staff of fire",
+      "id": 1387,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Obsidian cape",
+      "id": 6568,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Toktz-mej-tal",
+      "id": 6526,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        20
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        20
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        20
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Tokkul",
+      "id": 6529,
+      "count": [
+        210
+      ],
+      "chance": 0
+    }
+  ]
+}

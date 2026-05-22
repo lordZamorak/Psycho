@@ -1,0 +1,785 @@
+{
+  "npcIds": [
+    6247
+  ],
+  "drops": [
+    {
+      "name": "Pet Commander zilyana",
+      "id": 12004,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        10,
+        15,
+        30
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Saradomin sword",
+      "id": 11730,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Staff of light",
+      "id": 15486,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin hood",
+      "id": 16753,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin robe top",
+      "id": 17235,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin robe bottom",
+      "id": 16863,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune sword",
+      "id": 1290,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune dart",
+      "id": 811,
+      "count": [
+        36
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        66
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1093,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1150,
+      "count": [
+        15
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1093,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1094,
+      "count": [
+        20
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1202,
+      "count": [
+        10
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1093,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 208,
+      "count": [
+        14
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy irit",
+      "id": 210,
+      "count": [
+        31
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 212,
+      "count": [
+        15
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 214,
+      "count": [
+        17
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 216,
+      "count": [
+        24
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        27
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        10
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 208,
+      "count": [
+        31
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy irit",
+      "id": 210,
+      "count": [
+        5
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 212,
+      "count": [
+        2
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 214,
+      "count": [
+        7
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 216,
+      "count": [
+        5
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        3
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Ranarr seed",
+      "id": 5295,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Magic potion (3)",
+      "id": 3042,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Prayer potion (3)",
+      "id": 139,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Saradomin brew (3)",
+      "id": 6687,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Super restore (3)",
+      "id": 3026,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Magic potion (3)",
+      "id": 3042,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Prayer potion (3)",
+      "id": 139,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Saradomin brew (3)",
+      "id": 6687,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Super restore (3)",
+      "id": 3026,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic potion (3)",
+      "id": 3042,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Prayer potion (3)",
+      "id": 139,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Saradomin brew (3)",
+      "id": 6687,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Super restore (3)",
+      "id": 3026,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1093,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Magic seed",
+      "id": 5316,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        50000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune bar",
+      "id": 2363,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune spear",
+      "id": 1247,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune 2h sword",
+      "id": 1319,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        47
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        5
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Silver ore",
+      "id": 443,
+      "count": [
+        100
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant javelin",
+      "id": 829,
+      "count": [
+        20
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune sq shield",
+      "id": 1185,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune sq shield",
+      "id": 1185,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune med helm",
+      "id": 1147,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        160
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune arrow",
+      "id": 892,
+      "count": [
+        44
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragonstone",
+      "id": 1615,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragonstone",
+      "id": 1615,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragonstone",
+      "id": 1615,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1631,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Dragon spear",
+      "id": 1249,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Saradomin hilt",
+      "id": 11706,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Diamond",
+      "id": 1602,
+      "count": [
+        6
+      ],
+      "chance": 15
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "npcIds": [
+    6223,
+    6227,
+    6225
+  ],
+  "drops": [
+    {
+      "name": "Armadyl helmet",
+      "id": 11718,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Armadyl chestplate",
+      "id": 11720,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Armadyl chainskirt",
+      "id": 11722,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        100
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Smoke rune",
+      "id": 4697,
+      "count": [
+        15
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Manta ray",
+      "id": 391,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mushroom potato",
+      "id": 7058,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel dart",
+      "id": 808,
+      "count": [
+        100
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1500
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Crushed nest",
+      "id": 6693,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 320
+    }
+  ]
+}

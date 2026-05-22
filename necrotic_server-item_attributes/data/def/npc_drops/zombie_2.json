@@ -1,0 +1,39 @@
+{
+  "npcIds": [
+    5314
+  ],
+  "drops": [
+    {
+      "name": "Pestle and mortar",
+      "id": 233,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "White berries",
+      "id": 239,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Vial of water",
+      "id": 227,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Defiled shank",
+      "id": 22039,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

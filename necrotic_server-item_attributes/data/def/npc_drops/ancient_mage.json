@@ -1,0 +1,401 @@
+{
+  "npcIds": [
+    13459,
+    13457,
+    13456
+  ],
+  "drops": [
+    {
+      "name": "Magic potion (3)",
+      "id": 3042,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Super restore (3)",
+      "id": 3026,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1617,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Green d\u0027hide vambraces",
+      "id": 1065,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Green d\u0027hide body",
+      "id": 1135,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Green d\u0027hide chaps",
+      "id": 1099,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Rune arrow",
+      "id": 892,
+      "count": [
+        24
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant bolts",
+      "id": 9143,
+      "count": [
+        15
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1303,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Ranging potion (3)",
+      "id": 169,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant battleaxe",
+      "id": 1371,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant chainbody",
+      "id": 1111,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2361,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mithril longsword",
+      "id": 1299,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1619,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1621,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1623,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Uncut opal",
+      "id": 1625,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        1337
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Super defence (2)",
+      "id": 165,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        60
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        46
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Cosmic rune",
+      "id": 564,
+      "count": [
+        8
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Astral rune",
+      "id": 9075,
+      "count": [
+        4
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        4
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Mud rune",
+      "id": 4698,
+      "count": [
+        18
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        13
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

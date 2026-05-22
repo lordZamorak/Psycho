@@ -1,0 +1,847 @@
+{
+  "npcIds": [
+    1382
+  ],
+  "drops": [
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        5
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        4
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        5
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        4
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        149
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant bolts (unf)",
+      "id": 9380,
+      "count": [
+        298
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1093,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1303,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon mace",
+      "id": 1434,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steadfast boots",
+      "id": 20000,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Glavien boots",
+      "id": 20001,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ragefire boots",
+      "id": 20002,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy guam",
+      "id": 200,
+      "count": [
+        31
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 202,
+      "count": [
+        27
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 204,
+      "count": [
+        24
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 206,
+      "count": [
+        21
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 216,
+      "count": [
+        17
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 208,
+      "count": [
+        13
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy irit",
+      "id": 210,
+      "count": [
+        24
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 212,
+      "count": [
+        25
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 214,
+      "count": [
+        13
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        14
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 220,
+      "count": [
+        9
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy snapdragon",
+      "id": 3052,
+      "count": [
+        3
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Kwuarm seed",
+      "id": 5299,
+      "count": [
+        71
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Watermelon seed",
+      "id": 5321,
+      "count": [
+        52
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Maple seed",
+      "id": 5314,
+      "count": [
+        21
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        600
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Water talisman",
+      "id": 1445,
+      "count": [
+        15
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        2
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        4
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue dragonhide",
+      "id": 1752,
+      "count": [
+        120
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Headless arrow",
+      "id": 53,
+      "count": [
+        4500
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut dragonstone",
+      "id": 1632,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1618,
+      "count": [
+        7
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Uncut ruby",
+      "id": 1620,
+      "count": [
+        35
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut emerald",
+      "id": 1622,
+      "count": [
+        68
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Uncut sapphire",
+      "id": 1624,
+      "count": [
+        110
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Runite ore",
+      "id": 452,
+      "count": [
+        40
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Adamantite ore",
+      "id": 450,
+      "count": [
+        90
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Mithril ore",
+      "id": 448,
+      "count": [
+        150
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        300
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Runite ore",
+      "id": 452,
+      "count": [
+        40
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamantite ore",
+      "id": 450,
+      "count": [
+        90
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Mithril ore",
+      "id": 448,
+      "count": [
+        150
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        300
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Runite ore",
+      "id": 452,
+      "count": [
+        40
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamantite ore",
+      "id": 450,
+      "count": [
+        90
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Mithril ore",
+      "id": 448,
+      "count": [
+        150
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        300
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Runite ore",
+      "id": 452,
+      "count": [
+        40
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamantite ore",
+      "id": 450,
+      "count": [
+        90
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Mithril ore",
+      "id": 448,
+      "count": [
+        150
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        300
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Runite ore",
+      "id": 452,
+      "count": [
+        40
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamantite ore",
+      "id": 450,
+      "count": [
+        90
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Mithril ore",
+      "id": 448,
+      "count": [
+        150
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        300
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Runite ore",
+      "id": 452,
+      "count": [
+        40
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Adamantite ore",
+      "id": 450,
+      "count": [
+        90
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Mithril ore",
+      "id": 448,
+      "count": [
+        150
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        300
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 320
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "npcIds": [
+    59
+  ],
+  "drops": [
+    {
+      "name": "Bronze sq shield",
+      "id": 1173,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze full helm",
+      "id": 1155,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Bronze arrow",
+      "id": 882,
+      "count": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        5
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Body rune",
+      "id": 559,
+      "count": [
+        7
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        4
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        6
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        5
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Brass necklace",
+      "id": 1009,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        2
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Red vine worm",
+      "id": 25,
+      "count": [
+        3
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy lantadyme",
+      "id": 2485,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

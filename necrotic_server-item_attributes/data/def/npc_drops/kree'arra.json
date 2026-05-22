@@ -1,0 +1,609 @@
+{
+  "npcIds": [
+    6222
+  ],
+  "drops": [
+    {
+      "name": "Pet Kree\u0027arra",
+      "id": 12002,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Trio Token",
+      "id": 11180,
+      "count": [
+        10,
+        15,
+        30
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        100000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Feather",
+      "id": 314,
+      "count": [
+        15
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Rune crossbow",
+      "id": 9185,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Rune 2h sword",
+      "id": 1319,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune javelin",
+      "id": 830,
+      "count": [
+        15
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant javelin",
+      "id": 829,
+      "count": [
+        25
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune sword",
+      "id": 1289,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune sword",
+      "id": 1289,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Runite bolts",
+      "id": 9144,
+      "count": [
+        180
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Mind rune",
+      "id": 558,
+      "count": [
+        300
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune arrow",
+      "id": 892,
+      "count": [
+        405
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Dragon bolts",
+      "id": 9341,
+      "count": [
+        10
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        150
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant bolts",
+      "id": 9143,
+      "count": [
+        42
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Mithril bolts",
+      "id": 9142,
+      "count": [
+        96
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        66
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        45
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        41
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        166
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        145
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        91
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Black d\u0027hide vambraces",
+      "id": 2491,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Black d\u0027hide vambraces",
+      "id": 2492,
+      "count": [
+        30
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Black d\u0027hide chaps",
+      "id": 2497,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Black d\u0027hide chaps",
+      "id": 2498,
+      "count": [
+        30
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Black d\u0027hide body",
+      "id": 2503,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Black d\u0027hide body",
+      "id": 2504,
+      "count": [
+        20
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Armadyl helmet",
+      "id": 11718,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl chestplate",
+      "id": 11720,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl chainskirt",
+      "id": 11722,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl hilt",
+      "id": 11702,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Armadyl Crossbow",
+      "id": 22034,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune sq shield",
+      "id": 1185,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune platelegs",
+      "id": 1079,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune plateskirt",
+      "id": 1093,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune platebody",
+      "id": 1127,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        50000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        5
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Dwarf weed seed",
+      "id": 5303,
+      "count": [
+        3
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Yew seed",
+      "id": 5315,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Ranging potion (3)",
+      "id": 169,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Ranging potion (3)",
+      "id": 169,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Ranging potion (3)",
+      "id": 169,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Ranging potion (3)",
+      "id": 169,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Ranging potion (3)",
+      "id": 169,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ranging potion (3)",
+      "id": 169,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ranging potion (3)",
+      "id": 169,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ranging potion (3)",
+      "id": 169,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Super defence (3)",
+      "id": 163,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Curved bone",
+      "id": 10977,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Long bone",
+      "id": 10976,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Godsword shard 1",
+      "id": 11710,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 2",
+      "id": 11712,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Godsword shard 3",
+      "id": 11714,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Tooth half of a key",
+      "id": 985,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Loop half of a key",
+      "id": 987,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Uncut diamond",
+      "id": 1618,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

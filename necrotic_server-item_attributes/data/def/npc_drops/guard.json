@@ -1,0 +1,202 @@
+{
+  "npcIds": [
+    9
+  ],
+  "drops": [
+    {
+      "name": "Bones",
+      "id": 526,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Iron dagger",
+      "id": 1203,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Iron bolts",
+      "id": 9140,
+      "count": [
+        6,
+        12
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Bronze arrow",
+      "id": 882,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel arrow",
+      "id": 886,
+      "count": [
+        5
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Iron arrow",
+      "id": 884,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Iron ore",
+      "id": 440,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        6
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Body talisman",
+      "id": 1446,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Body talisman",
+      "id": 1446,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Potato seed",
+      "id": 5318,
+      "count": [
+        4
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Onion seed",
+      "id": 5319,
+      "count": [
+        4
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cabbage seed",
+      "id": 5324,
+      "count": [
+        4
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Tomato seed",
+      "id": 5322,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Sweetcorn seed",
+      "id": 5320,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Strawberry seed",
+      "id": 5323,
+      "count": [
+        1,
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Watermelon seed",
+      "id": 5321,
+      "count": [
+        1,
+        2
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        30
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grain",
+      "id": 1947,
+      "count": [
+        1
+      ],
+      "chance": 155
+    }
+  ]
+}

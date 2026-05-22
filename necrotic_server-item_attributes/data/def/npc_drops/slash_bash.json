@@ -1,0 +1,695 @@
+{
+  "npcIds": [
+    2060
+  ],
+  "drops": [
+    {
+      "name": "Pet Slash bash",
+      "id": 11994,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Dragon pickaxe",
+      "id": 15259,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        3
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        4
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune longsword",
+      "id": 1303,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Dragon dagger (p++)",
+      "id": 5698,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune platelegs",
+      "id": 1079,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune platebody",
+      "id": 1127,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        100
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        100
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Nature rune",
+      "id": 561,
+      "count": [
+        120
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        1200
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire rune",
+      "id": 554,
+      "count": [
+        500
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        800
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        2000
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        1200
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth rune",
+      "id": 557,
+      "count": [
+        1500
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Shield left half",
+      "id": 2366,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Shield right half",
+      "id": 2368,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune kiteshield",
+      "id": 1201,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dragon med helm",
+      "id": 1149,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Air talisman",
+      "id": 1438,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire talisman",
+      "id": 1442,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Water talisman",
+      "id": 1444,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Body talisman",
+      "id": 1446,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Mind talisman",
+      "id": 1448,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Blood talisman",
+      "id": 1450,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Chaos talisman",
+      "id": 1452,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Cosmic talisman",
+      "id": 1454,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Death talisman",
+      "id": 1456,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Law talisman",
+      "id": 1458,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Soul talisman",
+      "id": 1460,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Nature talisman",
+      "id": 1462,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "New crystal shield",
+      "id": 4224,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Rune halberd",
+      "id": 3202,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Strength potion (4)",
+      "id": 113,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Strength potion (3)",
+      "id": 115,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Strength potion (2)",
+      "id": 117,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Strength potion (1)",
+      "id": 119,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        45000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        90000
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        13500
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Amulet of glory",
+      "id": 1704,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Ancient staff",
+      "id": 4675,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy guam",
+      "id": 200,
+      "count": [
+        35
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 202,
+      "count": [
+        30
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 204,
+      "count": [
+        30
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 206,
+      "count": [
+        25
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 208,
+      "count": [
+        15
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy irit",
+      "id": 210,
+      "count": [
+        20
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 212,
+      "count": [
+        25
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        15
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        10
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 220,
+      "count": [
+        5
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Granite shield",
+      "id": 3122,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Granite maul",
+      "id": 4153,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Granite legs",
+      "id": 6809,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Granite body",
+      "id": 10564,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Granite helm",
+      "id": 10589,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Granite mace",
+      "id": 14679,
+      "count": [
+        1
+      ],
+      "chance": 410
+    },
+    {
+      "name": "Fenris wolf pelt",
+      "id": 15202,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rusty sword",
+      "id": 686,
+      "count": [
+        1
+      ],
+      "chance": 15
+    }
+  ]
+}

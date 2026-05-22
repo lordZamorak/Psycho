@@ -1,0 +1,159 @@
+{
+  "npcIds": [
+    2600
+  ],
+  "drops": [
+    {
+      "name": "Berserker necklace",
+      "id": 11128,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 485
+    },
+    {
+      "name": "Gold ore",
+      "id": 444,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Silver ore",
+      "id": 443,
+      "count": [
+        2
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Soft clay",
+      "id": 1762,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel bar",
+      "id": 2353,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Tokkul",
+      "id": 6529,
+      "count": [
+        90
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Molten glass",
+      "id": 1775,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Super attack (1)",
+      "id": 149,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Super strength (1)",
+      "id": 161,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Flax",
+      "id": 1780,
+      "count": [
+        4
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Battlestaff",
+      "id": 1391,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Hard leather",
+      "id": 1743,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Hard leather",
+      "id": 1744,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Leather",
+      "id": 1741,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Leather",
+      "id": 1742,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Wool",
+      "id": 1738,
+      "count": [
+        6
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        6
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Lobster",
+      "id": 379,
+      "count": [
+        1
+      ],
+      "chance": 15
+    }
+  ]
+}

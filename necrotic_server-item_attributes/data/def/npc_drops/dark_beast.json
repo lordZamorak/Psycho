@@ -1,0 +1,263 @@
+{
+  "npcIds": [
+    2783
+  ],
+  "drops": [
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        22000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Attack potion (3)",
+      "id": 121,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        2
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2361,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Death talisman",
+      "id": 1456,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Long bone",
+      "id": 10976,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Curved bone",
+      "id": 10977,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Air rune",
+      "id": 556,
+      "count": [
+        761
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Chaos rune",
+      "id": 562,
+      "count": [
+        170
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        57
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        91
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant sq shield",
+      "id": 1183,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune chainbody",
+      "id": 1113,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Rune full helm",
+      "id": 1163,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Dark bow",
+      "id": 11235,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune 2h sword",
+      "id": 1319,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Black hatchet",
+      "id": 1361,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Black battleaxe",
+      "id": 1367,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Black 2h sword",
+      "id": 1314,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Big bones",
+      "id": 532,
+      "count": [
+        1
+      ],
+      "chance": 0
+    }
+  ]
+}

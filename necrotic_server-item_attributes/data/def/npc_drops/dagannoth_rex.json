@@ -1,0 +1,479 @@
+{
+  "npcIds": [
+    2883
+  ],
+  "drops": [
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dagannoth hide",
+      "id": 6155,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Dagannoth bones",
+      "id": 6729,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Fremennik blade",
+      "id": 3757,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril warhammer",
+      "id": 1343,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant hatchet",
+      "id": 1357,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril 2h sword",
+      "id": 1315,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fremennik blade",
+      "id": 3757,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril warhammer",
+      "id": 1343,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant hatchet",
+      "id": 1357,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril 2h sword",
+      "id": 1315,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune hatchet",
+      "id": 1359,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Rune battleaxe",
+      "id": 1373,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fremennik blade",
+      "id": 3757,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril warhammer",
+      "id": 1343,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant hatchet",
+      "id": 1357,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril pickaxe",
+      "id": 1273,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fremennik blade",
+      "id": 3757,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril warhammer",
+      "id": 1343,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Adamant hatchet",
+      "id": 1357,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel kiteshield",
+      "id": 1193,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel platebody",
+      "id": 1119,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fremennik blade",
+      "id": 3757,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fremennik shield",
+      "id": 3758,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel kiteshield",
+      "id": 1193,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Steel platebody",
+      "id": 1119,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platebody",
+      "id": 1123,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fremennik blade",
+      "id": 3757,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Fremennik shield",
+      "id": 3758,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dragon hatchet",
+      "id": 6739,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Berserker ring (i)",
+      "id": 15220,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Warrior ring (i)",
+      "id": 15020,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Ring of life",
+      "id": 2570,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ring of life",
+      "id": 2570,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ring of life",
+      "id": 2570,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ring of life",
+      "id": 2570,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Ring of life",
+      "id": 2570,
+      "count": [
+        1
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Rock-shell plate",
+      "id": 6129,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rock-shell legs",
+      "id": 6130,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Super attack (2)",
+      "id": 147,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Super strength (2)",
+      "id": 159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Super defence (2)",
+      "id": 165,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Prayer potion (2)",
+      "id": 141,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Antifire (2)",
+      "id": 2456,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Zamorak brew (2)",
+      "id": 191,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Restore potion (2)",
+      "id": 129,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2361,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril ore",
+      "id": 448,
+      "count": [
+        25
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coal",
+      "id": 454,
+      "count": [
+        100
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Iron ore",
+      "id": 441,
+      "count": [
+        150
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steel bar",
+      "id": 2354,
+      "count": [
+        25
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        4000
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Bass",
+      "id": 365,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Shark",
+      "id": 385,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Swordfish",
+      "id": 373,
+      "count": [
+        1
+      ],
+      "chance": 2
+    }
+  ]
+}

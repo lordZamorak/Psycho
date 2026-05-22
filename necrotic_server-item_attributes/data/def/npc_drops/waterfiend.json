@@ -1,0 +1,295 @@
+{
+  "npcIds": [
+    5361
+  ],
+  "drops": [
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        1
+      ],
+      "chance": 0
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        20
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Blood rune",
+      "id": 565,
+      "count": [
+        4
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        9
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mud rune",
+      "id": 4698,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mist rune",
+      "id": 4695,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Steam rune",
+      "id": 4694,
+      "count": [
+        3
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Belladonna seed",
+      "id": 5281,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cactus seed",
+      "id": 5280,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Kwuarm seed",
+      "id": 5299,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Poison ivy seed",
+      "id": 5106,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Lantadyme seed",
+      "id": 5302,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dwarf weed seed",
+      "id": 5303,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Torstol seed",
+      "id": 5304,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Belladonna seed",
+      "id": 5281,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cactus seed",
+      "id": 5280,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Mithril kiteshield",
+      "id": 1197,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Adamant platelegs",
+      "id": 1073,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Bronze plateskirt",
+      "id": 1087,
+      "count": [
+        1
+      ],
+      "chance": 40
+    }
+  ]
+}

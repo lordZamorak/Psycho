@@ -1,0 +1,527 @@
+{
+  "npcIds": [
+    9465
+  ],
+  "drops": [
+    {
+      "name": "Pet Desert strykewyrm",
+      "id": 11985,
+      "count": [
+        1
+      ],
+      "chance": 950
+    },
+    {
+      "name": "Gold charm",
+      "id": 12158,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Green charm",
+      "id": 12159,
+      "count": [
+        1
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Crimson charm",
+      "id": 12160,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Blue charm",
+      "id": 12163,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy guam",
+      "id": 200,
+      "count": [
+        69
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 202,
+      "count": [
+        69
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 204,
+      "count": [
+        24
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 206,
+      "count": [
+        11
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 216,
+      "count": [
+        18
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 208,
+      "count": [
+        36
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy irit",
+      "id": 210,
+      "count": [
+        59
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 212,
+      "count": [
+        48
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 214,
+      "count": [
+        21
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 218,
+      "count": [
+        36
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 220,
+      "count": [
+        22
+      ],
+      "chance": 320
+    },
+    {
+      "name": "Water rune",
+      "id": 555,
+      "count": [
+        900
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Death rune",
+      "id": 560,
+      "count": [
+        100
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Law rune",
+      "id": 563,
+      "count": [
+        150
+      ],
+      "chance": 5
+    },
+    {
+      "name": "Air talisman",
+      "id": 1438,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Body talisman",
+      "id": 1446,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Cosmic talisman",
+      "id": 1454,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Earth talisman",
+      "id": 1440,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Fire talisman",
+      "id": 1442,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mind talisman",
+      "id": 1448,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Grimy guam",
+      "id": 199,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy marrentill",
+      "id": 201,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy tarromin",
+      "id": 203,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy harralander",
+      "id": 205,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy ranarr",
+      "id": 207,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy irit",
+      "id": 209,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy avantoe",
+      "id": 211,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy kwuarm",
+      "id": 213,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy cadantine",
+      "id": 215,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Grimy dwarf weed",
+      "id": 217,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Grimy torstol",
+      "id": 219,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Belladonna seed",
+      "id": 5281,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cactus seed",
+      "id": 5280,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Kwuarm seed",
+      "id": 5299,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Poison ivy seed",
+      "id": 5106,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Lantadyme seed",
+      "id": 5302,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Dwarf weed seed",
+      "id": 5303,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Snapdragon seed",
+      "id": 5300,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Torstol seed",
+      "id": 5304,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Belladonna seed",
+      "id": 5281,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cactus seed",
+      "id": 5280,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Irit seed",
+      "id": 5297,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Toadflax seed",
+      "id": 5296,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Avantoe seed",
+      "id": 5298,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Cadantine seed",
+      "id": 5301,
+      "count": [
+        1
+      ],
+      "chance": 40
+    },
+    {
+      "name": "Rune hatchet",
+      "id": 1359,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Mithril battleaxe",
+      "id": 1369,
+      "count": [
+        1
+      ],
+      "chance": 15
+    },
+    {
+      "name": "Focus sight",
+      "id": 15490,
+      "count": [
+        1
+      ],
+      "chance": 155
+    },
+    {
+      "name": "Coins",
+      "id": 995,
+      "count": [
+        2645
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Papaya fruit",
+      "id": 5972,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Pure essence",
+      "id": 7937,
+      "count": [
+        700
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Swordfish",
+      "id": 373,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Super defence (2)",
+      "id": 165,
+      "count": [
+        1
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Adamant bar",
+      "id": 2362,
+      "count": [
+        30
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Yew logs",
+      "id": 1516,
+      "count": [
+        120
+      ],
+      "chance": 2
+    },
+    {
+      "name": "Dragon scimitar",
+      "id": 4587,
+      "count": [
+        1
+      ],
+      "chance": 320
+    }
+  ]
+}
