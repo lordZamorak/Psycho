@@ -16,6 +16,7 @@ namespace Psycho.Mirror
         public int npcSpawnCount;
         public int objectCount;
         public int shopCount;
+        public int mapRegionCount;
         public string[] objectDefinitionSources;
     }
 
@@ -113,6 +114,17 @@ namespace Psycho.Mirror
     }
 
     [Serializable]
+    public sealed class PsychoMirrorMapRegion
+    {
+        public int id;
+        public int regionX;
+        public int regionY;
+        public int landscapeFile;
+        public int objectFile;
+        public bool osrs;
+    }
+
+    [Serializable]
     internal sealed class PsychoMirrorItemsFile
     {
         public PsychoMirrorItem[] items;
@@ -142,6 +154,12 @@ namespace Psycho.Mirror
         public PsychoMirrorShop[] shops;
     }
 
+    [Serializable]
+    internal sealed class PsychoMirrorMapRegionsFile
+    {
+        public PsychoMirrorMapRegion[] regions;
+    }
+
     public sealed class PsychoMirrorDatabase
     {
         public PsychoMirrorManifest Manifest { get; private set; }
@@ -150,11 +168,13 @@ namespace Psycho.Mirror
         public PsychoMirrorNpcSpawn[] NpcSpawns { get; private set; } = new PsychoMirrorNpcSpawn[0];
         public PsychoMirrorObject[] Objects { get; private set; } = new PsychoMirrorObject[0];
         public PsychoMirrorShop[] Shops { get; private set; } = new PsychoMirrorShop[0];
+        public PsychoMirrorMapRegion[] MapRegions { get; private set; } = new PsychoMirrorMapRegion[0];
 
         private readonly Dictionary<int, PsychoMirrorItem> itemsById = new Dictionary<int, PsychoMirrorItem>();
         private readonly Dictionary<int, PsychoMirrorNpc> npcsById = new Dictionary<int, PsychoMirrorNpc>();
         private readonly Dictionary<int, PsychoMirrorObject> objectsById = new Dictionary<int, PsychoMirrorObject>();
         private readonly Dictionary<int, PsychoMirrorShop> shopsById = new Dictionary<int, PsychoMirrorShop>();
+        private readonly Dictionary<int, PsychoMirrorMapRegion> mapRegionsById = new Dictionary<int, PsychoMirrorMapRegion>();
 
         public static string DefaultRoot => Path.Combine(Application.streamingAssetsPath, "PsychoMirror");
 
@@ -168,6 +188,7 @@ namespace Psycho.Mirror
             database.NpcSpawns = ReadJson<PsychoMirrorNpcSpawnsFile>(Path.Combine(resolvedRoot, "npc_spawns.json"))?.spawns ?? new PsychoMirrorNpcSpawn[0];
             database.Objects = ReadJson<PsychoMirrorObjectsFile>(Path.Combine(resolvedRoot, "objects.json"))?.objects ?? new PsychoMirrorObject[0];
             database.Shops = ReadJson<PsychoMirrorShopsFile>(Path.Combine(resolvedRoot, "shops.json"))?.shops ?? new PsychoMirrorShop[0];
+            database.MapRegions = ReadJson<PsychoMirrorMapRegionsFile>(Path.Combine(resolvedRoot, "map_regions.json"))?.regions ?? new PsychoMirrorMapRegion[0];
             database.RebuildIndexes();
             return database;
         }
@@ -192,10 +213,15 @@ namespace Psycho.Mirror
             return shopsById.TryGetValue(id, out shop);
         }
 
+        public bool TryGetMapRegion(int id, out PsychoMirrorMapRegion region)
+        {
+            return mapRegionsById.TryGetValue(id, out region);
+        }
+
         public string GetSummary()
         {
             string generated = Manifest == null || string.IsNullOrEmpty(Manifest.generatedAtUtc) ? "unknown" : Manifest.generatedAtUtc;
-            return $"Psycho mirror loaded: {Items.Length} items, {Npcs.Length} NPCs, {NpcSpawns.Length} NPC spawns, {Objects.Length} objects, {Shops.Length} shops. Generated {generated}.";
+            return $"Psycho mirror loaded: {Items.Length} items, {Npcs.Length} NPCs, {NpcSpawns.Length} NPC spawns, {Objects.Length} objects, {Shops.Length} shops, {MapRegions.Length} map regions. Generated {generated}.";
         }
 
         private void RebuildIndexes()
@@ -204,6 +230,7 @@ namespace Psycho.Mirror
             npcsById.Clear();
             objectsById.Clear();
             shopsById.Clear();
+            mapRegionsById.Clear();
 
             foreach (PsychoMirrorItem item in Items)
             {
@@ -223,6 +250,11 @@ namespace Psycho.Mirror
             foreach (PsychoMirrorShop shop in Shops)
             {
                 shopsById[shop.id] = shop;
+            }
+
+            foreach (PsychoMirrorMapRegion region in MapRegions)
+            {
+                mapRegionsById[region.id] = region;
             }
         }
 

@@ -11,6 +11,7 @@ import com.ruse.model.container.impl.Equipment;
 import com.ruse.model.definitions.GameObjectDefinition;
 import com.ruse.model.definitions.ItemDefinition;
 import com.ruse.model.definitions.NpcDefinition;
+import com.ruse.world.clip.region.RegionClipping;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -53,10 +54,11 @@ public final class UnityMirrorExportTool {
 		int spawnCount = exportNpcSpawns(output.resolve("npc_spawns.json"));
 		int objectCount = exportObjects(output.resolve("objects.json"));
 		int shopCount = exportShops(output.resolve("shops.json"));
-		exportManifest(output.resolve("manifest.json"), itemCount, npcCount, spawnCount, objectCount, shopCount);
+		int mapRegionCount = exportMapRegions(output.resolve("map_regions.json"));
+		exportManifest(output.resolve("manifest.json"), itemCount, npcCount, spawnCount, objectCount, shopCount, mapRegionCount);
 
 		System.out.println("Exported Unity mirror data to " + output);
-		System.out.println("Items=" + itemCount + ", NPCs=" + npcCount + ", spawns=" + spawnCount + ", objects=" + objectCount + ", shops=" + shopCount);
+		System.out.println("Items=" + itemCount + ", NPCs=" + npcCount + ", spawns=" + spawnCount + ", objects=" + objectCount + ", shops=" + shopCount + ", mapRegions=" + mapRegionCount);
 	}
 
 	private static int exportItems(Path path) throws IOException {
@@ -310,7 +312,66 @@ public final class UnityMirrorExportTool {
 		return count;
 	}
 
-	private static void exportManifest(Path path, int itemCount, int npcCount, int spawnCount, int objectCount, int shopCount) throws IOException {
+	private static int exportMapRegions(Path path) throws IOException {
+		int count = 0;
+		try (JsonWriter writer = writer(path)) {
+			writer.beginObject();
+			writer.name("regions").beginArray();
+			count += writeMapRegions(writer, Paths.get("data", "clipping", "map_index"), false);
+			count += writeMapRegions(writer, Paths.get("data", "clipping", "map_index_osrs"), true);
+			writer.endArray();
+			writer.endObject();
+		}
+		return count;
+	}
+
+	private static int writeMapRegions(JsonWriter writer, Path source, boolean osrs) throws IOException {
+		if (!Files.exists(source)) {
+			return 0;
+		}
+
+		byte[] data = Files.readAllBytes(source);
+		if (data.length < 2) {
+			return 0;
+		}
+
+		int count = readUnsignedShort(data, 0);
+		int written = 0;
+		for (int i = 0; i < count; i++) {
+			int offset = 2 + i * 6;
+			if (offset + 6 > data.length) {
+				break;
+			}
+
+			int regionId = readUnsignedShort(data, offset);
+			if (osrs && !isExplicitOsrsRegion(regionId)) {
+				continue;
+			}
+
+			int landscapeFile = readUnsignedShort(data, offset + 2);
+			int objectFile = readUnsignedShort(data, offset + 4);
+			writer.beginObject();
+			writer.name("id").value(regionId);
+			writer.name("regionX").value(regionId >> 8);
+			writer.name("regionY").value(regionId & 0xff);
+			writer.name("landscapeFile").value(landscapeFile);
+			writer.name("objectFile").value(objectFile);
+			writer.name("osrs").value(osrs);
+			writer.endObject();
+			written++;
+		}
+		return written;
+	}
+
+	private static boolean isExplicitOsrsRegion(int regionId) {
+		return Arrays.stream(RegionClipping.OSRS_REGIONS).anyMatch(id -> id == regionId);
+	}
+
+	private static int readUnsignedShort(byte[] data, int offset) {
+		return ((data[offset] & 0xff) << 8) | (data[offset + 1] & 0xff);
+	}
+
+	private static void exportManifest(Path path, int itemCount, int npcCount, int spawnCount, int objectCount, int shopCount, int mapRegionCount) throws IOException {
 		try (JsonWriter writer = writer(path)) {
 			writer.beginObject();
 			writer.name("version").value(OUTPUT_VERSION);
@@ -321,6 +382,7 @@ public final class UnityMirrorExportTool {
 			writer.name("npcSpawnCount").value(spawnCount);
 			writer.name("objectCount").value(objectCount);
 			writer.name("shopCount").value(shopCount);
+			writer.name("mapRegionCount").value(mapRegionCount);
 			writer.name("objectDefinitionSources").beginArray();
 			writer.value("data/clipping/objects/loc.dat");
 			writer.value("data/clipping/objects/667loc.dat");

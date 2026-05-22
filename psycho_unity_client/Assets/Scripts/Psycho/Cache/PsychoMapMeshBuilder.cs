@@ -63,28 +63,70 @@ namespace Psycho.Cache
             int underlay = landscape.UnderlayIds[plane, x, y] & 0xff;
             int overlay = landscape.OverlayIds[plane, x, y] & 0xff;
             byte flag = landscape.RenderFlags[plane, x, y];
+            float noise = TileNoise(landscape.RegionX * 64 + x, landscape.RegionY * 64 + y);
+            float slope = TileSlope(landscape, plane, x, y);
+            float elevation = Mathf.InverseLerp(80f, 480f, -landscape.Heights[plane, x, y]);
+            Color rock = Color.Lerp(new Color(0.31f, 0.33f, 0.30f), new Color(0.47f, 0.46f, 0.39f), noise);
 
             if (overlay != 0)
             {
-                byte shade = (byte)Mathf.Clamp(88 + overlay * 7, 72, 174);
-                return new Color32(shade, (byte)Mathf.Clamp(110 + overlay * 3, 96, 190), (byte)Mathf.Clamp(82 + overlay * 2, 68, 170), 255);
+                Color path = Color.Lerp(new Color(0.34f, 0.31f, 0.25f), new Color(0.58f, 0.53f, 0.43f), Mathf.Clamp01(overlay / 28f));
+                Color grassBlend = new Color(0.24f, 0.46f, 0.24f);
+                Color color = Color.Lerp(path, grassBlend, overlay > 22 ? 0.22f : 0.06f);
+                color *= Mathf.Lerp(0.82f, 1.08f, noise);
+                color = Color.Lerp(color, rock, Mathf.Clamp01(slope * 0.20f + elevation * 0.05f));
+                return ToColor32(color);
             }
 
             if ((flag & 1) == 1)
             {
-                return new Color32(95, 111, 106, 255);
+                Color flagged = Color.Lerp(new Color(0.22f, 0.29f, 0.29f), new Color(0.30f, 0.37f, 0.35f), noise);
+                flagged = Color.Lerp(flagged, new Color(0.15f, 0.25f, 0.30f), 0.24f);
+                return ToColor32(flagged);
             }
 
             if (underlay == 0)
             {
-                return new Color32(72, 132, 55, 255);
+                Color baseGrass = Color.Lerp(new Color(0.19f, 0.39f, 0.17f), new Color(0.38f, 0.58f, 0.30f), noise);
+                baseGrass = Color.Lerp(baseGrass, rock, Mathf.Clamp01(slope * 0.55f + elevation * 0.14f));
+                return ToColor32(baseGrass);
             }
 
-            return new Color32(
-                (byte)Mathf.Clamp(54 + underlay * 5, 48, 122),
-                (byte)Mathf.Clamp(104 + underlay * 4, 90, 170),
-                (byte)Mathf.Clamp(48 + underlay * 3, 42, 112),
-                255);
+            float underlayBlend = Mathf.Clamp01(underlay / 32f);
+            Color low = new Color(0.22f, 0.42f, 0.20f);
+            Color high = new Color(0.47f, 0.55f, 0.31f);
+            Color underlayColor = Color.Lerp(low, high, underlayBlend);
+            underlayColor *= Mathf.Lerp(0.84f, 1.10f, noise);
+            underlayColor = Color.Lerp(underlayColor, rock, Mathf.Clamp01(slope * 0.50f + elevation * 0.12f));
+            return ToColor32(underlayColor);
+        }
+
+        private static float TileSlope(PsychoMapLandscape landscape, int plane, int x, int y)
+        {
+            int west = landscape.Heights[plane, Mathf.Max(0, x - 1), y];
+            int east = landscape.Heights[plane, Mathf.Min(63, x + 1), y];
+            int south = landscape.Heights[plane, x, Mathf.Max(0, y - 1)];
+            int north = landscape.Heights[plane, x, Mathf.Min(63, y + 1)];
+            int rise = Mathf.Max(Mathf.Abs(east - west), Mathf.Abs(north - south));
+            return Mathf.Clamp01(rise / 256f);
+        }
+
+        private static float TileNoise(int x, int y)
+        {
+            int hash = x * 73428767 ^ y * 912931 ^ 0x2c1b3c6d;
+            hash ^= hash >> 13;
+            hash *= 1274126177;
+            hash ^= hash >> 16;
+            return (hash & 0xffff) / 65535f;
+        }
+
+        private static Color32 ToColor32(Color color)
+        {
+            color.r = Mathf.Clamp01(color.r);
+            color.g = Mathf.Clamp01(color.g);
+            color.b = Mathf.Clamp01(color.b);
+            color.a = 1f;
+            return color;
         }
     }
 }

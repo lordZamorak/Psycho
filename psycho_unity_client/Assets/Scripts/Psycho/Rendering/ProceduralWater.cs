@@ -9,9 +9,9 @@ namespace Psycho.Rendering
         [SerializeField] private float waveSpeed = 1.25f;
         [SerializeField] private float waveScale = 2.4f;
         [SerializeField] private float rippleStrength = 0.04f;
-        [SerializeField] private Color shallowColor = new Color(0.20f, 0.62f, 0.82f, 0.78f);
-        [SerializeField] private Color deepColor = new Color(0.03f, 0.18f, 0.28f, 0.88f);
-        [SerializeField] private Color foamColor = new Color(0.72f, 0.92f, 0.96f, 0.72f);
+        [SerializeField] private Color shallowColor = new Color(0.16f, 0.50f, 0.68f, 0.54f);
+        [SerializeField] private Color deepColor = new Color(0.03f, 0.16f, 0.24f, 0.62f);
+        [SerializeField] private Color foamColor = new Color(0.70f, 0.90f, 0.94f, 0.42f);
 
         private Mesh mesh;
         private Vector3[] baseVertices;

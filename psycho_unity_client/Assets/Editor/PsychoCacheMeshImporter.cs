@@ -206,9 +206,26 @@ namespace Psycho.Editor
             material.SetColor("_Tint", Color.white);
             if (material.HasProperty("_Smoothness"))
             {
-                material.SetFloat("_Smoothness", 0.28f);
+                material.SetFloat("_Smoothness", 0.22f);
             }
 
+            if (material.HasProperty("_NoiseScale"))
+            {
+                material.SetFloat("_NoiseScale", 0.22f);
+            }
+
+            if (material.HasProperty("_NoiseStrength"))
+            {
+                material.SetFloat("_NoiseStrength", 0.045f);
+            }
+
+            if (material.HasProperty("_SlopeDarkening"))
+            {
+                material.SetFloat("_SlopeDarkening", 0.30f);
+            }
+
+            material.enableInstancing = true;
+            EditorUtility.SetDirty(material);
             return material;
         }
 

@@ -1,12 +1,13 @@
 {
   "version": "1",
-  "generatedAtUtc": "2026-05-22T16:34:55.595166400Z",
+  "generatedAtUtc": "2026-05-22T17:41:41.302637900Z",
   "sourceServerPath": "C:\\Users\\xzero\\Downloads\\kandarin\\necrotic_server-item_attributes\\necrotic_server-item_attributes",
   "itemCount": 37641,
   "npcCount": 23684,
   "npcSpawnCount": 1997,
   "objectCount": 79277,
   "shopCount": 65,
+  "mapRegionCount": 2264,
   "objectDefinitionSources": [
     "data/clipping/objects/loc.dat",
     "data/clipping/objects/667loc.dat",

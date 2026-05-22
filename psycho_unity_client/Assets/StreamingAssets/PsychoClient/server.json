@@ -1,0 +1,6 @@
+{
+  "host": "127.0.0.1",
+  "port": 13377,
+  "clientVersion": 55,
+  "autoProbeOnStart": false
+}

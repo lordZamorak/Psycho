@@ -7,15 +7,15 @@ namespace Psycho.Rendering
         [SerializeField] private Light sun;
         [SerializeField] private float cycleDuration = 240f;
         [SerializeField] private float cycleOffset = 0.18f;
-        [SerializeField] private float minFogDensity = 0.0014f;
-        [SerializeField] private float maxFogDensity = 0.0045f;
+        [SerializeField] private float minFogDensity = 0.0009f;
+        [SerializeField] private float maxFogDensity = 0.0028f;
 
         private readonly Color lowSunColor = new Color(1.00f, 0.63f, 0.38f);
         private readonly Color highSunColor = new Color(1.00f, 0.92f, 0.78f);
         private readonly Color lowAmbient = new Color(0.20f, 0.25f, 0.30f);
         private readonly Color highAmbient = new Color(0.45f, 0.49f, 0.53f);
-        private readonly Color lowFog = new Color(0.25f, 0.31f, 0.38f);
-        private readonly Color highFog = new Color(0.38f, 0.50f, 0.57f);
+        private readonly Color lowFog = new Color(0.30f, 0.39f, 0.48f);
+        private readonly Color highFog = new Color(0.48f, 0.58f, 0.64f);
 
         private void Reset()
         {

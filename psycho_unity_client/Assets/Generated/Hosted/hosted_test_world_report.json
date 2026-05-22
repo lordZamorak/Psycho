@@ -1,0 +1,15 @@
+{
+    "generatedAtUtc": "2026-05-22T17:51:09.9938043Z",
+    "baseRegionId": 12342,
+    "regionRadius": 1,
+    "loadedRegions": 9,
+    "missingRegions": 0,
+    "decodedObjectPlacements": 27973,
+    "placedObjects": 9000,
+    "skippedObjects": 18973,
+    "importedModels": 232,
+    "missingDefinitions": 6,
+    "missingModels": 142,
+    "fallbackObjects": 37,
+    "npcSpawns": 78
+}

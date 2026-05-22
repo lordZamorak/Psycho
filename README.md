@@ -59,3 +59,41 @@ Stop local Java game processes:
 ```
 
 See `scripts/README.md` for optional flags.
+
+## Unity Hosted Client
+
+Unity project:
+
+```text
+C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\psycho_unity_client
+```
+
+Installed editor used for the hosted test build:
+
+```text
+C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe
+```
+
+Regenerate the 3x3 hosted test world around Edgeville:
+
+```powershell
+& 'C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe' -batchmode -quit -projectPath 'C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\psycho_unity_client' -executeMethod Psycho.Editor.PsychoHostedWorldSceneBuilder.BuildHostedTestWorldSceneBatch -logFile 'C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\run-logs\unity-hosted-world-build.log'
+```
+
+Build the Windows hosted playable:
+
+```powershell
+& 'C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe' -batchmode -quit -projectPath 'C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\psycho_unity_client' -executeMethod Psycho.Editor.PsychoHostedWorldSceneBuilder.BuildWindowsHostedPlayableBatch -logFile 'C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\run-logs\unity-windows-hosted-playable-build.log'
+```
+
+Run the hosted playable:
+
+```powershell
+& 'C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\psycho_unity_client\Builds\PsychoHostedTestWorld\Psycho.exe'
+```
+
+Server connection settings live in:
+
+```text
+psycho_unity_client\Assets\StreamingAssets\PsychoClient\server.json
+```

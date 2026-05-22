@@ -22,6 +22,7 @@ namespace Psycho.Networking
         [SerializeField] private string password = "";
 
         public event Action<int> LoginResponseReceived;
+        public event Action<string> StatusChanged;
 
         private TcpClient tcpClient;
         private NetworkStream stream;
@@ -47,6 +48,7 @@ namespace Psycho.Networking
         public async Task<int> LoginAsync(string accountName, string accountPassword, bool reconnecting, CancellationToken cancellationToken)
         {
             Disconnect();
+            StatusChanged?.Invoke($"Connecting to {host}:{port}");
 
             tcpClient = new TcpClient();
             await tcpClient.ConnectAsync(host, port);
@@ -78,7 +80,41 @@ namespace Psycho.Networking
             }
 
             LoginResponseReceived?.Invoke(response);
+            StatusChanged?.Invoke($"Login response {response}");
             return response;
+        }
+
+        public void Configure(string serverHost, int serverPort, int version)
+        {
+            if (!string.IsNullOrWhiteSpace(serverHost))
+            {
+                host = serverHost.Trim();
+            }
+
+            if (serverPort > 0)
+            {
+                port = serverPort;
+            }
+
+            if (version > 0)
+            {
+                clientVersion = version;
+            }
+        }
+
+        public async Task<bool> ProbeAsync(CancellationToken cancellationToken)
+        {
+            Disconnect();
+            StatusChanged?.Invoke($"Probing {host}:{port}");
+
+            tcpClient = new TcpClient();
+            await tcpClient.ConnectAsync(host, port);
+            stream = tcpClient.GetStream();
+            await WriteAsync(new byte[] { 14 }, 1, cancellationToken);
+            int response = await ReadByteAsync(cancellationToken);
+            StatusChanged?.Invoke($"Handshake response {response}");
+            Disconnect();
+            return response == 0;
         }
 
         public void Disconnect()
@@ -89,6 +125,7 @@ namespace Psycho.Networking
             tcpClient = null;
             outboundCipher = null;
             inboundCipher = null;
+            StatusChanged?.Invoke("Disconnected");
         }
 
         private RsBuffer BuildRsaPayload(string accountName, string accountPassword, int[] seed)
