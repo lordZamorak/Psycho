@@ -11,6 +11,15 @@ java {
 
 mainClassName = 'com.ruse.GameServer'
 
+task exportUnityMirror(type: JavaExec) {
+    group = 'psycho'
+    description = 'Exports authoritative Java server definitions for the Unity mirror client.'
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.ruse.tools.UnityMirrorExportTool'
+    workingDir = project.projectDir
+    args = [project.findProperty('unityMirrorOut') ?: '../psycho_unity_client/Assets/StreamingAssets/PsychoMirror']
+}
+
 sourceSets {
     main {
         java {

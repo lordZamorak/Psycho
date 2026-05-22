@@ -1,0 +1,15 @@
+{
+  "version": "1",
+  "generatedAtUtc": "2026-05-22T15:20:11.257650Z",
+  "sourceServerPath": "C:\\Users\\xzero\\Downloads\\kandarin\\necrotic_server-item_attributes\\necrotic_server-item_attributes",
+  "itemCount": 37641,
+  "npcCount": 23684,
+  "npcSpawnCount": 1997,
+  "objectCount": 45565,
+  "shopCount": 65,
+  "objectDefinitionSources": [
+    "data/clipping/objects/loc.dat",
+    "data/clipping/objects/667loc.dat",
+    "data/clipping/objects/loc_osrs.dat"
+  ]
+}

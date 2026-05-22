@@ -1,4 +1,5 @@
 using System.IO;
+using Psycho.Mirror;
 using Psycho.Networking;
 using Psycho.Rendering;
 using UnityEditor;
@@ -152,6 +153,11 @@ namespace Psycho.Editor
 
             GameObject protocol = new GameObject("Psycho Protocol Client");
             protocol.AddComponent<PsychoProtocolClient>();
+
+            GameObject mirror = new GameObject("Psycho Java Mirror");
+            mirror.AddComponent<PsychoMirrorLoader>();
+            mirror.AddComponent<PsychoVisualFactory>();
+            mirror.AddComponent<PsychoMirrorScenePopulator>();
 
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
