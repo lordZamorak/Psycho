@@ -24,6 +24,7 @@ namespace Psycho.Editor
         private const int MaxObjectsPerRegion = 1300;
         private const int MaxObjectsTotal = 9000;
         private const int MaxModelsPerObject = 4;
+        private const int MaxModelsPerNpc = 12;
         private const int MaxNpcSpawns = 180;
         private const float TileScale = 0.72f;
         private const float HeightScale = 1f / 96f;
@@ -38,6 +39,7 @@ namespace Psycho.Editor
         private const string HillMaterialPath = GeneratedRoot + "/Psycho_Hosted_Hills.mat";
         private const string MountainMaterialPath = GeneratedRoot + "/Psycho_Hosted_Mountains.mat";
         private const string CloudMaterialPath = GeneratedRoot + "/Psycho_Hosted_Clouds.mat";
+        private const string FallbackMaterialPath = GeneratedRoot + "/Psycho_Hosted_Fallback.mat";
         private static readonly string[] WindResponsiveObjectNameFragments =
         {
             "tree",
@@ -71,7 +73,7 @@ namespace Psycho.Editor
             using (PsychoCacheStore store = new PsychoCacheStore(PsychoCacheStore.DefaultClientCachePath))
             {
                 BuildRegions(store, database, vertexColorMaterial, context);
-                BuildNpcSpawns(database, context);
+                BuildNpcSpawns(store, database, vertexColorMaterial, context);
                 BuildWorldDressing(context);
                 BuildLighting();
                 BuildPlayer(context);
@@ -82,7 +84,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -105,13 +107,64 @@ namespace Psycho.Editor
                 throw new InvalidOperationException("Hosted test world scene does not contain a camera.");
             }
 
-            RenderTexture target = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32);
+            camera.transform.position = new Vector3(35f, 24f, 26f);
+            camera.transform.rotation = Quaternion.Euler(38f, 42f, 0f);
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-test-world-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedTestWorldPreviewBatch()
+        {
+            RenderHostedTestWorldPreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted NPC Preview")]
+        public static void RenderHostedNpcPreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject npcRoot = GameObject.Find("Hosted NPC Spawns");
+            if (npcRoot == null || npcRoot.transform.childCount == 0)
+            {
+                throw new InvalidOperationException("Hosted test world scene does not contain NPC spawns.");
+            }
+
+            Bounds bounds = new Bounds(npcRoot.transform.GetChild(0).position, Vector3.one);
+            for (int i = 0; i < npcRoot.transform.childCount; i++)
+            {
+                bounds.Encapsulate(npcRoot.transform.GetChild(i).position);
+            }
+
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene does not contain a camera.");
+            }
+
+            Vector3 focus = bounds.center + Vector3.up * 1.1f;
+            camera.transform.position = focus + new Vector3(-5.8f, 3.0f, -7.6f);
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 42f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-npc-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1400, 900);
+        }
+
+        public static void RenderHostedNpcPreviewBatch()
+        {
+            RenderHostedNpcPreview();
+        }
+
+        private static void RenderCameraToPng(Camera camera, string outputPath, int width, int height)
+        {
+            RenderTexture target = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
             Texture2D capture = new Texture2D(target.width, target.height, TextureFormat.RGBA32, false);
             RenderTexture previous = RenderTexture.active;
             RenderTexture previousCameraTarget = camera.targetTexture;
 
-            camera.transform.position = new Vector3(35f, 24f, 26f);
-            camera.transform.rotation = Quaternion.Euler(38f, 42f, 0f);
             camera.targetTexture = target;
             RenderTexture.active = target;
             camera.Render();
@@ -121,18 +174,12 @@ namespace Psycho.Editor
             camera.targetTexture = previousCameraTarget;
             RenderTexture.active = previous;
 
-            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-test-world-preview.png"));
             Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
             File.WriteAllBytes(outputPath, capture.EncodeToPNG());
             UnityEngine.Object.DestroyImmediate(capture);
             target.Release();
             UnityEngine.Object.DestroyImmediate(target);
-            Debug.Log($"Rendered hosted test world preview to {outputPath}");
-        }
-
-        public static void RenderHostedTestWorldPreviewBatch()
-        {
-            RenderHostedTestWorldPreview();
+            Debug.Log($"Rendered hosted preview to {outputPath}");
         }
 
         [MenuItem("Psycho/Build Windows Hosted Playable")]
@@ -226,6 +273,7 @@ namespace Psycho.Editor
             HostedBuildContext context)
         {
             int placedInRegion = 0;
+            Material fallbackMaterial = LoadOrCreateSolidMaterial(FallbackMaterialPath, new Color(0.34f, 0.31f, 0.25f, 1f), 0.22f);
             foreach (PsychoMapObjectPlacement placement in objects.Placements)
             {
                 if (placement.Plane != 0)
@@ -295,7 +343,7 @@ namespace Psycho.Editor
 
                 if (addedMeshes == 0)
                 {
-                    AddFallbackBounds(placed.transform, definition, placement);
+                    AddFallbackBounds(placed.transform, definition, placement, fallbackMaterial);
                     context.Report.fallbackObjects++;
                 }
 
@@ -385,7 +433,7 @@ namespace Psycho.Editor
             return new Vector3(width, height, depth);
         }
 
-        private static void AddFallbackBounds(Transform parent, PsychoMirrorObject definition, PsychoMapObjectPlacement placement)
+        private static void AddFallbackBounds(Transform parent, PsychoMirrorObject definition, PsychoMapObjectPlacement placement, Material material)
         {
             GameObject fallback = GameObject.CreatePrimitive(PrimitiveType.Cube);
             fallback.name = definition == null ? $"fallback_object_{placement.ObjectId}" : "fallback_bounds";
@@ -394,6 +442,12 @@ namespace Psycho.Editor
             Vector3 size = ColliderSize(definition, placement);
             fallback.transform.localPosition = new Vector3(0f, size.y * 0.5f, 0f);
             fallback.transform.localScale = size;
+            MeshRenderer renderer = fallback.GetComponent<MeshRenderer>();
+            if (renderer != null)
+            {
+                renderer.sharedMaterial = material;
+            }
+
             Collider collider = fallback.GetComponent<Collider>();
             if (collider != null)
             {
@@ -401,11 +455,12 @@ namespace Psycho.Editor
             }
         }
 
-        private static void BuildNpcSpawns(PsychoMirrorDatabase database, HostedBuildContext context)
+        private static void BuildNpcSpawns(PsychoCacheStore store, PsychoMirrorDatabase database, Material npcMaterial, HostedBuildContext context)
         {
             GameObject npcRoot = new GameObject("Hosted NPC Spawns");
             GameObject factoryObject = new GameObject("Psycho Visual Factory");
             PsychoVisualFactory factory = factoryObject.AddComponent<PsychoVisualFactory>();
+            factory.SetNpcPreviewAnimation(false);
 
             foreach (PsychoMirrorNpcSpawn spawn in database.NpcSpawns)
             {
@@ -419,7 +474,13 @@ namespace Psycho.Editor
                     continue;
                 }
 
-                GameObject npcObject = factory.CreateNpcVisual(npc);
+                bool cacheVisual = TryCreateCacheNpcVisual(store, database, npc, npcMaterial, out GameObject npcObject, context);
+                if (!cacheVisual)
+                {
+                    npcObject = factory.CreateNpcVisual(npc);
+                    context.Report.fallbackNpcVisuals++;
+                }
+
                 npcObject.transform.SetParent(npcRoot.transform, false);
                 npcObject.transform.position = WorldTilePosition(context, spawn.x, spawn.y) + Vector3.up * 0.03f;
                 npcObject.name = $"NPC {spawn.npcId} - {npc.name} ({spawn.x}, {spawn.y})";
@@ -432,6 +493,112 @@ namespace Psycho.Editor
                 wanderObject.ApplyModifiedPropertiesWithoutUndo();
                 context.Report.npcSpawns++;
             }
+        }
+
+        private static bool TryCreateCacheNpcVisual(
+            PsychoCacheStore store,
+            PsychoMirrorDatabase database,
+            PsychoMirrorNpc npc,
+            Material material,
+            out GameObject npcObject,
+            HostedBuildContext context)
+        {
+            npcObject = null;
+            if (!database.TryGetNpcModel(npc.id, out PsychoMirrorNpcModel model) || model.modelIds == null || model.modelIds.Length == 0)
+            {
+                return false;
+            }
+
+            GameObject root = new GameObject($"NPC {npc.id} - {npc.name}");
+            GameObject modelRoot = new GameObject("Cache Model");
+            modelRoot.transform.SetParent(root.transform, false);
+
+            int importedParts = 0;
+            for (int i = 0; i < model.modelIds.Length && i < MaxModelsPerNpc; i++)
+            {
+                int modelId = model.modelIds[i];
+                if (modelId <= 0)
+                {
+                    continue;
+                }
+
+                if (!PsychoCacheMeshImporter.TryImportModelAsset(store, modelId, out Mesh mesh, out _, out _, out _))
+                {
+                    context.Report.missingNpcModels++;
+                    continue;
+                }
+
+                if (context.ImportedModels.Add(modelId))
+                {
+                    context.Report.importedModels++;
+                }
+
+                GameObject part = new GameObject($"npc_model_{modelId}");
+                part.transform.SetParent(modelRoot.transform, false);
+                part.AddComponent<MeshFilter>().sharedMesh = mesh;
+                part.AddComponent<MeshRenderer>().sharedMaterial = material;
+                importedParts++;
+            }
+
+            if (importedParts <= 0)
+            {
+                UnityEngine.Object.DestroyImmediate(root);
+                return false;
+            }
+
+            NormalizeNpcModel(modelRoot.transform, npc, model);
+            context.Report.cacheNpcVisuals++;
+            npcObject = root;
+            return true;
+        }
+
+        private static void NormalizeNpcModel(Transform modelRoot, PsychoMirrorNpc npc, PsychoMirrorNpcModel model)
+        {
+            if (!TryCalculateLocalBounds(modelRoot, out Bounds bounds) || bounds.size.y <= 0.001f)
+            {
+                return;
+            }
+
+            float declaredSize = Mathf.Max(1f, Mathf.Max(npc.size, model.size));
+            float targetHeight = Mathf.Clamp(1.72f + (declaredSize - 1f) * 0.58f, 1.35f, 5.8f);
+            float scale = targetHeight / bounds.size.y;
+            modelRoot.localScale = Vector3.one * scale;
+            modelRoot.localPosition = new Vector3(-bounds.center.x * scale, -bounds.min.y * scale, -bounds.center.z * scale);
+        }
+
+        private static bool TryCalculateLocalBounds(Transform root, out Bounds bounds)
+        {
+            MeshFilter[] filters = root.GetComponentsInChildren<MeshFilter>();
+            bounds = new Bounds(Vector3.zero, Vector3.zero);
+            bool hasBounds = false;
+            foreach (MeshFilter filter in filters)
+            {
+                if (filter.sharedMesh == null)
+                {
+                    continue;
+                }
+
+                Bounds meshBounds = filter.sharedMesh.bounds;
+                Vector3 min = filter.transform.TransformPoint(meshBounds.min);
+                Vector3 max = filter.transform.TransformPoint(meshBounds.max);
+                Bounds transformed = new Bounds((min + max) * 0.5f, Abs(max - min));
+                if (!hasBounds)
+                {
+                    bounds = transformed;
+                    hasBounds = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(transformed);
+                }
+            }
+
+            return hasBounds;
+        }
+
+        private static Vector3 Abs(Vector3 value)
+        {
+            return new Vector3(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
         }
 
         private static void BuildWorldDressing(HostedBuildContext context)
@@ -1089,6 +1256,9 @@ namespace Psycho.Editor
             public int fallbackObjects;
             public int npcSpawns;
             public int windAnimatedObjects;
+            public int cacheNpcVisuals;
+            public int fallbackNpcVisuals;
+            public int missingNpcModels;
         }
     }
 }

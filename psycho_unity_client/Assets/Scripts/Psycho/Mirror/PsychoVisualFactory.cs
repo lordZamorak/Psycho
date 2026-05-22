@@ -6,7 +6,7 @@ namespace Psycho.Mirror
     public sealed class PsychoVisualFactory : MonoBehaviour
     {
         [SerializeField] private bool animateFoliage = true;
-        [SerializeField] private bool animateNpcPreviews = true;
+        [SerializeField] private bool animateNpcPreviews;
 
         public GameObject CreateItemVisual(PsychoMirrorItem item)
         {
@@ -66,9 +66,13 @@ namespace Psycho.Mirror
             Material body = ResolveMaterial(npc.materialClass);
             Material trim = ResolveMaterial(npc.attackable ? "Metal" : "Cloth");
 
-            AddPrimitive(root, PrimitiveType.Capsule, "Body", new Vector3(0f, 0.72f * size, 0f), new Vector3(0.42f, 0.70f, 0.42f) * size, body);
-            AddPrimitive(root, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.54f * size, 0f), new Vector3(0.38f, 0.38f, 0.38f) * size, trim);
-            AddPrimitive(root, PrimitiveType.Cube, "Facing Marker", new Vector3(0f, 1.12f * size, 0.32f * size), new Vector3(0.16f, 0.16f, 0.08f) * size, trim);
+            AddPrimitive(root, PrimitiveType.Cube, "Torso", new Vector3(0f, 0.94f * size, 0f), new Vector3(0.46f, 0.72f, 0.28f) * size, body);
+            AddPrimitive(root, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.42f * size, 0f), new Vector3(0.30f, 0.30f, 0.30f) * size, trim);
+            AddPrimitive(root, PrimitiveType.Cube, "Left Arm", new Vector3(-0.36f * size, 0.94f * size, 0f), new Vector3(0.14f, 0.58f, 0.16f) * size, body);
+            AddPrimitive(root, PrimitiveType.Cube, "Right Arm", new Vector3(0.36f * size, 0.94f * size, 0f), new Vector3(0.14f, 0.58f, 0.16f) * size, body);
+            AddPrimitive(root, PrimitiveType.Cube, "Left Leg", new Vector3(-0.14f * size, 0.36f * size, 0f), new Vector3(0.16f, 0.70f, 0.18f) * size, trim);
+            AddPrimitive(root, PrimitiveType.Cube, "Right Leg", new Vector3(0.14f * size, 0.36f * size, 0f), new Vector3(0.16f, 0.70f, 0.18f) * size, trim);
+            AddPrimitive(root, PrimitiveType.Cube, "Facing Marker", new Vector3(0f, 1.04f * size, 0.18f * size), new Vector3(0.12f, 0.16f, 0.06f) * size, trim);
 
             if (animateNpcPreviews)
             {
@@ -78,6 +82,11 @@ namespace Psycho.Mirror
             }
 
             return root;
+        }
+
+        public void SetNpcPreviewAnimation(bool enabled)
+        {
+            animateNpcPreviews = enabled;
         }
 
         public GameObject CreateObjectVisual(PsychoMirrorObject worldObject)

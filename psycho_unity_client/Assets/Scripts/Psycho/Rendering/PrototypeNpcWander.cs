@@ -26,7 +26,6 @@ namespace Psycho.Rendering
             if (pauseTimer > 0f)
             {
                 pauseTimer -= Time.deltaTime;
-                AnimateIdle();
                 return;
             }
 
@@ -42,7 +41,6 @@ namespace Psycho.Rendering
             Vector3 direction = delta.normalized;
             transform.position += direction * speed * Time.deltaTime;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
-            AnimateRun();
         }
 
         private void PickDestination()
@@ -52,16 +50,5 @@ namespace Psycho.Rendering
             destination = origin + new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
         }
 
-        private void AnimateRun()
-        {
-            float stride = Mathf.Sin(Time.time * 9.5f + phase) * 0.055f;
-            transform.localScale = new Vector3(1f + Mathf.Abs(stride) * 0.25f, 1f + stride, 1f - Mathf.Abs(stride) * 0.18f);
-        }
-
-        private void AnimateIdle()
-        {
-            float breathe = Mathf.Sin(Time.time * 2.3f + phase) * 0.018f;
-            transform.localScale = new Vector3(1f + breathe, 1f - breathe, 1f + breathe);
-        }
     }
 }

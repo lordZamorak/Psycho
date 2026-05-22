@@ -63,3 +63,15 @@ task buildjar {
     dependsOn 'proguard'
     tasks.findByName('proguard').mustRunAfter 'fatJar'
 }
+
+task exportUnityNpcModels(type: JavaExec) {
+    group = 'psycho'
+    description = 'Exports Java client NPC cache model IDs for the Unity mirror client.'
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'org.necrotic.client.tools.UnityNpcModelExportTool'
+    workingDir = project.projectDir
+    args = [
+            project.findProperty('unityMirrorOut') ?: '../psycho_unity_client/Assets/StreamingAssets/PsychoMirror',
+            project.findProperty('clientCacheRoot') ?: 'cache'
+    ]
+}

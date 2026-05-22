@@ -60,6 +60,15 @@ public final class Signlink implements Runnable {
 	}
 	
 	public static String getCacheDirectory() {
+		String override = System.getProperty("psycho.cache.dir");
+		if (override != null && !override.trim().isEmpty()) {
+			File cacheDir = new File(override);
+			if (!cacheDir.exists()) {
+				cacheDir.mkdirs();
+			}
+			return cacheDir.getAbsolutePath() + "/";
+		}
+
 		if (Configuration.developerMode) {
 			return "./cache/";
 		} else {

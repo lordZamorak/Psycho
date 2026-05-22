@@ -1,5 +1,5 @@
 {
-    "generatedAtUtc": "2026-05-22T21:03:25.3776043Z",
+    "generatedAtUtc": "2026-05-22T21:36:40.0342153Z",
     "baseRegionId": 12342,
     "regionRadius": 1,
     "loadedRegions": 9,
@@ -7,10 +7,13 @@
     "decodedObjectPlacements": 27973,
     "placedObjects": 9000,
     "skippedObjects": 18973,
-    "importedModels": 232,
+    "importedModels": 416,
     "missingDefinitions": 6,
     "missingModels": 142,
     "fallbackObjects": 37,
     "npcSpawns": 78,
-    "windAnimatedObjects": 601
+    "windAnimatedObjects": 601,
+    "cacheNpcVisuals": 78,
+    "fallbackNpcVisuals": 0,
+    "missingNpcModels": 0
 }

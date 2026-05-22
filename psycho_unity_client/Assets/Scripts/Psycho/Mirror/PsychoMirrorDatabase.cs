@@ -66,6 +66,18 @@ namespace Psycho.Mirror
     }
 
     [Serializable]
+    public sealed class PsychoMirrorNpcModel
+    {
+        public int id;
+        public string name;
+        public int size;
+        public int standAnimation;
+        public int walkAnimation;
+        public bool osrs;
+        public int[] modelIds;
+    }
+
+    [Serializable]
     public sealed class PsychoMirrorNpcSpawn
     {
         public int npcId;
@@ -143,6 +155,12 @@ namespace Psycho.Mirror
     }
 
     [Serializable]
+    internal sealed class PsychoMirrorNpcModelsFile
+    {
+        public PsychoMirrorNpcModel[] models;
+    }
+
+    [Serializable]
     internal sealed class PsychoMirrorObjectsFile
     {
         public PsychoMirrorObject[] objects;
@@ -165,6 +183,7 @@ namespace Psycho.Mirror
         public PsychoMirrorManifest Manifest { get; private set; }
         public PsychoMirrorItem[] Items { get; private set; } = new PsychoMirrorItem[0];
         public PsychoMirrorNpc[] Npcs { get; private set; } = new PsychoMirrorNpc[0];
+        public PsychoMirrorNpcModel[] NpcModels { get; private set; } = new PsychoMirrorNpcModel[0];
         public PsychoMirrorNpcSpawn[] NpcSpawns { get; private set; } = new PsychoMirrorNpcSpawn[0];
         public PsychoMirrorObject[] Objects { get; private set; } = new PsychoMirrorObject[0];
         public PsychoMirrorShop[] Shops { get; private set; } = new PsychoMirrorShop[0];
@@ -172,6 +191,7 @@ namespace Psycho.Mirror
 
         private readonly Dictionary<int, PsychoMirrorItem> itemsById = new Dictionary<int, PsychoMirrorItem>();
         private readonly Dictionary<int, PsychoMirrorNpc> npcsById = new Dictionary<int, PsychoMirrorNpc>();
+        private readonly Dictionary<int, PsychoMirrorNpcModel> npcModelsById = new Dictionary<int, PsychoMirrorNpcModel>();
         private readonly Dictionary<int, PsychoMirrorObject> objectsById = new Dictionary<int, PsychoMirrorObject>();
         private readonly Dictionary<int, PsychoMirrorShop> shopsById = new Dictionary<int, PsychoMirrorShop>();
         private readonly Dictionary<int, PsychoMirrorMapRegion> mapRegionsById = new Dictionary<int, PsychoMirrorMapRegion>();
@@ -185,6 +205,7 @@ namespace Psycho.Mirror
             database.Manifest = ReadJson<PsychoMirrorManifest>(Path.Combine(resolvedRoot, "manifest.json"));
             database.Items = ReadJson<PsychoMirrorItemsFile>(Path.Combine(resolvedRoot, "items.json"))?.items ?? new PsychoMirrorItem[0];
             database.Npcs = ReadJson<PsychoMirrorNpcsFile>(Path.Combine(resolvedRoot, "npcs.json"))?.npcs ?? new PsychoMirrorNpc[0];
+            database.NpcModels = ReadJson<PsychoMirrorNpcModelsFile>(Path.Combine(resolvedRoot, "npc_models.json"))?.models ?? new PsychoMirrorNpcModel[0];
             database.NpcSpawns = ReadJson<PsychoMirrorNpcSpawnsFile>(Path.Combine(resolvedRoot, "npc_spawns.json"))?.spawns ?? new PsychoMirrorNpcSpawn[0];
             database.Objects = ReadJson<PsychoMirrorObjectsFile>(Path.Combine(resolvedRoot, "objects.json"))?.objects ?? new PsychoMirrorObject[0];
             database.Shops = ReadJson<PsychoMirrorShopsFile>(Path.Combine(resolvedRoot, "shops.json"))?.shops ?? new PsychoMirrorShop[0];
@@ -201,6 +222,11 @@ namespace Psycho.Mirror
         public bool TryGetNpc(int id, out PsychoMirrorNpc npc)
         {
             return npcsById.TryGetValue(id, out npc);
+        }
+
+        public bool TryGetNpcModel(int id, out PsychoMirrorNpcModel model)
+        {
+            return npcModelsById.TryGetValue(id, out model);
         }
 
         public bool TryGetObject(int id, out PsychoMirrorObject worldObject)
@@ -221,13 +247,14 @@ namespace Psycho.Mirror
         public string GetSummary()
         {
             string generated = Manifest == null || string.IsNullOrEmpty(Manifest.generatedAtUtc) ? "unknown" : Manifest.generatedAtUtc;
-            return $"Psycho mirror loaded: {Items.Length} items, {Npcs.Length} NPCs, {NpcSpawns.Length} NPC spawns, {Objects.Length} objects, {Shops.Length} shops, {MapRegions.Length} map regions. Generated {generated}.";
+            return $"Psycho mirror loaded: {Items.Length} items, {Npcs.Length} NPCs, {NpcModels.Length} NPC model definitions, {NpcSpawns.Length} NPC spawns, {Objects.Length} objects, {Shops.Length} shops, {MapRegions.Length} map regions. Generated {generated}.";
         }
 
         private void RebuildIndexes()
         {
             itemsById.Clear();
             npcsById.Clear();
+            npcModelsById.Clear();
             objectsById.Clear();
             shopsById.Clear();
             mapRegionsById.Clear();
@@ -240,6 +267,11 @@ namespace Psycho.Mirror
             foreach (PsychoMirrorNpc npc in Npcs)
             {
                 npcsById[npc.id] = npc;
+            }
+
+            foreach (PsychoMirrorNpcModel model in NpcModels)
+            {
+                npcModelsById[model.id] = model;
             }
 
             foreach (PsychoMirrorObject worldObject in Objects)
