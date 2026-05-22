@@ -1568,6 +1568,7 @@ public class Model extends Animable {
 			int j6 = Rasterizer.centerY;
 			int l6 = 0;
 			int i7 = 0;
+			boolean vegetationSway = EnvironmentalEffects.isVegetationObject(newuid);
 			if (i != 0) {
 				l6 = SINE[i];
 				i7 = COSINE[i];
@@ -1576,10 +1577,15 @@ public class Model extends Animable {
 				int k7 = vertex_position_x[j7];
 				int l7 = vertex_position_y[j7];
 				int i8 = vertex_position_z[j7];
+				int localY = l7;
 				if (i != 0) {
 					int j8 = i8 * l6 + k7 * i7 >> 16;
 			i8 = i8 * i7 - k7 * l6 >> 16;
 			k7 = j8;
+				}
+				if (vegetationSway) {
+					k7 += EnvironmentalEffects.vegetationSwayX(newuid, j7, localY, super.modelHeight, j1, l1);
+					i8 += EnvironmentalEffects.vegetationSwayZ(newuid, j7, localY, super.modelHeight, j1, l1);
 				}
 				k7 += j1;
 				l7 += k1;

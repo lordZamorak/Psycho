@@ -43,8 +43,8 @@ public class Configuration {
 	/**
 	 * The client will run in high memory with textures rendering
 	 */
-	public static boolean HIGH_DETAIL = false;
-	public static boolean hdTexturing = false;
+	public static boolean HIGH_DETAIL = true;
+	public static boolean hdTexturing = true;
 
 	public final static String SERVER_HOST() {
 		return "localhost";

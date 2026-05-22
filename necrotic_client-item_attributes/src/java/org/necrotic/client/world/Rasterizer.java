@@ -3272,6 +3272,7 @@ public final class Rasterizer extends DrawingArea {
 			drawHDTexturedTriangle(i, j, k, l, i1, j1, k1, l1, i2, j2, k2, l2, i3, j3, k3, l3, i4, j4, k4);
 			return;
 		}
+		currentMaterialTexture = k4;
 		int ai[] = method371(k4);
 		aBoolean1463 = !aBooleanArray1475[k4];
 		k2 = j2 - k2;
@@ -4026,28 +4027,28 @@ public final class Rasterizer extends DrawingArea {
 		int j8 = j1 >> 23;
 		if (aBoolean1463) {
 			while (k3-- > 0) {
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8);
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8);
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8);
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8);
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8);
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8);
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8);
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8);
 				i = j4;
 				j = l4;
 				l1 += k2;
@@ -4070,7 +4071,7 @@ public final class Rasterizer extends DrawingArea {
 				j8 = j1 >> 23;
 			}
 			for (k3 = i1 - l & 7; k3-- > 0;) {
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8);
 				i += j7;
 				j += l7;
 			}
@@ -4079,49 +4080,49 @@ public final class Rasterizer extends DrawingArea {
 		}
 		while (k3-- > 0) {
 			int i9;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8)) != 0) {
 				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8)) != 0) {
 				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8)) != 0) {
 				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8)) != 0) {
 				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8)) != 0) {
 				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8)) != 0) {
 				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8)) != 0) {
 				ai[k] = i9;
 			}
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8)) != 0) {
 				ai[k] = i9;
 			}
 			k++;
@@ -4148,7 +4149,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 		for (int l3 = i1 - l & 7; l3-- > 0;) {
 			int j9;
-			if ((j9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+			if ((j9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7), j8)) != 0) {
 				ai[k] = j9;
 			}
 			k++;
@@ -4162,6 +4163,7 @@ public final class Rasterizer extends DrawingArea {
 		l1 = 0x7f - l1 << 1;
 		l2 = 0x7f - l2 << 1;
 		l3 = 0x7f - l3 << 1;
+		currentMaterialTexture = tex;
 		int ai[] = method371(tex);
 		aBoolean1463 = !aBooleanArray1475[tex];
 		tx2 = tx1 - tx2;
@@ -4946,49 +4948,49 @@ public final class Rasterizer extends DrawingArea {
 			while (n-- > 0) {
 				int rgb;
 				int l;
-				rgb = ai1[(j & 0x3f80) + (i >> 7)];
+				rgb = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7));
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[(j & 0x3f80) + (i >> 7)];
+				rgb = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7));
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[(j & 0x3f80) + (i >> 7)];
+				rgb = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7));
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[(j & 0x3f80) + (i >> 7)];
+				rgb = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7));
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[(j & 0x3f80) + (i >> 7)];
+				rgb = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7));
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[(j & 0x3f80) + (i >> 7)];
+				rgb = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7));
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[(j & 0x3f80) + (i >> 7)];
+				rgb = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7));
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
 				j += l7;
 				l1 += dl;
-				rgb = ai1[(j & 0x3f80) + (i >> 7)];
+				rgb = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7));
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
@@ -5014,7 +5016,7 @@ public final class Rasterizer extends DrawingArea {
 			for (n = x2 - x1 & 7; n-- > 0;) {
 				int rgb;
 				int l;
-				rgb = ai1[(j & 0x3f80) + (i >> 7)];
+				rgb = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7));
 				l = l1 >> 16;
 				ai[k++] = ((rgb & 0xff00ff) * l & ~0xff00ff) + ((rgb & 0xff00) * l & 0xff0000) >> 8;
 				i += j7;
@@ -5027,7 +5029,7 @@ public final class Rasterizer extends DrawingArea {
 		while (n-- > 0) {
 			int i9;
 			int l;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7))) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -5036,7 +5038,7 @@ public final class Rasterizer extends DrawingArea {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7))) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -5045,7 +5047,7 @@ public final class Rasterizer extends DrawingArea {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7))) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -5054,7 +5056,7 @@ public final class Rasterizer extends DrawingArea {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7))) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -5063,7 +5065,7 @@ public final class Rasterizer extends DrawingArea {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7))) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -5072,7 +5074,7 @@ public final class Rasterizer extends DrawingArea {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7))) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -5081,7 +5083,7 @@ public final class Rasterizer extends DrawingArea {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7))) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -5090,7 +5092,7 @@ public final class Rasterizer extends DrawingArea {
 			i += j7;
 			j += l7;
 			l1 += dl;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
+			if ((i9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7))) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((i9 & 0xff00ff) * l & ~0xff00ff) + ((i9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -5119,7 +5121,7 @@ public final class Rasterizer extends DrawingArea {
 		for (int l3 = x2 - x1 & 7; l3-- > 0;) {
 			int j9;
 			int l;
-			if ((j9 = ai1[(j & 0x3f80) + (i >> 7)]) != 0) {
+			if ((j9 = classicTexturePixel(ai1, (j & 0x3f80) + (i >> 7))) != 0) {
 				l = l1 >> 16;
 				ai[k] = ((j9 & 0xff00ff) * l & ~0xff00ff) + ((j9 & 0xff00) * l & 0xff0000) >> 8;
 				;
@@ -5133,13 +5135,22 @@ public final class Rasterizer extends DrawingArea {
 	}
 
 	private static int textureMipmap;
+	private static int currentMaterialTexture = -1;
 
 	private static int texelPos(int defaultIndex) {
-		int x = defaultIndex & 127;
-		int y = defaultIndex >> 7;
-		x >>= textureMipmap;
-		y >>= textureMipmap;
-		return x + (y << 7 - textureMipmap);
+		return EnvironmentalEffects.texelPos(defaultIndex, textureMipmap, currentMaterialTexture);
+	}
+
+	private static int classicTexturePixel(int src[], int defaultIndex) {
+		return EnvironmentalEffects.materialRgb(src[EnvironmentalEffects.texelPos(defaultIndex, 0, currentMaterialTexture)], currentMaterialTexture);
+	}
+
+	private static int classicTexturePixel(int src[], int defaultIndex, int shade) {
+		return classicTexturePixel(src, defaultIndex) >>> shade;
+	}
+
+	private static int materialPixel(int src[], int defaultIndex) {
+		return EnvironmentalEffects.materialRgb(src[texelPos(defaultIndex)], currentMaterialTexture);
 	}
 
 	public static void drawMaterializedTriangle(int y1, int y2, int y3, int x1, int x2, int x3, int hsl1, int hsl2, int hsl3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int tex) {
@@ -5147,6 +5158,7 @@ public final class Rasterizer extends DrawingArea {
 			method374(y1, y2, y3, x1, x2, x3, hsl1, hsl2, hsl3);
 			return;
 		}
+		currentMaterialTexture = tex;
 		int area = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2) >> 1;
 		if (area < 0) {
 			area = -area;
@@ -5746,49 +5758,49 @@ public final class Rasterizer extends DrawingArea {
 		int rgb1, rgb2;
 		while (k3-- > 0) {
 			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
+			rgb2 = materialPixel(src, (j & 0x3f80) + (i >> 7));
 			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
+			rgb2 = materialPixel(src, (j & 0x3f80) + (i >> 7));
 			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
+			rgb2 = materialPixel(src, (j & 0x3f80) + (i >> 7));
 			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
+			rgb2 = materialPixel(src, (j & 0x3f80) + (i >> 7));
 			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
+			rgb2 = materialPixel(src, (j & 0x3f80) + (i >> 7));
 			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
+			rgb2 = materialPixel(src, (j & 0x3f80) + (i >> 7));
 			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
+			rgb2 = materialPixel(src, (j & 0x3f80) + (i >> 7));
 			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;
 			hsl1 += hsl2;
 			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
+			rgb2 = materialPixel(src, (j & 0x3f80) + (i >> 7));
 			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i = j4;
 			j = l4;
@@ -5811,7 +5823,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 		for (k3 = x2 - x1 & 7; k3-- > 0;) {
 			rgb1 = anIntArray1482[hsl1 >> 8];
-			rgb2 = src[texelPos((j & 0x3f80) + (i >> 7))];
+			rgb2 = materialPixel(src, (j & 0x3f80) + (i >> 7));
 			dst[off++] = (((rgb1 >> 16 & 0xff) * (rgb2 >> 17 & 0x7f) << 11) / 3 & 0xff0000) + (((rgb1 >> 8 & 0xff) * (rgb2 >> 9 & 0x7f) << 3) / 3 & 0xff00) + (((rgb1 & 0xff) * (rgb2 >> 1 & 0x7f) >> 5) / 3 & 0xff);
 			i += j7;
 			j += l7;

@@ -1182,6 +1182,7 @@ public final class WorldController {
 			j = anInt439 * 128 - 1;
 		}
 		anInt448++;
+		EnvironmentalEffects.beginScene(anInt448);
 		anInt458 = Model.SINE[j1];
 		anInt459 = Model.COSINE[j1];
 		anInt460 = Model.SINE[k];

@@ -108,6 +108,7 @@ import org.necrotic.client.renderable.PlayerProjectile;
 import org.necrotic.client.tools.FileUtilities;
 import org.necrotic.client.world.CollisionMap;
 import org.necrotic.client.world.CustomObjects;
+import org.necrotic.client.world.EnvironmentalEffects;
 import org.necrotic.client.world.Model;
 import org.necrotic.client.world.Object1;
 import org.necrotic.client.world.Object2;
@@ -553,7 +554,11 @@ public class Client extends GameRenderer {
 		}
 		GameFrame.setScreenMode(ScreenMode.FIXED);
 		instance = new Client();
-		setLowDetail();
+		if (Configuration.HIGH_DETAIL) {
+			setHighDetail();
+		} else {
+			setLowDetail();
+		}
 		instance.createClientFrame(clientWidth, clientHeight);
 	}
 
@@ -7294,6 +7299,33 @@ public class Client extends GameRenderer {
 		}
 	}
 
+	private void drawPsychoLoginMapBranding() {
+		DrawingArea.drawFilledPixels(0, 0, getScreenWidth(), 70, 0x070a10);
+		DrawingArea.fillRect(0, 0, getScreenWidth(), 70, 0x15100a, 55);
+		DrawingArea.fillRect(0, 68, getScreenWidth(), 1, 0xd1aa63, 160);
+		DrawingArea.fillRect(0, 69, getScreenWidth(), 1, 0x18110a, 110);
+		if (newBoldFont != null) {
+			newBoldFont.drawCenteredString(Configuration.CLIENT_NAME, getScreenWidth() / 2, 43, 0xf8e2ae, 0x261608);
+		}
+		if (newSmallFont != null) {
+			newSmallFont.drawCenteredString("modern hosted test client", getScreenWidth() / 2, 60, 0xb9c4d2, 0);
+		}
+
+		int patchX = Math.max(18, getScreenWidth() - 188);
+		int patchY = Math.max(315, getScreenHeight() - 156);
+		int patchWidth = 137;
+		int patchHeight = 54;
+		DrawingArea.fillRect(patchX + 3, patchY + 4, patchWidth, patchHeight, 0x1c1208, 110);
+		DrawingArea.drawFilledPixels(patchX - 4, patchY - 4, patchWidth + 8, patchHeight + 8, 0xb97936);
+		DrawingArea.drawFilledPixels(patchX, patchY, patchWidth, patchHeight, 0xdca461);
+		DrawingArea.fillRect(patchX + 4, patchY + 4, patchWidth - 8, patchHeight - 8, 0xf0c37d, 96);
+		DrawingArea.fillPixels(patchX, patchWidth, patchHeight, 0x6c421d, patchY);
+		if (newSmallFont != null) {
+			newSmallFont.drawCenteredString("A map of", patchX + patchWidth / 2, patchY + 21, 0x4f3016, 0);
+			newSmallFont.drawCenteredString(Configuration.CLIENT_NAME, patchX + patchWidth / 2, patchY + 38, 0x241407, 0);
+		}
+	}
+
 	private void drawModernAccountSlot(int x, int y, boolean hover, boolean deleting, boolean occupied) {
 		int border = deleting ? 0xbc5959 : hover ? 0xd7ad5d : 0x52647c;
 		DrawingArea.fillRect(x, y, 39, 43, occupied ? 0x111923 : 0x0b1118, occupied || hover ? 150 : 95);
@@ -7313,10 +7345,12 @@ public class Client extends GameRenderer {
 		} else {
 			if (titleAlpha < 250) {
 				cacheSprite[449].drawTransparentSprite(centerX - cacheSprite[449].myWidth / 2, centerY - cacheSprite[449].myHeight / 2, titleAlpha);
+				drawPsychoLoginMapBranding();
 			} else {
 				if(loginMessage1.isEmpty() && loginMessage2.isEmpty()) {
 					handleHovers(false);
 					cacheSprite[449].drawAdvancedSprite(0, 0);
+					drawPsychoLoginMapBranding();
 					//cacheSprite[1177].drawAdvancedSprite(310, 115);
 
 					if(loginHover) {
@@ -10352,17 +10386,18 @@ public class Client extends GameRenderer {
 		Model.center_x = super.mouseX - 4;
 		Model.center_y = super.mouseY - 4;
 		
-		//blue fog: 0x5DA4C9, white: 0xc8c0a8
-		DrawingArea.drawPixels(getScreenHeight(), 0, 0, Settings.get(Settings.Data.FOG) ? 0x5DA4C9 : 0, getScreenWidth());
-		// DrawingArea.drawAlphaGradient(0, 0, getScreenWidth(),
-		// getScreenHeight(), 0x5DA4C9, 0x9DA4C2, 255);
+		drawSceneBackground();
 
 		if (loggedIn) {
 			worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve, Settings.get(Settings.Data.FOG));
+			EnvironmentalEffects.applyTerrainWind(getScreenWidth(), getScreenHeight());
 			worldController.clearObj5Cache();
 		}
 
 		updateEntities();
+		if (loggedIn) {
+			EnvironmentalEffects.applySceneAtmosphere(getScreenWidth(), getScreenHeight(), Settings.get(Settings.Data.FOG));
+		}
 		drawTimers();
 		drawHeadIcon();
 		method37(k2);
@@ -10399,6 +10434,22 @@ public class Client extends GameRenderer {
 			yCameraCurve = k1;
 			xCameraCurve = l1;
 		}
+	}
+
+	private void drawSceneBackground() {
+		int width = getScreenWidth();
+		int height = getScreenHeight();
+		if (Settings.get(Settings.Data.DYNAMIC_ENVIRONMENT)) {
+			DrawingArea.drawPixels(height, 0, 0, 0x080c10, width);
+			int top = Settings.get(Settings.Data.FOG) ? 0x88c1d8 : 0x41576a;
+			int horizon = Settings.get(Settings.Data.FOG) ? 0x547d94 : 0x18222d;
+			DrawingArea.drawAlphaGradient(0, 0, width, Math.max(1, height), top, horizon, 255);
+			DrawingArea.drawAlphaGradient(0, height / 2, width, Math.max(1, height - height / 2), 0x1e271e, 0x06080a, 72);
+			return;
+		}
+
+		//blue fog: 0x5DA4C9, white: 0xc8c0a8
+		DrawingArea.drawPixels(height, 0, 0, Settings.get(Settings.Data.FOG) ? 0x5DA4C9 : 0, width);
 	}
 
 	public int positions[] = new int[2000];

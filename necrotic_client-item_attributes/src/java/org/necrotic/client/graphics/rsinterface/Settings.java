@@ -27,6 +27,7 @@ public class Settings extends CustomInterfaces {
 		NEW_HEALTH_BARS("new_health_bars", "New health bars"),
 		TWEENING("tweening", "Tweening (smoother animations)"),
 		ROOFS_OFF("roofs_off", "Hide roofs"),
+		DYNAMIC_ENVIRONMENT("dynamic_environment", "Dynamic environment"),
 		FOG("fog", "Depth buffer (fog)"),
 		HD_MINIMAP("hd_minimap", "High definition minimap"),
 		OLD_GAMEFRAME("old_gameframe", "Old Gameframe"),
@@ -88,6 +89,7 @@ public class Settings extends CustomInterfaces {
 		set(Data.TWEENING, true);
 		set(Data.HD_MINIMAP, true);
 		set(Data.ROOFS_OFF, true);
+		set(Data.DYNAMIC_ENVIRONMENT, true);
 		Client.instance.variousSettings[166] = 3;
 	}
 
@@ -107,6 +109,9 @@ public class Settings extends CustomInterfaces {
 	}
 
 	public static boolean get(Data data) {
+		if (data == Data.DYNAMIC_ENVIRONMENT && Client.instance.clientSettings.getInt(data.key) == -1) {
+			return true;
+		}
 		return Client.instance.clientSettings.getBool(data.key);
 	}
 
@@ -115,7 +120,7 @@ public class Settings extends CustomInterfaces {
 			for (Setting setting : settingArray) {
 				if (setting.buttonId == button) {
 					System.out.println("Settings button: " + button);
-					set(setting.data, !Client.instance.clientSettings.getBool(setting.data.key));
+					set(setting.data, !get(setting.data));
 					return true;
 				}
 			}
@@ -127,7 +132,7 @@ public class Settings extends CustomInterfaces {
 		for (int index = 0; index < settings.length; index++) {
 			for (int setting = 0; setting < settings[index].length; setting++) {
 				if (settings[index][setting].data == data) {
-					Client.instance.variousSettings[settings[index][setting].config] = Client.instance.clientSettings.getBool(data.key) ? 1 : 0;
+					Client.instance.variousSettings[settings[index][setting].config] = get(data) ? 1 : 0;
 					return;
 				}
 			}
