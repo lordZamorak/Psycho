@@ -272,15 +272,16 @@ public class Shop extends ItemContainer {
 				return;
 			}
 		}*/
-		if(!player.isShopping() || player.isBanking()) {
-			player.getPacketSender().sendInterfaceRemoval();
+		if (slot < 0 || slot >= player.getInventory().getItems().length || amountToSell <= 0) {
 			return;
-		} 
+		}
 		if (UltimateIronmanHandler.hasItemsStored(player) && player.getLocation() != Location.DUNGEONEERING) {
 			player.getPacketSender().sendMessage("<shad=0>@red@You cannot use the shop until you claim your stored Dungeoneering items.");
 			return;
 		}
 		Item itemToSell = player.getInventory().getItems()[slot];
+		if(itemToSell == null || itemToSell.getId() <= 0 || itemToSell.getAmount() <= 0)
+			return;
 		if(!itemToSell.sellable()) {
 			player.getPacketSender().sendMessage("This item cannot be sold.");
 			return;
@@ -293,27 +294,25 @@ public class Shop extends ItemContainer {
 			return;
 		if(this.full(itemToSell.getId()))
 			return;
-		if(player.getInventory().getAmount(itemToSell.getId()) < amountToSell)
-			amountToSell = player.getInventory().getAmount(itemToSell.getId());
-		if(amountToSell == 0)
+		int itemId = itemToSell.getId();
+		boolean stackable = itemToSell.getDefinition().isStackable();
+		int availableAmount = stackable ? itemToSell.getAmount() : player.getInventory().getAmount(itemId);
+		if(availableAmount < amountToSell)
+			amountToSell = availableAmount;
+		if(amountToSell <= 0)
 			return;
 		/*	if(amountToSell > 300) {
 			String s = ItemDefinition.forId(itemToSell.getId()).getName().endsWith("s") ? ItemDefinition.forId(itemToSell.getId()).getName() : ItemDefinition.forId(itemToSell.getId()).getName() + "s";
 			player.getPacketSender().sendMessage("You can only sell 300 "+s+" at a time."); 
 			return;
 		}*/
-		int itemId = itemToSell.getId();
 		boolean customShop = this.getCurrency().getId() == -1;
 		boolean inventorySpace = customShop ? true : false;
 		if(!customShop) {
-			if(!itemToSell.getDefinition().isStackable()) {
-				if(!player.getInventory().contains(this.getCurrency().getId()))
-					inventorySpace = true;
-			}
-			if(player.getInventory().getFreeSlots() <= 0 && player.getInventory().getAmount(this.getCurrency().getId()) > 0)
-				inventorySpace = true;
-			if(player.getInventory().getFreeSlots() > 0 || player.getInventory().getAmount(this.getCurrency().getId()) > 0)
-				inventorySpace = true;
+			inventorySpace = player.getInventory().contains(this.getCurrency().getId())
+					|| player.getInventory().getFreeSlots() > 0
+					|| !stackable
+					|| amountToSell >= itemToSell.getAmount();
 		}
 		int itemValue = 0;
 		if(getCurrency().getId() > 0) {
@@ -330,45 +329,42 @@ public class Shop extends ItemContainer {
 		if(itemValue <= 0) {
 			itemValue = 1;
 		}
-		for (int i = amountToSell; i > 0; i--) {
-			itemToSell = new Item(itemId);
-			if(this.full(itemToSell.getId()) || !player.getInventory().contains(itemToSell.getId()) || !player.isShopping())
-				break;
-			if(!itemToSell.getDefinition().isStackable()) {
-				if(inventorySpace) {
-					super.switchItem(player.getInventory(), this, itemToSell.getId(), -1);
-					if(!customShop) {
-						if (ReducedSellPrice.forId(itemToSell.getId()) != null) {
-							player.getInventory().add(new Item(getCurrency().getId(), ReducedSellPrice.forId(itemToSell.getId()).getSellValue()), false);
-						} else {
-							player.getInventory().add(new Item(getCurrency().getId(), itemValue), false);
-						}
-					} else {
-						//Return points here
-					}
-				} else {
-					player.getPacketSender().sendMessage("Please free some inventory space before doing that.");
-					break;
-				}
-			} else {
-				if(inventorySpace) {
-					super.switchItem(player.getInventory(), this, itemToSell.getId(), amountToSell);
-					if (!customShop) {
-						if (itemToSell.reducedPrice()) {
-							player.getInventory().add(new Item(getCurrency().getId(), ReducedSellPrice.forId(itemToSell.getId()).getSellValue() * amountToSell), false);
-						} else {
-							player.getInventory().add(new Item(getCurrency().getId(), itemValue * amountToSell), false);
-						}
-					} else {
-						// Return points here
-					}
-					break;
-				} else {
-					player.getPacketSender().sendMessage("Please free some inventory space before doing that.");
-					break;
+		if(!inventorySpace) {
+			player.getPacketSender().sendMessage("Please free some inventory space before doing that.");
+			return;
+		}
+
+		ReducedSellPrice reducedSellPrice = ReducedSellPrice.forId(itemId);
+		int sellValue = reducedSellPrice != null ? reducedSellPrice.getSellValue() : itemValue;
+		if(stackable) {
+			int amountBefore = player.getInventory().getAmount(itemId);
+			player.getInventory().delete(new Item(itemId, amountToSell), slot, false);
+			int soldAmount = amountBefore - player.getInventory().getAmount(itemId);
+			if(soldAmount > 0) {
+				super.add(new Item(itemId, soldAmount), false);
+				if(!customShop) {
+					long payout = (long) sellValue * soldAmount;
+					player.getInventory().add(new Item(getCurrency().getId(), (int) Math.min(payout, Integer.MAX_VALUE)), false);
 				}
 			}
-			amountToSell--;
+		} else {
+			for(int i = 0; i < amountToSell; i++) {
+				if(this.full(itemId) || !player.getInventory().contains(itemId) || !player.isShopping())
+					break;
+				int deleteSlot = i == 0 ? slot : player.getInventory().getSlot(itemId);
+				if(deleteSlot < 0 || deleteSlot >= player.getInventory().getItems().length || player.getInventory().getItems()[deleteSlot].getId() != itemId)
+					break;
+				int amountBefore = player.getInventory().getAmount(itemId);
+				player.getInventory().delete(new Item(itemId, 1), deleteSlot, false);
+				int soldAmount = amountBefore - player.getInventory().getAmount(itemId);
+				if(soldAmount <= 0)
+					break;
+				super.add(new Item(itemId, soldAmount), false);
+				if(!customShop) {
+					long payout = (long) sellValue * soldAmount;
+					player.getInventory().add(new Item(getCurrency().getId(), (int) Math.min(payout, Integer.MAX_VALUE)), false);
+				}
+			}
 		}
 		if(customShop) {
 			PlayerPanel.refreshPanel(player);
