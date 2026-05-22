@@ -21,6 +21,81 @@ namespace Psycho.Cache
             }
         }
 
+        public static PsychoMapObjects DecodeObjects(byte[] data, int regionX, int regionY)
+        {
+            if (data == null || data.Length < 2)
+            {
+                throw new ArgumentException("Object map data is missing or too short.", nameof(data));
+            }
+
+            bool couldHaveMarker = data[0] == 0 || data[0] == 1;
+            if (couldHaveMarker)
+            {
+                try
+                {
+                    return DecodeObjects(data, regionX, regionY, true);
+                }
+                catch (InvalidOperationException)
+                {
+                    return DecodeObjects(data, regionX, regionY, false);
+                }
+            }
+
+            return DecodeObjects(data, regionX, regionY, false);
+        }
+
+        private static PsychoMapObjects DecodeObjects(byte[] data, int regionX, int regionY, bool consumeFormatMarker)
+        {
+            PsychoMapObjects objects = new PsychoMapObjects
+            {
+                RegionX = regionX,
+                RegionY = regionY
+            };
+
+            PsychoCacheBuffer stream = new PsychoCacheBuffer(data);
+            objects.Osrs = consumeFormatMarker && stream.ReadUnsignedByte() == 1;
+            int objectId = -1;
+
+            while (true)
+            {
+                int objectDelta = stream.ReadUnsignedSmart();
+                if (objectDelta == 0)
+                {
+                    return objects;
+                }
+
+                objectId += objectDelta;
+                int packedLocation = 0;
+
+                while (true)
+                {
+                    int locationDelta = stream.ReadUnsignedSmart();
+                    if (locationDelta == 0)
+                    {
+                        break;
+                    }
+
+                    packedLocation += locationDelta - 1;
+                    int localY = packedLocation & 0x3f;
+                    int localX = packedLocation >> 6 & 0x3f;
+                    int plane = packedLocation >> 12;
+                    int attributes = stream.ReadUnsignedByte();
+
+                    objects.Placements.Add(new PsychoMapObjectPlacement
+                    {
+                        ObjectId = objectId + (objects.Osrs ? 70000 : 0),
+                        LocalX = localX,
+                        LocalY = localY,
+                        WorldX = regionX * 64 + localX,
+                        WorldY = regionY * 64 + localY,
+                        Plane = plane,
+                        Type = attributes >> 2,
+                        Orientation = attributes & 3
+                    });
+                }
+            }
+        }
+
         private static PsychoMapLandscape DecodeLandscape(byte[] data, int regionX, int regionY, bool consumeFormatMarker)
         {
             PsychoMapLandscape landscape = new PsychoMapLandscape

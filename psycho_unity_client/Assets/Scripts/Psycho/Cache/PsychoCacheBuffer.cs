@@ -52,6 +52,13 @@ namespace Psycho.Cache
             return peek < 128 ? ReadUnsignedByte() - 64 : ReadUnsignedShort() - 49152;
         }
 
+        public int ReadUnsignedSmart()
+        {
+            EnsureAvailable(1);
+            int peek = data[Position] & 0xff;
+            return peek < 128 ? ReadUnsignedByte() : ReadUnsignedShort() - 32768;
+        }
+
         private void EnsureAvailable(int byteCount)
         {
             if (Position < 0 || Position + byteCount > data.Length)

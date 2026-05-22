@@ -32,6 +32,54 @@ namespace Psycho.Editor
             ImportObjectModelSample();
         }
 
+        public static Material LoadOrCreateVertexColorMaterial()
+        {
+            EnsureGeneratedFolders();
+            return CreateOrUpdateVertexColorMaterial();
+        }
+
+        public static bool TryImportModelAsset(PsychoCacheStore store, int modelId, out Mesh mesh, out string assetPath, out string source, out string error)
+        {
+            EnsureGeneratedFolders();
+            mesh = null;
+            assetPath = $"{GeneratedRoot}/model_{modelId}.asset";
+            source = "generated";
+            error = null;
+
+            mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
+            if (mesh != null)
+            {
+                return true;
+            }
+
+            source = "standard";
+            byte[] bytes = store.ReadGzipFile(StandardModelCacheIndex, modelId);
+            if (bytes == null)
+            {
+                source = "osrs";
+                bytes = store.ReadGzipFile(OsrsModelCacheIndex, modelId);
+            }
+
+            if (bytes == null)
+            {
+                error = "model payload missing from standard and OSRS caches";
+                return false;
+            }
+
+            try
+            {
+                PsychoCacheModel decoded = PsychoModelDecoder.Decode(bytes, modelId);
+                Mesh decodedMesh = PsychoModelMeshBuilder.BuildMesh(decoded);
+                mesh = CreateOrUpdateMeshAsset(decodedMesh, assetPath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                return false;
+            }
+        }
+
         private static ImportResult ImportObjectModels(int maxModels, bool buildPreviewScene)
         {
             EnsureGeneratedFolders();

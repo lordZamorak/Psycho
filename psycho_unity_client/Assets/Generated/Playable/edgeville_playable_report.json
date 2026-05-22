@@ -1,0 +1,15 @@
+{
+    "generatedAtUtc": "2026-05-22T16:35:07.6392445Z",
+    "regionId": 12342,
+    "regionX": 48,
+    "regionY": 54,
+    "landscapeFile": 624,
+    "objectFile": 625,
+    "decodedObjectPlacements": 4283,
+    "placedObjects": 1400,
+    "skippedObjects": 2883,
+    "importedModels": 36,
+    "missingDefinitions": 0,
+    "missingModels": 0,
+    "fallbackObjects": 0
+}

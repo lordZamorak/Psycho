@@ -228,13 +228,21 @@ public final class UnityMirrorExportTool {
 	}
 
 	private static boolean writeObjectDefinition(JsonWriter writer, GameObjectDefinition object, int requestedId, String source) throws IOException {
-		if (object == null || object.getName() == null || object.getName().trim().length() <= 1 || "null".equalsIgnoreCase(object.getName())) {
+		if (object == null) {
+			return false;
+		}
+
+		boolean hasName = object.getName() != null
+				&& object.getName().trim().length() > 1
+				&& !"null".equalsIgnoreCase(object.getName());
+		boolean hasModel = object.modelArray != null && object.modelArray.length > 0;
+		if (!hasName && !hasModel) {
 			return false;
 		}
 
 		writer.beginObject();
 		writer.name("id").value(requestedId);
-		writer.name("name").value(clean(object.getName()));
+		writer.name("name").value(hasName ? clean(object.getName()) : "Cache object " + requestedId);
 		writer.name("source").value(source);
 		writer.name("sizeX").value(object.getSizeX());
 		writer.name("sizeY").value(object.getSizeY());
