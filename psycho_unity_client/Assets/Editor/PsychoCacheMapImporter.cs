@@ -56,7 +56,7 @@ namespace Psycho.Editor
             }
 
             EditorSceneManager.OpenScene(PreviewScenePath, OpenSceneMode.Single);
-            Camera camera = UnityEngine.Object.FindObjectOfType<Camera>();
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
             if (camera == null)
             {
                 throw new InvalidOperationException("Edgeville landscape preview scene does not contain a camera.");

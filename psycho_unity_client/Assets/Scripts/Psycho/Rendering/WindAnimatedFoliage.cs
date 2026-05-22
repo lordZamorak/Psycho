@@ -10,12 +10,17 @@ namespace Psycho.Rendering
         [SerializeField] private float spatialFrequency = 1.4f;
         [SerializeField] private float gustStrength = 0.42f;
         [SerializeField] private float gustScale = 0.18f;
+        [SerializeField] private float turbulence = 0.045f;
+        [SerializeField] private Vector2 windDirection = new Vector2(1f, 0.35f);
 
         private Mesh mesh;
         private Vector3[] baseVertices;
         private Vector3[] workingVertices;
-        private float maxHeight = 1f;
+        private float minHeight;
+        private float heightRange = 1f;
         private float phase;
+        private Vector3 primaryWind;
+        private Vector3 crossWind;
 
         private void Awake()
         {
@@ -26,11 +31,20 @@ namespace Psycho.Rendering
             baseVertices = mesh.vertices;
             workingVertices = new Vector3[baseVertices.Length];
             phase = transform.position.x * 0.73f + transform.position.z * 0.41f;
+            minHeight = float.MaxValue;
+            float maxHeight = float.MinValue;
 
             foreach (Vector3 vertex in baseVertices)
             {
+                minHeight = Mathf.Min(minHeight, vertex.y);
                 maxHeight = Mathf.Max(maxHeight, vertex.y);
             }
+
+            heightRange = Mathf.Max(0.001f, maxHeight - minHeight);
+
+            Vector2 direction = windDirection.sqrMagnitude <= 0.001f ? Vector2.right : windDirection.normalized;
+            primaryWind = new Vector3(direction.x, 0f, direction.y);
+            crossWind = new Vector3(-direction.y, 0f, direction.x);
         }
 
         private void Update()
@@ -40,10 +54,11 @@ namespace Psycho.Rendering
             for (int i = 0; i < baseVertices.Length; i++)
             {
                 Vector3 vertex = baseVertices[i];
-                float heightWeight = Mathf.Clamp01(vertex.y / maxHeight);
-                float wave = Mathf.Sin(time + vertex.y * spatialFrequency + vertex.x * 0.33f) * amplitude * heightWeight * gust;
-                vertex.x += wave;
-                vertex.z += wave * 0.45f;
+                float heightWeight = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((vertex.y - minHeight) / heightRange));
+                float alongWind = vertex.x * primaryWind.x + vertex.z * primaryWind.z;
+                float wave = Mathf.Sin(time + alongWind * spatialFrequency + vertex.y * 0.82f) * amplitude * heightWeight * gust;
+                float flutter = Mathf.Sin(time * 0.73f + (vertex.x + vertex.z) * spatialFrequency * 0.62f) * amplitude * turbulence * heightWeight * gust;
+                vertex += primaryWind * wave + crossWind * flutter;
                 workingVertices[i] = vertex;
             }
 

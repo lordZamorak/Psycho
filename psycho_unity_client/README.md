@@ -13,7 +13,7 @@ This is the next-generation Unity client track for Psycho. It is intentionally s
 
 This scaffold includes:
 
-- A Unity 2022.3 project shell.
+- A Unity 6000.4.7f1 project shell.
 - C# protocol helpers matching the existing Java client login handshake.
 - A procedural prototype scene builder for sky, wind-driven grass, trees, and water.
 - Runtime scripts for animated water and foliage.
@@ -25,14 +25,14 @@ This scaffold includes:
 Use Unity Hub or run:
 
 ```powershell
-& "C:\Program Files\Unity 2022.3.0f1\Editor\Unity.exe" -projectPath "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\psycho_unity_client"
+& "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -projectPath "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\psycho_unity_client"
 ```
 
 ## Build/Compile Check
 
 ```powershell
 cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
-& "C:\Program Files\Unity 2022.3.0f1\Editor\Unity.exe" -batchmode -quit -projectPath ".\psycho_unity_client" -logFile ".\run-logs\unity-compile.log"
+& "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -batchmode -quit -projectPath ".\psycho_unity_client" -logFile ".\run-logs\unity-compile.log"
 ```
 
 ## Sync Java Definitions Into Unity

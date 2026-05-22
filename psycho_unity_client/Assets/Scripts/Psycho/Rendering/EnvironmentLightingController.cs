@@ -19,7 +19,7 @@ namespace Psycho.Rendering
 
         private void Reset()
         {
-            sun = FindObjectOfType<Light>();
+            sun = FindAnyObjectByType<Light>();
         }
 
         private void Awake()

@@ -90,7 +90,7 @@ namespace Psycho.Editor
             }
 
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            Camera camera = UnityEngine.Object.FindObjectOfType<Camera>();
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
             if (camera == null)
             {
                 throw new InvalidOperationException("Playable Edgeville scene does not contain a camera.");

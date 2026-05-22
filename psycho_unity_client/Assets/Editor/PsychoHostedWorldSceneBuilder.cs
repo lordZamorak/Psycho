@@ -38,6 +38,26 @@ namespace Psycho.Editor
         private const string HillMaterialPath = GeneratedRoot + "/Psycho_Hosted_Hills.mat";
         private const string MountainMaterialPath = GeneratedRoot + "/Psycho_Hosted_Mountains.mat";
         private const string CloudMaterialPath = GeneratedRoot + "/Psycho_Hosted_Clouds.mat";
+        private static readonly string[] WindResponsiveObjectNameFragments =
+        {
+            "tree",
+            "oak",
+            "willow",
+            "maple",
+            "yew",
+            "evergreen",
+            "palm",
+            "bush",
+            "fern",
+            "plant",
+            "reed",
+            "root",
+            "ivy",
+            "branch",
+            "leaves",
+            "hedge",
+            "sapling"
+        };
 
         [MenuItem("Psycho/Build Hosted Test World Scene")]
         public static void BuildHostedTestWorldScene()
@@ -79,7 +99,7 @@ namespace Psycho.Editor
             }
 
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            Camera camera = UnityEngine.Object.FindObjectOfType<Camera>();
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
             if (camera == null)
             {
                 throw new InvalidOperationException("Hosted test world scene does not contain a camera.");
@@ -227,8 +247,10 @@ namespace Psycho.Editor
                 }
 
                 string objectName = hasDefinition ? definition.name : "Unknown cache object";
+                bool windResponsive = IsWindResponsiveObject(definition);
+                bool addedWind = false;
                 GameObject placed = new GameObject($"Object {placement.ObjectId} - {objectName}");
-                placed.isStatic = true;
+                placed.isStatic = !windResponsive;
                 placed.transform.SetParent(root, false);
                 placed.transform.position = TilePosition(landscape, placement.LocalX, placement.LocalY);
                 placed.transform.rotation = Quaternion.Euler(0f, placement.Orientation * 90f, 0f);
@@ -257,10 +279,16 @@ namespace Psycho.Editor
                         }
 
                         GameObject modelObject = new GameObject($"model_{modelId}");
-                        modelObject.isStatic = true;
+                        modelObject.isStatic = !windResponsive;
                         modelObject.transform.SetParent(placed.transform, false);
                         modelObject.AddComponent<MeshFilter>().sharedMesh = mesh;
                         modelObject.AddComponent<MeshRenderer>().sharedMaterial = material;
+                        if (windResponsive)
+                        {
+                            AddWindToWorldObject(modelObject, mesh, placement.ObjectId);
+                            addedWind = true;
+                        }
+
                         addedMeshes++;
                     }
                 }
@@ -272,9 +300,42 @@ namespace Psycho.Editor
                 }
 
                 AddInteractionAndCollision(placed, definition, placement);
+                if (addedWind)
+                {
+                    context.Report.windAnimatedObjects++;
+                }
+
                 placedInRegion++;
                 context.Report.placedObjects++;
             }
+        }
+
+        private static bool IsWindResponsiveObject(PsychoMirrorObject definition)
+        {
+            if (definition == null || string.IsNullOrWhiteSpace(definition.name))
+            {
+                return false;
+            }
+
+            string name = definition.name.ToLowerInvariant();
+            foreach (string fragment in WindResponsiveObjectNameFragments)
+            {
+                if (name.Contains(fragment))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static void AddWindToWorldObject(GameObject target, Mesh mesh, int objectId)
+        {
+            float meshHeight = mesh == null ? 2f : Mathf.Max(0.1f, mesh.bounds.size.y);
+            float amplitude = Mathf.Clamp(meshHeight * 0.018f, 0.035f, 0.20f);
+            float speed = 0.82f + Deterministic01(objectId * 67 + 41) * 0.58f;
+            float gust = 0.32f + Deterministic01(objectId * 73 + 29) * 0.24f;
+            AddWind(target, amplitude, speed, gust, 0.95f, 0.07f);
         }
 
         private static void AddInteractionAndCollision(GameObject placed, PsychoMirrorObject definition, PsychoMapObjectPlacement placement)
@@ -804,12 +865,12 @@ namespace Psycho.Editor
         {
             HostedMaterials materials = new HostedMaterials
             {
-                Grass = LoadOrCreateSolidMaterial(GrassMaterialPath, new Color(0.20f, 0.43f, 0.17f, 1f), 0.18f),
-                Flowers = LoadOrCreateSolidMaterial(FlowerMaterialPath, new Color(0.84f, 0.70f, 0.34f, 1f), 0.22f),
-                Reeds = LoadOrCreateSolidMaterial(ReedMaterialPath, new Color(0.34f, 0.46f, 0.18f, 1f), 0.16f),
-                Water = LoadOrCreateSolidMaterial(WaterMaterialPath, new Color(0.06f, 0.28f, 0.39f, 0.48f), 0.72f),
-                Hills = LoadOrCreateSolidMaterial(HillMaterialPath, new Color(0.25f, 0.37f, 0.22f, 1f), 0.26f),
-                Mountains = LoadOrCreateSolidMaterial(MountainMaterialPath, new Color(0.34f, 0.37f, 0.39f, 1f), 0.42f),
+                Grass = LoadOrCreateTexturedMaterial(GrassMaterialPath, "Grass", new Color(0.31f, 0.50f, 0.24f, 1f), 0.22f, new Vector2(7.5f, 7.5f), 0.55f),
+                Flowers = LoadOrCreateTexturedMaterial(FlowerMaterialPath, "Organic", new Color(0.86f, 0.72f, 0.36f, 1f), 0.24f, new Vector2(4.5f, 4.5f), 0.48f),
+                Reeds = LoadOrCreateTexturedMaterial(ReedMaterialPath, "Leaf", new Color(0.40f, 0.52f, 0.23f, 1f), 0.18f, new Vector2(3.5f, 5.0f), 0.62f),
+                Water = LoadOrCreateTexturedMaterial(WaterMaterialPath, "Water", new Color(0.08f, 0.34f, 0.48f, 0.58f), 0.82f, new Vector2(2.2f, 5.4f), 0.78f),
+                Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.30f, 0.42f, 0.26f, 1f), 0.28f, new Vector2(5.0f, 5.0f), 0.50f),
+                Mountains = LoadOrCreateTexturedMaterial(MountainMaterialPath, "Mountain", new Color(0.42f, 0.42f, 0.39f, 1f), 0.44f, new Vector2(2.5f, 2.5f), 0.64f),
                 Cloud = LoadOrCreateUnlitMaterial(CloudMaterialPath, new Color(0.92f, 0.95f, 0.96f, 0.76f))
             };
             ConfigureTransparent(materials.Water);
@@ -867,6 +928,30 @@ namespace Psycho.Editor
             return material;
         }
 
+        private static Material LoadOrCreateTexturedMaterial(string assetPath, string textureKey, Color tint, float smoothness, Vector2 tiling, float normalScale)
+        {
+            Material material = LoadOrCreateSolidMaterial(assetPath, tint, smoothness);
+            Texture2D albedo = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Resources/PsychoMaterials/Psycho_{textureKey}_Albedo_2K.png");
+            Texture2D normal = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Resources/PsychoMaterials/Psycho_{textureKey}_Normal_2K.png");
+
+            if (albedo != null)
+            {
+                material.mainTexture = albedo;
+                material.mainTextureScale = tiling;
+            }
+
+            if (normal != null && material.HasProperty("_BumpMap"))
+            {
+                material.SetTexture("_BumpMap", normal);
+                material.SetTextureScale("_BumpMap", tiling);
+                material.SetFloat("_BumpScale", normalScale);
+                material.EnableKeyword("_NORMALMAP");
+            }
+
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
         private static Material LoadOrCreateUnlitMaterial(string assetPath, Color color)
         {
             Material material = AssetDatabase.LoadAssetAtPath<Material>(assetPath);
@@ -904,14 +989,25 @@ namespace Psycho.Editor
             material.renderQueue = (int)RenderQueue.Transparent;
         }
 
-        private static void AddWind(GameObject target, float amplitude, float speed, float gustStrength)
+        private static void AddWind(GameObject target, float amplitude, float speed, float gustStrength, float spatialFrequency = 1.4f, float turbulence = 0.045f)
         {
             WindAnimatedFoliage wind = target.AddComponent<WindAnimatedFoliage>();
             SerializedObject windObject = new SerializedObject(wind);
-            windObject.FindProperty("amplitude").floatValue = amplitude;
-            windObject.FindProperty("speed").floatValue = speed;
-            windObject.FindProperty("gustStrength").floatValue = gustStrength;
+            SetSerializedFloat(windObject, "amplitude", amplitude);
+            SetSerializedFloat(windObject, "speed", speed);
+            SetSerializedFloat(windObject, "gustStrength", gustStrength);
+            SetSerializedFloat(windObject, "spatialFrequency", spatialFrequency);
+            SetSerializedFloat(windObject, "turbulence", turbulence);
             windObject.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void SetSerializedFloat(SerializedObject serializedObject, string propertyName, float value)
+        {
+            SerializedProperty property = serializedObject.FindProperty(propertyName);
+            if (property != null)
+            {
+                property.floatValue = value;
+            }
         }
 
         private static float Deterministic01(int seed)
@@ -992,6 +1088,7 @@ namespace Psycho.Editor
             public int missingModels;
             public int fallbackObjects;
             public int npcSpawns;
+            public int windAnimatedObjects;
         }
     }
 }
