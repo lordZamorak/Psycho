@@ -280,6 +280,7 @@ namespace Psycho.Editor
             Vector3 spawn = TilePosition(landscape, 21, 37);
             player.transform.position = spawn + Vector3.up * 1.15f;
             player.AddComponent<PsychoPlayableCharacter>();
+            player.AddComponent<PsychoCharacterGroundGuard>();
 
             GameObject body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
             body.name = "Body Preview";

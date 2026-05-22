@@ -79,6 +79,7 @@ namespace Psycho.Editor
                 BuildLighting();
                 BuildPlayer(context);
                 BuildNetworkBootstrap();
+                ValidateTerrainCollisionCoverage(context);
             }
 
             WriteReport(context.Report);
@@ -819,6 +820,7 @@ namespace Psycho.Editor
 
             player.transform.position = WorldTilePosition(context, 3093, 3493) + Vector3.up * 1.15f;
             player.AddComponent<PsychoPlayableCharacter>();
+            player.AddComponent<PsychoCharacterGroundGuard>();
             player.AddComponent<PsychoInteractionController>();
 
             GameObject body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
@@ -899,6 +901,64 @@ namespace Psycho.Editor
             localX = worldX - regionX * 64;
             localY = worldY - regionY * 64;
             return context.Landscapes.TryGetValue(regionId, out landscape) && localX >= 0 && localX < 64 && localY >= 0 && localY < 64;
+        }
+
+        private static void ValidateTerrainCollisionCoverage(HostedBuildContext context)
+        {
+            RaycastHit[] hits = new RaycastHit[32];
+            Physics.SyncTransforms();
+
+            foreach (PsychoMapLandscape landscape in context.Landscapes.Values)
+            {
+                for (int x = 0; x < 64; x++)
+                {
+                    for (int y = 0; y < 64; y++)
+                    {
+                        context.Report.terrainCollisionSamples++;
+                        Vector3 tile = TilePosition(landscape, x, y);
+                        Vector3 origin = new Vector3(tile.x, tile.y + 128f, tile.z);
+                        int hitCount = Physics.RaycastNonAlloc(origin, Vector3.down, hits, 256f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+                        if (!HasTerrainHit(hits, hitCount))
+                        {
+                            context.Report.terrainCollisionMisses++;
+                        }
+                    }
+                }
+            }
+
+            if (context.Report.terrainCollisionMisses > 0)
+            {
+                Debug.LogWarning($"Hosted terrain collision audit found {context.Report.terrainCollisionMisses} missing tile-center hits across {context.Report.terrainCollisionSamples} samples.");
+            }
+            else
+            {
+                Debug.Log($"Hosted terrain collision audit passed {context.Report.terrainCollisionSamples} tile-center samples.");
+            }
+        }
+
+        private static bool HasTerrainHit(RaycastHit[] hits, int hitCount)
+        {
+            for (int i = 0; i < hitCount; i++)
+            {
+                Collider hitCollider = hits[i].collider;
+                if (hitCollider == null)
+                {
+                    continue;
+                }
+
+                if (hitCollider.gameObject.name.Contains("Terrain"))
+                {
+                    return true;
+                }
+
+                MeshCollider meshCollider = hitCollider as MeshCollider;
+                if (meshCollider != null && meshCollider.sharedMesh != null && meshCollider.sharedMesh.name.StartsWith("psycho_map_region_"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static void CreateWaterStrip(Transform root, string name, HostedBuildContext context, int worldX, int worldY, float width, float depth, Material material)
@@ -1297,6 +1357,8 @@ namespace Psycho.Editor
             public int cacheNpcVisuals;
             public int fallbackNpcVisuals;
             public int missingNpcModels;
+            public int terrainCollisionSamples;
+            public int terrainCollisionMisses;
         }
     }
 }

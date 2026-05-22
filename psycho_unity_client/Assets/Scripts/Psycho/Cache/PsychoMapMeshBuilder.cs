@@ -6,27 +6,31 @@ namespace Psycho.Cache
 {
     public static class PsychoMapMeshBuilder
     {
+        private const int RegionTileCount = 64;
+        private const int TerrainVertexCount = RegionTileCount + 1;
         private const float DefaultTileScale = 1f;
         private const float DefaultHeightScale = 1f / 128f;
 
         public static Mesh BuildTerrainMesh(PsychoMapLandscape landscape, int plane = 0, float tileScale = DefaultTileScale, float heightScale = DefaultHeightScale)
         {
-            List<Vector3> vertices = new List<Vector3>(64 * 64);
-            List<Color32> colors = new List<Color32>(64 * 64);
-            List<int> triangles = new List<int>(63 * 63 * 6);
+            List<Vector3> vertices = new List<Vector3>(TerrainVertexCount * TerrainVertexCount);
+            List<Color32> colors = new List<Color32>(TerrainVertexCount * TerrainVertexCount);
+            List<int> triangles = new List<int>(RegionTileCount * RegionTileCount * 6);
 
-            for (int x = 0; x < 64; x++)
+            for (int x = 0; x <= RegionTileCount; x++)
             {
-                for (int y = 0; y < 64; y++)
+                for (int y = 0; y <= RegionTileCount; y++)
                 {
-                    vertices.Add(new Vector3(x * tileScale, -landscape.Heights[plane, x, y] * heightScale, y * tileScale));
-                    colors.Add(TileColor(landscape, plane, x, y));
+                    int sampleX = Mathf.Min(x, RegionTileCount - 1);
+                    int sampleY = Mathf.Min(y, RegionTileCount - 1);
+                    vertices.Add(new Vector3(x * tileScale, -landscape.Heights[plane, sampleX, sampleY] * heightScale, y * tileScale));
+                    colors.Add(TileColor(landscape, plane, sampleX, sampleY));
                 }
             }
 
-            for (int x = 0; x < 63; x++)
+            for (int x = 0; x < RegionTileCount; x++)
             {
-                for (int y = 0; y < 63; y++)
+                for (int y = 0; y < RegionTileCount; y++)
                 {
                     int southwest = VertexIndex(x, y);
                     int southeast = VertexIndex(x + 1, y);
@@ -55,7 +59,7 @@ namespace Psycho.Cache
 
         private static int VertexIndex(int x, int y)
         {
-            return x * 64 + y;
+            return x * TerrainVertexCount + y;
         }
 
         private static Color32 TileColor(PsychoMapLandscape landscape, int plane, int x, int y)
