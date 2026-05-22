@@ -826,23 +826,22 @@ public class Construction {
 
 		if (p.getRights() == PlayerRights.DEVELOPER)
 			return null;
-		if (p.getSkillManager().getCurrentLevel(Skill.CONSTRUCTION) < f.getLevel()) {
-			return "You need a Construction level of at least " + f.getLevel() + " to build this.";
-		}
 		for (int i1 = 0; i1 < f.getRequiredItems().length; i1++) {
 			if (p.getInventory().getAmount(f.getRequiredItems()[i1][0]) < f.getRequiredItems()[i1][1]) {
 				String s = ItemDefinition.forId(f.getRequiredItems()[i1][0]).getName();
 				if (!s.endsWith("s") && f.getRequiredItems()[i1][1] > 1)
 					s = s + "s";
-				return "You need " + f.getRequiredItems()[i1][1] + "x " + s + " to build this.";
+				return "You do not have " + f.getRequiredItems()[i1][1] + "x " + s + " to build this.";
 			}
+		}
+		if (p.getSkillManager().getCurrentLevel(Skill.CONSTRUCTION) < f.getLevel()) {
+			return "Player does not meet requirements to build this.";
 		}
 		if (f.getAdditionalSkillRequirements() != null) {
 			for (int ii = 0; ii < f.getAdditionalSkillRequirements().length; ii++) {
 				if (p.getSkillManager().getCurrentLevel(Skill.forId(f.getAdditionalSkillRequirements()[ii][0])) < f
 						.getAdditionalSkillRequirements()[ii][1]) {
-					return "You need a " + Skill.forId(f.getAdditionalSkillRequirements()[ii][0]).getFormatName() + " of at least " + f.getAdditionalSkillRequirements()[ii][1] + ""
-							+ " to build this.";
+					return "Player does not meet requirements to build this.";
 				}
 			}
 		}
@@ -1985,7 +1984,7 @@ public class Construction {
 					|| r.getType() == ConstructionData.BUILDABLE
 					|| r.getType() == ConstructionData.GARDEN
 					|| r.getType() == ConstructionData.FORMAL_GARDEN) {
-				p.getPacketSender().sendMessage("You need a foundation to build there");
+				p.getPacketSender().sendMessage("You do not have a foundation to build there.");
 				return;
 			}
 		}

@@ -16,6 +16,7 @@ import com.ruse.world.content.CustomObjects;
 import com.ruse.world.content.Sounds;
 import com.ruse.world.content.Sounds.Sound;
 import com.ruse.world.content.randomevents.ShootingStar;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.world.content.skill.mining.MiningData.Ores;
 import com.ruse.world.content.skill.mining.MiningData.Pickaxe;
 import com.ruse.world.content.skill.smithing.Smelting;
@@ -40,9 +41,8 @@ public class Mining {
 		player.setInteractingObject(oreObject);
 		player.setPositionToFace(oreObject.getPosition());
 		final Ores o = MiningData.forRock(oreObject.getId());
-		final boolean giveGem = o != Ores.Rune_essence && o != Ores.Pure_essence;
-		final int reqCycle = o == Ores.Runite ? 6 + Misc.getRandom(2) : Misc.getRandom(o.getTicks() - 1);
 		if (o != null) {
+			final boolean giveGem = o != Ores.Rune_essence && o != Ores.Pure_essence;
 			final int pickaxe = MiningData.getPickaxe(player);
 			final int miningLevel = player.getSkillManager().getCurrentLevel(Skill.MINING);
 			if (pickaxe > 0) {
@@ -185,13 +185,13 @@ public class Mining {
 						});
 						TaskManager.submit(player.getCurrentTask());
 					} else {
-						player.getPacketSender().sendMessage("You need a Mining level of at least "+p.getReq()+" to use this pickaxe.");
+						SkillRequirementMessages.doesNotMeet(player, "use this mining pickaxe");
 					}
 				} else {
-					player.getPacketSender().sendMessage("You need a Mining level of at least "+o.getLevelReq()+" to mine this rock.");
+					SkillRequirementMessages.doesNotMeet(player, "mine this rock");
 				}
 			} else {
-				player.getPacketSender().sendMessage("You don't have a pickaxe to mine this rock with.");
+				SkillRequirementMessages.missingMiningPickaxe(player);
 			}
 		}
 	}

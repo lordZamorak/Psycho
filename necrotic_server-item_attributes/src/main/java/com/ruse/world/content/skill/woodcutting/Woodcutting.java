@@ -14,6 +14,7 @@ import com.ruse.world.content.Sounds;
 import com.ruse.world.content.Sounds.Sound;
 import com.ruse.world.content.randomevents.EvilTree;
 import com.ruse.world.content.randomevents.EvilTree.EvilTreeDef;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.world.content.skill.firemaking.Logdata;
 import com.ruse.world.content.skill.firemaking.Logdata.logData;
 import com.ruse.model.entity.character.player.Player;
@@ -29,14 +30,18 @@ public class Woodcutting {
 		}
 		player.setPositionToFace(object.getPosition());
 		final int objId = object.getId();
-		final WoodcuttingData.Hatchet h = WoodcuttingData.Hatchet.forId(WoodcuttingData.getHatchet(player));
+		final WoodcuttingData.Trees t = WoodcuttingData.Trees.forId(objId);
+		final EvilTreeDef t2 = EvilTreeDef.forId(objId);
+		final boolean isEvilTree = t2 != null;
+		final int hatchetId = WoodcuttingData.getHatchet(player);
+		final WoodcuttingData.Hatchet h = WoodcuttingData.Hatchet.forId(hatchetId);
 		if (h != null) {
 			if (player.getSkillManager().getCurrentLevel(Skill.WOODCUTTING) >= h.getRequiredLevel()) {
-				final WoodcuttingData.Trees t = WoodcuttingData.Trees.forId(objId);
-				final EvilTreeDef t2 = EvilTreeDef.forId(objId);
-				final boolean isEvilTree = t2 != null;
-				
 				if (isEvilTree) {
+					if (player.getSkillManager().getCurrentLevel(Skill.WOODCUTTING) < t2.getWoodcuttingLevel()) {
+						SkillRequirementMessages.doesNotMeet(player, "cut this tree");
+						return;
+					}
 					//player.getPacketSender().sendMessage("Evil tree method.");
 					EvilTree.handleCutWood(player, object, h, t2);
 					return;
@@ -114,14 +119,14 @@ public class Woodcutting {
 						});
 						TaskManager.submit(player.getCurrentTask());
 					} else {
-						player.getPacketSender().sendMessage("You need a Woodcutting level of at least "+t.getReq()+" to cut this tree.");
+						SkillRequirementMessages.doesNotMeet(player, "cut this tree");
 					}
 				}
 			} else {
-				player.getPacketSender().sendMessage("You do not have a hatchet which you have the required Woodcutting level to use.");
+				SkillRequirementMessages.doesNotMeet(player, "use this woodcutting axe/hatchet");
 			}
 		} else {
-			player.getPacketSender().sendMessage("You do not have a hatchet that you can use.");
+			SkillRequirementMessages.missingWoodcuttingAxe(player);
 		}
 	}
 	

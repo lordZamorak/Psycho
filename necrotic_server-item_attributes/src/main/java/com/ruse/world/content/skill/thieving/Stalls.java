@@ -4,6 +4,7 @@ import com.ruse.model.Animation;
 import com.ruse.model.Skill;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class Stalls {
@@ -20,7 +21,7 @@ public class Stalls {
 		if(!player.getClickDelay().elapsed(2500))
 			return;
 		if(player.getSkillManager().getMaxLevel(Skill.THIEVING) < lvlreq) {
-			player.getPacketSender().sendMessage("You need a Thieving level of at least " + lvlreq + " to steal from this stall.");
+			SkillRequirementMessages.doesNotMeet(player, "steal from this stall");
 			return;
 		}
 		player.performAnimation(new Animation(881));

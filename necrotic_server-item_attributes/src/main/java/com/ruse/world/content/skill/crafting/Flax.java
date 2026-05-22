@@ -7,6 +7,7 @@ import com.ruse.model.Direction;
 import com.ruse.model.Skill;
 import com.ruse.model.input.impl.EnterAmountToSpin;
 import com.ruse.model.entity.character.player.Player;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 
 public class Flax {
 	
@@ -16,7 +17,7 @@ public class Flax {
 		player.getPacketSender().sendInterfaceRemoval();
 		player.getSkillManager().stopSkilling();
 		if(!player.getInventory().contains(1779)) {
-			player.getPacketSender().sendMessage("You do not have any Flax to spin.");
+			SkillRequirementMessages.missingItem(player, FLAX_ID);
 			return;
 		}
 		player.setInputHandling(new EnterAmountToSpin());
@@ -34,6 +35,7 @@ public class Flax {
 			@Override
 			public void execute() {
 				if(!player.getInventory().contains(FLAX_ID)) {
+					SkillRequirementMessages.missingItem(player, FLAX_ID);
 					stop();
 					return;
 				}

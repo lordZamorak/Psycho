@@ -10,6 +10,7 @@ import com.ruse.model.GraphicHeight;
 import com.ruse.model.Items;
 import com.ruse.model.Skill;
 import com.ruse.model.entity.character.player.Player;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 
 public class Magic {
 
@@ -230,11 +231,11 @@ public class Magic {
 						player.getPacketSender().sendMessage("You can only enchant this jewelry using a level-"+enc.getELevel()+" enchantment spell!");
 					}
 				} else {
-					player.getPacketSender().sendMessage("You do not have enough runes to cast this spell.");
+					SkillRequirementMessages.missingRequirement(player, "the required runes to cast this spell");
 				}
 			}
 		} else {
-			player.getPacketSender().sendMessage("You need a Magic level of at least "+enc.getLevelReq()+" to cast this spell.");	
+			SkillRequirementMessages.doesNotMeet(player, "cast this spell");
 		}
 	}
 

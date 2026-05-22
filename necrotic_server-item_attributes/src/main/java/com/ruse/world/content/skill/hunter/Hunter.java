@@ -13,6 +13,7 @@ import com.ruse.model.container.impl.Equipment;
 import com.ruse.model.movement.MovementQueue;
 import com.ruse.util.Misc;
 import com.ruse.world.content.CustomObjects;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.world.content.skill.hunter.Trap.TrapState;
 import com.ruse.model.entity.character.npc.NPC;
 import com.ruse.model.entity.character.player.Player;
@@ -211,13 +212,17 @@ public class Hunter {
 		int id = 10006;
 		if (trap instanceof BoxTrap) {
 			id = 10008;
+		}
+		if (!client.getInventory().contains(id)) {
+			SkillRequirementMessages.missingItem(client, id);
+			return;
+		}
+		if (trap instanceof BoxTrap) {
 			if(client.getSkillManager().getCurrentLevel(Skill.HUNTER) < 60) {
-				client.getPacketSender().sendMessage("You need a Hunter level of at least 60 to lay this trap.");
+				SkillRequirementMessages.doesNotMeet(client, "lay this trap");
 				return;
 			}
 		}
-		if (!client.getInventory().contains(id))
-			return;
 		if (canLay(client)) {
 			register(trap);
 			client.getClickDelay().reset();
@@ -230,7 +235,7 @@ public class Hunter {
 				client.getInventory().delete(10006, 1);
 			} else if (trap instanceof BoxTrap) {
 				if (client.getSkillManager().getCurrentLevel(Skill.HUNTER) < 27) {
-					client.getPacketSender().sendMessage("You need a Hunter level of at least 27 to do this.");
+					SkillRequirementMessages.doesNotMeet(client, "lay this trap");
 					return;
 				}
 				client.getPacketSender().sendMessage("You set up a box trap..");

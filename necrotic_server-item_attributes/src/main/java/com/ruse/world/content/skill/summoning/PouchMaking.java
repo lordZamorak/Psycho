@@ -4,12 +4,12 @@ import com.ruse.engine.task.Task;
 import com.ruse.engine.task.TaskManager;
 import com.ruse.model.Animation;
 import com.ruse.model.Graphic;
-import com.ruse.model.Item;
 import com.ruse.model.Skill;
 import com.ruse.model.input.impl.EnterAmountToInfuse;
 import com.ruse.util.Misc;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.world.content.transportation.TeleportHandler;
 import com.ruse.model.entity.character.player.Player;
 
@@ -32,33 +32,27 @@ public class PouchMaking {
 		if(pouch == null)
 			return false;
 		player.getPacketSender().sendClientRightClickRemoval();
-		if (player.getSkillManager().getMaxLevel(Skill.SUMMONING) >= pouch.getLevelRequired()) {
-			if (player.getInventory().contains(POUCH_ID))  {
-				if (player.getInventory().getAmount(SHARD_ID) >= pouch.getShardsRequired()) {
-					if (player.getInventory().contains(pouch.getCharmId())) {
-						if (player.getInventory().contains(pouch.getsecondIngredientId())) {
-							return true;
-						} else {
-							String msg = new Item(pouch.getsecondIngredientId()).getDefinition().getName().endsWith("s") ? "some" : "a";
-							player.getPacketSender().sendMessage("You need "+msg+" "+ new Item(pouch.getsecondIngredientId()).getDefinition().getName() + " for this pouch.");
-							return false;
-						}
-					} else {
-						player.getPacketSender().sendMessage("You need a " + new Item(pouch.getCharmId()).getDefinition().getName() + " for this pouch.");
-						return false;
-					}
-				} else {
-					player.getPacketSender().sendMessage("You need " + pouch.getShardsRequired() + " Spirit shards to create this pouch.");
-					return false;
-				}
-			} else {
-				player.getPacketSender().sendMessage("You need to have an empty pouch to do this.");
-				return false;
-			}
-		} else {
-			player.getPacketSender().sendMessage("You need a Summoning level of at least "+ pouch.getLevelRequired() + " to create this pouch");
+		if (!player.getInventory().contains(POUCH_ID))  {
+			SkillRequirementMessages.missingRequirement(player, "an empty summoning pouch");
 			return false;
 		}
+		if (player.getInventory().getAmount(SHARD_ID) < pouch.getShardsRequired()) {
+			SkillRequirementMessages.missingRequirement(player, pouch.getShardsRequired() + " spirit shards");
+			return false;
+		}
+		if (!player.getInventory().contains(pouch.getCharmId())) {
+			SkillRequirementMessages.missingItem(player, pouch.getCharmId());
+			return false;
+		}
+		if (!player.getInventory().contains(pouch.getsecondIngredientId())) {
+			SkillRequirementMessages.missingItem(player, pouch.getsecondIngredientId());
+			return false;
+		}
+		if (player.getSkillManager().getMaxLevel(Skill.SUMMONING) < pouch.getLevelRequired()) {
+			SkillRequirementMessages.doesNotMeet(player, "create this pouch");
+			return false;
+		}
+		return true;
 	}
 
 	public static void infusePouches(final Player player, final int amount) {

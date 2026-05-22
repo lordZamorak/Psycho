@@ -6,6 +6,7 @@ import com.ruse.model.Graphic;
 import com.ruse.model.Hit;
 import com.ruse.model.Skill;
 import com.ruse.util.Misc;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.npc.NPC;
 import com.ruse.model.entity.character.player.Player;
 
@@ -32,13 +33,13 @@ public class Pickpocket {
 			return;
 		}
 		
-		if (player.getSkillManager().getMaxLevel(Skill.THIEVING) < data.getRequirement()) {
-			player.getPacketSender().sendMessage("You need a thieving level of "+data.getRequirement()+" to steal from there.");
+		if (player.getInventory().isFull()) {
+			player.getPacketSender().sendMessage("You need some inventory space to hold anything more.");
 			return;
 		}
 		
-		if (player.getInventory().isFull()) {
-			player.getPacketSender().sendMessage("You need some inventory space to hold anything more.");
+		if (player.getSkillManager().getMaxLevel(Skill.THIEVING) < data.getRequirement()) {
+			SkillRequirementMessages.doesNotMeet(player, "pickpocket this NPC");
 			return;
 		}
 		
@@ -77,4 +78,3 @@ public class Pickpocket {
     }
 	
 }
-

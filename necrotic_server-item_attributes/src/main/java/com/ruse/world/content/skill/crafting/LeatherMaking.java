@@ -9,6 +9,7 @@ import com.ruse.model.input.impl.EnterAmountOfLeatherToCraft;
 import com.ruse.util.Misc;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class LeatherMaking {
@@ -85,18 +86,18 @@ public class LeatherMaking {
 	public static void craftLeather(final Player player, final leatherData l, final int amount) {
 		player.getPacketSender().sendInterfaceRemoval();
 		if (l.getLeather() == player.getSelectedSkillingItem()) {
-			if (player.getSkillManager().getCurrentLevel(Skill.CRAFTING) < l.getLevel()) {
-				player.getPacketSender().sendMessage("You need a Crafting level of at least "+ l.getLevel() +" to make this.");
-				return;
-			}
 			if (!player.getInventory().contains(1734)) {
-				player.getPacketSender().sendMessage("You need some thread to make this.");
+				SkillRequirementMessages.missingRequirement(player, "some thread");
 				player.getPacketSender().sendInterfaceRemoval();
 				return;
 			}
 			if (player.getInventory().getAmount(l.getLeather()) < l.getHideAmount()) {
-				player.getPacketSender().sendMessage("You need some "+ ItemDefinition.forId(l.getLeather()).getName().toLowerCase() +" to make this item.");
+				SkillRequirementMessages.missingRequirement(player, "enough " + SkillRequirementMessages.itemName(l.getLeather()));
 				player.getPacketSender().sendInterfaceRemoval();
+				return;
+			}
+			if (player.getSkillManager().getCurrentLevel(Skill.CRAFTING) < l.getLevel()) {
+				SkillRequirementMessages.doesNotMeet(player, "craft this leather item");
 				return;
 			}
 			player.setCurrentTask(new Task(2, player, true) {

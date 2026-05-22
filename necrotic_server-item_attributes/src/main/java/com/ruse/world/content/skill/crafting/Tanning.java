@@ -1,8 +1,8 @@
 package com.ruse.world.content.skill.crafting;
 
-import com.ruse.model.definitions.ItemDefinition;
 import com.ruse.model.input.impl.EnterAmountOfHidesToTan;
 import com.ruse.model.entity.character.player.Player;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 
 public class Tanning {
 
@@ -27,7 +27,7 @@ public class Tanning {
 				if(amount > invAmt)
 					amount = invAmt;
 				if(amount == 0) {
-					player.getPacketSender().sendMessage("You do not have any "+ItemDefinition.forId(t.getHideId()).getName()+" to tan.");
+					SkillRequirementMessages.missingItem(player, t.getHideId());
 					return;
 				}
 				if (amount > t.getAmount(buttonId))
@@ -52,7 +52,7 @@ public class Tanning {
 							player.getInventory().delete(995, price);
 						player.getInventory().add(leather, amount);
 					} else {
-						player.getPacketSender().sendMessage("You do not have any hides to tan.");
+						SkillRequirementMessages.missingRequirement(player, "hides to tan");
 						return;
 					}
 				} else {

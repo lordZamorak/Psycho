@@ -14,6 +14,7 @@ import com.ruse.util.Misc;
 import com.ruse.world.World;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.npc.NPC;
 import com.ruse.model.entity.character.npc.NPCMovementCoordinator.Coordinator;
 import com.ruse.model.entity.character.player.Player;
@@ -178,16 +179,16 @@ public class PuroPuro {
 		ImpData implingData = ImpData.forId(imp.getId());
 		if(player.getInterfaceId() > 0 || player == null || imp == null || implingData == null || !imp.isRegistered() || !player.getClickDelay().elapsed(2000))
 			return;
-		if(player.getSkillManager().getCurrentLevel(Skill.HUNTER) < implingData.levelReq) {
-			player.getPacketSender().sendMessage("You need a Hunter level of at least "+implingData.levelReq+" to catch this impling.");
-			return;
-		}
 		if(!player.getInventory().contains(10010) && !player.getEquipment().contains(10010)) {
-			player.getPacketSender().sendMessage("You do not have any net to catch this impling with.");
+			SkillRequirementMessages.missingRequirement(player, "a butterfly net");
 			return;
 		}
 		if(!player.getInventory().contains(11260)) {
-			player.getPacketSender().sendMessage("You do not have any empty jars to hold this impling with.");
+			SkillRequirementMessages.missingItem(player, 11260);
+			return;
+		}
+		if(player.getSkillManager().getCurrentLevel(Skill.HUNTER) < implingData.levelReq) {
+			SkillRequirementMessages.doesNotMeet(player, "catch this impling");
 			return;
 		}
 		player.performAnimation(new Animation(6605));

@@ -11,6 +11,7 @@ import com.ruse.world.World;
 import com.ruse.world.content.PlayerLogs;
 import com.ruse.world.content.Sounds;
 import com.ruse.world.content.Sounds.Sound;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class EquipmentMaking {
@@ -23,7 +24,7 @@ public class EquipmentMaking {
 	public static void handleAnvil(Player player) {
 		String bar = searchForBars(player);
 		if(bar == null) {
-			player.getPacketSender().sendMessage("You do not have any bars in your inventory to smith.");
+			SkillRequirementMessages.missingRequirement(player, "smithing bars");
 			return;
 		} else {
 			switch(bar.toLowerCase()) {
@@ -81,16 +82,16 @@ public class EquipmentMaking {
 		}
 		player.getSkillManager().stopSkilling();
 		if(!player.getInventory().contains(2347)) {
-			player.getPacketSender().sendMessage("You need a Hammer to smith items.");
+			SkillRequirementMessages.missingItem(player, 2347);
 			player.getPacketSender().sendInterfaceRemoval();
 			return;
 		}
 		if(player.getInventory().getAmount(bar.getId()) < bar.getAmount() || x <= 0) {
-			player.getPacketSender().sendMessage("You do not have enough bars to smith this item.");
+			SkillRequirementMessages.missingRequirement(player, "enough bars to smith this item");
 			return;
 		}
 		if(SmithingData.getData(itemToSmith, "reqLvl") > player.getSkillManager().getCurrentLevel(Skill.SMITHING)) {
-			player.getPacketSender().sendMessage("You need a Smithing level of at least "+SmithingData.getData(itemToSmith, "reqLvl")+" to make this item.");
+			SkillRequirementMessages.doesNotMeet(player, "smith this item");
 			return;
 		}		
 		

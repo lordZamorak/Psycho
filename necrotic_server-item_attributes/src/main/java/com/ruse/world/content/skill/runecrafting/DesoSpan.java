@@ -15,6 +15,7 @@ import com.ruse.model.container.impl.Equipment;
 import com.ruse.model.movement.MovementQueue;
 import com.ruse.util.Misc;
 import com.ruse.world.World;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.npc.NPC;
 import com.ruse.model.entity.character.player.Player;
 
@@ -91,7 +92,7 @@ public class DesoSpan {
 				MovementQueue.stepAway(player);
 			player.setEntityInteraction(n);
 			if(player.getSkillManager().getCurrentLevel(Skill.RUNECRAFTING) < energyType.levelReq) {
-				player.getPacketSender().sendMessage("You need a Runecrafting level of at least "+energyType.levelReq+" to siphon this energy source.");
+				SkillRequirementMessages.doesNotMeet(player, "siphon this energy source");
 				return;
 			}
 			if(!player.getInventory().contains(ENERGY_FRAGMENT) && player.getInventory().getFreeSlots() == 0) {

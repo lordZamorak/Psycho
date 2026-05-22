@@ -5,6 +5,7 @@ import com.ruse.model.Skill;
 import com.ruse.model.definitions.ItemDefinition;
 import com.ruse.model.input.impl.EnterAmountOfBarsToSmelt;
 import com.ruse.util.Misc;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class SmithingData {
@@ -66,12 +67,8 @@ public class SmithingData {
 	 * Checks if a player has required stats to smelt certain barId
 	 */
 	public static boolean canSmelt(Player player, int barId) {
-		if (getLevelReq(barId) > player.getSkillManager().getCurrentLevel(Skill.SMITHING)) {
-			player.getPacketSender().sendMessage("You need a Smithing level of at least " + getLevelReq(barId) + " to make this bar.");
-			return false;
-		}
 		if(!hasOres(player, barId)) {
-			player.getPacketSender().sendMessage("You do not have the required ores to make this bar.");
+			SkillRequirementMessages.missingRequirement(player, "the required ores to make this bar");
 			String requirement = null;
 			
 			if(player.getOres()[0] > 0 && player.getOres()[1] > 0 && player.getOres()[1] != 453) {
@@ -86,6 +83,10 @@ public class SmithingData {
 			if(requirement != null)
 				player.getPacketSender().sendMessage(requirement);
 
+			return false;
+		}
+		if (getLevelReq(barId) > player.getSkillManager().getCurrentLevel(Skill.SMITHING)) {
+			SkillRequirementMessages.doesNotMeet(player, "smelt this bar");
 			return false;
 		}
 		return true;

@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 
 import com.ruse.model.Skill;
 import com.ruse.model.entity.character.player.Player;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 
 /**
  * Data for the cooking skill.
@@ -128,12 +129,12 @@ public enum CookingData {
 		CookingData fish = forFish(id);
 		if(fish == null)
 			return false;
-		if(player.getSkillManager().getMaxLevel(Skill.COOKING) < fish.getLevelReq()) {
-			player.getPacketSender().sendMessage("You need a Cooking level of atleast "+fish.getLevelReq()+" to cook this.");
+		if(!player.getInventory().contains(id)) {
+			SkillRequirementMessages.missingItem(player, id);
 			return false;
 		}
-		if(!player.getInventory().contains(id)) {
-			player.getPacketSender().sendMessage("You have run out of fish.");
+		if(player.getSkillManager().getMaxLevel(Skill.COOKING) < fish.getLevelReq()) {
+			SkillRequirementMessages.doesNotMeet(player, "cook this");
 			return false;
 		}
 		return true;

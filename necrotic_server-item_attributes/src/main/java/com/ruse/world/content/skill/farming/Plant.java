@@ -12,6 +12,7 @@ import com.ruse.model.definitions.ItemDefinition;
 import com.ruse.util.Misc;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class Plant {
@@ -164,8 +165,7 @@ public class Plant {
 				}
 			});
 		} else {
-			String name = ItemDefinition.forId(FarmingPatches.values()[patch].harvestItem).getName();
-			player.getPacketSender().sendMessage("You need " + Misc.anOrA(name) + " " + name + " to harvest these plants.");
+			SkillRequirementMessages.missingItem(player, FarmingPatches.values()[patch].harvestItem);
 		}
 	}
 

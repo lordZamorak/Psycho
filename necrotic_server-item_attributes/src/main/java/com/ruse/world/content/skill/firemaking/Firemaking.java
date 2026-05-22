@@ -14,6 +14,7 @@ import com.ruse.world.content.CustomObjects;
 import com.ruse.world.content.Sounds;
 import com.ruse.world.content.Sounds.Sound;
 import com.ruse.world.content.skill.dungeoneering.Dungeoneering;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 /**
@@ -42,8 +43,10 @@ public class Firemaking {
 			}
 		}
 		final Logdata.logData logData = Logdata.getLogData(player, log);
-		if(logData == null)
+		if(logData == null) {
+			SkillRequirementMessages.missingRequirement(player, "burnable logs");
 			return;
+		}
 		player.getMovementQueue().reset();
 		if(objectExists && addingToFire)
 			MovementQueue.stepAway(player);
@@ -52,7 +55,7 @@ public class Firemaking {
 		player.getSkillManager().stopSkilling();
 		int cycle = 2 + Misc.getRandom(3);
 		if (player.getSkillManager().getMaxLevel(Skill.FIREMAKING) < logData.getLevel()) {
-			player.getPacketSender().sendMessage("You need a Firemaking level of atleast "+logData.getLevel()+" to light this.");
+			SkillRequirementMessages.doesNotMeet(player, "light this fire");
 			return;
 		}
 		if(!addingToFire) {

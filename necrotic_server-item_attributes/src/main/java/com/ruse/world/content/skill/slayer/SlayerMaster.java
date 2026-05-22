@@ -3,6 +3,7 @@ package com.ruse.world.content.skill.slayer;
 import com.ruse.model.Position;
 import com.ruse.model.Skill;
 import com.ruse.world.content.PlayerPanel;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public enum SlayerMaster {
@@ -46,7 +47,7 @@ public enum SlayerMaster {
 	public static void changeSlayerMaster(Player player, SlayerMaster master) {
 		player.getPacketSender().sendInterfaceRemoval();
 		if(player.getSkillManager().getCurrentLevel(Skill.SLAYER) < master.getSlayerReq()) {
-			player.getPacketSender().sendMessage("You need a Slayer level of at least "+master.getSlayerReq()+" to use " +master.toString().toLowerCase()+".");
+			SkillRequirementMessages.doesNotMeet(player, "use this Slayer master");
 			player.getPacketSender().sendInterfaceRemoval();
 			return;
 		}

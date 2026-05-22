@@ -17,6 +17,7 @@ import com.ruse.world.World;
 import com.ruse.model.entity.character.GroundItemManager;
 import com.ruse.model.entity.character.npc.NPC;
 import com.ruse.model.entity.character.player.Player;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 
 /**
  * The summoning skill is based upon creating pouches that contain
@@ -47,6 +48,10 @@ public class Summoning {
 		}
 		if(!login && !player.getLastSummon().elapsed(1000))
 			return;
+		if(!login && !player.getInventory().contains(familiar.getPouchId())) {
+			SkillRequirementMessages.missingItem(player, familiar.getPouchId());
+			return;
+		}
 		if(getFamiliar() != null && !renew && !login) {
 			player.getPacketSender().sendMessage("You already have a familiar.");
 			return;
@@ -99,7 +104,7 @@ public class Summoning {
 
 			player.getLastSummon().reset();
 		} else {
-			player.getPacketSender().sendMessage("You need a Summoning level of at least " + familiar.levelRequired + " to summon this familiar.");
+			SkillRequirementMessages.doesNotMeet(player, "summon this familiar");
 		}
 	}
 

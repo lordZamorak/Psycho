@@ -10,6 +10,7 @@ import com.ruse.model.input.impl.EnterAmountOfGemsToCut;
 import com.ruse.util.Misc;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class Gems {
@@ -80,7 +81,7 @@ public class Gems {
 		if(data == null)
 			return;
 		if (player.getSkillManager().getMaxLevel(Skill.CRAFTING) < data.getLevelReq()) {
-			player.getPacketSender().sendMessage("You need a Crafting level of atleast "+ data.getLevelReq() +" to craft this gem.");
+			SkillRequirementMessages.doesNotMeet(player, "craft this gem");
 			return;
 		}
 		player.setSelectedSkillingItem(gem);
@@ -100,6 +101,7 @@ public class Gems {
 			@Override
 			public void execute() {
 				if(!player.getInventory().contains(uncutGem)) {
+					SkillRequirementMessages.missingItem(player, uncutGem);
 					stop();
 					return;
 				}

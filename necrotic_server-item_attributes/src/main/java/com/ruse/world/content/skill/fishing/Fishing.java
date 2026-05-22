@@ -8,6 +8,7 @@ import com.ruse.model.definitions.ItemDefinition;
 import com.ruse.util.Misc;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class Fishing {
@@ -108,27 +109,19 @@ public class Fishing {
 			p.getSkillManager().stopSkilling();
 			return;
 		}
+		if (!p.getInventory().contains(s.getEquipment()) && !p.getSkillManager().skillCape(Skill.FISHING)) {
+			SkillRequirementMessages.missingItem(p, s.getEquipment());
+			return;
+		}
+		if (s.getBait() != -1 && !p.getInventory().contains(s.getBait())) {
+			SkillRequirementMessages.missingRequirement(p, "the required fishing bait: " + SkillRequirementMessages.itemName(s.getBait()));
+			p.performAnimation(new Animation(65535));
+			return;
+		}
 		if (p.getSkillManager().getCurrentLevel(Skill.FISHING) >= s.getLevelReq()[0]) {
-			if (p.getInventory().contains(s.getEquipment()) || (p.getSkillManager().skillCape(Skill.FISHING))) {
-				if (s.getBait() != -1) {
-					if (p.getInventory().contains(s.getBait())) {
-						startFishing(p, s);
-					} else {
-						String baitName = ItemDefinition.forId(s.getBait()).getName();
-						if(baitName.contains("Feather") || baitName.contains("worm"))
-							baitName += "s";
-						p.getPacketSender().sendMessage("You need some "+baitName+" to fish here.");
-						p.performAnimation(new Animation(65535));
-					}
-				} else {
-					startFishing(p, s);
-				}
-			} else {
-				String def = ItemDefinition.forId(s.getEquipment()).getName().toLowerCase();
-				p.getPacketSender().sendMessage("You need "+Misc.anOrA(def)+" "+def+" to fish here.");
-			}
+			startFishing(p, s);
 		} else {
-			p.getPacketSender().sendMessage("You need a fishing level of at least "+s.getLevelReq()[0]+" to fish here.");
+			SkillRequirementMessages.doesNotMeet(p, "fish here");
 		}
 	}
 
@@ -147,7 +140,8 @@ public class Fishing {
 					stop();
 					return;
 				}
-				if(!p.getInventory().contains(s.getBait())) {
+				if(s.getBait() != -1 && !p.getInventory().contains(s.getBait())) {
+					SkillRequirementMessages.missingRequirement(p, "the required fishing bait: " + SkillRequirementMessages.itemName(s.getBait()));
 					stop();
 					return;
 				}

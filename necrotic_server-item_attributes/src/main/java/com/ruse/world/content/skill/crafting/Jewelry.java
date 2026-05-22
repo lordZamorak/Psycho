@@ -6,8 +6,7 @@ import com.ruse.model.Animation;
 import com.ruse.model.Item;
 import com.ruse.model.Items;
 import com.ruse.model.Skill;
-import com.ruse.model.definitions.ItemDefinition;
-import com.ruse.util.Misc;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class Jewelry {
@@ -15,11 +14,11 @@ public class Jewelry {
 	public static void stringAmulet(Player player, final int itemUsed, final int usedWith) {
 		final int amuletId = (itemUsed == 1759 ? usedWith : itemUsed);
 		if (!player.getInventory().contains(1759)) {
-			player.getPacketSender().sendMessage("You need a ball of wool in order to string your "+ItemDefinition.forId(amuletId).getName().toLowerCase()+".");
+			SkillRequirementMessages.missingItem(player, 1759);
 			return;
 		}
 		if (!player.getInventory().contains(amuletId)) {
-			player.getPacketSender().sendMessage("You need an amulet to utilize your ball of wool.");
+			SkillRequirementMessages.missingRequirement(player, "an unstrung amulet");
 			return;
 		}
 		for (final AmuletData a : AmuletData.values()) {
@@ -71,18 +70,16 @@ public class Jewelry {
 		}
 		player.getPacketSender().sendInterfaceRemoval();
 
-		if (player.getSkillManager().getCurrentLevel(Skill.CRAFTING) < level) {
-			player.getPacketSender()
-					.sendMessage("You need a Crafting level of at least " +level+ " to mould this.");
-			return;
-		}
 		if (!player.getInventory().contains(2357)) {
-			player.getPacketSender().sendMessage("You need a gold bar to mould this item.");
+			SkillRequirementMessages.missingItem(player, 2357);
 			return;
 		}
 		if (!player.getInventory().contains(required)) {
-			player.getPacketSender().sendMessage("You need "+Misc.anOrA(ItemDefinition.forId(required).getName())
-			+" "+ItemDefinition.forId(required).getName().toLowerCase() +" to mould this item.");
+			SkillRequirementMessages.missingItem(player, required);
+			return;
+		}
+		if (player.getSkillManager().getCurrentLevel(Skill.CRAFTING) < level) {
+			SkillRequirementMessages.doesNotMeet(player, "mould this item");
 			return;
 		}
 		player.setCurrentTask(new Task(2, player, true) {

@@ -9,6 +9,7 @@ import com.ruse.model.definitions.ItemDefinition;
 import com.ruse.util.Misc;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class Herblore {
@@ -23,7 +24,7 @@ public class Herblore {
 		}
 		if (player.getInventory().contains(herb.getGrimyHerb())) {
 			if (player.getSkillManager().getCurrentLevel(Skill.HERBLORE) < herb.getLevelReq()) {
-				player.getPacketSender().sendMessage("You need a Herblore level of at least " + herb.getLevelReq() + " to clean this leaf.");
+				SkillRequirementMessages.doesNotMeet(player, "clean this herb");
 				return false;
 			}
 			player.getInventory().delete(herb.getGrimyHerb(), 1);
@@ -40,11 +41,16 @@ public class Herblore {
 		final UnfinishedPotions unf = UnfinishedPotions.forId(herbId);
 		if (unf == null)
 			return false;
-		if (player.getSkillManager().getCurrentLevel(Skill.HERBLORE) < unf.getLevelReq()) {
-			player.getPacketSender().sendMessage("You need a Herblore level of at least " + unf.getLevelReq() + " to make this potion.");
+		if (!player.getInventory().contains(VIAL)) {
+			SkillRequirementMessages.missingRequirement(player, "a vial of water");
 			return false;
 		}
-		if (!(player.getInventory().contains(VIAL) && player.getInventory().contains(unf.getHerbNeeded()))) {
+		if (!player.getInventory().contains(unf.getHerbNeeded())) {
+			SkillRequirementMessages.missingItem(player, unf.getHerbNeeded());
+			return false;
+		}
+		if (player.getSkillManager().getCurrentLevel(Skill.HERBLORE) < unf.getLevelReq()) {
+			SkillRequirementMessages.doesNotMeet(player, "make this potion");
 			return false;
 		}
 		player.getSkillManager().stopSkilling();
@@ -78,7 +84,7 @@ public class Herblore {
 	public static boolean finishPotion(final Player player, final int itemUsed, final int usedWith) {
 		final FinishedPotions pot = FinishedPotions.forId(itemUsed, usedWith);
 		if (pot == FinishedPotions.MISSING_INGREDIENTS) {
-			player.getPacketSender().sendMessage("You don't have the required items to make this potion.");
+			SkillRequirementMessages.missingRequirement(player, "the required Herblore ingredients");
 			return false;
 		}
 		if (pot == null) {
@@ -86,10 +92,11 @@ public class Herblore {
 			return false;
 		}
 		if (player.getSkillManager().getCurrentLevel(Skill.HERBLORE) < pot.getLevelReq()) {
-			player.getPacketSender().sendMessage("You need a Herblore level of at least " + pot.getLevelReq() + " to make this potion.");
+			SkillRequirementMessages.doesNotMeet(player, "make this potion");
 			return false;
 		}
 		if (!(player.getInventory().contains(pot.getUnfinishedPotion()) && player.getInventory().contains(pot.getItemNeeded()))) {
+			SkillRequirementMessages.missingRequirement(player, "the required Herblore ingredients");
 			return false;
 		}
 		player.getSkillManager().stopSkilling();
@@ -97,7 +104,8 @@ public class Herblore {
 		player.setCurrentTask(new Task(2, player, false) {
 			public void execute() {
 				if (!player.getInventory().contains(pot.getUnfinishedPotion()) || !player.getInventory().contains(pot.getItemNeeded())) {
-					player.getPacketSender().sendMessage("You don't have the required items to make this potion.");
+					SkillRequirementMessages.missingRequirement(player, "the required Herblore ingredients");
+					stop();
 					return;
 				}
 				player.performAnimation(ANIMATION);
@@ -174,18 +182,18 @@ public class Herblore {
 		SpecialPotion specialPotData = SpecialPotion.forItems(item1, item2);
 		if (specialPotData == null)
 			return;
-		if (p.getSkillManager().getCurrentLevel(Skill.HERBLORE) < specialPotData.getLevelReq()) {
-			p.getPacketSender().sendMessage("You need a Herblore level of at least " + specialPotData.getLevelReq() + " to make this potion.");
-			return;
-		}
 		if (!p.getClickDelay().elapsed(500))
 			return;
 		for (Item INGREDIENTS : specialPotData.getINGREDIENTS()) {
 			if (!p.getInventory().contains(INGREDIENTS.getId()) || p.getInventory().getAmount(INGREDIENTS.getId()) < INGREDIENTS.getAmount()) {
-				p.getPacketSender().sendMessage("You do not have all INGREDIENTS for this potion.");
+				SkillRequirementMessages.missingRequirement(p, "the required Herblore ingredients");
 				p.getPacketSender().sendMessage("Remember: You can purchase an Ingridient's book from the Druid Spirit.");
 				return;
 			}
+		}
+		if (p.getSkillManager().getCurrentLevel(Skill.HERBLORE) < specialPotData.getLevelReq()) {
+			SkillRequirementMessages.doesNotMeet(p, "make this potion");
+			return;
 		}
 		for (Item INGREDIENTS : specialPotData.getINGREDIENTS())
 			p.getInventory().delete(INGREDIENTS);

@@ -6,6 +6,7 @@ import com.ruse.model.container.impl.Equipment;
 import com.ruse.util.Misc;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.model.entity.character.player.Player;
 
 public class Agility {
@@ -13,7 +14,7 @@ public class Agility {
 	public static boolean handleObject(Player p, GameObject object) {
 		if(object.getId() == 2309) {
 			if(p.getSkillManager().getMaxLevel(Skill.AGILITY) < 55) {
-				p.getPacketSender().sendMessage("You need an Agility level of at least 55 to enter this course.");
+				SkillRequirementMessages.doesNotMeet(p, "enter this agility course");
 				return true;
 			}
 		}

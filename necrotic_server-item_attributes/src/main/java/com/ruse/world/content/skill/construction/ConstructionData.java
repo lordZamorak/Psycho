@@ -7,6 +7,7 @@ import java.util.Iterator;
 import com.ruse.model.Position;
 import com.ruse.model.Skill;
 import com.ruse.model.definitions.GameObjectDefinition;
+import com.ruse.model.definitions.ItemDefinition;
 import com.ruse.model.entity.character.player.Player;
 /**
  * 
@@ -117,13 +118,11 @@ public class ConstructionData {
 			}
 			for(int i = 0; i < requiredItems.length; i++)
 			{
-				if(!p.getInventory().contains(requiredItems[i][0]))
-					return "You don't have the required items to build this.";
-				else if(!p.getInventory().contains(requiredItems[i][1]))
-					return "You don't have the required items to build this.";
+				if(p.getInventory().getAmount(requiredItems[i][0]) < requiredItems[i][1])
+					return "You do not have " + requiredItems[i][1] + "x " + ItemDefinition.forId(requiredItems[i][0]).getName() + " to build this.";
 			}
 			if(p.getSkillManager().getCurrentLevel(Skill.MAGIC) < magicLevel)
-				return "You need a magic level of "+magicLevel+" to build this";
+				return "Player does not meet requirements to build this portal.";
 			build(p);
 			return null;
 		}

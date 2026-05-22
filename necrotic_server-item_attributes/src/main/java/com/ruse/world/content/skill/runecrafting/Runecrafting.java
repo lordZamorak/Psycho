@@ -7,6 +7,7 @@ import com.ruse.model.Skill;
 import com.ruse.util.Misc;
 import com.ruse.world.content.Achievements;
 import com.ruse.world.content.Achievements.AchievementData;
+import com.ruse.world.content.skill.SkillRequirementMessages;
 import com.ruse.world.content.skill.runecrafting.RunecraftingData.RuneData;
 import com.ruse.world.content.skill.runecrafting.RunecraftingData.TalismanData;
 import com.ruse.world.content.transportation.TeleportHandler;
@@ -70,7 +71,7 @@ public class Runecrafting {
 		if(talisman == null)
 			return;
 		if(player.getSkillManager().getMaxLevel(Skill.RUNECRAFTING) < talisman.getLevelRequirement()) {
-			player.getPacketSender().sendMessage("You need a Runecrafting level of at least " +talisman.getLevelRequirement()+ " to use this Talisman's teleport function.");
+			SkillRequirementMessages.doesNotMeet(player, "use this talisman");
 			return;
 		}
 		Position targetLocation = talisman.getLocation();
@@ -80,19 +81,19 @@ public class Runecrafting {
 	public static boolean canRuneCraft(Player player, RunecraftingData.RuneData rune) {
 		if(rune == null)
 			return false;
-		if(player.getSkillManager().getMaxLevel(Skill.RUNECRAFTING) < rune.getLevelRequirement()) {
-			player.getPacketSender().sendMessage("You need a Runecrafting level of at least " +rune.getLevelRequirement() + " to craft this.");
-			return false;
-		}
 		if(rune.pureRequired() && !player.getInventory().contains(7936) && !player.getInventory().contains(1436)) {
-			player.getPacketSender().sendMessage("You do not have any Pure essence in your inventory.");
+			SkillRequirementMessages.missingRequirement(player, "pure essence");
 			return false;
 		} else if(rune.pureRequired() && !player.getInventory().contains(7936) && player.getInventory().contains(1436)) {
 			player.getPacketSender().sendMessage("Only Pure essence has the power to bind this altar's energy.");
 			return false;
 		}
 		if(!player.getInventory().contains(7936) && !player.getInventory().contains(1436)) {
-			player.getPacketSender().sendMessage("You do not have any Rune or Pure essence in your inventory.");
+			SkillRequirementMessages.missingRequirement(player, "rune or pure essence");
+			return false;
+		}
+		if(player.getSkillManager().getMaxLevel(Skill.RUNECRAFTING) < rune.getLevelRequirement()) {
+			SkillRequirementMessages.doesNotMeet(player, "craft this rune");
 			return false;
 		}
 		if(!player.getClickDelay().elapsed(4500))
