@@ -7,6 +7,8 @@ namespace Psycho.Cache
     public static class PsychoModelMeshBuilder
     {
         private const float DefaultScale = 1f / 128f;
+        private const double RsBrightness = 0.80000000000000004d;
+        private static readonly Color32[] RsColorPalette = BuildRsColorPalette();
 
         public static Mesh BuildMesh(PsychoCacheModel model, float scale = DefaultScale)
         {
@@ -70,57 +72,94 @@ namespace Psycho.Cache
                 return new Color32(128, 128, 128, 255);
             }
 
-            float hue = ((hsl >> 10) & 0x3f) / 64f;
-            float saturation = ((hsl >> 7) & 0x07) / 8f;
-            float lightness = (hsl & 0x7f) / 127f;
-            Color color = HslToRgb(hue, saturation, Mathf.Clamp01(lightness * 1.08f));
-            return new Color32(
-                (byte)Mathf.Clamp(Mathf.RoundToInt(color.r * 255f), 0, 255),
-                (byte)Mathf.Clamp(Mathf.RoundToInt(color.g * 255f), 0, 255),
-                (byte)Mathf.Clamp(Mathf.RoundToInt(color.b * 255f), 0, 255),
-                255);
+            return RsColorPalette[hsl & 0xffff];
         }
 
-        private static Color HslToRgb(float h, float s, float l)
+        private static Color32[] BuildRsColorPalette()
         {
-            if (s <= 0.001f)
+            Color32[] palette = new Color32[65536];
+            int index = 0;
+
+            for (int hueSaturation = 0; hueSaturation < 512; hueSaturation++)
             {
-                return new Color(l, l, l, 1f);
+                double hue = (hueSaturation / 8) / 64d + 0.0078125d;
+                double saturation = (hueSaturation & 7) / 8d + 0.0625d;
+
+                for (int lightnessIndex = 0; lightnessIndex < 128; lightnessIndex++)
+                {
+                    double lightness = lightnessIndex / 128d;
+                    double red = lightness;
+                    double green = lightness;
+                    double blue = lightness;
+
+                    if (saturation != 0d)
+                    {
+                        double max = lightness < 0.5d
+                            ? lightness * (1d + saturation)
+                            : lightness + saturation - lightness * saturation;
+                        double min = 2d * lightness - max;
+                        red = HueToRgb(min, max, hue + 1d / 3d);
+                        green = HueToRgb(min, max, hue);
+                        blue = HueToRgb(min, max, hue - 1d / 3d);
+                    }
+
+                    int rgb = ((int)(red * 256d) << 16) + ((int)(green * 256d) << 8) + (int)(blue * 256d);
+                    rgb = ApplyRsBrightness(rgb, RsBrightness);
+                    if (rgb == 0)
+                    {
+                        rgb = 1;
+                    }
+
+                    palette[index++] = new Color32(
+                        (byte)((rgb >> 16) & 0xff),
+                        (byte)((rgb >> 8) & 0xff),
+                        (byte)(rgb & 0xff),
+                        255);
+                }
             }
 
-            float q = l < 0.5f ? l * (1f + s) : l + s - l * s;
-            float p = 2f * l - q;
-            return new Color(HueToRgb(p, q, h + 1f / 3f), HueToRgb(p, q, h), HueToRgb(p, q, h - 1f / 3f), 1f);
+            return palette;
         }
 
-        private static float HueToRgb(float p, float q, float t)
+        private static int ApplyRsBrightness(int rgb, double brightness)
         {
-            if (t < 0f)
+            double red = (rgb >> 16) / 256d;
+            double green = ((rgb >> 8) & 0xff) / 256d;
+            double blue = (rgb & 0xff) / 256d;
+            red = System.Math.Pow(red, brightness);
+            green = System.Math.Pow(green, brightness);
+            blue = System.Math.Pow(blue, brightness);
+            return ((int)(red * 256d) << 16) + ((int)(green * 256d) << 8) + (int)(blue * 256d);
+        }
+
+        private static double HueToRgb(double min, double max, double hue)
+        {
+            if (hue < 0d)
             {
-                t += 1f;
+                hue += 1d;
             }
 
-            if (t > 1f)
+            if (hue > 1d)
             {
-                t -= 1f;
+                hue -= 1d;
             }
 
-            if (t < 1f / 6f)
+            if (6d * hue < 1d)
             {
-                return p + (q - p) * 6f * t;
+                return min + (max - min) * 6d * hue;
             }
 
-            if (t < 1f / 2f)
+            if (2d * hue < 1d)
             {
-                return q;
+                return max;
             }
 
-            if (t < 2f / 3f)
+            if (3d * hue < 2d)
             {
-                return p + (q - p) * (2f / 3f - t) * 6f;
+                return min + (max - min) * (2d / 3d - hue) * 6d;
             }
 
-            return p;
+            return min;
         }
     }
 }

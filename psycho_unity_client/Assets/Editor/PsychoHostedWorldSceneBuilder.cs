@@ -68,12 +68,13 @@ namespace Psycho.Editor
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             PsychoMirrorDatabase database = PsychoMirrorDatabase.LoadFromStreamingAssets();
             Material vertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateVertexColorMaterial();
+            Material npcVertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateNpcVertexColorMaterial();
             HostedBuildContext context = new HostedBuildContext(database);
 
             using (PsychoCacheStore store = new PsychoCacheStore(PsychoCacheStore.DefaultClientCachePath))
             {
                 BuildRegions(store, database, vertexColorMaterial, context);
-                BuildNpcSpawns(store, database, vertexColorMaterial, context);
+                BuildNpcSpawns(store, database, npcVertexColorMaterial, context);
                 BuildWorldDressing(context);
                 BuildLighting();
                 BuildPlayer(context);
@@ -133,11 +134,7 @@ namespace Psycho.Editor
                 throw new InvalidOperationException("Hosted test world scene does not contain NPC spawns.");
             }
 
-            Bounds bounds = new Bounds(npcRoot.transform.GetChild(0).position, Vector3.one);
-            for (int i = 0; i < npcRoot.transform.childCount; i++)
-            {
-                bounds.Encapsulate(npcRoot.transform.GetChild(i).position);
-            }
+            Bounds bounds = BuildNpcPreviewBounds(npcRoot.transform);
 
             Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
             if (camera == null)
@@ -145,10 +142,12 @@ namespace Psycho.Editor
                 throw new InvalidOperationException("Hosted test world scene does not contain a camera.");
             }
 
-            Vector3 focus = bounds.center + Vector3.up * 1.1f;
-            camera.transform.position = focus + new Vector3(-5.8f, 3.0f, -7.6f);
+            Vector3 focus = bounds.center + Vector3.up * 0.35f;
+            float viewSize = Mathf.Max(bounds.size.x, bounds.size.z, bounds.size.y * 2.2f);
+            float cameraDistance = Mathf.Clamp(viewSize * 1.15f, 4.4f, 9.0f);
+            camera.transform.position = focus + new Vector3(-0.62f, 0.36f, -0.70f).normalized * cameraDistance;
             camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
-            camera.fieldOfView = 42f;
+            camera.fieldOfView = 34f;
             string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-npc-preview.png"));
             RenderCameraToPng(camera, outputPath, 1400, 900);
         }
@@ -156,6 +155,45 @@ namespace Psycho.Editor
         public static void RenderHostedNpcPreviewBatch()
         {
             RenderHostedNpcPreview();
+        }
+
+        private static Bounds BuildNpcPreviewBounds(Transform npcRoot)
+        {
+            Vector3 average = Vector3.zero;
+            for (int i = 0; i < npcRoot.childCount; i++)
+            {
+                average += npcRoot.GetChild(i).position;
+            }
+
+            average /= Mathf.Max(1, npcRoot.childCount);
+            List<Transform> sorted = new List<Transform>(npcRoot.childCount);
+            for (int i = 0; i < npcRoot.childCount; i++)
+            {
+                sorted.Add(npcRoot.GetChild(i));
+            }
+
+            sorted.Sort((left, right) =>
+                (left.position - average).sqrMagnitude.CompareTo((right.position - average).sqrMagnitude));
+
+            int selectedCount = Mathf.Min(18, sorted.Count);
+            Bounds bounds = new Bounds(sorted[0].position, Vector3.one);
+            for (int i = 0; i < selectedCount; i++)
+            {
+                Renderer[] renderers = sorted[i].GetComponentsInChildren<Renderer>();
+                if (renderers.Length == 0)
+                {
+                    bounds.Encapsulate(sorted[i].position);
+                    continue;
+                }
+
+                foreach (Renderer renderer in renderers)
+                {
+                    bounds.Encapsulate(renderer.bounds);
+                }
+            }
+
+            bounds.Expand(0.35f);
+            return bounds;
         }
 
         private static void RenderCameraToPng(Camera camera, string outputPath, int width, int height)

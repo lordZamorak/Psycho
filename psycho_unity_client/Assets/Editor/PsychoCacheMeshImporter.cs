@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Psycho.Cache;
 using Psycho.Mirror;
@@ -17,6 +18,7 @@ namespace Psycho.Editor
         private const int MaxSampleModels = 96;
         private const string GeneratedRoot = "Assets/Generated/CacheModels";
         private const string MaterialPath = GeneratedRoot + "/Psycho_RS_VertexColor.mat";
+        private const string NpcMaterialPath = GeneratedRoot + "/Psycho_RS_Npc_VertexColor.mat";
         private const string ReportPath = GeneratedRoot + "/cache_model_import_report.json";
         private const string PreviewScenePath = GeneratedRoot + "/PsychoCacheMeshPreview.unity";
 
@@ -35,10 +37,62 @@ namespace Psycho.Editor
         public static Material LoadOrCreateVertexColorMaterial()
         {
             EnsureGeneratedFolders();
-            return CreateOrUpdateVertexColorMaterial();
+            return CreateOrUpdateVertexColorMaterial(MaterialPath, 0.22f, 0.22f, 0.045f, 0.30f);
         }
 
-        public static bool TryImportModelAsset(PsychoCacheStore store, int modelId, out Mesh mesh, out string assetPath, out string source, out string error)
+        public static Material LoadOrCreateNpcVertexColorMaterial()
+        {
+            EnsureGeneratedFolders();
+            return CreateOrUpdateVertexColorMaterial(NpcMaterialPath, 0.10f, 0.08f, 0.012f, 0.06f);
+        }
+
+        [MenuItem("Psycho/Cache/Rebuild Generated Model Assets")]
+        public static void RebuildGeneratedModelAssets()
+        {
+            EnsureGeneratedFolders();
+            string[] modelAssets = Directory.GetFiles(ToFullPath(GeneratedRoot), "model_*.asset", SearchOption.TopDirectoryOnly);
+            int rebuilt = 0;
+            int failed = 0;
+
+            using (PsychoCacheStore store = new PsychoCacheStore(PsychoCacheStore.DefaultClientCachePath))
+            {
+                foreach (string fullPath in modelAssets)
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(fullPath);
+                    if (string.IsNullOrWhiteSpace(fileName) || !fileName.StartsWith("model_", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    string idText = fileName.Substring("model_".Length);
+                    if (!int.TryParse(idText, NumberStyles.Integer, CultureInfo.InvariantCulture, out int modelId))
+                    {
+                        continue;
+                    }
+
+                    if (TryImportModelAsset(store, modelId, out _, out _, out _, out string error, true))
+                    {
+                        rebuilt++;
+                    }
+                    else
+                    {
+                        failed++;
+                        Debug.LogWarning($"Failed to rebuild generated cache model {modelId}: {error}");
+                    }
+                }
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log($"Rebuilt {rebuilt} generated cache model assets with current decode/material rules. Failed: {failed}.");
+        }
+
+        public static void RebuildGeneratedModelAssetsBatch()
+        {
+            RebuildGeneratedModelAssets();
+        }
+
+        public static bool TryImportModelAsset(PsychoCacheStore store, int modelId, out Mesh mesh, out string assetPath, out string source, out string error, bool forceRebuild = false)
         {
             EnsureGeneratedFolders();
             mesh = null;
@@ -47,7 +101,7 @@ namespace Psycho.Editor
             error = null;
 
             mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
-            if (mesh != null)
+            if (mesh != null && !forceRebuild)
             {
                 return true;
             }
@@ -85,7 +139,7 @@ namespace Psycho.Editor
             EnsureGeneratedFolders();
             PsychoMirrorDatabase database = PsychoMirrorDatabase.LoadFromStreamingAssets();
             List<int> modelIds = CollectObjectModelIds(database, maxModels);
-            Material material = CreateOrUpdateVertexColorMaterial();
+            Material material = CreateOrUpdateVertexColorMaterial(MaterialPath, 0.22f, 0.22f, 0.045f, 0.30f);
             List<ImportedModel> imported = new List<ImportedModel>();
             List<CacheModelImportReportEntry> reportEntries = new List<CacheModelImportReportEntry>();
             ImportResult result = new ImportResult { Scanned = modelIds.Count };
@@ -171,6 +225,7 @@ namespace Psycho.Editor
 
         private static Mesh CreateOrUpdateMeshAsset(Mesh mesh, string assetPath)
         {
+            mesh.name = Path.GetFileNameWithoutExtension(assetPath);
             Mesh existing = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
             if (existing == null)
             {
@@ -183,7 +238,7 @@ namespace Psycho.Editor
             return existing;
         }
 
-        private static Material CreateOrUpdateVertexColorMaterial()
+        private static Material CreateOrUpdateVertexColorMaterial(string materialPath, float smoothness, float noiseScale, float noiseStrength, float slopeDarkening)
         {
             Shader shader = Shader.Find("Psycho/Vertex Color Lit");
             if (shader == null)
@@ -191,11 +246,11 @@ namespace Psycho.Editor
                 shader = Shader.Find("Standard");
             }
 
-            Material material = AssetDatabase.LoadAssetAtPath<Material>(MaterialPath);
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
             if (material == null)
             {
                 material = new Material(shader);
-                AssetDatabase.CreateAsset(material, MaterialPath);
+                AssetDatabase.CreateAsset(material, materialPath);
             }
             else if (material.shader != shader)
             {
@@ -206,22 +261,22 @@ namespace Psycho.Editor
             material.SetColor("_Tint", Color.white);
             if (material.HasProperty("_Smoothness"))
             {
-                material.SetFloat("_Smoothness", 0.22f);
+                material.SetFloat("_Smoothness", smoothness);
             }
 
             if (material.HasProperty("_NoiseScale"))
             {
-                material.SetFloat("_NoiseScale", 0.22f);
+                material.SetFloat("_NoiseScale", noiseScale);
             }
 
             if (material.HasProperty("_NoiseStrength"))
             {
-                material.SetFloat("_NoiseStrength", 0.045f);
+                material.SetFloat("_NoiseStrength", noiseStrength);
             }
 
             if (material.HasProperty("_SlopeDarkening"))
             {
-                material.SetFloat("_SlopeDarkening", 0.30f);
+                material.SetFloat("_SlopeDarkening", slopeDarkening);
             }
 
             material.enableInstancing = true;
