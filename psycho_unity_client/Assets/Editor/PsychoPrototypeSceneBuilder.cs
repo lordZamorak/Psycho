@@ -30,14 +30,20 @@ namespace Psycho.Editor
             Material canopy = CreateMaterial("Assets/TreeCanopyPrototype.mat", new Color(0.20f, 0.43f, 0.16f), 0.20f);
             Material reeds = CreateMaterial("Assets/ReedPrototype.mat", new Color(0.36f, 0.49f, 0.17f), 0.17f);
             Material wildflowers = CreateMaterial("Assets/WildflowerPrototype.mat", new Color(0.88f, 0.74f, 0.34f), 0.22f);
+            Material hills = CreateMaterial("Assets/DistantHillPrototype.mat", new Color(0.26f, 0.38f, 0.22f), 0.28f);
+            Material mountains = CreateMaterial("Assets/DistantMountainPrototype.mat", new Color(0.34f, 0.37f, 0.39f), 0.44f);
+            Material cloud = CreateUnlitMaterial("Assets/CloudPrototype.mat", new Color(0.92f, 0.95f, 0.96f, 0.78f));
+            Material npcBody = CreateMaterial("Assets/NpcBodyPrototype.mat", new Color(0.55f, 0.19f, 0.17f), 0.28f);
+            Material npcTrim = CreateMaterial("Assets/NpcTrimPrototype.mat", new Color(0.78f, 0.61f, 0.34f), 0.34f);
+            ConfigureTransparent(cloud);
             Material water = CreateMaterial("Assets/WaterPrototype.mat", new Color(0.07f, 0.38f, 0.58f, 0.82f), 0.78f);
             ConfigureTransparent(water);
 
             GameObject target = new GameObject("Camera Target");
             target.transform.position = Vector3.zero;
 
-            CreatePlane("Ground", Vector3.zero, new Vector3(22f, 1f, 22f), grass);
-            CreatePlane("Stone Path", new Vector3(0f, 0.02f, 0f), new Vector3(3.2f, 1f, 20f), stone);
+            CreatePlane("Ground", Vector3.zero, new Vector3(72f, 1f, 72f), grass);
+            CreatePlane("Stone Path", new Vector3(0f, 0.02f, 0f), new Vector3(3.2f, 1f, 40f), stone);
             CreatePlane("Soil Patch", new Vector3(-5.4f, 0.03f, 1.8f), new Vector3(4.2f, 1f, 3.4f), dirt);
 
             GameObject waterPlane = CreateSubdividedPlane("Ripple Water", new Vector3(5.2f, 0.05f, -4.7f), 5f, 4f, 28, water);
@@ -79,6 +85,8 @@ namespace Psycho.Editor
 
             CreateTree(new Vector3(-7.2f, 0.05f, -5.4f), trunk, canopy);
             CreateTree(new Vector3(7.4f, 0.05f, 4.9f), trunk, canopy);
+            CreateTree(new Vector3(-18.5f, 0.05f, 11.5f), trunk, canopy);
+            CreateTree(new Vector3(17.5f, 0.05f, -12.5f), trunk, canopy);
 
             GameObject sun = new GameObject("Sun");
             Light light = sun.AddComponent<Light>();
@@ -109,24 +117,30 @@ namespace Psycho.Editor
             camera.allowHDR = true;
             camera.allowMSAA = true;
             camera.nearClipPlane = 0.08f;
-            camera.farClipPlane = 160f;
+            camera.farClipPlane = 2400f;
             camera.depthTextureMode = DepthTextureMode.Depth;
             cameraObject.tag = "MainCamera";
             OrbitCameraRig orbit = cameraObject.AddComponent<OrbitCameraRig>();
             SerializedObject orbitObject = new SerializedObject(orbit);
             orbitObject.FindProperty("target").objectReferenceValue = target.transform;
-            orbitObject.FindProperty("distance").floatValue = 13.5f;
-            orbitObject.FindProperty("height").floatValue = 3.2f;
-            orbitObject.FindProperty("pitch").floatValue = 24f;
-            orbitObject.FindProperty("focusHeight").floatValue = 1.25f;
+            orbitObject.FindProperty("distance").floatValue = 31f;
+            orbitObject.FindProperty("height").floatValue = 5.6f;
+            orbitObject.FindProperty("pitch").floatValue = 9f;
+            orbitObject.FindProperty("focusHeight").floatValue = 2.1f;
             orbitObject.ApplyModifiedPropertiesWithoutUndo();
             SetCameraPose(cameraObject.transform, target.transform.position);
+            CreateDistantVista(mountains, hills, cameraObject.transform);
+            CreateCloudLayer(cloud);
+            CreatePrototypeNpc(new Vector3(-1.9f, 0.16f, -3.8f), npcBody, npcTrim, 5.5f, 2.8f);
+            CreatePrototypeNpc(new Vector3(4.1f, 0.16f, 2.8f), npcTrim, npcBody, 4.2f, 2.5f);
+            CreatePrototypeNpc(new Vector3(-7.4f, 0.16f, 4.3f), npcBody, npcTrim, 3.6f, 2.2f);
+            CreatePrototypeNpc(new Vector3(8.8f, 0.16f, -8.2f), npcTrim, npcBody, 6.3f, 3.1f);
 
             RenderSettings.skybox = CreateSkybox();
             RenderSettings.ambientLight = new Color(0.42f, 0.48f, 0.54f);
             RenderSettings.fog = true;
             RenderSettings.fogColor = new Color(0.34f, 0.46f, 0.55f);
-            RenderSettings.fogDensity = 0.008f;
+            RenderSettings.fogDensity = 0.0032f;
             RenderSettings.reflectionIntensity = 0.34f;
             RenderSettings.defaultReflectionMode = DefaultReflectionMode.Skybox;
 
@@ -201,6 +215,30 @@ namespace Psycho.Editor
             return material;
         }
 
+        private static Material CreateUnlitMaterial(string path, Color color)
+        {
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(path);
+            Shader shader = Shader.Find("Unlit/Transparent");
+            if (shader == null)
+            {
+                shader = Shader.Find("Unlit/Color");
+            }
+
+            if (material == null)
+            {
+                material = new Material(shader);
+                AssetDatabase.CreateAsset(material, path);
+            }
+            else if (shader != null)
+            {
+                material.shader = shader;
+            }
+
+            material.color = color;
+            material.enableInstancing = true;
+            return material;
+        }
+
         private static void ConfigureTransparent(Material material)
         {
             material.SetFloat("_Mode", 3f);
@@ -215,8 +253,8 @@ namespace Psycho.Editor
 
         private static void SetCameraPose(Transform cameraTransform, Vector3 targetPosition)
         {
-            cameraTransform.position = targetPosition + new Vector3(-7.2f, 7.6f, -9.8f);
-            cameraTransform.LookAt(targetPosition + Vector3.up * 1.25f);
+            cameraTransform.position = targetPosition + new Vector3(-17.5f, 8.8f, -28f);
+            cameraTransform.LookAt(targetPosition + Vector3.up * 2.1f);
         }
 
         private static Material CreateSkybox()
@@ -289,6 +327,143 @@ namespace Psycho.Editor
             plane.AddComponent<MeshFilter>().sharedMesh = mesh;
             plane.AddComponent<MeshRenderer>().sharedMaterial = material;
             return plane;
+        }
+
+        private static void CreateDistantVista(Material mountainMaterial, Material hillMaterial, Transform viewer)
+        {
+            GameObject vistaRoot = new GameObject("Distant Vista");
+            DistantVistaParallax parallax = vistaRoot.AddComponent<DistantVistaParallax>();
+            SerializedObject parallaxObject = new SerializedObject(parallax);
+            parallaxObject.FindProperty("viewer").objectReferenceValue = viewer;
+            parallaxObject.FindProperty("parallaxStrength").floatValue = 0.018f;
+            parallaxObject.ApplyModifiedPropertiesWithoutUndo();
+
+            for (int i = 0; i < 24; i++)
+            {
+                float angle = i * Mathf.PI * 2f / 24f;
+                float radius = 128f + Mathf.Sin(i * 1.71f) * 11f;
+                float width = 24f + (i % 5) * 5f;
+                float height = 14f + Mathf.Sin(i * 0.83f) * 3.5f + (i % 4) * 2.3f;
+                float depth = 18f + (i % 3) * 5f;
+                Vector3 position = new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+                GameObject mountain = CreateMountain($"Distant Mountain {i + 1}", position, width, height, depth, mountainMaterial);
+                mountain.transform.SetParent(vistaRoot.transform, true);
+            }
+
+            for (int i = 0; i < 18; i++)
+            {
+                float angle = i * Mathf.PI * 2f / 18f + 0.15f;
+                float radius = 74f + Mathf.Cos(i * 1.29f) * 7f;
+                Vector3 position = new Vector3(Mathf.Cos(angle) * radius, -1.4f, Mathf.Sin(angle) * radius);
+                GameObject hill = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                hill.name = $"Rolling Hill {i + 1}";
+                hill.transform.position = position;
+                hill.transform.localScale = new Vector3(19f + (i % 4) * 4f, 4.5f + (i % 3) * 1.2f, 14f + (i % 5) * 2.5f);
+                hill.transform.rotation = Quaternion.Euler(0f, -angle * Mathf.Rad2Deg, 0f);
+                hill.GetComponent<MeshRenderer>().sharedMaterial = hillMaterial;
+                hill.transform.SetParent(vistaRoot.transform, true);
+            }
+        }
+
+        private static GameObject CreateMountain(string name, Vector3 position, float width, float height, float depth, Material material)
+        {
+            Mesh mesh = new Mesh();
+            mesh.vertices = new[]
+            {
+                new Vector3(-width * 0.5f, 0f, -depth * 0.5f),
+                new Vector3(width * 0.5f, 0f, -depth * 0.5f),
+                new Vector3(width * 0.58f, 0f, depth * 0.45f),
+                new Vector3(-width * 0.58f, 0f, depth * 0.45f),
+                new Vector3(-width * 0.16f, height * 0.72f, -depth * 0.04f),
+                new Vector3(width * 0.18f, height, depth * 0.06f)
+            };
+            mesh.triangles = new[]
+            {
+                0, 4, 1,
+                1, 4, 5,
+                1, 5, 2,
+                2, 5, 3,
+                3, 5, 4,
+                3, 4, 0,
+                0, 1, 2,
+                0, 2, 3
+            };
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject mountain = new GameObject(name);
+            mountain.transform.position = position;
+            mountain.transform.rotation = Quaternion.LookRotation(-new Vector3(position.x, 0f, position.z).normalized);
+            mountain.AddComponent<MeshFilter>().sharedMesh = mesh;
+            mountain.AddComponent<MeshRenderer>().sharedMaterial = material;
+            return mountain;
+        }
+
+        private static void CreateCloudLayer(Material material)
+        {
+            for (int i = 0; i < 18; i++)
+            {
+                float x = Mathf.Sin(i * 2.91f) * 62f;
+                float z = Mathf.Cos(i * 1.73f) * 64f;
+                float y = 25f + (i % 5) * 2.4f;
+                GameObject cloud = new GameObject($"Moving Cloud {i + 1}");
+                cloud.transform.position = new Vector3(x, y, z);
+                cloud.transform.rotation = Quaternion.Euler(0f, i * 23f, 0f);
+
+                int lobes = 3 + i % 4;
+                for (int lobe = 0; lobe < lobes; lobe++)
+                {
+                    GameObject puff = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    puff.name = "Cloud Puff";
+                    puff.transform.SetParent(cloud.transform, false);
+                    float localX = (lobe - (lobes - 1) * 0.5f) * 3.8f;
+                    puff.transform.localPosition = new Vector3(localX, Mathf.Sin(lobe * 1.7f) * 0.35f, Mathf.Cos(lobe * 1.1f) * 1.1f);
+                    puff.transform.localScale = new Vector3(6.2f + lobe * 0.6f, 0.75f + (lobe % 2) * 0.25f, 2.8f + (lobe % 3) * 0.6f);
+                    MeshRenderer renderer = puff.GetComponent<MeshRenderer>();
+                    renderer.sharedMaterial = material;
+                    renderer.shadowCastingMode = ShadowCastingMode.Off;
+                    renderer.receiveShadows = false;
+                }
+
+                CloudDrift drift = cloud.AddComponent<CloudDrift>();
+                SerializedObject driftObject = new SerializedObject(drift);
+                driftObject.FindProperty("driftSpeed").floatValue = 0.42f + (i % 4) * 0.06f;
+                driftObject.FindProperty("wrapDistance").floatValue = 135f;
+                driftObject.ApplyModifiedPropertiesWithoutUndo();
+            }
+        }
+
+        private static void CreatePrototypeNpc(Vector3 position, Material bodyMaterial, Material trimMaterial, float wanderRadius, float speed)
+        {
+            GameObject npc = new GameObject("Wandering Prototype NPC");
+            npc.transform.position = position;
+
+            GameObject body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            body.name = "NPC Body";
+            body.transform.SetParent(npc.transform, false);
+            body.transform.localPosition = new Vector3(0f, 0.72f, 0f);
+            body.transform.localScale = new Vector3(0.46f, 0.72f, 0.46f);
+            body.GetComponent<MeshRenderer>().sharedMaterial = bodyMaterial;
+
+            GameObject head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            head.name = "NPC Head";
+            head.transform.SetParent(npc.transform, false);
+            head.transform.localPosition = new Vector3(0f, 1.55f, 0f);
+            head.transform.localScale = new Vector3(0.42f, 0.42f, 0.42f);
+            head.GetComponent<MeshRenderer>().sharedMaterial = trimMaterial;
+
+            GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            marker.name = "NPC Direction Marker";
+            marker.transform.SetParent(npc.transform, false);
+            marker.transform.localPosition = new Vector3(0f, 1.2f, 0.34f);
+            marker.transform.localScale = new Vector3(0.18f, 0.18f, 0.08f);
+            marker.GetComponent<MeshRenderer>().sharedMaterial = trimMaterial;
+
+            PrototypeNpcWander wander = npc.AddComponent<PrototypeNpcWander>();
+            SerializedObject wanderObject = new SerializedObject(wander);
+            wanderObject.FindProperty("wanderRadius").floatValue = wanderRadius;
+            wanderObject.FindProperty("speed").floatValue = speed;
+            wanderObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void CreateGrassBlade(Vector3 position, float height, Material material)

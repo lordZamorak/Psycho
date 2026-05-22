@@ -7,8 +7,8 @@ namespace Psycho.Rendering
         [SerializeField] private Light sun;
         [SerializeField] private float cycleDuration = 240f;
         [SerializeField] private float cycleOffset = 0.18f;
-        [SerializeField] private float minFogDensity = 0.0045f;
-        [SerializeField] private float maxFogDensity = 0.012f;
+        [SerializeField] private float minFogDensity = 0.0014f;
+        [SerializeField] private float maxFogDensity = 0.0045f;
 
         private readonly Color lowSunColor = new Color(1.00f, 0.63f, 0.38f);
         private readonly Color highSunColor = new Color(1.00f, 0.92f, 0.78f);

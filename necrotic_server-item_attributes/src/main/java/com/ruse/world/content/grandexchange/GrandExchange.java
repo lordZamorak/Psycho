@@ -311,7 +311,9 @@ public class GrandExchange {
 	}
 
 	public static void open(Player player) {
-		player.getPacketSender().sendMessage("GE is disabled. ");
+		reset(player);
+		updateSlotStates(player);
+		player.getPacketSender().sendInterface(MAIN_INTERFACE);
 	}
 
 	public static void updateSlotStates(Player player) {
@@ -389,10 +391,11 @@ public class GrandExchange {
 			}
 			player.getGrandExchangeSlots()[o2.getBox()].setOffer(o2);
 			
-			if(o2.getUpdateState() != null) {
-				player.getGrandExchangeSlots()[o2.getBox()].setState(o2.getUpdateState());
+			GrandExchangeSlotState updateState = o2.getUpdateState();
+			if(updateState != null) {
+				player.getGrandExchangeSlots()[o2.getBox()].setState(updateState);
 				o2.setUpdateState(null);
-				if(o2.getUpdateState() == GrandExchangeSlotState.FINISHED_PURCHASE || o2.getUpdateState() == GrandExchangeSlotState.FINISHED_SALE) {
+				if(updateState == GrandExchangeSlotState.FINISHED_PURCHASE || updateState == GrandExchangeSlotState.FINISHED_SALE) {
 					GrandExchangeOffers.setOffer(o2.getIndex(), null);
 				}
 				if(o2.getFailAttempts() >= 3) {
