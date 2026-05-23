@@ -29,6 +29,11 @@ DEFAULT_SOURCE = pathlib.Path(
 DEFAULT_OUTPUT = pathlib.Path(
     "necrotic_client-item_attributes/jcache_exports/js5-8/models"
 )
+JS5_FLAG_NAMES = 0x01
+JS5_FLAG_DIGESTS = 0x02
+JS5_FLAG_LENGTHS = 0x04
+JS5_FLAG_UNCOMPRESSED_CHECKSUMS = 0x08
+WHIRLPOOL_DIGEST_BYTES = 64
 
 
 @dataclass(frozen=True)
@@ -383,11 +388,28 @@ def read_reference_index(source: pathlib.Path) -> ReferenceIndex:
             archive_id += delta
             archive_ids.append(archive_id)
 
-        # The renamed SQLite jcache files in this project use protocol 7 with
-        # five int-sized archive metadata arrays before file counts, plus one
-        # name-hash array when bit 0 is set.
-        arrays_before_file_counts = 5 + (1 if (flags & 1) == 1 else 0)
-        file_counts_offset = offset + arrays_before_file_counts * archive_count * 4
+        has_names = (flags & JS5_FLAG_NAMES) != 0
+        has_digests = (flags & JS5_FLAG_DIGESTS) != 0
+        has_lengths = (flags & JS5_FLAG_LENGTHS) != 0
+        has_uncompressed_checksums = (flags & JS5_FLAG_UNCOMPRESSED_CHECKSUMS) != 0
+
+        metadata_offset = offset
+        if has_names:
+            metadata_offset += archive_count * 4
+
+        metadata_offset += archive_count * 4
+        if has_uncompressed_checksums:
+            metadata_offset += archive_count * 4
+
+        if has_digests:
+            metadata_offset += archive_count * WHIRLPOOL_DIGEST_BYTES
+
+        if has_lengths:
+            metadata_offset += archive_count * 8
+
+        metadata_offset += archive_count * 4
+        metadata_bytes_before_file_counts = metadata_offset - offset
+        file_counts_offset = metadata_offset
         file_counts: list[int] = []
         if file_counts_offset < len(data):
             cursor = file_counts_offset
@@ -423,10 +445,14 @@ def read_reference_index(source: pathlib.Path) -> ReferenceIndex:
             "protocol": protocol,
             "revision": revision,
             "flags": flags,
+            "hasNames": has_names,
+            "hasDigests": has_digests,
+            "hasLengths": has_lengths,
+            "hasUncompressedChecksums": has_uncompressed_checksums,
             "archiveCount": archive_count,
             "archiveIdMin": min(archive_ids) if archive_ids else None,
             "archiveIdMax": max(archive_ids) if archive_ids else None,
-            "arraysBeforeFileCounts": arrays_before_file_counts,
+            "metadataBytesBeforeFileCounts": metadata_bytes_before_file_counts,
             "fileCountDistribution": summarize_distribution(file_counts),
             "totalFiles": sum(file_counts) if file_counts else None,
             "allArchivesSingleFile": bool(file_counts) and all(count == 1 for count in file_counts),
