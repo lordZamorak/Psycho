@@ -1,3 +1,4 @@
+using Psycho.UI;
 using UnityEngine;
 
 namespace Psycho.Gameplay
@@ -43,17 +44,27 @@ namespace Psycho.Gameplay
         {
             if (Application.isPlaying)
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                Cursor.lockState = PsychoHudController.HasActiveHud ? CursorLockMode.None : CursorLockMode.Locked;
+                Cursor.visible = PsychoHudController.HasActiveHud;
             }
         }
 
         private void Update()
         {
-            Look();
+            bool hudActive = PsychoHudController.HasActiveHud;
+            if (PsychoHudController.BlocksPlayerInput)
+            {
+                return;
+            }
+
+            if (!hudActive || Input.GetMouseButton(1))
+            {
+                Look();
+            }
+
             Move();
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (!hudActive && Input.GetKeyDown(KeyCode.Escape))
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;

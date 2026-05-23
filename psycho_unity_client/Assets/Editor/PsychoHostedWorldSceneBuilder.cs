@@ -6,6 +6,7 @@ using Psycho.Gameplay;
 using Psycho.Mirror;
 using Psycho.Networking;
 using Psycho.Rendering;
+using Psycho.UI;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
@@ -1444,6 +1445,23 @@ namespace Psycho.Editor
             SetSerializedFloat(colorGradeObject, "sharpen", 0.14f);
             colorGradeObject.ApplyModifiedPropertiesWithoutUndo();
             cameraObject.AddComponent<AudioListener>();
+            BuildGameplayHud(player.transform, playerSave);
+        }
+
+        private static void BuildGameplayHud(Transform player, HostedPlayerSave playerSave)
+        {
+            GameObject hudObject = new GameObject("Psycho Gameplay HUD");
+            PsychoHudController hud = hudObject.AddComponent<PsychoHudController>();
+            SerializedObject hudSerializedObject = new SerializedObject(hud);
+
+            SetSerializedObject(hudSerializedObject, "player", player);
+            SetSerializedInt(hudSerializedObject, "currentHealth", Mathf.Max(1, playerSave?.currentHealth ?? 100));
+            SetSerializedInt(hudSerializedObject, "maxHealth", Mathf.Max(1, playerSave?.maxHealth ?? 100));
+            SetSerializedInt(hudSerializedObject, "currentPrayer", Mathf.Max(0, playerSave?.currentPrayer ?? 1));
+            SetSerializedInt(hudSerializedObject, "maxPrayer", Mathf.Max(1, playerSave?.maxPrayer ?? 1));
+            SetSerializedInt(hudSerializedObject, "runEnergy", Mathf.Clamp(playerSave?.runEnergy ?? 100, 0, 100));
+            SetSerializedLong(hudSerializedObject, "moneyPouch", Math.Max(0L, playerSave?.moneyPouch ?? 0L));
+            hudSerializedObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void BuildPlayerVisual(Transform parent, HostedMaterials materials, PsychoMirrorDatabase database, HostedPlayerSave playerSave)
@@ -1733,6 +1751,7 @@ namespace Psycho.Editor
                     Debug.LogWarning($"Could not parse Java player save at {savePath}. Using hosted visual defaults.");
                 }
 
+                PopulateHostedPlayerHudValues(save, json);
                 return save;
             }
             catch (Exception exception)
@@ -1766,6 +1785,93 @@ namespace Psycho.Editor
             }
 
             return null;
+        }
+
+        private static void PopulateHostedPlayerHudValues(HostedPlayerSave save, string json)
+        {
+            if (save == null || string.IsNullOrEmpty(json))
+            {
+                return;
+            }
+
+            save.moneyPouch = ReadLongProperty(json, "money-pouch", 0L);
+            save.runEnergy = ReadIntProperty(json, "run-energy", 100);
+            save.currentHealth = ReadSkillArrayValue(json, "level", 3, 100);
+            save.maxHealth = ReadSkillArrayValue(json, "maxLevel", 3, save.currentHealth);
+            save.currentPrayer = ReadSkillArrayValue(json, "level", 5, 1);
+            save.maxPrayer = ReadSkillArrayValue(json, "maxLevel", 5, save.currentPrayer);
+        }
+
+        private static long ReadLongProperty(string json, string propertyName, long fallback)
+        {
+            string key = "\"" + propertyName + "\"";
+            int keyIndex = json.IndexOf(key, StringComparison.OrdinalIgnoreCase);
+            if (keyIndex < 0)
+            {
+                return fallback;
+            }
+
+            int colonIndex = json.IndexOf(':', keyIndex + key.Length);
+            if (colonIndex < 0)
+            {
+                return fallback;
+            }
+
+            int valueStart = colonIndex + 1;
+            while (valueStart < json.Length && char.IsWhiteSpace(json[valueStart]))
+            {
+                valueStart++;
+            }
+
+            int valueEnd = valueStart;
+            while (valueEnd < json.Length && (char.IsDigit(json[valueEnd]) || json[valueEnd] == '-'))
+            {
+                valueEnd++;
+            }
+
+            return long.TryParse(json.Substring(valueStart, valueEnd - valueStart), out long value) ? value : fallback;
+        }
+
+        private static int ReadIntProperty(string json, string propertyName, int fallback)
+        {
+            long value = ReadLongProperty(json, propertyName, fallback);
+            if (value < int.MinValue || value > int.MaxValue)
+            {
+                return fallback;
+            }
+
+            return (int)value;
+        }
+
+        private static int ReadSkillArrayValue(string json, string arrayName, int skillIndex, int fallback)
+        {
+            int skillsIndex = json.IndexOf("\"skills\"", StringComparison.OrdinalIgnoreCase);
+            if (skillsIndex < 0)
+            {
+                return fallback;
+            }
+
+            string key = "\"" + arrayName + "\"";
+            int keyIndex = json.IndexOf(key, skillsIndex, StringComparison.OrdinalIgnoreCase);
+            if (keyIndex < 0)
+            {
+                return fallback;
+            }
+
+            int openBracket = json.IndexOf('[', keyIndex + key.Length);
+            int closeBracket = json.IndexOf(']', openBracket + 1);
+            if (openBracket < 0 || closeBracket < 0 || closeBracket <= openBracket)
+            {
+                return fallback;
+            }
+
+            string[] values = json.Substring(openBracket + 1, closeBracket - openBracket - 1).Split(',');
+            if (skillIndex < 0 || skillIndex >= values.Length)
+            {
+                return fallback;
+            }
+
+            return int.TryParse(values[skillIndex].Trim(), out int value) ? value : fallback;
         }
 
         private static string PlayerDisplayName(HostedPlayerSave playerSave)
@@ -2348,6 +2454,33 @@ namespace Psycho.Editor
             }
         }
 
+        private static void SetSerializedInt(SerializedObject serializedObject, string propertyName, int value)
+        {
+            SerializedProperty property = serializedObject.FindProperty(propertyName);
+            if (property != null)
+            {
+                property.intValue = value;
+            }
+        }
+
+        private static void SetSerializedLong(SerializedObject serializedObject, string propertyName, long value)
+        {
+            SerializedProperty property = serializedObject.FindProperty(propertyName);
+            if (property != null)
+            {
+                property.longValue = value;
+            }
+        }
+
+        private static void SetSerializedObject(SerializedObject serializedObject, string propertyName, UnityEngine.Object value)
+        {
+            SerializedProperty property = serializedObject.FindProperty(propertyName);
+            if (property != null)
+            {
+                property.objectReferenceValue = value;
+            }
+        }
+
         private static float Deterministic01(int seed)
         {
             unchecked
@@ -2434,6 +2567,12 @@ namespace Psycho.Editor
             public HostedSavePosition position;
             public int[] appearance;
             public HostedSaveItem[] equipment;
+            [NonSerialized] public long moneyPouch;
+            [NonSerialized] public int runEnergy = 100;
+            [NonSerialized] public int currentHealth = 100;
+            [NonSerialized] public int maxHealth = 100;
+            [NonSerialized] public int currentPrayer = 1;
+            [NonSerialized] public int maxPrayer = 1;
         }
 
         [Serializable]

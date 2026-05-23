@@ -4,6 +4,7 @@ using System.IO;
 using Psycho.Cache;
 using Psycho.Gameplay;
 using Psycho.Mirror;
+using Psycho.UI;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
@@ -333,6 +334,17 @@ namespace Psycho.Editor
             characterObject.ApplyModifiedPropertiesWithoutUndo();
 
             cameraObject.AddComponent<AudioListener>();
+
+            GameObject hudObject = new GameObject("Psycho Gameplay HUD");
+            PsychoHudController hud = hudObject.AddComponent<PsychoHudController>();
+            SerializedObject hudObjectSerialized = new SerializedObject(hud);
+            SerializedProperty playerProperty = hudObjectSerialized.FindProperty("player");
+            if (playerProperty != null)
+            {
+                playerProperty.objectReferenceValue = player.transform;
+            }
+
+            hudObjectSerialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void SetFloat(SerializedObject serializedObject, string propertyName, float value)
