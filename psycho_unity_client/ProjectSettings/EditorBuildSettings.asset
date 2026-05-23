@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/PsychoLogin.unity
+    guid: a5925560b605f8a48b784e8190b6fb04
+  - enabled: 1
+    path: Assets/Scenes/PsychoHostedTestWorld.unity
+    guid: c8404ef050546964d8ae6e809af63cc7
   m_configObjects: {}

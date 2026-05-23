@@ -43,6 +43,27 @@ cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
 & "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -batchmode -quit -projectPath ".\psycho_unity_client" -logFile ".\run-logs\unity-compile.log"
 ```
 
+## Build The Unity Login Scene
+
+```powershell
+cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
+& "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -batchmode -quit -projectPath ".\psycho_unity_client" -executeMethod Psycho.Editor.PsychoLoginSceneBuilder.BuildLoginSceneBatch -logFile ".\run-logs\unity-login-build.log"
+```
+
+Render a screenshot of the login scene:
+
+```powershell
+cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
+& "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -batchmode -quit -projectPath ".\psycho_unity_client" -executeMethod Psycho.Editor.PsychoLoginSceneBuilder.RenderLoginScenePreviewBatch -logFile ".\run-logs\unity-login-render.log"
+```
+
+Build the Windows Unity client with the login scene as the entry point:
+
+```powershell
+cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
+& "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -batchmode -quit -projectPath ".\psycho_unity_client" -executeMethod Psycho.Editor.PsychoLoginSceneBuilder.BuildWindowsLoginPlayableBatch -logFile ".\run-logs\unity-login-playable-build.log"
+```
+
 ## Sync Java Definitions Into Unity
 
 Run this from the server project whenever Java definitions change:

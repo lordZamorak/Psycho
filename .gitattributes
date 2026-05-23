@@ -13,4 +13,5 @@ psycho_unity_client/ProjectSettings/*.json -whitespace
 *.rar filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
 psycho_unity_client/Assets/Resources/PsychoMaterials/*.png filter=lfs diff=lfs merge=lfs -text
+psycho_unity_client/Assets/Resources/PsychoLogin/*.png filter=lfs diff=lfs merge=lfs -text
 necrotic_client-item_attributes/src/resources/org/necrotic/client/login_smithing_bg.png filter=lfs diff=lfs merge=lfs -text
