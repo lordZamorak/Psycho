@@ -14,6 +14,7 @@ namespace Psycho.Cache
         public static Mesh BuildTerrainMesh(PsychoMapLandscape landscape, int plane = 0, float tileScale = DefaultTileScale, float heightScale = DefaultHeightScale)
         {
             List<Vector3> vertices = new List<Vector3>(TerrainVertexCount * TerrainVertexCount);
+            List<Vector2> uvs = new List<Vector2>(TerrainVertexCount * TerrainVertexCount);
             List<Color32> colors = new List<Color32>(TerrainVertexCount * TerrainVertexCount);
             List<int> triangles = new List<int>(RegionTileCount * RegionTileCount * 6);
 
@@ -24,6 +25,7 @@ namespace Psycho.Cache
                     int sampleX = Mathf.Min(x, RegionTileCount - 1);
                     int sampleY = Mathf.Min(y, RegionTileCount - 1);
                     vertices.Add(new Vector3(x * tileScale, -landscape.Heights[plane, sampleX, sampleY] * heightScale, y * tileScale));
+                    uvs.Add(new Vector2(x / (float)RegionTileCount, y / (float)RegionTileCount));
                     colors.Add(BlendedTileColor(landscape, plane, sampleX, sampleY));
                 }
             }
@@ -49,6 +51,7 @@ namespace Psycho.Cache
             mesh.name = $"psycho_map_region_{landscape.RegionX}_{landscape.RegionY}_plane_{plane}";
             mesh.indexFormat = IndexFormat.UInt32;
             mesh.SetVertices(vertices);
+            mesh.SetUVs(0, uvs);
             mesh.SetColors(colors);
             mesh.SetTriangles(triangles, 0);
             mesh.RecalculateNormals();

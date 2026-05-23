@@ -643,6 +643,7 @@ namespace Psycho.Editor
                 }
 
                 context.Report.decodedObjectAccents += PsychoHostedVisualOverrides.AddObjectAccents(definition, placed.transform, material);
+                context.Report.decodedObjectAccents += AddArchitecturalDressing(definition, placed.transform, hostedMaterials);
                 AddInteractionAndCollision(placed, definition, placement);
                 if (addedWind)
                 {
@@ -707,44 +708,179 @@ namespace Psycho.Editor
             return horizontalWidth < 1.15f || bounds.size.y > horizontalWidth * 2.15f;
         }
 
+        private static int AddArchitecturalDressing(PsychoMirrorObject definition, Transform parent, HostedMaterials materials)
+        {
+            if (definition == null || string.IsNullOrWhiteSpace(definition.name))
+            {
+                return 0;
+            }
+
+            string name = definition.name.ToLowerInvariant();
+            bool market = name.Contains("stall") || name.Contains("booth") || name.Contains("counter");
+            bool building = name.Contains("bank") || name.Contains("shop") || name.Contains("house") || name.Contains("building") || name.Contains("hall");
+            if (!market && !building)
+            {
+                return 0;
+            }
+
+            float width = Mathf.Clamp(definition.sizeX <= 0 ? (market ? 1.4f : 2.6f) : definition.sizeX, market ? 1.2f : 1.8f, market ? 2.8f : 5.0f);
+            float depth = Mathf.Clamp(definition.sizeY <= 0 ? (market ? 1.1f : 2.2f) : definition.sizeY, market ? 0.9f : 1.6f, market ? 2.4f : 4.5f);
+
+            GameObject dressing = new GameObject(building ? "Hosted Architectural Dressing" : "Hosted Market Dressing");
+            dressing.transform.SetParent(parent, false);
+
+            if (market)
+            {
+                CreateLandmarkDetailBox(dressing.transform, "Counter Worn Front Rail", new Vector3(0f, 0.64f, -depth * 0.43f), new Vector3(width * 0.96f, 0.075f, 0.045f), materials.TreeBark);
+                CreateLandmarkDetailBox(dressing.transform, "Counter Stone Kick Plate", new Vector3(0f, 0.22f, -depth * 0.44f), new Vector3(width * 0.90f, 0.070f, 0.035f), materials.FrostStone);
+                CreateLandmarkDetailBox(dressing.transform, "Counter Back Ledge", new Vector3(0f, 0.80f, depth * 0.34f), new Vector3(width * 0.84f, 0.060f, 0.050f), materials.TreeBark);
+                CreateLandmarkDetailBox(dressing.transform, "Counter Cloth Valance", new Vector3(0f, 0.53f, -depth * 0.47f), new Vector3(width * 0.66f, 0.18f, 0.026f), materials.LandmarkBanner);
+                return 4;
+            }
+
+            CreateLandmarkDetailBox(dressing.transform, "Facade Foundation Course", new Vector3(0f, 0.18f, -depth * 0.49f), new Vector3(width * 0.96f, 0.100f, 0.050f), materials.FrostStone);
+            CreateLandmarkDetailBox(dressing.transform, "Facade Upper Timber Beam", new Vector3(0f, 1.44f, -depth * 0.50f), new Vector3(width * 0.94f, 0.080f, 0.045f), materials.TreeBark);
+            CreateLandmarkDetailBox(dressing.transform, "Facade Left Upright", new Vector3(-width * 0.42f, 0.92f, -depth * 0.505f), new Vector3(0.060f, 0.96f, 0.045f), materials.TreeBark);
+            CreateLandmarkDetailBox(dressing.transform, "Facade Right Upright", new Vector3(width * 0.42f, 0.92f, -depth * 0.505f), new Vector3(0.060f, 0.96f, 0.045f), materials.TreeBark);
+            CreateLandmarkDetailBox(dressing.transform, "Facade Door Shadow", new Vector3(0f, 0.68f, -depth * 0.515f), new Vector3(width * 0.22f, 0.88f, 0.030f), materials.TreeBark);
+
+            for (int i = -1; i <= 1; i += 2)
+            {
+                float x = i * width * 0.27f;
+                CreateLandmarkDetailBox(dressing.transform, $"Facade Window Glass {i}", new Vector3(x, 1.02f, -depth * 0.520f), new Vector3(width * 0.16f, 0.34f, 0.024f), materials.LandmarkGlass);
+                CreateLandmarkDetailBox(dressing.transform, $"Facade Window Sill {i}", new Vector3(x, 0.80f, -depth * 0.525f), new Vector3(width * 0.19f, 0.045f, 0.038f), materials.FrostStone);
+                GameObject brace = CreateLandmarkDetailBox(dressing.transform, $"Facade Diagonal Brace {i}", new Vector3(x * 0.56f, 1.03f, -depth * 0.530f), new Vector3(0.050f, 0.78f, 0.032f), materials.TreeBark);
+                brace.transform.localRotation = Quaternion.Euler(0f, 0f, i * 24f);
+            }
+
+            return 11;
+        }
+
         private static void AddFoliageSilhouette(Transform parent, PsychoMirrorObject definition, PsychoMapObjectPlacement placement, HostedMaterials materials)
         {
             float footprint = Mathf.Max(1f, Mathf.Max(definition.sizeX, definition.sizeY));
-            float trunkHeight = 1.35f + footprint * 0.22f;
-            float canopyWidth = 1.45f + footprint * 0.36f;
-            float canopyHeight = 1.10f + footprint * 0.18f;
+            float trunkHeight = 1.55f + footprint * 0.30f;
+            float canopyWidth = 1.58f + footprint * 0.42f;
+            float canopyHeight = 1.18f + footprint * 0.20f;
             float seed = placement.ObjectId * 0.071f + placement.LocalX * 0.19f + placement.LocalY * 0.13f;
+            string name = definition.name == null ? string.Empty : definition.name.ToLowerInvariant();
+            bool broadleaf = name.Contains("oak") || name.Contains("willow") || name.Contains("maple") || name.Contains("dead");
 
             GameObject trunk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            trunk.name = "Silhouette Bark Volume";
+            trunk.name = "Detailed Bark Trunk Silhouette";
             trunk.transform.SetParent(parent, false);
-            trunk.transform.localPosition = new Vector3(0f, trunkHeight * 0.36f, 0f);
-            trunk.transform.localScale = new Vector3(0.18f + footprint * 0.025f, trunkHeight * 0.36f, 0.18f + footprint * 0.025f);
+            trunk.transform.localPosition = new Vector3(0f, trunkHeight * 0.46f, 0f);
+            trunk.transform.localRotation = Quaternion.Euler(0f, seed * 73f, Mathf.Sin(seed) * 2.5f);
+            trunk.transform.localScale = new Vector3(0.16f + footprint * 0.030f, trunkHeight * 0.46f, 0.16f + footprint * 0.030f);
             trunk.GetComponent<MeshRenderer>().sharedMaterial = materials.TreeBark;
             RemoveCollider(trunk);
 
             for (int i = 0; i < 4; i++)
             {
-                float angle = (i * Mathf.PI * 0.5f) + seed;
-                float radius = i == 0 ? 0f : 0.18f + Deterministic01(placement.ObjectId * 97 + i * 23) * 0.18f;
-                Vector3 offset = new Vector3(Mathf.Cos(angle) * radius, trunkHeight + i * 0.12f, Mathf.Sin(angle) * radius);
-                Vector3 scale = new Vector3(
-                    canopyWidth * (0.92f + Deterministic01(placement.ObjectId * 43 + i * 7) * 0.28f),
-                    canopyHeight * (0.72f + i * 0.06f),
-                    canopyWidth * (0.78f + Deterministic01(placement.ObjectId * 61 + i * 11) * 0.20f));
-                GameObject canopy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                canopy.name = "Wind Canopy Silhouette";
+                float angle = seed + i * Mathf.PI * 0.5f;
+                Vector3 start = new Vector3(0f, trunkHeight * (0.46f + i * 0.10f), 0f);
+                Vector3 end = start + new Vector3(Mathf.Cos(angle), 0.18f + i * 0.03f, Mathf.Sin(angle)) * (0.42f + footprint * 0.07f);
+                CreateFoliageBranch(parent, $"Wind Branch Silhouette {i + 1}", start, end, 0.040f + footprint * 0.006f, materials.TreeBark);
+            }
+
+            if (broadleaf)
+            {
+                for (int i = 0; i < 7; i++)
+                {
+                    float angle = (i * Mathf.PI * 2f / 7f) + seed;
+                    float radius = i == 0 ? 0f : 0.22f + Deterministic01(placement.ObjectId * 97 + i * 23) * 0.38f;
+                    Vector3 offset = new Vector3(Mathf.Cos(angle) * radius, trunkHeight + (i % 3) * 0.13f, Mathf.Sin(angle) * radius);
+                    Vector3 scale = new Vector3(
+                        canopyWidth * (0.52f + Deterministic01(placement.ObjectId * 43 + i * 7) * 0.28f),
+                        canopyHeight * (0.42f + i * 0.020f),
+                        canopyWidth * (0.46f + Deterministic01(placement.ObjectId * 61 + i * 11) * 0.22f));
+                    GameObject canopy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    canopy.name = "Wind Broadleaf Canopy Silhouette";
+                    canopy.transform.SetParent(parent, false);
+                    canopy.transform.localPosition = offset;
+                    canopy.transform.localRotation = Quaternion.Euler(0f, i * 47f + seed * 29f, 0f);
+                    canopy.transform.localScale = scale;
+                    MeshRenderer renderer = canopy.GetComponent<MeshRenderer>();
+                    renderer.sharedMaterial = materials.TreeCanopy;
+                    renderer.shadowCastingMode = ShadowCastingMode.On;
+                    renderer.receiveShadows = true;
+                    RemoveCollider(canopy);
+                    AddWind(canopy, 0.052f + i * 0.005f, 0.86f + i * 0.08f, 0.30f, 0.82f, 0.055f);
+                }
+
+                return;
+            }
+
+            int layerCount = 6;
+            for (int i = 0; i < layerCount; i++)
+            {
+                float t = i / Mathf.Max(1f, layerCount - 1f);
+                float layerRadius = canopyWidth * Mathf.Lerp(0.54f, 0.14f, t);
+                float layerHeight = canopyHeight * Mathf.Lerp(0.32f, 0.20f, t);
+                GameObject canopy = new GameObject($"Wind Conifer Bough Silhouette {i + 1}");
                 canopy.transform.SetParent(parent, false);
-                canopy.transform.localPosition = offset;
-                canopy.transform.localRotation = Quaternion.Euler(0f, i * 47f + seed * 29f, 0f);
-                canopy.transform.localScale = scale;
-                MeshRenderer renderer = canopy.GetComponent<MeshRenderer>();
+                canopy.transform.localPosition = new Vector3(
+                    (Deterministic01(placement.ObjectId * 41 + i * 7) - 0.5f) * 0.12f,
+                    trunkHeight * 0.66f + t * canopyHeight * 1.05f,
+                    (Deterministic01(placement.ObjectId * 53 + i * 11) - 0.5f) * 0.12f);
+                canopy.transform.localRotation = Quaternion.Euler(0f, i * 31f + seed * 19f, 0f);
+                canopy.AddComponent<MeshFilter>().sharedMesh = CreateTaperedConeMesh($"Tree Object Bough Mesh {placement.ObjectId}_{i}", 14, layerRadius, layerRadius * 0.10f, layerHeight, placement.ObjectId + i * 61);
+                MeshRenderer renderer = canopy.AddComponent<MeshRenderer>();
                 renderer.sharedMaterial = materials.TreeCanopy;
                 renderer.shadowCastingMode = ShadowCastingMode.On;
                 renderer.receiveShadows = true;
-                RemoveCollider(canopy);
-                AddWind(canopy, 0.055f + i * 0.008f, 0.92f + i * 0.12f, 0.30f, 0.82f, 0.055f);
+                AddWind(canopy, 0.040f + i * 0.007f, 0.82f + i * 0.10f, 0.30f, 0.82f, 0.052f);
+
+                for (int arm = 0; arm < 3; arm++)
+                {
+                    float branchAngle = seed + i * 0.67f + arm * Mathf.PI * 2f / 3f;
+                    Vector3 sprayOffset = new Vector3(Mathf.Cos(branchAngle) * layerRadius * 0.34f, -layerHeight * 0.10f, Mathf.Sin(branchAngle) * layerRadius * 0.34f);
+                    CreateFoliageSpray(
+                        parent,
+                        $"Wind Conifer Needle Spray {i + 1}.{arm + 1}",
+                        canopy.transform.localPosition + sprayOffset,
+                        new Vector3(layerRadius * 0.54f, layerHeight * 0.115f, layerRadius * 0.20f),
+                        branchAngle * Mathf.Rad2Deg,
+                        materials.TreeCanopy,
+                        0.030f + i * 0.006f,
+                        0.78f + i * 0.09f);
+                }
             }
+        }
+
+        private static void CreateFoliageSpray(Transform parent, string name, Vector3 localPosition, Vector3 localScale, float yaw, Material material, float windAmplitude, float windSpeed)
+        {
+            GameObject spray = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            spray.name = name;
+            spray.transform.SetParent(parent, false);
+            spray.transform.localPosition = localPosition;
+            spray.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            spray.transform.localScale = localScale;
+            MeshRenderer renderer = spray.GetComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.On;
+            renderer.receiveShadows = true;
+            RemoveCollider(spray);
+            AddWind(spray, windAmplitude, windSpeed, 0.26f, 0.82f, 0.038f);
+        }
+
+        private static void CreateFoliageBranch(Transform parent, string name, Vector3 localStart, Vector3 localEnd, float radius, Material material)
+        {
+            Vector3 direction = localEnd - localStart;
+            if (direction.sqrMagnitude < 0.0001f)
+            {
+                return;
+            }
+
+            GameObject branch = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            branch.name = name;
+            branch.transform.SetParent(parent, false);
+            branch.transform.localPosition = (localStart + localEnd) * 0.5f;
+            branch.transform.localRotation = Quaternion.FromToRotation(Vector3.up, direction.normalized);
+            branch.transform.localScale = new Vector3(radius, direction.magnitude * 0.5f, radius);
+            branch.GetComponent<MeshRenderer>().sharedMaterial = material;
+            RemoveCollider(branch);
+            AddWind(branch, 0.018f, 0.74f, 0.18f, 0.85f, 0.030f);
         }
 
         private static void AddWindToWorldObject(GameObject target, Mesh mesh, int objectId)
@@ -845,7 +981,13 @@ namespace Psycho.Editor
                 }
 
                 bool cacheVisual = false;
-                if (PsychoHostedVisualOverrides.TryCreateNpcReplacement(npc, npcMaterial, out GameObject npcObject, out _))
+                GameObject npcObject;
+                if (ShouldUseProceduralHumanoidNpc(npc))
+                {
+                    npcObject = factory.CreateNpcVisual(npc);
+                    context.Report.visualReplacementNpcs++;
+                }
+                else if (PsychoHostedVisualOverrides.TryCreateNpcReplacement(npc, npcMaterial, out npcObject, out _))
                 {
                     context.Report.visualReplacementNpcs++;
                 }
@@ -872,6 +1014,39 @@ namespace Psycho.Editor
                 wanderObject.ApplyModifiedPropertiesWithoutUndo();
                 context.Report.npcSpawns++;
             }
+        }
+
+        private static bool ShouldUseProceduralHumanoidNpc(PsychoMirrorNpc npc)
+        {
+            if (npc == null)
+            {
+                return false;
+            }
+
+            if (ShouldUseDogSizedImpScale(npc))
+            {
+                return false;
+            }
+
+            string visualClass = npc.visualClass == null ? string.Empty : npc.visualClass.ToLowerInvariant();
+            if (visualClass == "citizen" || visualClass == "merchant" || visualClass == "banker" || visualClass == "guard")
+            {
+                return true;
+            }
+
+            string name = npc.name == null ? string.Empty : npc.name.ToLowerInvariant();
+            return name.Contains("man")
+                || name.Contains("woman")
+                || name.Contains("guard")
+                || name.Contains("warrior")
+                || name.Contains("knight")
+                || name.Contains("archer")
+                || name.Contains("mage")
+                || name.Contains("wizard")
+                || name.Contains("monk")
+                || name.Contains("banker")
+                || name.Contains("shop")
+                || name.Contains("merchant");
         }
 
         private static bool TryCreateCacheNpcVisual(
@@ -1167,6 +1342,7 @@ namespace Psycho.Editor
             }
 
             CreateGroundPlate(root, "Grand Exchange Paved Plaza", Vector3.zero, 19.5f, 17.5f, materials.LandmarkRoad);
+            CreateLandmarkPaverBands(root, "Grand Exchange Plaza", 19.5f, 17.5f, materials.FrostStone);
             CreateLandmarkCylinder(root, "Grand Exchange Center Dais", new Vector3(0f, 0.10f, 0f), new Vector3(4.6f, 0.10f, 4.6f), materials.LandmarkStone);
             CreateLandmarkCylinder(root, "Grand Exchange Inner Ring", new Vector3(0f, 0.24f, 0f), new Vector3(3.4f, 0.10f, 3.4f), materials.LandmarkRoad);
 
@@ -1248,11 +1424,15 @@ namespace Psycho.Editor
             CreateGroundPlate(root, "Bank Stone Approach", new Vector3(0f, 0.01f, -depth * 0.70f), width * 0.96f, depth * 0.46f, materials.LandmarkRoad);
             CreateLandmarkBox(root, "Bank Hall Walls", new Vector3(0f, 1.05f, 0f), new Vector3(width, 2.10f, depth), materials.LandmarkStone);
             CreateLandmarkBox(root, "Bank Foundation Plinth", new Vector3(0f, 0.20f, 0f), new Vector3(width * 1.04f, 0.22f, depth * 1.06f), materials.LandmarkRoad);
+            CreateLandmarkStoneCourses(root, "Bank Stone Course", width, depth, 0.48f, 1.72f, materials.FrostStone);
+            CreateLandmarkTimberBracing(root, "Bank Timber Bracing", width, depth, 1.10f, 1.42f, materials.TreeBark);
             CreateLandmarkBox(root, "Bank Upper Timber Fascia Front", new Vector3(0f, 1.86f, -depth * 0.53f), new Vector3(width * 1.06f, 0.18f, 0.12f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Upper Timber Fascia Back", new Vector3(0f, 1.86f, depth * 0.53f), new Vector3(width * 1.06f, 0.18f, 0.12f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Upper Timber Fascia Left", new Vector3(-width * 0.53f, 1.86f, 0f), new Vector3(0.12f, 0.18f, depth * 1.06f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Upper Timber Fascia Right", new Vector3(width * 0.53f, 1.86f, 0f), new Vector3(0.12f, 0.18f, depth * 1.06f), materials.TreeBark);
             CreateLandmarkGabledRoof(root, "Bank Dark Timber Gabled Roof", new Vector3(0f, 2.60f, 0f), width * 1.18f, depth * 1.22f, 0.92f, materials.LandmarkRoof);
+            CreateLandmarkRoofShingles(root, "Bank Roof Shingles", width * 1.18f, depth * 1.22f, 2.34f, 0.92f, materials.TreeBark);
+            CreateLandmarkChimney(root, "Bank Chimney", new Vector3(width * 0.28f, 2.98f, depth * 0.08f), materials.FrostStone, materials.TreeBark);
             CreateLandmarkBox(root, "Bank Roof Ridge Beam", new Vector3(0f, 3.10f, 0f), new Vector3(width * 1.04f, 0.13f, 0.18f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Front Shadow Eave", new Vector3(0f, 2.12f, -depth * 0.66f), new Vector3(width * 1.22f, 0.12f, 0.16f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Rear Shadow Eave", new Vector3(0f, 2.12f, depth * 0.66f), new Vector3(width * 1.22f, 0.12f, 0.16f), materials.TreeBark);
@@ -1274,7 +1454,7 @@ namespace Psycho.Editor
                 CreateLandmarkBox(root, $"Bank Window {i + 1} Stone Sill", new Vector3(x, 1.02f, -depth * 0.525f), new Vector3(0.96f, 0.08f, 0.12f), materials.FrostStone);
             }
 
-            context.Report.landmarkDressingObjects += 25;
+            context.Report.landmarkDressingObjects += 55;
         }
 
         private static void CreateHarborLandmark(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY)
@@ -1319,13 +1499,15 @@ namespace Psycho.Editor
                 float side = i % 2 == 0 ? 2.35f : -2.35f;
                 CreateLandmarkBox(root, $"House {i + 1} Stone Walls", new Vector3(x, 0.86f, side), new Vector3(2.6f, 1.72f, 2.35f), materials.LandmarkStone);
                 CreateLandmarkGabledRoof(root, $"House {i + 1} Gabled Roof", new Vector3(x, 2.02f, side), 3.10f, 2.78f, 0.74f, materials.LandmarkRoof);
+                Transform houseRoot = root;
+                CreateHouseDetailSet(houseRoot, $"House {i + 1}", new Vector3(x, 0f, side), 2.6f, 2.35f, materials);
                 CreateLandmarkBox(root, $"House {i + 1} Ridge Beam", new Vector3(x, 2.43f, side), new Vector3(2.75f, 0.10f, 0.13f), materials.TreeBark);
                 CreateLandmarkBox(root, $"House {i + 1} Foundation", new Vector3(x, 0.20f, side), new Vector3(2.76f, 0.22f, 2.50f), materials.LandmarkRoad);
                 CreateLandmarkBox(root, $"House {i + 1} Door", new Vector3(x, 0.58f, side - Mathf.Sign(side) * 1.21f), new Vector3(0.58f, 1.05f, 0.12f), materials.TreeBark);
                 CreateLandmarkBox(root, $"House {i + 1} Window", new Vector3(x - 0.72f, 1.12f, side - Mathf.Sign(side) * 1.205f), new Vector3(0.46f, 0.40f, 0.08f), materials.LandmarkGlass);
             }
 
-            context.Report.landmarkDressingObjects += houseCount * 6 + 1;
+            context.Report.landmarkDressingObjects += houseCount * 20 + 1;
         }
 
         private static void BuildHighlandForestDressing(HostedBuildContext context, HostedMaterials materials)
@@ -1498,6 +1680,21 @@ namespace Psycho.Editor
                 renderer.shadowCastingMode = ShadowCastingMode.On;
                 renderer.receiveShadows = true;
                 AddWind(canopy, 0.038f + t * 0.024f, 0.70f + t * 0.34f, 0.30f, 0.76f, 0.042f);
+
+                for (int arm = 0; arm < 4; arm++)
+                {
+                    float branchAngle = layer * 0.74f + arm * Mathf.PI * 0.5f + Deterministic01(seed + layer * 101 + arm * 17) * 0.28f;
+                    Vector3 sprayOffset = new Vector3(Mathf.Cos(branchAngle) * radius * 0.38f, -layerHeight * 0.16f, Mathf.Sin(branchAngle) * radius * 0.38f);
+                    CreateFoliageSpray(
+                        tree.transform,
+                        $"Highland Needle Spray {layer + 1}.{arm + 1}",
+                        canopy.transform.localPosition + sprayOffset,
+                        new Vector3(radius * 0.52f, layerHeight * 0.11f, radius * 0.18f),
+                        branchAngle * Mathf.Rad2Deg,
+                        canopyMaterial,
+                        0.030f + t * 0.026f,
+                        0.68f + t * 0.32f);
+                }
             }
         }
 
@@ -1672,6 +1869,94 @@ namespace Psycho.Editor
             plate.transform.SetParent(parent, true);
             plate.transform.localRotation = Quaternion.identity;
             plate.transform.localPosition = localPosition;
+        }
+
+        private static void CreateLandmarkPaverBands(Transform parent, string prefix, float width, float depth, Material material)
+        {
+            for (int i = -3; i <= 3; i++)
+            {
+                float x = i * width / 8f;
+                CreateLandmarkDetailBox(parent, $"{prefix} North-South Paver Joint {i + 4}", new Vector3(x, 0.035f, 0f), new Vector3(0.030f, 0.020f, depth * 0.92f), material);
+            }
+
+            for (int i = -2; i <= 2; i++)
+            {
+                float z = i * depth / 7f;
+                CreateLandmarkDetailBox(parent, $"{prefix} East-West Paver Joint {i + 3}", new Vector3(0f, 0.040f, z), new Vector3(width * 0.92f, 0.020f, 0.030f), material);
+            }
+        }
+
+        private static void CreateLandmarkStoneCourses(Transform parent, string prefix, float width, float depth, float bottomY, float topY, Material material)
+        {
+            int rows = 5;
+            for (int row = 0; row < rows; row++)
+            {
+                float t = row / Mathf.Max(1f, rows - 1f);
+                float y = Mathf.Lerp(bottomY, topY, t);
+                float rowHeight = row % 2 == 0 ? 0.045f : 0.035f;
+                CreateLandmarkDetailBox(parent, $"{prefix} Front Row {row + 1}", new Vector3(0f, y, -depth * 0.535f), new Vector3(width * 0.96f, rowHeight, 0.030f), material);
+                CreateLandmarkDetailBox(parent, $"{prefix} Back Row {row + 1}", new Vector3(0f, y, depth * 0.535f), new Vector3(width * 0.96f, rowHeight, 0.030f), material);
+                CreateLandmarkDetailBox(parent, $"{prefix} Left Row {row + 1}", new Vector3(-width * 0.535f, y, 0f), new Vector3(0.030f, rowHeight, depth * 0.94f), material);
+                CreateLandmarkDetailBox(parent, $"{prefix} Right Row {row + 1}", new Vector3(width * 0.535f, y, 0f), new Vector3(0.030f, rowHeight, depth * 0.94f), material);
+            }
+        }
+
+        private static void CreateLandmarkTimberBracing(Transform parent, string prefix, float width, float depth, float centerY, float braceHeight, Material material)
+        {
+            float frontZ = -depth * 0.545f;
+            float backZ = depth * 0.545f;
+            float sideX = width * 0.545f;
+            for (int i = -1; i <= 1; i += 2)
+            {
+                float x = i * width * 0.23f;
+                GameObject frontBrace = CreateLandmarkDetailBox(parent, $"{prefix} Front Diagonal {i}", new Vector3(x, centerY, frontZ), new Vector3(0.065f, braceHeight, 0.035f), material);
+                frontBrace.transform.localRotation = Quaternion.Euler(0f, 0f, i * 24f);
+                GameObject backBrace = CreateLandmarkDetailBox(parent, $"{prefix} Back Diagonal {i}", new Vector3(x, centerY, backZ), new Vector3(0.065f, braceHeight, 0.035f), material);
+                backBrace.transform.localRotation = Quaternion.Euler(0f, 0f, -i * 24f);
+                CreateLandmarkDetailBox(parent, $"{prefix} Front Upright {i}", new Vector3(x * 1.22f, centerY, frontZ), new Vector3(0.075f, braceHeight * 0.82f, 0.040f), material);
+                CreateLandmarkDetailBox(parent, $"{prefix} Back Upright {i}", new Vector3(x * 1.22f, centerY, backZ), new Vector3(0.075f, braceHeight * 0.82f, 0.040f), material);
+            }
+
+            CreateLandmarkDetailBox(parent, $"{prefix} Left Wall Plate", new Vector3(-sideX, centerY, 0f), new Vector3(0.040f, braceHeight * 0.82f, depth * 0.68f), material);
+            CreateLandmarkDetailBox(parent, $"{prefix} Right Wall Plate", new Vector3(sideX, centerY, 0f), new Vector3(0.040f, braceHeight * 0.82f, depth * 0.68f), material);
+        }
+
+        private static void CreateLandmarkRoofShingles(Transform parent, string prefix, float width, float depth, float centerY, float roofHeight, Material material)
+        {
+            int rows = 6;
+            for (int row = 0; row < rows; row++)
+            {
+                float t = row / Mathf.Max(1f, rows - 1f);
+                float y = centerY + Mathf.Lerp(-roofHeight * 0.30f, roofHeight * 0.34f, t);
+                float z = Mathf.Lerp(depth * 0.49f, depth * 0.10f, t);
+                float stripWidth = width * Mathf.Lerp(1.02f, 0.70f, t);
+                CreateLandmarkDetailBox(parent, $"{prefix} Front Strip {row + 1}", new Vector3(0f, y, -z), new Vector3(stripWidth, 0.028f, 0.070f), material);
+                CreateLandmarkDetailBox(parent, $"{prefix} Back Strip {row + 1}", new Vector3(0f, y, z), new Vector3(stripWidth, 0.028f, 0.070f), material);
+            }
+        }
+
+        private static void CreateLandmarkChimney(Transform parent, string prefix, Vector3 localPosition, Material stone, Material cap)
+        {
+            CreateLandmarkDetailBox(parent, $"{prefix} Stack", localPosition, new Vector3(0.34f, 0.82f, 0.34f), stone);
+            CreateLandmarkDetailBox(parent, $"{prefix} Cap", localPosition + Vector3.up * 0.44f, new Vector3(0.44f, 0.10f, 0.44f), cap);
+        }
+
+        private static void CreateHouseDetailSet(Transform parent, string prefix, Vector3 origin, float width, float depth, HostedMaterials materials)
+        {
+            GameObject detailRoot = new GameObject($"{prefix} Stone Timber Roof Details");
+            detailRoot.transform.SetParent(parent, false);
+            detailRoot.transform.localPosition = origin;
+            CreateLandmarkStoneCourses(detailRoot.transform, $"{prefix} Stone Course", width, depth, 0.42f, 1.44f, materials.FrostStone);
+            CreateLandmarkTimberBracing(detailRoot.transform, $"{prefix} Timber Frame", width, depth, 1.02f, 1.04f, materials.TreeBark);
+            CreateLandmarkRoofShingles(detailRoot.transform, $"{prefix} Roof Shingles", width * 1.20f, depth * 1.18f, 1.88f, 0.74f, materials.TreeBark);
+            CreateLandmarkChimney(detailRoot.transform, $"{prefix} Chimney", new Vector3(width * 0.22f, 2.28f, depth * 0.04f), materials.FrostStone, materials.TreeBark);
+        }
+
+        private static GameObject CreateLandmarkDetailBox(Transform parent, string name, Vector3 localPosition, Vector3 localScale, Material material)
+        {
+            GameObject box = CreateLandmarkBox(parent, name, localPosition, localScale, material);
+            RemoveCollider(box);
+            return box;
         }
 
         private static GameObject CreateLandmarkBox(Transform parent, string name, Vector3 localPosition, Vector3 localScale, Material material)

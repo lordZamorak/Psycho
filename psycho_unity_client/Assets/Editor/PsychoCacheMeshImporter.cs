@@ -46,14 +46,14 @@ namespace Psycho.Editor
             EnsureGeneratedFolders();
             Material material = CreateOrUpdateVertexColorMaterial(TerrainMaterialPath, 0.20f, 0.58f, 0.16f, 0.54f);
             SetMaterialFloat(material, "_GroundBlendStrength", 0.88f);
-            SetMaterialColor(material, "_GrassTint", new Color(0.13f, 0.25f, 0.15f, 1f));
-            SetMaterialColor(material, "_PathTint", new Color(0.31f, 0.30f, 0.26f, 1f));
-            SetMaterialColor(material, "_RockTint", new Color(0.43f, 0.44f, 0.42f, 1f));
+            SetMaterialColor(material, "_GrassTint", new Color(0.20f, 0.36f, 0.18f, 1f));
+            SetMaterialColor(material, "_PathTint", new Color(0.46f, 0.37f, 0.24f, 1f));
+            SetMaterialColor(material, "_RockTint", new Color(0.36f, 0.38f, 0.35f, 1f));
             SetMaterialFloat(material, "_BlendNoiseScale", 0.44f);
             SetMaterialFloat(material, "_BlendNoiseStrength", 0.62f);
             SetMaterialFloat(material, "_HighlandTextureStrength", 0.78f);
             SetMaterialFloat(material, "_StoneStrataStrength", 0.62f);
-            SetMaterialFloat(material, "_SnowDustStrength", 0.22f);
+            SetMaterialFloat(material, "_SnowDustStrength", 0.055f);
             SetMaterialColor(material, "_DistanceTint", new Color(0.46f, 0.55f, 0.62f, 1f));
             SetMaterialFloat(material, "_DistanceStart", 80f);
             SetMaterialFloat(material, "_DistanceEnd", 420f);
@@ -61,6 +61,16 @@ namespace Psycho.Editor
             SetMaterialColor(material, "_TopWarmth", new Color(0.93f, 0.96f, 0.92f, 1f));
             SetMaterialFloat(material, "_HemisphereContrast", 0.20f);
             SetMaterialFloat(material, "_SpecularLift", 0.045f);
+            SetMaterialTexture(material, "_GrassAlbedo", "Assets/Resources/PsychoMaterials/Psycho_Grass_Albedo_2K.png");
+            SetMaterialTexture(material, "_PathAlbedo", "Assets/Resources/PsychoMaterials/Psycho_Organic_Albedo_2K.png");
+            SetMaterialTexture(material, "_RockAlbedo", "Assets/Resources/PsychoMaterials/Psycho_Mountain_Albedo_2K.png");
+            SetMaterialTexture(material, "_GrassNormalMap", "Assets/Resources/PsychoMaterials/Psycho_Grass_Normal_2K.png");
+            SetMaterialTexture(material, "_PathNormalMap", "Assets/Resources/PsychoMaterials/Psycho_Organic_Normal_2K.png");
+            SetMaterialTexture(material, "_RockNormalMap", "Assets/Resources/PsychoMaterials/Psycho_Mountain_Normal_2K.png");
+            SetMaterialFloat(material, "_TerrainTexScale", 0.078f);
+            SetMaterialFloat(material, "_TerrainAlbedoStrength", 0.76f);
+            SetMaterialFloat(material, "_TerrainNormalStrength", 0.46f);
+            SetMaterialFloat(material, "_SplatContrast", 1.24f);
             EditorUtility.SetDirty(material);
             return material;
         }
@@ -342,6 +352,20 @@ namespace Psycho.Editor
             if (material.HasProperty(propertyName))
             {
                 material.SetColor(propertyName, value);
+            }
+        }
+
+        private static void SetMaterialTexture(Material material, string propertyName, string assetPath)
+        {
+            if (!material.HasProperty(propertyName))
+            {
+                return;
+            }
+
+            Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+            if (texture != null)
+            {
+                material.SetTexture(propertyName, texture);
             }
         }
 
