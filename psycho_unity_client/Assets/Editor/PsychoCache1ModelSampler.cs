@@ -31,6 +31,11 @@ namespace Psycho.Editor
             ProbeCache1ModelSample();
         }
 
+        public static void EnsureCache1ModelSampleAssets()
+        {
+            ProbeCache1Models(false);
+        }
+
         [MenuItem("Psycho/Cache/Render Cache1 Model Preview")]
         public static void RenderCache1ModelPreview()
         {

@@ -114,7 +114,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -469,6 +469,17 @@ namespace Psycho.Editor
                     }
                 }
 
+                if (addedMeshes == 0 && PsychoHostedVisualOverrides.TryCreateMissingObjectReplacement(
+                    new PsychoHostedVisualOverrides.PsychoMapObjectPlacementAdapter(placement.ObjectId),
+                    material,
+                    out GameObject replacementObject,
+                    out _))
+                {
+                    replacementObject.transform.SetParent(placed.transform, false);
+                    context.Report.visualReplacementObjects++;
+                    addedMeshes++;
+                }
+
                 if (addedMeshes == 0)
                 {
                     AddFallbackBounds(placed.transform, definition, placement, fallbackMaterial);
@@ -487,6 +498,7 @@ namespace Psycho.Editor
                     addedWind = true;
                 }
 
+                context.Report.decodedObjectAccents += PsychoHostedVisualOverrides.AddObjectAccents(definition, placed.transform, material);
                 AddInteractionAndCollision(placed, definition, placement);
                 if (addedWind)
                 {
@@ -688,8 +700,17 @@ namespace Psycho.Editor
                     continue;
                 }
 
-                bool cacheVisual = TryCreateCacheNpcVisual(store, database, npc, npcMaterial, out GameObject npcObject, context);
-                if (!cacheVisual)
+                bool cacheVisual = false;
+                if (PsychoHostedVisualOverrides.TryCreateNpcReplacement(npc, npcMaterial, out GameObject npcObject, out _))
+                {
+                    context.Report.visualReplacementNpcs++;
+                }
+                else
+                {
+                    cacheVisual = TryCreateCacheNpcVisual(store, database, npc, npcMaterial, out npcObject, context);
+                }
+
+                if (!cacheVisual && npcObject == null)
                 {
                     npcObject = factory.CreateNpcVisual(npc);
                     context.Report.fallbackNpcVisuals++;
@@ -2294,6 +2315,9 @@ namespace Psycho.Editor
             public int fallbackNpcVisuals;
             public int missingNpcModels;
             public int smoothedCharacterMeshes;
+            public int visualReplacementNpcs;
+            public int visualReplacementObjects;
+            public int decodedObjectAccents;
             public int terrainCollisionSamples;
             public int terrainCollisionMisses;
             public int enhancedFoliageObjects;

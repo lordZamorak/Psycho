@@ -31,6 +31,11 @@ namespace Psycho.Editor
             ImportLooseModelPack();
         }
 
+        public static void EnsureLooseModelAssets()
+        {
+            ImportLooseModels(false);
+        }
+
         [MenuItem("Psycho/Cache/Render Loose Model Preview")]
         public static void RenderLooseModelPreview()
         {
