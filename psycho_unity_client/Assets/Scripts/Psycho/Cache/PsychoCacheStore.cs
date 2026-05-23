@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using UnityEngine;
@@ -10,11 +11,12 @@ namespace Psycho.Cache
         private const int IndexEntrySize = 6;
         private const int SectorSize = 520;
         private const int SectorHeaderSize = 8;
-        private const int SectorPayloadSize = SectorSize - SectorHeaderSize;
+        private const int LargeSectorHeaderSize = 10;
 
         private readonly string cacheRoot;
         private readonly FileStream dataStream;
-        private readonly FileStream[] indexStreams = new FileStream[10];
+        private readonly Dictionary<int, FileStream> indexStreams = new Dictionary<int, FileStream>();
+        private readonly int archiveIdOffset;
 
         public PsychoCacheStore(string cacheRoot)
         {
@@ -25,6 +27,13 @@ namespace Psycho.Cache
 
             this.cacheRoot = cacheRoot;
             string dataPath = Path.Combine(cacheRoot, "main_file_cache.dat");
+            archiveIdOffset = 1;
+            if (!File.Exists(dataPath))
+            {
+                dataPath = Path.Combine(cacheRoot, "main_file_cache.dat2");
+                archiveIdOffset = 0;
+            }
+
             if (!File.Exists(dataPath))
             {
                 throw new FileNotFoundException("Could not find RuneScape cache data file.", dataPath);
@@ -39,6 +48,15 @@ namespace Psycho.Cache
             {
                 string projectRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
                 return Path.Combine(projectRoot, "necrotic_client-item_attributes", "cache");
+            }
+        }
+
+        public static string DefaultClientCache1Path
+        {
+            get
+            {
+                string projectRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
+                return Path.Combine(projectRoot, "necrotic_client-item_attributes", "cache1");
             }
         }
 
@@ -75,12 +93,16 @@ namespace Psycho.Cache
             byte[] sectorBytes = new byte[SectorSize];
             int bytesRead = 0;
             int chunk = 0;
-            int expectedArchive = cacheIndex + 1;
-            int maxSectors = Math.Max(1, length / SectorPayloadSize + 2);
+            bool largeFileId = fileId > 0xffff;
+            int sectorHeaderSize = largeFileId ? LargeSectorHeaderSize : SectorHeaderSize;
+            int sectorPayloadSize = SectorSize - sectorHeaderSize;
+            int expectedArchive = cacheIndex + archiveIdOffset;
+            int alternateExpectedArchive = archiveIdOffset == 0 ? cacheIndex + 1 : cacheIndex;
+            int maxSectors = Math.Max(1, length / sectorPayloadSize + 2);
 
             while (bytesRead < length)
             {
-                if (sector <= 0 || (long)sector * SectorSize + SectorHeaderSize > dataStream.Length)
+                if (sector <= 0 || (long)sector * SectorSize + sectorHeaderSize > dataStream.Length)
                 {
                     return null;
                 }
@@ -91,18 +113,32 @@ namespace Psycho.Cache
                 }
 
                 ReadFully(dataStream, (long)sector * SectorSize, sectorBytes, 0, sectorBytes.Length);
-                int readFileId = ((sectorBytes[0] & 0xff) << 8) | (sectorBytes[1] & 0xff);
-                int readChunk = ((sectorBytes[2] & 0xff) << 8) | (sectorBytes[3] & 0xff);
-                int nextSector = ReadMedium(sectorBytes, 4);
-                int archive = sectorBytes[7] & 0xff;
+                int readFileId;
+                int readChunk;
+                int nextSector;
+                int archive;
+                if (largeFileId)
+                {
+                    readFileId = ((sectorBytes[0] & 0xff) << 24) | ((sectorBytes[1] & 0xff) << 16) | ((sectorBytes[2] & 0xff) << 8) | (sectorBytes[3] & 0xff);
+                    readChunk = ((sectorBytes[4] & 0xff) << 8) | (sectorBytes[5] & 0xff);
+                    nextSector = ReadMedium(sectorBytes, 6);
+                    archive = sectorBytes[9] & 0xff;
+                }
+                else
+                {
+                    readFileId = ((sectorBytes[0] & 0xff) << 8) | (sectorBytes[1] & 0xff);
+                    readChunk = ((sectorBytes[2] & 0xff) << 8) | (sectorBytes[3] & 0xff);
+                    nextSector = ReadMedium(sectorBytes, 4);
+                    archive = sectorBytes[7] & 0xff;
+                }
 
-                if (readFileId != fileId || readChunk != chunk || archive != expectedArchive)
+                if (readFileId != fileId || readChunk != chunk || (archive != expectedArchive && archive != alternateExpectedArchive))
                 {
                     return null;
                 }
 
-                int copyLength = Math.Min(SectorPayloadSize, length - bytesRead);
-                Buffer.BlockCopy(sectorBytes, SectorHeaderSize, payload, bytesRead, copyLength);
+                int copyLength = Math.Min(sectorPayloadSize, length - bytesRead);
+                Buffer.BlockCopy(sectorBytes, sectorHeaderSize, payload, bytesRead, copyLength);
                 bytesRead += copyLength;
                 sector = nextSector;
                 chunk++;
@@ -128,25 +164,72 @@ namespace Psycho.Cache
             }
         }
 
+        public byte[] ReadContainerFile(int cacheIndex, int fileId)
+        {
+            byte[] raw = ReadFile(cacheIndex, fileId);
+            if (raw == null || raw.Length < 5)
+            {
+                return raw;
+            }
+
+            int compression = raw[0] & 0xff;
+            int compressedLength = ReadInt(raw, 1);
+            if (compressedLength < 0 || compressedLength > raw.Length - 5)
+            {
+                return raw;
+            }
+
+            if (compression == 0)
+            {
+                byte[] output = new byte[compressedLength];
+                Buffer.BlockCopy(raw, 5, output, 0, output.Length);
+                return output;
+            }
+
+            if (raw.Length < 9)
+            {
+                return null;
+            }
+
+            int decompressedLength = ReadInt(raw, 5);
+            if (decompressedLength < 0 || compressedLength > raw.Length - 9)
+            {
+                return null;
+            }
+
+            if (compression == 2)
+            {
+                using (MemoryStream input = new MemoryStream(raw, 9, compressedLength))
+                using (GZipStream gzip = new GZipStream(input, CompressionMode.Decompress))
+                using (MemoryStream output = new MemoryStream(Math.Max(0, decompressedLength)))
+                {
+                    gzip.CopyTo(output);
+                    return output.ToArray();
+                }
+            }
+
+            return null;
+        }
+
         public void Dispose()
         {
             dataStream?.Dispose();
-            for (int i = 0; i < indexStreams.Length; i++)
+            foreach (FileStream stream in indexStreams.Values)
             {
-                indexStreams[i]?.Dispose();
-                indexStreams[i] = null;
+                stream?.Dispose();
             }
+
+            indexStreams.Clear();
         }
 
         private FileStream GetIndexStream(int cacheIndex)
         {
-            if (cacheIndex < 0 || cacheIndex >= indexStreams.Length)
+            if (cacheIndex < 0 || cacheIndex > 255)
             {
-                throw new ArgumentOutOfRangeException(nameof(cacheIndex), cacheIndex, "Cache index must be in the main cache idx0-idx9 range.");
+                throw new ArgumentOutOfRangeException(nameof(cacheIndex), cacheIndex, "Cache index must be in the main cache idx0-idx255 range.");
             }
 
-            FileStream existing = indexStreams[cacheIndex];
-            if (existing != null)
+            if (indexStreams.TryGetValue(cacheIndex, out FileStream existing))
             {
                 return existing;
             }
@@ -158,13 +241,18 @@ namespace Psycho.Cache
             }
 
             FileStream created = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            indexStreams[cacheIndex] = created;
+            indexStreams.Add(cacheIndex, created);
             return created;
         }
 
         private static int ReadMedium(byte[] bytes, int offset)
         {
             return ((bytes[offset] & 0xff) << 16) | ((bytes[offset + 1] & 0xff) << 8) | (bytes[offset + 2] & 0xff);
+        }
+
+        private static int ReadInt(byte[] bytes, int offset)
+        {
+            return ((bytes[offset] & 0xff) << 24) | ((bytes[offset + 1] & 0xff) << 16) | ((bytes[offset + 2] & 0xff) << 8) | (bytes[offset + 3] & 0xff);
         }
 
         private static void ReadFully(FileStream stream, long offset, byte[] buffer, int bufferOffset, int count)

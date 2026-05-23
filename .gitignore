@@ -44,9 +44,18 @@ _codex_backups/
 necrotic_client-item_attributes/cache/**
 !necrotic_client-item_attributes/cache/
 !necrotic_client-item_attributes/cache/README.md
+necrotic_client-item_attributes/cache1/**
+!necrotic_client-item_attributes/cache1/
+!necrotic_client-item_attributes/cache1/README.md
+necrotic_client-item_attributes/these/**
+!necrotic_client-item_attributes/these/
+!necrotic_client-item_attributes/these/README.md
 necrotic_server-item_attributes/cache/**
 !necrotic_server-item_attributes/cache/
 !necrotic_server-item_attributes/cache/README.md
+
+# Local duplicate/export worktrees
+/Psycho/
 
 # Local IDE and OS files
 .idea/
