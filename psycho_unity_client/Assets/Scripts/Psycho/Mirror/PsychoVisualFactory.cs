@@ -394,11 +394,6 @@ namespace Psycho.Mirror
 
         private static GameObject AddPrimitive(GameObject root, PrimitiveType type, string name, Vector3 localPosition, Vector3 localScale, Material material)
         {
-            if (type == PrimitiveType.Cube)
-            {
-                return AddRoundedBox(root, name, localPosition, localScale, material);
-            }
-
             GameObject child = GameObject.CreatePrimitive(type);
             child.name = name;
             child.transform.SetParent(root.transform, false);
@@ -406,84 +401,6 @@ namespace Psycho.Mirror
             child.transform.localScale = localScale;
             child.GetComponent<MeshRenderer>().sharedMaterial = material;
             return child;
-        }
-
-        private static GameObject AddRoundedBox(GameObject root, string name, Vector3 localPosition, Vector3 localScale, Material material)
-        {
-            GameObject child = new GameObject(name);
-            child.transform.SetParent(root.transform, false);
-            child.transform.localPosition = localPosition;
-            child.AddComponent<MeshFilter>().sharedMesh = CreateRoundedBoxMesh(name + " Mesh", localScale);
-            child.AddComponent<MeshRenderer>().sharedMaterial = material;
-            BoxCollider collider = child.AddComponent<BoxCollider>();
-            collider.size = localScale;
-            return child;
-        }
-
-        private static Mesh CreateRoundedBoxMesh(string name, Vector3 size)
-        {
-            const int longitudeSegments = 16;
-            const int latitudeSegments = 8;
-            const float exponent = 0.26f;
-            Vector3 half = new Vector3(
-                Mathf.Max(0.001f, size.x) * 0.5f,
-                Mathf.Max(0.001f, size.y) * 0.5f,
-                Mathf.Max(0.001f, size.z) * 0.5f);
-            Vector3[] vertices = new Vector3[(latitudeSegments + 1) * longitudeSegments];
-            Vector2[] uv = new Vector2[vertices.Length];
-            List<int> triangles = new List<int>(latitudeSegments * longitudeSegments * 6);
-
-            int vertex = 0;
-            for (int latitude = 0; latitude <= latitudeSegments; latitude++)
-            {
-                float v = latitude / (float)latitudeSegments;
-                float phi = Mathf.Lerp(-Mathf.PI * 0.5f, Mathf.PI * 0.5f, v);
-                float cosPhi = Mathf.Cos(phi);
-                float sinPhi = Mathf.Sin(phi);
-                for (int longitude = 0; longitude < longitudeSegments; longitude++)
-                {
-                    float u = longitude / (float)longitudeSegments;
-                    float theta = u * Mathf.PI * 2f;
-                    float cosTheta = Mathf.Cos(theta);
-                    float sinTheta = Mathf.Sin(theta);
-                    vertices[vertex] = new Vector3(
-                        SignedPow(cosPhi, exponent) * SignedPow(cosTheta, exponent) * half.x,
-                        SignedPow(sinPhi, exponent) * half.y,
-                        SignedPow(cosPhi, exponent) * SignedPow(sinTheta, exponent) * half.z);
-                    uv[vertex] = new Vector2(u, v);
-                    vertex++;
-                }
-            }
-
-            for (int latitude = 0; latitude < latitudeSegments; latitude++)
-            {
-                int row = latitude * longitudeSegments;
-                int nextRow = (latitude + 1) * longitudeSegments;
-                for (int longitude = 0; longitude < longitudeSegments; longitude++)
-                {
-                    int next = (longitude + 1) % longitudeSegments;
-                    triangles.Add(row + longitude);
-                    triangles.Add(nextRow + longitude);
-                    triangles.Add(row + next);
-                    triangles.Add(row + next);
-                    triangles.Add(nextRow + longitude);
-                    triangles.Add(nextRow + next);
-                }
-            }
-
-            Mesh mesh = new Mesh { name = name };
-            mesh.vertices = vertices;
-            mesh.uv = uv;
-            mesh.triangles = triangles.ToArray();
-            mesh.RecalculateNormals();
-            mesh.RecalculateTangents();
-            mesh.RecalculateBounds();
-            return mesh;
-        }
-
-        private static float SignedPow(float value, float exponent)
-        {
-            return Mathf.Sign(value) * Mathf.Pow(Mathf.Abs(value), exponent);
         }
 
         private static GameObject AddTaperedPrism(GameObject root, string name, Vector3 localPosition, float topWidth, float bottomWidth, float height, float depth, Material material)
