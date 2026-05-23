@@ -657,7 +657,7 @@ namespace Psycho.Editor
             int minY = (BaseRegionY - RegionRadius) * 64 + 4;
             int maxY = (BaseRegionY + RegionRadius + 1) * 64 - 4;
 
-            for (int i = 0; i < 520; i++)
+            for (int i = 0; i < 980; i++)
             {
                 int worldX = minX + Mathf.FloorToInt(Deterministic01(i * 31 + 7) * (maxX - minX));
                 int worldY = minY + Mathf.FloorToInt(Deterministic01(i * 47 + 19) * (maxY - minY));
@@ -673,11 +673,11 @@ namespace Psycho.Editor
                     continue;
                 }
 
-                float scatterX = (Deterministic01(i * 13 + 3) - 0.5f) * TileScale * 0.72f;
-                float scatterZ = (Deterministic01(i * 17 + 5) - 0.5f) * TileScale * 0.72f;
-                Vector3 position = WorldTilePosition(context, worldX, worldY) + new Vector3(scatterX, 0.055f, scatterZ);
-                Material material = i % 23 == 0 ? materials.Flowers : materials.Grass;
-                CreateGrassBlade(root.transform, position, 0.28f + Deterministic01(i * 59 + 11) * 0.28f, material);
+                float scatterX = (Deterministic01(i * 13 + 3) - 0.5f) * TileScale * 0.78f;
+                float scatterZ = (Deterministic01(i * 17 + 5) - 0.5f) * TileScale * 0.78f;
+                Vector3 position = WorldTilePosition(context, worldX, worldY) + new Vector3(scatterX, 0.052f, scatterZ);
+                Material material = i % 17 == 0 ? materials.Flowers : materials.Grass;
+                CreateGrassBlade(root.transform, position, 0.24f + Deterministic01(i * 59 + 11) * 0.34f, material);
             }
         }
 
@@ -686,7 +686,7 @@ namespace Psycho.Editor
             GameObject root = new GameObject("Animated Waterways");
             CreateWaterStrip(root.transform, "River Lum Ripple Strip", context, 3139, 3480, 2.35f, 78f, materials.Water);
 
-            for (int i = 0; i < 76; i++)
+            for (int i = 0; i < 126; i++)
             {
                 int worldX = 3137 + Mathf.FloorToInt(Deterministic01(i * 29 + 5) * 4f);
                 int worldY = 3441 + Mathf.FloorToInt(Deterministic01(i * 37 + 9) * 84f);
@@ -700,9 +700,9 @@ namespace Psycho.Editor
             GameObject vistaRoot = new GameObject("Distant Hosted Vista");
             vistaRoot.AddComponent<DistantVistaParallax>();
 
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 42; i++)
             {
-                float angle = i * Mathf.PI * 2f / 30f;
+                float angle = i * Mathf.PI * 2f / 42f;
                 float radius = 315f + Mathf.Sin(i * 1.71f) * 26f;
                 float width = 34f + (i % 5) * 7f;
                 float height = 11f + Mathf.Sin(i * 0.83f) * 2.4f + (i % 4) * 1.5f;
@@ -712,16 +712,28 @@ namespace Psycho.Editor
                 mountain.transform.SetParent(vistaRoot.transform, true);
             }
 
+            for (int i = 0; i < 34; i++)
+            {
+                float angle = (i + 0.5f) * Mathf.PI * 2f / 34f;
+                float radius = 245f + Mathf.Cos(i * 1.21f) * 18f;
+                float width = 46f + (i % 4) * 9f;
+                float height = 5.5f + Mathf.Sin(i * 0.94f) * 1.2f;
+                float depth = 24f + (i % 3) * 6f;
+                Vector3 position = new Vector3(Mathf.Cos(angle) * radius, -13.8f, Mathf.Sin(angle) * radius);
+                GameObject hill = CreateMountain($"Distant Hill {i + 1}", position, width, height, depth, materials.Hills);
+                hill.transform.SetParent(vistaRoot.transform, true);
+            }
+
         }
 
         private static void BuildCloudLayer(Material material)
         {
             GameObject root = new GameObject("Moving Cloud Layer");
-            for (int i = 0; i < 22; i++)
+            for (int i = 0; i < 32; i++)
             {
-                float x = Mathf.Sin(i * 2.91f) * 92f;
-                float z = Mathf.Cos(i * 1.73f) * 98f;
-                float y = 34f + (i % 5) * 3.1f;
+                float x = Mathf.Sin(i * 2.91f) * 112f;
+                float z = Mathf.Cos(i * 1.73f) * 118f;
+                float y = 36f + (i % 5) * 3.3f;
                 GameObject cloud = new GameObject($"Moving Cloud {i + 1}");
                 cloud.transform.SetParent(root.transform, false);
                 cloud.transform.position = new Vector3(x, y, z);
@@ -735,7 +747,7 @@ namespace Psycho.Editor
                     puff.transform.SetParent(cloud.transform, false);
                     float localX = (lobe - (lobes - 1) * 0.5f) * 4.8f;
                     puff.transform.localPosition = new Vector3(localX, Mathf.Sin(lobe * 1.7f) * 0.42f, Mathf.Cos(lobe * 1.1f) * 1.35f);
-                    puff.transform.localScale = new Vector3(8.2f + lobe * 0.75f, 0.86f + (lobe % 2) * 0.26f, 3.4f + (lobe % 3) * 0.72f);
+                    puff.transform.localScale = new Vector3(9.4f + lobe * 0.82f, 0.78f + (lobe % 2) * 0.24f, 3.8f + (lobe % 3) * 0.78f);
                     MeshRenderer renderer = puff.GetComponent<MeshRenderer>();
                     renderer.sharedMaterial = material;
                     renderer.shadowCastingMode = ShadowCastingMode.Off;
@@ -749,37 +761,54 @@ namespace Psycho.Editor
 
                 CloudDrift drift = cloud.AddComponent<CloudDrift>();
                 SerializedObject driftObject = new SerializedObject(drift);
-                driftObject.FindProperty("driftSpeed").floatValue = 0.35f + (i % 4) * 0.055f;
-                driftObject.FindProperty("wrapDistance").floatValue = 185f;
+                driftObject.FindProperty("driftSpeed").floatValue = 0.28f + (i % 4) * 0.045f;
+                driftObject.FindProperty("wrapDistance").floatValue = 230f;
                 driftObject.ApplyModifiedPropertiesWithoutUndo();
             }
         }
 
         private static void BuildLighting()
         {
-            QualitySettings.antiAliasing = Mathf.Max(QualitySettings.antiAliasing, 4);
+            QualitySettings.antiAliasing = Mathf.Max(QualitySettings.antiAliasing, 8);
+            QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
+            QualitySettings.pixelLightCount = Mathf.Max(QualitySettings.pixelLightCount, 4);
             QualitySettings.shadows = ShadowQuality.All;
-            QualitySettings.shadowResolution = ShadowResolution.High;
+            QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
+            QualitySettings.shadowProjection = ShadowProjection.CloseFit;
+            QualitySettings.shadowDistance = Mathf.Max(QualitySettings.shadowDistance, 260f);
+            QualitySettings.shadowCascades = Mathf.Max(QualitySettings.shadowCascades, 4);
+            QualitySettings.lodBias = Mathf.Max(QualitySettings.lodBias, 1.65f);
             QualitySettings.softParticles = true;
+            QualitySettings.softVegetation = true;
+            QualitySettings.realtimeReflectionProbes = true;
 
             GameObject sunObject = new GameObject("Sun");
             Light sun = sunObject.AddComponent<Light>();
             sun.type = LightType.Directional;
-            sun.intensity = 1.18f;
-            sun.color = new Color(1f, 0.91f, 0.76f);
+            sun.intensity = 1.12f;
+            sun.color = new Color(1f, 0.93f, 0.82f);
             sun.shadows = LightShadows.Soft;
-            sun.shadowStrength = 0.58f;
+            sun.shadowStrength = 0.66f;
             sunObject.transform.rotation = Quaternion.Euler(48f, -34f, 0f);
 
             GameObject fillObject = new GameObject("Soft Sky Fill");
             Light fill = fillObject.AddComponent<Light>();
             fill.type = LightType.Directional;
-            fill.intensity = 0.16f;
-            fill.color = new Color(0.45f, 0.58f, 0.72f);
+            fill.intensity = 0.25f;
+            fill.color = new Color(0.50f, 0.62f, 0.78f);
             fillObject.transform.rotation = Quaternion.Euler(24f, 136f, 0f);
+
+            GameObject bounceObject = new GameObject("Warm Ground Bounce");
+            Light bounce = bounceObject.AddComponent<Light>();
+            bounce.type = LightType.Directional;
+            bounce.intensity = 0.08f;
+            bounce.color = new Color(0.76f, 0.62f, 0.42f);
+            bounce.shadows = LightShadows.None;
+            bounceObject.transform.rotation = Quaternion.Euler(-32f, -18f, 0f);
 
             GameObject lightingController = new GameObject("Environment Lighting Controller");
             EnvironmentLightingController controller = lightingController.AddComponent<EnvironmentLightingController>();
+            lightingController.AddComponent<PsychoRuntimeVisualQuality>();
             typeof(EnvironmentLightingController).GetField("sun", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)?.SetValue(controller, sun);
 
             GameObject windObject = new GameObject("World Wind");
@@ -794,18 +823,20 @@ namespace Psycho.Editor
             ReflectionProbe probe = reflectionObject.AddComponent<ReflectionProbe>();
             probe.mode = UnityEngine.Rendering.ReflectionProbeMode.Realtime;
             probe.refreshMode = UnityEngine.Rendering.ReflectionProbeRefreshMode.OnAwake;
-            probe.size = new Vector3(220f, 96f, 220f);
+            probe.size = new Vector3(340f, 116f, 340f);
             reflectionObject.transform.position = new Vector3(0f, 18f, 0f);
 
             RenderSettings.skybox = LoadOrCreateSkybox();
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.50f, 0.58f, 0.66f);
-            RenderSettings.ambientEquatorColor = new Color(0.34f, 0.40f, 0.35f);
-            RenderSettings.ambientGroundColor = new Color(0.18f, 0.17f, 0.14f);
+            RenderSettings.ambientSkyColor = new Color(0.56f, 0.66f, 0.76f);
+            RenderSettings.ambientEquatorColor = new Color(0.35f, 0.43f, 0.39f);
+            RenderSettings.ambientGroundColor = new Color(0.17f, 0.17f, 0.14f);
+            RenderSettings.ambientIntensity = 0.96f;
             RenderSettings.fog = true;
-            RenderSettings.fogColor = new Color(0.48f, 0.58f, 0.64f);
-            RenderSettings.fogDensity = 0.00135f;
-            RenderSettings.reflectionIntensity = 0.42f;
+            RenderSettings.fogMode = FogMode.ExponentialSquared;
+            RenderSettings.fogColor = new Color(0.56f, 0.66f, 0.74f);
+            RenderSettings.fogDensity = 0.00085f;
+            RenderSettings.reflectionIntensity = 0.50f;
             RenderSettings.defaultReflectionMode = DefaultReflectionMode.Skybox;
         }
 
@@ -842,10 +873,25 @@ namespace Psycho.Editor
             camera.clearFlags = CameraClearFlags.Skybox;
             camera.fieldOfView = 72f;
             camera.nearClipPlane = 0.04f;
-            camera.farClipPlane = 1600f;
+            camera.farClipPlane = 2200f;
             camera.allowHDR = true;
             camera.allowMSAA = true;
             camera.depthTextureMode = DepthTextureMode.Depth;
+            PsychoCameraColorGrade colorGrade = cameraObject.AddComponent<PsychoCameraColorGrade>();
+            SerializedObject colorGradeObject = new SerializedObject(colorGrade);
+            SerializedProperty shaderProperty = colorGradeObject.FindProperty("shader");
+            if (shaderProperty != null)
+            {
+                shaderProperty.objectReferenceValue = Shader.Find("Hidden/Psycho/Camera Color Grade");
+            }
+
+            SetSerializedFloat(colorGradeObject, "exposure", 1.00f);
+            SetSerializedFloat(colorGradeObject, "contrast", 1.07f);
+            SetSerializedFloat(colorGradeObject, "saturation", 1.06f);
+            SetSerializedFloat(colorGradeObject, "warmth", 0.03f);
+            SetSerializedFloat(colorGradeObject, "vignette", 0.16f);
+            SetSerializedFloat(colorGradeObject, "sharpen", 0.10f);
+            colorGradeObject.ApplyModifiedPropertiesWithoutUndo();
             cameraObject.AddComponent<AudioListener>();
         }
 
@@ -964,7 +1010,7 @@ namespace Psycho.Editor
         private static void CreateWaterStrip(Transform root, string name, HostedBuildContext context, int worldX, int worldY, float width, float depth, Material material)
         {
             Vector3 position = WorldTilePosition(context, worldX, worldY) + Vector3.up * 0.08f;
-            GameObject water = CreateSubdividedPlane(name, position, width, depth, 36, material);
+            GameObject water = CreateSubdividedPlane(name, position, width, depth, 72, material);
             water.transform.SetParent(root, true);
             water.AddComponent<ProceduralWater>();
 
@@ -1025,11 +1071,12 @@ namespace Psycho.Editor
         {
             Mesh mesh = new Mesh { name = "Hosted Wind Grass Mesh" };
             float width = height * 0.16f;
-            Vector3[] vertices = new Vector3[12];
-            int[] triangles = new int[18];
-            for (int blade = 0; blade < 3; blade++)
+            const int bladeCount = 4;
+            Vector3[] vertices = new Vector3[bladeCount * 4];
+            int[] triangles = new int[bladeCount * 6];
+            for (int blade = 0; blade < bladeCount; blade++)
             {
-                float angle = blade * Mathf.PI * 2f / 3f;
+                float angle = blade * Mathf.PI * 2f / bladeCount;
                 Vector3 side = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
                 Vector3 lean = new Vector3(Mathf.Sin(angle * 1.7f), 0f, Mathf.Cos(angle * 1.3f)) * height * 0.08f;
                 float localHeight = height * (0.88f + blade * 0.08f);
@@ -1060,7 +1107,7 @@ namespace Psycho.Editor
             clump.transform.rotation = Quaternion.Euler(0f, position.x * 37f + position.z * 17f, 0f);
             clump.AddComponent<MeshFilter>().sharedMesh = mesh;
             clump.AddComponent<MeshRenderer>().sharedMaterial = material;
-            AddWind(clump, 0.12f, 1.9f, 0.38f);
+            AddWind(clump, 0.13f, 1.95f, 0.44f);
         }
 
         private static void CreateReed(Transform root, Vector3 position, float height, Material material)
@@ -1130,13 +1177,13 @@ namespace Psycho.Editor
         {
             HostedMaterials materials = new HostedMaterials
             {
-                Grass = LoadOrCreateTexturedMaterial(GrassMaterialPath, "Grass", new Color(0.31f, 0.50f, 0.24f, 1f), 0.22f, new Vector2(7.5f, 7.5f), 0.55f),
-                Flowers = LoadOrCreateTexturedMaterial(FlowerMaterialPath, "Organic", new Color(0.86f, 0.72f, 0.36f, 1f), 0.24f, new Vector2(4.5f, 4.5f), 0.48f),
-                Reeds = LoadOrCreateTexturedMaterial(ReedMaterialPath, "Leaf", new Color(0.40f, 0.52f, 0.23f, 1f), 0.18f, new Vector2(3.5f, 5.0f), 0.62f),
-                Water = LoadOrCreateTexturedMaterial(WaterMaterialPath, "Water", new Color(0.08f, 0.34f, 0.48f, 0.58f), 0.82f, new Vector2(2.2f, 5.4f), 0.78f),
-                Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.30f, 0.42f, 0.26f, 1f), 0.28f, new Vector2(5.0f, 5.0f), 0.50f),
-                Mountains = LoadOrCreateTexturedMaterial(MountainMaterialPath, "Mountain", new Color(0.42f, 0.42f, 0.39f, 1f), 0.44f, new Vector2(2.5f, 2.5f), 0.64f),
-                Cloud = LoadOrCreateUnlitMaterial(CloudMaterialPath, new Color(0.92f, 0.95f, 0.96f, 0.76f))
+                Grass = LoadOrCreateTexturedMaterial(GrassMaterialPath, "Grass", new Color(0.29f, 0.47f, 0.23f, 1f), 0.24f, new Vector2(8.5f, 8.5f), 0.68f),
+                Flowers = LoadOrCreateTexturedMaterial(FlowerMaterialPath, "Organic", new Color(0.92f, 0.77f, 0.38f, 1f), 0.28f, new Vector2(5.2f, 5.2f), 0.56f),
+                Reeds = LoadOrCreateTexturedMaterial(ReedMaterialPath, "Leaf", new Color(0.42f, 0.55f, 0.24f, 1f), 0.20f, new Vector2(3.5f, 5.8f), 0.72f),
+                Water = LoadOrCreateTexturedMaterial(WaterMaterialPath, "Water", new Color(0.06f, 0.32f, 0.48f, 0.58f), 0.88f, new Vector2(2.6f, 6.2f), 0.92f),
+                Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.27f, 0.40f, 0.24f, 1f), 0.30f, new Vector2(5.8f, 5.8f), 0.58f),
+                Mountains = LoadOrCreateTexturedMaterial(MountainMaterialPath, "Mountain", new Color(0.46f, 0.46f, 0.42f, 1f), 0.48f, new Vector2(3.2f, 3.2f), 0.72f),
+                Cloud = LoadOrCreateUnlitMaterial(CloudMaterialPath, new Color(0.93f, 0.96f, 0.98f, 0.70f))
             };
             ConfigureTransparent(materials.Water);
             ConfigureTransparent(materials.Cloud);

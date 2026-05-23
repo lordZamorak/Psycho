@@ -279,9 +279,32 @@ namespace Psycho.Editor
                 material.SetFloat("_SlopeDarkening", slopeDarkening);
             }
 
+            SetMaterialColor(material, "_DistanceTint", new Color(0.56f, 0.66f, 0.72f, 1f));
+            SetMaterialFloat(material, "_DistanceStart", 95f);
+            SetMaterialFloat(material, "_DistanceEnd", 360f);
+            SetMaterialFloat(material, "_DistanceBlend", 0.16f);
+            SetMaterialColor(material, "_TopWarmth", new Color(0.99f, 1.00f, 0.94f, 1f));
+            SetMaterialFloat(material, "_HemisphereContrast", 0.14f);
+
             material.enableInstancing = true;
             EditorUtility.SetDirty(material);
             return material;
+        }
+
+        private static void SetMaterialFloat(Material material, string propertyName, float value)
+        {
+            if (material.HasProperty(propertyName))
+            {
+                material.SetFloat(propertyName, value);
+            }
+        }
+
+        private static void SetMaterialColor(Material material, string propertyName, Color value)
+        {
+            if (material.HasProperty(propertyName))
+            {
+                material.SetColor(propertyName, value);
+            }
         }
 
         private static void BuildPreviewScene(List<ImportedModel> imported, Material material)

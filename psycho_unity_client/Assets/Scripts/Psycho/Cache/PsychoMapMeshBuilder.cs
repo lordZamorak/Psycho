@@ -67,41 +67,55 @@ namespace Psycho.Cache
             int underlay = landscape.UnderlayIds[plane, x, y] & 0xff;
             int overlay = landscape.OverlayIds[plane, x, y] & 0xff;
             byte flag = landscape.RenderFlags[plane, x, y];
-            float noise = TileNoise(landscape.RegionX * 64 + x, landscape.RegionY * 64 + y);
+            int worldX = landscape.RegionX * 64 + x;
+            int worldY = landscape.RegionY * 64 + y;
+            float noise = TileNoise(worldX, worldY);
+            float macroNoise = TileNoise(worldX / 4 + 97, worldY / 4 - 31);
+            float fineNoise = TileNoise(worldX * 3 + 17, worldY * 3 - 43);
+            float moisture = TileNoise(worldX - worldY * 2, worldY + worldX * 2);
             float slope = TileSlope(landscape, plane, x, y);
             float elevation = Mathf.InverseLerp(80f, 480f, -landscape.Heights[plane, x, y]);
-            Color rock = Color.Lerp(new Color(0.31f, 0.33f, 0.30f), new Color(0.47f, 0.46f, 0.39f), noise);
+            Color rock = Color.Lerp(new Color(0.30f, 0.32f, 0.29f), new Color(0.52f, 0.50f, 0.43f), Mathf.Lerp(noise, macroNoise, 0.35f));
 
             if (overlay != 0)
             {
-                Color path = Color.Lerp(new Color(0.34f, 0.31f, 0.25f), new Color(0.58f, 0.53f, 0.43f), Mathf.Clamp01(overlay / 28f));
-                Color grassBlend = new Color(0.24f, 0.46f, 0.24f);
-                Color color = Color.Lerp(path, grassBlend, overlay > 22 ? 0.22f : 0.06f);
-                color *= Mathf.Lerp(0.82f, 1.08f, noise);
-                color = Color.Lerp(color, rock, Mathf.Clamp01(slope * 0.20f + elevation * 0.05f));
+                float pathTone = Mathf.Clamp01(overlay / 34f * 0.68f + macroNoise * 0.32f);
+                Color path = Color.Lerp(new Color(0.30f, 0.28f, 0.23f), new Color(0.64f, 0.58f, 0.46f), pathTone);
+                Color wornDust = Color.Lerp(new Color(0.42f, 0.36f, 0.27f), new Color(0.68f, 0.62f, 0.50f), fineNoise);
+                Color grassBlend = Color.Lerp(new Color(0.21f, 0.39f, 0.19f), new Color(0.34f, 0.53f, 0.27f), moisture);
+                Color color = Color.Lerp(path, wornDust, 0.18f);
+                color = Color.Lerp(color, grassBlend, overlay > 22 ? 0.24f : 0.075f);
+                color *= Mathf.Lerp(0.86f, 1.08f, fineNoise);
+                color = Color.Lerp(color, rock, Mathf.Clamp01(slope * 0.22f + elevation * 0.06f));
                 return ToColor32(color);
             }
 
             if ((flag & 1) == 1)
             {
-                Color flagged = Color.Lerp(new Color(0.22f, 0.29f, 0.29f), new Color(0.30f, 0.37f, 0.35f), noise);
-                flagged = Color.Lerp(flagged, new Color(0.15f, 0.25f, 0.30f), 0.24f);
+                Color flagged = Color.Lerp(new Color(0.18f, 0.25f, 0.26f), new Color(0.33f, 0.40f, 0.37f), Mathf.Lerp(noise, moisture, 0.45f));
+                flagged = Color.Lerp(flagged, new Color(0.12f, 0.22f, 0.29f), 0.24f + elevation * 0.10f);
                 return ToColor32(flagged);
             }
 
             if (underlay == 0)
             {
-                Color baseGrass = Color.Lerp(new Color(0.19f, 0.39f, 0.17f), new Color(0.38f, 0.58f, 0.30f), noise);
-                baseGrass = Color.Lerp(baseGrass, rock, Mathf.Clamp01(slope * 0.55f + elevation * 0.14f));
+                Color coolGrass = new Color(0.14f, 0.31f, 0.15f);
+                Color lushGrass = new Color(0.33f, 0.52f, 0.25f);
+                Color dryGrass = new Color(0.37f, 0.41f, 0.21f);
+                Color baseGrass = Color.Lerp(coolGrass, lushGrass, Mathf.Lerp(noise, moisture, 0.42f));
+                baseGrass = Color.Lerp(baseGrass, dryGrass, Mathf.Clamp01(elevation * 0.28f + (1f - moisture) * 0.18f));
+                baseGrass = Color.Lerp(baseGrass, new Color(0.20f, 0.29f, 0.13f), macroNoise * 0.14f);
+                baseGrass *= Mathf.Lerp(0.87f, 1.13f, fineNoise);
+                baseGrass = Color.Lerp(baseGrass, rock, Mathf.Clamp01(slope * 0.46f + elevation * 0.12f));
                 return ToColor32(baseGrass);
             }
 
             float underlayBlend = Mathf.Clamp01(underlay / 32f);
-            Color low = new Color(0.22f, 0.42f, 0.20f);
-            Color high = new Color(0.47f, 0.55f, 0.31f);
+            Color low = Color.Lerp(new Color(0.16f, 0.34f, 0.16f), new Color(0.24f, 0.42f, 0.20f), moisture);
+            Color high = Color.Lerp(new Color(0.36f, 0.47f, 0.24f), new Color(0.48f, 0.54f, 0.29f), macroNoise);
             Color underlayColor = Color.Lerp(low, high, underlayBlend);
-            underlayColor *= Mathf.Lerp(0.84f, 1.10f, noise);
-            underlayColor = Color.Lerp(underlayColor, rock, Mathf.Clamp01(slope * 0.50f + elevation * 0.12f));
+            underlayColor *= Mathf.Lerp(0.86f, 1.12f, fineNoise);
+            underlayColor = Color.Lerp(underlayColor, rock, Mathf.Clamp01(slope * 0.44f + elevation * 0.11f));
             return ToColor32(underlayColor);
         }
 

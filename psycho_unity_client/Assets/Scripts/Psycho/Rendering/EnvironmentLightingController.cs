@@ -12,10 +12,14 @@ namespace Psycho.Rendering
 
         private readonly Color lowSunColor = new Color(1.00f, 0.63f, 0.38f);
         private readonly Color highSunColor = new Color(1.00f, 0.92f, 0.78f);
-        private readonly Color lowAmbient = new Color(0.20f, 0.25f, 0.30f);
-        private readonly Color highAmbient = new Color(0.45f, 0.49f, 0.53f);
+        private readonly Color lowAmbientSky = new Color(0.22f, 0.28f, 0.34f);
+        private readonly Color highAmbientSky = new Color(0.56f, 0.66f, 0.76f);
+        private readonly Color lowAmbientEquator = new Color(0.20f, 0.25f, 0.23f);
+        private readonly Color highAmbientEquator = new Color(0.37f, 0.43f, 0.37f);
+        private readonly Color lowAmbientGround = new Color(0.10f, 0.10f, 0.09f);
+        private readonly Color highAmbientGround = new Color(0.20f, 0.19f, 0.15f);
         private readonly Color lowFog = new Color(0.30f, 0.39f, 0.48f);
-        private readonly Color highFog = new Color(0.48f, 0.58f, 0.64f);
+        private readonly Color highFog = new Color(0.56f, 0.66f, 0.74f);
 
         private void Reset()
         {
@@ -43,11 +47,14 @@ namespace Psycho.Rendering
             if (sun != null)
             {
                 sun.transform.rotation = Quaternion.Euler(Mathf.Lerp(17f, 64f, daylight), Mathf.Lerp(-52f, -18f, phase), 0f);
-                sun.intensity = Mathf.Lerp(0.55f, 1.36f, daylight);
+                sun.intensity = Mathf.Lerp(0.50f, 1.16f, daylight);
                 sun.color = Color.Lerp(highSunColor, lowSunColor, warmth * 0.35f);
             }
 
-            RenderSettings.ambientLight = Color.Lerp(lowAmbient, highAmbient, daylight);
+            RenderSettings.ambientSkyColor = Color.Lerp(lowAmbientSky, highAmbientSky, daylight);
+            RenderSettings.ambientEquatorColor = Color.Lerp(lowAmbientEquator, highAmbientEquator, daylight);
+            RenderSettings.ambientGroundColor = Color.Lerp(lowAmbientGround, highAmbientGround, daylight);
+            RenderSettings.ambientIntensity = Mathf.Lerp(0.72f, 0.98f, daylight);
             RenderSettings.fogColor = Color.Lerp(lowFog, highFog, daylight);
             RenderSettings.fogDensity = Mathf.Lerp(maxFogDensity, minFogDensity, daylight);
 

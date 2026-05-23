@@ -58,9 +58,20 @@ namespace Psycho.Rendering
             material.color = pulse;
             material.mainTextureOffset = new Vector2(Time.time * 0.025f, Time.time * 0.018f);
 
+            if (material.HasProperty("_BumpMap"))
+            {
+                material.SetTextureOffset("_BumpMap", new Vector2(Time.time * -0.018f, Time.time * 0.031f));
+                material.SetFloat("_BumpScale", 0.92f + Mathf.Sin(t * 0.56f) * 0.035f);
+            }
+
             if (material.HasProperty("_Glossiness"))
             {
                 material.SetFloat("_Glossiness", 0.78f + Mathf.Sin(t * 0.7f) * 0.04f);
+            }
+
+            if (material.HasProperty("_Metallic"))
+            {
+                material.SetFloat("_Metallic", 0f);
             }
         }
     }
