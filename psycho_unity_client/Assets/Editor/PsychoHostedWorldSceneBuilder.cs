@@ -67,6 +67,7 @@ namespace Psycho.Editor
         private const string LandmarkBannerMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Banner.mat";
         private const string LandmarkGlassMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Glass.mat";
         private const string FallbackMaterialPath = GeneratedRoot + "/Psycho_Hosted_Fallback.mat";
+        private const bool EnableHostedJCacheScenePlacement = false;
         private static readonly string[] WindResponsiveObjectNameFragments =
         {
             "tree",
@@ -1074,8 +1075,22 @@ namespace Psycho.Editor
                 0.58f,
                 0.46f,
                 0.48f);
+            int jcacheDisplays = EnableHostedJCacheScenePlacement
+                ? PsychoHostedVisualOverrides.AddJCacheModelShowcase(
+                    root,
+                    decodedModelMaterial,
+                    "Grand Exchange JS5 NXT Display",
+                    0,
+                    24,
+                    new Vector3(-3.3f, 0.31f, -4.85f),
+                    4,
+                    1.45f,
+                    1.05f,
+                    0.96f,
+                    1.05f)
+                : 0;
 
-            context.Report.landmarkDressingObjects += 24 + looseDisplays + cache1Displays;
+            context.Report.landmarkDressingObjects += 24 + looseDisplays + cache1Displays + jcacheDisplays;
         }
 
         private static void CreateBankLandmark(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY, float width, float depth, float yaw)

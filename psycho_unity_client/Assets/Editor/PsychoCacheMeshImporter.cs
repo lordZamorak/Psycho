@@ -285,6 +285,9 @@ namespace Psycho.Editor
             SetMaterialFloat(material, "_DistanceBlend", 0.16f);
             SetMaterialColor(material, "_TopWarmth", new Color(0.99f, 1.00f, 0.94f, 1f));
             SetMaterialFloat(material, "_HemisphereContrast", 0.14f);
+            SetMaterialColor(material, "_RimColor", new Color(0.70f, 0.84f, 1.00f, 1f));
+            SetMaterialFloat(material, "_RimStrength", 0.075f);
+            SetMaterialFloat(material, "_SpecularLift", 0.08f);
 
             material.enableInstancing = true;
             EditorUtility.SetDirty(material);

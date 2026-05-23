@@ -11,11 +11,14 @@ namespace Psycho.Editor
     {
         private const string LooseModelRoot = "Assets/Generated/LooseModels";
         private const string Cache1ModelRoot = "Assets/Generated/Cache1Models";
+        private const string JCacheModelRoot = "Assets/Generated/JCacheModels";
 
         private static bool attemptedLooseImport;
         private static bool attemptedCache1Probe;
+        private static bool attemptedJCacheImport;
         private static string[] cachedLooseShowcaseAssets;
         private static string[] cachedCache1ShowcaseAssets;
+        private static string[] cachedJCacheShowcaseAssets;
 
         private static readonly NpcReplacement[] NpcReplacements =
         {
@@ -170,7 +173,7 @@ namespace Psycho.Editor
                 parent,
                 modelMaterial,
                 displayPrefix,
-                true,
+                GeneratedModelSource.Loose,
                 LooseModelRoot,
                 ref cachedLooseShowcaseAssets,
                 startIndex,
@@ -200,9 +203,39 @@ namespace Psycho.Editor
                 parent,
                 modelMaterial,
                 displayPrefix,
-                false,
+                GeneratedModelSource.Cache1,
                 Cache1ModelRoot,
                 ref cachedCache1ShowcaseAssets,
+                startIndex,
+                maxItems,
+                localOrigin,
+                columns,
+                spacingX,
+                spacingZ,
+                targetHeight,
+                maxFootprint);
+        }
+
+        public static int AddJCacheModelShowcase(
+            Transform parent,
+            Material modelMaterial,
+            string displayPrefix,
+            int startIndex,
+            int maxItems,
+            Vector3 localOrigin,
+            int columns,
+            float spacingX,
+            float spacingZ,
+            float targetHeight,
+            float maxFootprint)
+        {
+            return AddGeneratedModelShowcase(
+                parent,
+                modelMaterial,
+                displayPrefix,
+                GeneratedModelSource.JCache,
+                JCacheModelRoot,
+                ref cachedJCacheShowcaseAssets,
                 startIndex,
                 maxItems,
                 localOrigin,
@@ -217,7 +250,7 @@ namespace Psycho.Editor
             Transform parent,
             Material modelMaterial,
             string displayPrefix,
-            bool looseModel,
+            GeneratedModelSource source,
             string assetRoot,
             ref string[] cachedAssetPaths,
             int startIndex,
@@ -234,7 +267,7 @@ namespace Psycho.Editor
                 return 0;
             }
 
-            string[] assetPaths = CollectGeneratedMeshAssets(assetRoot, looseModel, ref cachedAssetPaths);
+            string[] assetPaths = CollectGeneratedMeshAssets(assetRoot, source, ref cachedAssetPaths);
             if (assetPaths.Length == 0)
             {
                 return 0;
@@ -242,25 +275,29 @@ namespace Psycho.Editor
 
             int safeColumns = Mathf.Max(1, columns);
             int added = 0;
-            int itemCount = Mathf.Min(maxItems, assetPaths.Length);
-            for (int item = 0; item < itemCount; item++)
+            for (int scanned = 0; scanned < assetPaths.Length && added < maxItems; scanned++)
             {
-                int assetIndex = PositiveModulo(startIndex + item, assetPaths.Length);
+                int assetIndex = PositiveModulo(startIndex + scanned, assetPaths.Length);
                 string assetPath = assetPaths[assetIndex];
-                Mesh mesh = LoadMesh(assetPath, looseModel);
+                Mesh mesh = LoadMesh(assetPath, source);
                 if (mesh == null)
                 {
                     continue;
                 }
 
-                int column = item % safeColumns;
-                int row = item / safeColumns;
+                if (source == GeneratedModelSource.JCache && !LooksLikeReadableJCacheShowcaseMesh(mesh))
+                {
+                    continue;
+                }
+
+                int column = added % safeColumns;
+                int row = added / safeColumns;
                 Vector3 cellPosition = localOrigin + new Vector3(
                     (column - (safeColumns - 1) * 0.5f) * spacingX,
                     0f,
                     row * spacingZ);
 
-                GameObject displayRoot = new GameObject($"{displayPrefix} {item + 1:D3} - {DisplayNameFromAsset(assetPath)}");
+                GameObject displayRoot = new GameObject($"{displayPrefix} {added + 1:D3} - {DisplayNameFromAsset(assetPath)}");
                 displayRoot.transform.SetParent(parent, false);
                 displayRoot.transform.localPosition = cellPosition;
                 displayRoot.transform.localRotation = Quaternion.Euler(0f, (assetIndex * 37) % 360, 0f);
@@ -275,7 +312,7 @@ namespace Psycho.Editor
             return added;
         }
 
-        private static string[] CollectGeneratedMeshAssets(string assetRoot, bool looseModel, ref string[] cachedAssetPaths)
+        private static string[] CollectGeneratedMeshAssets(string assetRoot, GeneratedModelSource source, ref string[] cachedAssetPaths)
         {
             if (cachedAssetPaths != null)
             {
@@ -285,16 +322,7 @@ namespace Psycho.Editor
             string[] guids = AssetDatabase.FindAssets("t:Mesh", new[] { assetRoot });
             if (guids.Length == 0)
             {
-                if (looseModel && !attemptedLooseImport)
-                {
-                    attemptedLooseImport = true;
-                    PsychoLooseModelImporter.EnsureLooseModelAssets();
-                }
-                else if (!looseModel && !attemptedCache1Probe)
-                {
-                    attemptedCache1Probe = true;
-                    PsychoCache1ModelSampler.EnsureCache1ModelSampleAssets();
-                }
+                EnsureGeneratedModelAssets(source);
 
                 guids = AssetDatabase.FindAssets("t:Mesh", new[] { assetRoot });
             }
@@ -316,6 +344,61 @@ namespace Psycho.Editor
             return cachedAssetPaths;
         }
 
+        private static bool LooksLikeReadableJCacheShowcaseMesh(Mesh mesh)
+        {
+            if (mesh == null || mesh.vertexCount < 24)
+            {
+                return false;
+            }
+
+            Bounds bounds = mesh.bounds;
+            if (!IsFinite(bounds.center) || !IsFinite(bounds.size))
+            {
+                return false;
+            }
+
+            float largest = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
+            float smallest = Mathf.Min(bounds.size.x, Mathf.Min(bounds.size.y, bounds.size.z));
+            if (largest < 0.25f || largest > 96f || smallest < 0.025f)
+            {
+                return false;
+            }
+
+            float aspectRatio = largest / Mathf.Max(smallest, 0.001f);
+            return aspectRatio <= 28f;
+        }
+
+        private static void EnsureGeneratedModelAssets(GeneratedModelSource source)
+        {
+            switch (source)
+            {
+                case GeneratedModelSource.Loose:
+                    if (!attemptedLooseImport)
+                    {
+                        attemptedLooseImport = true;
+                        PsychoLooseModelImporter.EnsureLooseModelAssets();
+                    }
+
+                    break;
+                case GeneratedModelSource.Cache1:
+                    if (!attemptedCache1Probe)
+                    {
+                        attemptedCache1Probe = true;
+                        PsychoCache1ModelSampler.EnsureCache1ModelSampleAssets();
+                    }
+
+                    break;
+                case GeneratedModelSource.JCache:
+                    if (!attemptedJCacheImport)
+                    {
+                        attemptedJCacheImport = true;
+                        PsychoJCacheModelImporter.EnsureJCacheModelAssets();
+                    }
+
+                    break;
+            }
+        }
+
         private static GameObject CreateMeshChild(Transform parent, string name, Mesh mesh, Material material)
         {
             GameObject meshObject = new GameObject(name);
@@ -331,27 +414,20 @@ namespace Psycho.Editor
 
         private static Mesh LoadMesh(string assetPath, bool looseModel)
         {
+            return LoadMesh(assetPath, looseModel ? GeneratedModelSource.Loose : GeneratedModelSource.Cache1);
+        }
+
+        private static Mesh LoadMesh(string assetPath, GeneratedModelSource source)
+        {
             Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
             if (mesh != null)
             {
                 return mesh;
             }
 
-            if (looseModel && !attemptedLooseImport)
-            {
-                attemptedLooseImport = true;
-                PsychoLooseModelImporter.EnsureLooseModelAssets();
-                return AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
-            }
+            EnsureGeneratedModelAssets(source);
 
-            if (!looseModel && !attemptedCache1Probe)
-            {
-                attemptedCache1Probe = true;
-                PsychoCache1ModelSampler.EnsureCache1ModelSampleAssets();
-                return AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
-            }
-
-            return null;
+            return AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
         }
 
         private static void NormalizeMeshRoot(Transform root, float targetHeight, float maxFootprint)
@@ -416,6 +492,13 @@ namespace Psycho.Editor
             return new Vector3(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
         }
 
+        private static bool IsFinite(Vector3 value)
+        {
+            return !float.IsNaN(value.x) && !float.IsInfinity(value.x)
+                && !float.IsNaN(value.y) && !float.IsInfinity(value.y)
+                && !float.IsNaN(value.z) && !float.IsInfinity(value.z);
+        }
+
         private static int PositiveModulo(int value, int divisor)
         {
             if (divisor <= 0)
@@ -452,6 +535,13 @@ namespace Psycho.Editor
             {
                 UnityEngine.Object.DestroyImmediate(collider);
             }
+        }
+
+        private enum GeneratedModelSource
+        {
+            Loose,
+            Cache1,
+            JCache
         }
 
         public readonly struct PsychoMapObjectPlacementAdapter

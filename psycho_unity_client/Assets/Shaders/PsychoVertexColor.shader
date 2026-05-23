@@ -13,6 +13,9 @@ Shader "Psycho/Vertex Color Lit"
         _DistanceBlend ("Distance Atmosphere Blend", Range(0, 1)) = 0.14
         _TopWarmth ("Top Surface Warmth", Color) = (0.99, 1.00, 0.94, 1)
         _HemisphereContrast ("Hemisphere Contrast", Range(0, 1)) = 0.14
+        _RimColor ("NXT Rim Color", Color) = (0.70, 0.84, 1.00, 1)
+        _RimStrength ("NXT Rim Strength", Range(0, 0.35)) = 0.08
+        _SpecularLift ("NXT Specular Lift", Range(0, 0.35)) = 0.08
     }
     SubShader
     {
@@ -34,12 +37,16 @@ Shader "Psycho/Vertex Color Lit"
         half _DistanceBlend;
         fixed4 _TopWarmth;
         half _HemisphereContrast;
+        fixed4 _RimColor;
+        half _RimStrength;
+        half _SpecularLift;
 
         struct Input
         {
             float4 color : COLOR;
             float3 worldPos;
             float3 worldNormal;
+            float3 viewDir;
         };
 
         float Hash21(float2 p)
@@ -60,6 +67,7 @@ Shader "Psycho/Vertex Color Lit"
             float slope = 1.0 - saturate(normal.y);
             float sunFacing = saturate(dot(normal, normalize(float3(0.36, 0.82, 0.24))));
             float topLight = saturate(normal.y);
+            float rim = pow(1.0 - saturate(dot(normalize(input.viewDir), normal)), 2.2) * _RimStrength;
             float viewDistance = length((_WorldSpaceCameraPos.xyz - input.worldPos).xz);
             float distanceFade = saturate((viewDistance - _DistanceStart) / max(1.0, _DistanceEnd - _DistanceStart)) * _DistanceBlend;
 
@@ -67,10 +75,11 @@ Shader "Psycho/Vertex Color Lit"
             color.rgb *= lerp(0.94, 1.11, sunFacing * _HemisphereContrast + topLight * 0.045);
             color.rgb = lerp(color.rgb, color.rgb * _TopWarmth.rgb, topLight * 0.24);
             color.rgb = lerp(color.rgb, color.rgb * 0.72, slope * _SlopeDarkening);
+            color.rgb = lerp(color.rgb, _RimColor.rgb, rim);
             color.rgb = lerp(color.rgb, _DistanceTint.rgb, distanceFade);
             output.Albedo = color.rgb;
             output.Metallic = 0;
-            output.Smoothness = _Smoothness;
+            output.Smoothness = saturate(_Smoothness + sunFacing * _SpecularLift);
             output.Occlusion = lerp(1.0, 0.84, slope * _SlopeDarkening);
             output.Alpha = color.a;
         }
