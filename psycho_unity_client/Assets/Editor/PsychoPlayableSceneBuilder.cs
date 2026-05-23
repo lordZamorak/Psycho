@@ -37,6 +37,7 @@ namespace Psycho.Editor
             EnsureFolders();
             PsychoMirrorDatabase database = PsychoMirrorDatabase.LoadFromStreamingAssets();
             Material vertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateVertexColorMaterial();
+            Material terrainVertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateTerrainVertexColorMaterial();
             FallbackMaterials fallbackMaterials = LoadOrCreateFallbackMaterials();
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
@@ -63,7 +64,7 @@ namespace Psycho.Editor
                 PsychoMapObjects objects = PsychoMapDecoder.DecodeObjects(objectBytes, EdgevilleRegionX, EdgevilleRegionY);
                 report.decodedObjectPlacements = objects.Placements.Count;
 
-                BuildTerrain(landscape, vertexColorMaterial);
+                BuildTerrain(landscape, terrainVertexColorMaterial);
                 BuildObjects(store, database, landscape, objects, vertexColorMaterial, fallbackMaterials, report);
                 BuildLighting();
                 BuildPlayer(landscape);
@@ -280,7 +281,7 @@ namespace Psycho.Editor
 
             Vector3 spawn = TilePosition(landscape, 21, 37);
             player.transform.position = spawn + Vector3.up * 0.04f;
-            player.AddComponent<PsychoPlayableCharacter>();
+            PsychoPlayableCharacter playableCharacter = player.AddComponent<PsychoPlayableCharacter>();
             player.AddComponent<PsychoCharacterGroundGuard>();
 
             GameObject body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
@@ -294,15 +295,53 @@ namespace Psycho.Editor
                 UnityEngine.Object.DestroyImmediate(bodyCollider);
             }
 
+            GameObject cameraPivot = new GameObject("Player Camera Pivot");
+            cameraPivot.transform.SetParent(player.transform, false);
+            cameraPivot.transform.localPosition = new Vector3(0f, 1.45f, 0f);
+            cameraPivot.transform.localRotation = Quaternion.Euler(8f, 0f, 0f);
+
             GameObject cameraObject = new GameObject("Player Camera");
             cameraObject.tag = "MainCamera";
-            cameraObject.transform.SetParent(player.transform, false);
-            cameraObject.transform.localPosition = new Vector3(0f, 1.62f, 0f);
+            cameraObject.transform.SetParent(cameraPivot.transform, false);
+            cameraObject.transform.localPosition = new Vector3(0.22f, 0.12f, -3.8f);
             Camera camera = cameraObject.AddComponent<Camera>();
-            camera.fieldOfView = 70f;
-            camera.nearClipPlane = 0.04f;
+            cameraObject.transform.rotation = Quaternion.LookRotation(cameraPivot.transform.position - cameraObject.transform.position, Vector3.up);
+            camera.fieldOfView = 60f;
+            camera.nearClipPlane = 0.05f;
             camera.farClipPlane = 550f;
+
+            SerializedObject characterObject = new SerializedObject(playableCharacter);
+            SerializedProperty characterCameraProperty = characterObject.FindProperty("playerCamera");
+            if (characterCameraProperty != null)
+            {
+                characterCameraProperty.objectReferenceValue = camera;
+            }
+
+            SerializedProperty cameraPivotProperty = characterObject.FindProperty("cameraPivot");
+            if (cameraPivotProperty != null)
+            {
+                cameraPivotProperty.objectReferenceValue = cameraPivot.transform;
+            }
+
+            SetFloat(characterObject, "thirdPersonDistance", 3.8f);
+            SetFloat(characterObject, "thirdPersonHeight", 1.45f);
+            SetFloat(characterObject, "cameraSideOffset", 0.22f);
+            SetFloat(characterObject, "minPitch", -32f);
+            SetFloat(characterObject, "maxPitch", 58f);
+            SetFloat(characterObject, "cameraCollisionRadius", 0.22f);
+            SetFloat(characterObject, "cameraSmoothTime", 0.055f);
+            characterObject.ApplyModifiedPropertiesWithoutUndo();
+
             cameraObject.AddComponent<AudioListener>();
+        }
+
+        private static void SetFloat(SerializedObject serializedObject, string propertyName, float value)
+        {
+            SerializedProperty property = serializedObject.FindProperty(propertyName);
+            if (property != null)
+            {
+                property.floatValue = value;
+            }
         }
 
         private static Vector3 PlacementPosition(PsychoMapLandscape landscape, PsychoMapObjectPlacement placement)

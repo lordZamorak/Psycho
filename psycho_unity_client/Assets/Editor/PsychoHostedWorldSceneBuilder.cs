@@ -96,13 +96,14 @@ namespace Psycho.Editor
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             PsychoMirrorDatabase database = PsychoMirrorDatabase.LoadFromStreamingAssets();
             Material vertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateVertexColorMaterial();
+            Material terrainVertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateTerrainVertexColorMaterial();
             Material npcVertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateNpcVertexColorMaterial();
             HostedMaterials hostedMaterials = LoadOrCreateHostedMaterials();
             HostedBuildContext context = new HostedBuildContext(database);
 
             using (PsychoCacheStore store = new PsychoCacheStore(PsychoCacheStore.DefaultClientCachePath))
             {
-                BuildRegions(store, database, vertexColorMaterial, hostedMaterials, context);
+                BuildRegions(store, database, terrainVertexColorMaterial, vertexColorMaterial, hostedMaterials, context);
                 BuildNpcSpawns(store, database, npcVertexColorMaterial, context);
                 BuildWorldDressing(context, hostedMaterials);
                 BuildLighting();
@@ -347,7 +348,7 @@ namespace Psycho.Editor
             BuildWindowsHostedPlayable();
         }
 
-        private static void BuildRegions(PsychoCacheStore store, PsychoMirrorDatabase database, Material material, HostedMaterials hostedMaterials, HostedBuildContext context)
+        private static void BuildRegions(PsychoCacheStore store, PsychoMirrorDatabase database, Material terrainMaterial, Material objectMaterial, HostedMaterials hostedMaterials, HostedBuildContext context)
         {
             GameObject terrainRoot = new GameObject("Hosted Terrain Regions");
             GameObject objectRoot = new GameObject("Hosted Cache Objects");
@@ -377,8 +378,8 @@ namespace Psycho.Editor
                 context.Report.loadedRegions++;
                 context.Report.decodedObjectPlacements += objects.Placements.Count;
 
-                BuildTerrain(terrainRoot.transform, landscape, material);
-                BuildObjects(store, database, objectRoot.transform, landscape, objects, material, hostedMaterials, context);
+                BuildTerrain(terrainRoot.transform, landscape, terrainMaterial);
+                BuildObjects(store, database, objectRoot.transform, landscape, objects, objectMaterial, hostedMaterials, context);
             }
         }
 
@@ -1381,23 +1382,52 @@ namespace Psycho.Editor
             controller.slopeLimit = 48f;
 
             player.transform.position = WorldTilePosition(context, spawnX, spawnY) + Vector3.up * 0.04f;
-            player.AddComponent<PsychoPlayableCharacter>();
+            PsychoPlayableCharacter playableCharacter = player.AddComponent<PsychoPlayableCharacter>();
             player.AddComponent<PsychoCharacterGroundGuard>();
             player.AddComponent<PsychoInteractionController>();
             BuildPlayerVisual(player.transform, materials, database, playerSave);
 
+            GameObject cameraPivot = new GameObject("Player Camera Pivot");
+            cameraPivot.transform.SetParent(player.transform, false);
+            cameraPivot.transform.localPosition = new Vector3(0f, 1.45f, 0f);
+            cameraPivot.transform.localRotation = Quaternion.Euler(8f, 0f, 0f);
+
             GameObject cameraObject = new GameObject("Player Camera");
             cameraObject.tag = "MainCamera";
-            cameraObject.transform.SetParent(player.transform, false);
-            cameraObject.transform.localPosition = new Vector3(0f, 1.62f, 0f);
+            cameraObject.transform.SetParent(cameraPivot.transform, false);
+            cameraObject.transform.localPosition = new Vector3(0.22f, 0.12f, -3.8f);
             Camera camera = cameraObject.AddComponent<Camera>();
             camera.clearFlags = CameraClearFlags.Skybox;
-            camera.fieldOfView = 72f;
-            camera.nearClipPlane = 0.04f;
-            camera.farClipPlane = 2200f;
+            cameraObject.transform.rotation = Quaternion.LookRotation(cameraPivot.transform.position - cameraObject.transform.position, Vector3.up);
+            camera.fieldOfView = 60f;
+            camera.nearClipPlane = 0.05f;
+            camera.farClipPlane = 2400f;
             camera.allowHDR = true;
             camera.allowMSAA = true;
             camera.depthTextureMode = DepthTextureMode.Depth;
+
+            SerializedObject characterObject = new SerializedObject(playableCharacter);
+            SerializedProperty characterCameraProperty = characterObject.FindProperty("playerCamera");
+            if (characterCameraProperty != null)
+            {
+                characterCameraProperty.objectReferenceValue = camera;
+            }
+
+            SerializedProperty cameraPivotProperty = characterObject.FindProperty("cameraPivot");
+            if (cameraPivotProperty != null)
+            {
+                cameraPivotProperty.objectReferenceValue = cameraPivot.transform;
+            }
+
+            SetSerializedFloat(characterObject, "thirdPersonDistance", 3.8f);
+            SetSerializedFloat(characterObject, "thirdPersonHeight", 1.45f);
+            SetSerializedFloat(characterObject, "cameraSideOffset", 0.22f);
+            SetSerializedFloat(characterObject, "minPitch", -32f);
+            SetSerializedFloat(characterObject, "maxPitch", 58f);
+            SetSerializedFloat(characterObject, "cameraCollisionRadius", 0.22f);
+            SetSerializedFloat(characterObject, "cameraSmoothTime", 0.055f);
+            characterObject.ApplyModifiedPropertiesWithoutUndo();
+
             PsychoCameraColorGrade colorGrade = cameraObject.AddComponent<PsychoCameraColorGrade>();
             SerializedObject colorGradeObject = new SerializedObject(colorGrade);
             SerializedProperty shaderProperty = colorGradeObject.FindProperty("shader");
@@ -1406,12 +1436,12 @@ namespace Psycho.Editor
                 shaderProperty.objectReferenceValue = Shader.Find("Hidden/Psycho/Camera Color Grade");
             }
 
-            SetSerializedFloat(colorGradeObject, "exposure", 1.00f);
-            SetSerializedFloat(colorGradeObject, "contrast", 1.07f);
-            SetSerializedFloat(colorGradeObject, "saturation", 1.06f);
-            SetSerializedFloat(colorGradeObject, "warmth", 0.03f);
-            SetSerializedFloat(colorGradeObject, "vignette", 0.16f);
-            SetSerializedFloat(colorGradeObject, "sharpen", 0.10f);
+            SetSerializedFloat(colorGradeObject, "exposure", 1.02f);
+            SetSerializedFloat(colorGradeObject, "contrast", 1.10f);
+            SetSerializedFloat(colorGradeObject, "saturation", 1.08f);
+            SetSerializedFloat(colorGradeObject, "warmth", 0.05f);
+            SetSerializedFloat(colorGradeObject, "vignette", 0.14f);
+            SetSerializedFloat(colorGradeObject, "sharpen", 0.14f);
             colorGradeObject.ApplyModifiedPropertiesWithoutUndo();
             cameraObject.AddComponent<AudioListener>();
         }
@@ -1435,21 +1465,38 @@ namespace Psycho.Editor
             Material bootMaterial = MaterialForEquippedItem(feet, materials, materials.PlayerLeather);
             Material handMaterial = MaterialForEquippedItem(hands, materials, materials.PlayerLeather);
 
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Torso", new Vector3(0f, 1.02f, 0f), new Vector3(0.27f, 0.34f, 0.18f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Chest Plate", new Vector3(0f, 1.11f, -0.03f), new Vector3(0.50f, 0.36f, 0.07f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Left Shoulder", new Vector3(-0.34f, 1.24f, 0f), new Vector3(0.15f, 0.13f, 0.15f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Right Shoulder", new Vector3(0.34f, 1.24f, 0f), new Vector3(0.15f, 0.13f, 0.15f), bodyMaterial, body);
-            GameObject leftArm = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Left Arm", new Vector3(-0.41f, 0.90f, 0.02f), new Vector3(0.08f, 0.24f, 0.08f), bodyMaterial, body);
+            bool armoredBody = IsMetalEquipment(body);
+            bool armoredLegs = IsMetalEquipment(legs);
+            bool armoredHands = IsMetalEquipment(hands);
+            Material tunicMaterial = armoredBody ? materials.PlayerCloth : bodyMaterial;
+            Material trouserMaterial = armoredLegs ? materials.PlayerLeather : legMaterial;
+            Material palmMaterial = armoredHands ? materials.PlayerSkin : handMaterial;
+
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Torso", new Vector3(0f, 1.03f, 0f), new Vector3(0.25f, 0.34f, 0.18f), tunicMaterial);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Chest Detail", new Vector3(0f, 1.11f, -0.18f), new Vector3(0.43f, 0.25f, 0.035f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Waist Belt", new Vector3(0f, 0.76f, -0.04f), new Vector3(0.45f, 0.055f, 0.25f), materials.PlayerLeather);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Left Shoulder", new Vector3(-0.31f, 1.24f, 0f), new Vector3(0.13f, 0.115f, 0.13f), armoredBody ? bodyMaterial : tunicMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Right Shoulder", new Vector3(0.31f, 1.24f, 0f), new Vector3(0.13f, 0.115f, 0.13f), armoredBody ? bodyMaterial : tunicMaterial, body);
+            GameObject leftArm = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Left Arm", new Vector3(-0.39f, 0.91f, 0.02f), new Vector3(0.075f, 0.25f, 0.075f), tunicMaterial);
             leftArm.transform.localRotation = Quaternion.Euler(0f, 0f, 5f);
-            GameObject rightArm = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Right Arm", new Vector3(0.41f, 0.90f, 0.02f), new Vector3(0.08f, 0.24f, 0.08f), bodyMaterial, body);
+            GameObject rightArm = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Right Arm", new Vector3(0.39f, 0.91f, 0.02f), new Vector3(0.075f, 0.25f, 0.075f), tunicMaterial);
             rightArm.transform.localRotation = Quaternion.Euler(0f, 0f, -5f);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Left Hand", new Vector3(-0.43f, 0.60f, 0.04f), new Vector3(0.10f, 0.10f, 0.10f), handMaterial, hands);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Right Hand", new Vector3(0.43f, 0.60f, 0.04f), new Vector3(0.10f, 0.10f, 0.10f), handMaterial, hands);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Left Leg", new Vector3(-0.15f, 0.53f, 0.02f), new Vector3(0.09f, 0.30f, 0.10f), legMaterial, legs);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Right Leg", new Vector3(0.15f, 0.53f, 0.02f), new Vector3(0.09f, 0.30f, 0.10f), legMaterial, legs);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Left Hand", new Vector3(-0.43f, 0.61f, 0.04f), new Vector3(0.095f, 0.095f, 0.095f), palmMaterial, hands);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Right Hand", new Vector3(0.43f, 0.61f, 0.04f), new Vector3(0.095f, 0.095f, 0.095f), palmMaterial, hands);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Left Leg", new Vector3(-0.14f, 0.53f, 0.02f), new Vector3(0.085f, 0.30f, 0.095f), trouserMaterial);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Right Leg", new Vector3(0.14f, 0.53f, 0.02f), new Vector3(0.085f, 0.30f, 0.095f), trouserMaterial);
+            if (armoredLegs)
+            {
+                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Leg Armor", new Vector3(-0.14f, 0.55f, -0.09f), new Vector3(0.17f, 0.30f, 0.035f), legMaterial, legs);
+                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Leg Armor", new Vector3(0.14f, 0.55f, -0.09f), new Vector3(0.17f, 0.30f, 0.035f), legMaterial, legs);
+            }
+
             CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Boot", new Vector3(-0.15f, 0.13f, 0.06f), new Vector3(0.18f, 0.12f, 0.26f), bootMaterial, feet);
             CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Boot", new Vector3(0.15f, 0.13f, 0.06f), new Vector3(0.18f, 0.12f, 0.26f), bootMaterial, feet);
             CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.63f, 0f), new Vector3(0.27f, 0.29f, 0.25f), materials.PlayerSkin);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Nose", new Vector3(0f, 1.61f, -0.25f), new Vector3(0.045f, 0.04f, 0.065f), materials.PlayerSkin);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Eye", new Vector3(-0.075f, 1.68f, -0.235f), new Vector3(0.026f, 0.015f, 0.015f), materials.PlayerHair);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Eye", new Vector3(0.075f, 1.68f, -0.235f), new Vector3(0.026f, 0.015f, 0.015f), materials.PlayerHair);
 
             if (head != null)
             {
@@ -1593,6 +1640,21 @@ namespace Psycho.Editor
                 default:
                     return fallback;
             }
+        }
+
+        private static bool IsMetalEquipment(PsychoMirrorItem item)
+        {
+            string materialClass = item?.materialClass == null ? string.Empty : item.materialClass.ToLowerInvariant();
+            string name = item?.name == null ? string.Empty : item.name.ToLowerInvariant();
+            return materialClass.Contains("metal")
+                || materialClass.Contains("rune")
+                || materialClass.Contains("crystal")
+                || name.Contains("plate")
+                || name.Contains("helm")
+                || name.Contains("chain")
+                || name.Contains("mail")
+                || name.Contains("shield")
+                || name.Contains("sirenic");
         }
 
         private static HostedPlayerSave LoadHostedPlayerSave(string username)

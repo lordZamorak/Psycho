@@ -18,6 +18,7 @@ namespace Psycho.Editor
         private const int MaxSampleModels = 96;
         private const string GeneratedRoot = "Assets/Generated/CacheModels";
         private const string MaterialPath = GeneratedRoot + "/Psycho_RS_VertexColor.mat";
+        private const string TerrainMaterialPath = GeneratedRoot + "/Psycho_RS_Terrain_VertexBlend.mat";
         private const string NpcMaterialPath = GeneratedRoot + "/Psycho_RS_Npc_VertexColor.mat";
         private const string ReportPath = GeneratedRoot + "/cache_model_import_report.json";
         private const string PreviewScenePath = GeneratedRoot + "/PsychoCacheMeshPreview.unity";
@@ -38,6 +39,21 @@ namespace Psycho.Editor
         {
             EnsureGeneratedFolders();
             return CreateOrUpdateVertexColorMaterial(MaterialPath, 0.22f, 0.22f, 0.045f, 0.30f);
+        }
+
+        public static Material LoadOrCreateTerrainVertexColorMaterial()
+        {
+            EnsureGeneratedFolders();
+            Material material = CreateOrUpdateVertexColorMaterial(TerrainMaterialPath, 0.28f, 0.28f, 0.075f, 0.36f);
+            SetMaterialFloat(material, "_GroundBlendStrength", 0.74f);
+            SetMaterialColor(material, "_GrassTint", new Color(0.25f, 0.43f, 0.19f, 1f));
+            SetMaterialColor(material, "_PathTint", new Color(0.43f, 0.36f, 0.25f, 1f));
+            SetMaterialColor(material, "_RockTint", new Color(0.46f, 0.46f, 0.40f, 1f));
+            SetMaterialFloat(material, "_BlendNoiseScale", 0.24f);
+            SetMaterialFloat(material, "_BlendNoiseStrength", 0.38f);
+            SetMaterialFloat(material, "_DistanceBlend", 0.20f);
+            EditorUtility.SetDirty(material);
+            return material;
         }
 
         public static Material LoadOrCreateNpcVertexColorMaterial()

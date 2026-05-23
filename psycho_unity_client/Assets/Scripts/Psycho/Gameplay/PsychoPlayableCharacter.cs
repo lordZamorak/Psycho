@@ -6,15 +6,26 @@ namespace Psycho.Gameplay
     public sealed class PsychoPlayableCharacter : MonoBehaviour
     {
         [SerializeField] private Camera playerCamera;
+        [SerializeField] private Transform cameraPivot;
         [SerializeField] private float walkSpeed = 4.25f;
         [SerializeField] private float sprintSpeed = 7.25f;
         [SerializeField] private float jumpSpeed = 5.6f;
         [SerializeField] private float gravity = -22f;
         [SerializeField] private float mouseSensitivity = 2.2f;
+        [SerializeField] private float thirdPersonDistance = 3.8f;
+        [SerializeField] private float thirdPersonHeight = 1.45f;
+        [SerializeField] private float cameraSideOffset = 0.28f;
+        [SerializeField] private float minPitch = -32f;
+        [SerializeField] private float maxPitch = 58f;
+        [SerializeField] private LayerMask cameraCollisionMask = ~0;
+        [SerializeField] private float cameraCollisionRadius = 0.22f;
+        [SerializeField] private float cameraSmoothTime = 0.055f;
 
         private CharacterController controller;
         private float pitch;
         private float verticalVelocity;
+        private Vector3 cameraVelocity;
+        private readonly RaycastHit[] cameraHits = new RaycastHit[8];
 
         private void Awake()
         {
@@ -23,6 +34,9 @@ namespace Psycho.Gameplay
             {
                 playerCamera = GetComponentInChildren<Camera>();
             }
+
+            EnsureCameraRig();
+            pitch = Mathf.Clamp(NormalizeAngle(cameraPivot.localEulerAngles.x), minPitch, maxPitch);
         }
 
         private void Start()
@@ -52,13 +66,13 @@ namespace Psycho.Gameplay
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
             transform.Rotate(0f, yaw, 0f);
 
-            if (playerCamera == null)
+            if (cameraPivot == null)
             {
                 return;
             }
 
-            pitch = Mathf.Clamp(pitch - mouseY, -78f, 78f);
-            playerCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+            pitch = Mathf.Clamp(pitch - mouseY, minPitch, maxPitch);
+            cameraPivot.localRotation = Quaternion.Euler(pitch, 0f, 0f);
         }
 
         private void Move()
@@ -81,6 +95,100 @@ namespace Psycho.Gameplay
             verticalVelocity += gravity * Time.deltaTime;
             Vector3 velocity = planar * speed + Vector3.up * verticalVelocity;
             controller.Move(velocity * Time.deltaTime);
+        }
+
+        private void LateUpdate()
+        {
+            UpdateCameraRig();
+        }
+
+        private void EnsureCameraRig()
+        {
+            if (cameraPivot == null)
+            {
+                Transform existingPivot = transform.Find("Player Camera Pivot");
+                if (existingPivot == null)
+                {
+                    GameObject pivotObject = new GameObject("Player Camera Pivot");
+                    pivotObject.transform.SetParent(transform, false);
+                    existingPivot = pivotObject.transform;
+                }
+
+                cameraPivot = existingPivot;
+            }
+
+            cameraPivot.localPosition = new Vector3(0f, thirdPersonHeight, 0f);
+
+            if (playerCamera != null)
+            {
+                playerCamera.transform.SetParent(cameraPivot, true);
+                playerCamera.transform.localRotation = Quaternion.identity;
+            }
+        }
+
+        private void UpdateCameraRig()
+        {
+            if (playerCamera == null)
+            {
+                return;
+            }
+
+            EnsureCameraRig();
+
+            Vector3 focus = cameraPivot.position;
+            Vector3 desiredPosition = focus
+                - cameraPivot.forward * thirdPersonDistance
+                + cameraPivot.right * cameraSideOffset;
+            desiredPosition = ResolveCameraCollision(focus, desiredPosition);
+
+            Transform cameraTransform = playerCamera.transform;
+            cameraTransform.position = Vector3.SmoothDamp(
+                cameraTransform.position,
+                desiredPosition,
+                ref cameraVelocity,
+                cameraSmoothTime,
+                100f,
+                Time.deltaTime);
+            cameraTransform.rotation = Quaternion.LookRotation(focus - cameraTransform.position, Vector3.up);
+        }
+
+        private Vector3 ResolveCameraCollision(Vector3 focus, Vector3 desiredPosition)
+        {
+            Vector3 toDesired = desiredPosition - focus;
+            float distance = toDesired.magnitude;
+            if (distance <= 0.01f)
+            {
+                return desiredPosition;
+            }
+
+            Vector3 direction = toDesired / distance;
+            int hitCount = Physics.SphereCastNonAlloc(
+                focus,
+                cameraCollisionRadius,
+                direction,
+                cameraHits,
+                distance,
+                cameraCollisionMask,
+                QueryTriggerInteraction.Ignore);
+
+            float closestDistance = distance;
+            for (int i = 0; i < hitCount; i++)
+            {
+                Collider hitCollider = cameraHits[i].collider;
+                if (hitCollider == null || hitCollider.transform == transform || hitCollider.transform.IsChildOf(transform))
+                {
+                    continue;
+                }
+
+                closestDistance = Mathf.Min(closestDistance, Mathf.Max(cameraHits[i].distance - 0.18f, 0.45f));
+            }
+
+            return focus + direction * closestDistance;
+        }
+
+        private static float NormalizeAngle(float angle)
+        {
+            return angle > 180f ? angle - 360f : angle;
         }
     }
 }
