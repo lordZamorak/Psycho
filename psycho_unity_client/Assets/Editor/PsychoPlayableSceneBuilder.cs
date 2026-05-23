@@ -274,11 +274,12 @@ namespace Psycho.Editor
             CharacterController controller = player.AddComponent<CharacterController>();
             controller.height = 1.9f;
             controller.radius = 0.32f;
+            controller.center = new Vector3(0f, controller.height * 0.5f, 0f);
             controller.stepOffset = 0.45f;
             controller.slopeLimit = 48f;
 
             Vector3 spawn = TilePosition(landscape, 21, 37);
-            player.transform.position = spawn + Vector3.up * 1.15f;
+            player.transform.position = spawn + Vector3.up * 0.04f;
             player.AddComponent<PsychoPlayableCharacter>();
             player.AddComponent<PsychoCharacterGroundGuard>();
 

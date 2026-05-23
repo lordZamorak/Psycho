@@ -32,6 +32,15 @@ namespace Psycho.Editor
         private const string GeneratedRoot = "Assets/Generated/Hosted";
         private const string ReportPath = GeneratedRoot + "/hosted_test_world_report.json";
         private const string WindowsBuildPath = "Builds/PsychoHostedTestWorld/Psycho.exe";
+        private const string HostedPlayerUsername = "Sirenicbeast";
+        private const int EquipmentHeadSlot = 0;
+        private const int EquipmentCapeSlot = 1;
+        private const int EquipmentWeaponSlot = 3;
+        private const int EquipmentBodySlot = 4;
+        private const int EquipmentShieldSlot = 5;
+        private const int EquipmentLegSlot = 7;
+        private const int EquipmentHandsSlot = 9;
+        private const int EquipmentFeetSlot = 10;
         private const string GrassMaterialPath = GeneratedRoot + "/Psycho_Hosted_Grass.mat";
         private const string FlowerMaterialPath = GeneratedRoot + "/Psycho_Hosted_Flowers.mat";
         private const string ReedMaterialPath = GeneratedRoot + "/Psycho_Hosted_Reeds.mat";
@@ -46,6 +55,10 @@ namespace Psycho.Editor
         private const string PlayerClothMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Cloth.mat";
         private const string PlayerLeatherMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Leather.mat";
         private const string PlayerMetalMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Metal.mat";
+        private const string PlayerSkinMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Skin.mat";
+        private const string PlayerHairMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Hair.mat";
+        private const string PlayerPaperMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Paper.mat";
+        private const string PlayerWoodMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Wood.mat";
         private const string FallbackMaterialPath = GeneratedRoot + "/Psycho_Hosted_Fallback.mat";
         private static readonly string[] WindResponsiveObjectNameFragments =
         {
@@ -85,7 +98,7 @@ namespace Psycho.Editor
                 BuildNpcSpawns(store, database, npcVertexColorMaterial, context);
                 BuildWorldDressing(context, hostedMaterials);
                 BuildLighting();
-                BuildPlayer(context, hostedMaterials);
+                BuildPlayer(context, hostedMaterials, database);
                 BuildNetworkBootstrap();
                 ValidateTerrainCollisionCoverage(context);
             }
@@ -144,11 +157,11 @@ namespace Psycho.Editor
                 throw new InvalidOperationException("Hosted test world scene needs both the playable adventurer and camera.");
             }
 
-            Vector3 focus = player.transform.position + new Vector3(0f, 1.12f, 0f);
-            Vector3 viewOffset = new Vector3(-4.6f, 2.35f, -5.2f);
+            Vector3 focus = player.transform.position + new Vector3(0f, 1.10f, 0f);
+            Vector3 viewOffset = new Vector3(-3.2f, 1.65f, -3.6f);
             camera.transform.position = focus + viewOffset;
             camera.transform.rotation = Quaternion.LookRotation(focus + new Vector3(0.55f, 0.2f, 0.35f) - camera.transform.position, Vector3.up);
-            camera.fieldOfView = 54f;
+            camera.fieldOfView = 46f;
             string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-third-person-preview.png"));
             RenderCameraToPng(camera, outputPath, 1600, 900);
         }
@@ -964,20 +977,31 @@ namespace Psycho.Editor
             RenderSettings.defaultReflectionMode = DefaultReflectionMode.Skybox;
         }
 
-        private static void BuildPlayer(HostedBuildContext context, HostedMaterials materials)
+        private static void BuildPlayer(HostedBuildContext context, HostedMaterials materials, PsychoMirrorDatabase database)
         {
+            HostedPlayerSave playerSave = LoadHostedPlayerSave(HostedPlayerUsername);
+            int spawnX = playerSave?.position != null ? playerSave.position.x : 3093;
+            int spawnY = playerSave?.position != null ? playerSave.position.y : 3493;
+            if (!IsWorldTileInsideHostedBounds(spawnX, spawnY))
+            {
+                Debug.LogWarning($"Hosted player save position {spawnX}, {spawnY} is outside the generated test world. Falling back to Edgeville.");
+                spawnX = 3093;
+                spawnY = 3493;
+            }
+
             GameObject player = new GameObject("Playable Adventurer");
             CharacterController controller = player.AddComponent<CharacterController>();
             controller.height = 1.9f;
             controller.radius = 0.32f;
+            controller.center = new Vector3(0f, controller.height * 0.5f, 0f);
             controller.stepOffset = 0.45f;
             controller.slopeLimit = 48f;
 
-            player.transform.position = WorldTilePosition(context, 3093, 3493) + Vector3.up * 1.15f;
+            player.transform.position = WorldTilePosition(context, spawnX, spawnY) + Vector3.up * 0.04f;
             player.AddComponent<PsychoPlayableCharacter>();
             player.AddComponent<PsychoCharacterGroundGuard>();
             player.AddComponent<PsychoInteractionController>();
-            BuildPlayerVisual(player.transform, materials);
+            BuildPlayerVisual(player.transform, materials, database, playerSave);
 
             GameObject cameraObject = new GameObject("Player Camera");
             cameraObject.tag = "MainCamera";
@@ -1009,30 +1033,258 @@ namespace Psycho.Editor
             cameraObject.AddComponent<AudioListener>();
         }
 
-        private static void BuildPlayerVisual(Transform parent, HostedMaterials materials)
+        private static void BuildPlayerVisual(Transform parent, HostedMaterials materials, PsychoMirrorDatabase database, HostedPlayerSave playerSave)
         {
             GameObject visualRoot = new GameObject("Adventurer Visual");
             visualRoot.transform.SetParent(parent, false);
 
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Tunic Body", new Vector3(0f, 0.92f, 0f), new Vector3(0.44f, 0.72f, 0.34f), materials.PlayerCloth);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.66f, 0f), new Vector3(0.26f, 0.28f, 0.25f), materials.PlayerLeather);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Cape", new Vector3(0f, 0.94f, -0.24f), new Vector3(0.50f, 0.68f, 0.045f), materials.PlayerCloth);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Boot", new Vector3(-0.15f, 0.22f, 0.02f), new Vector3(0.16f, 0.32f, 0.20f), materials.PlayerLeather);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Boot", new Vector3(0.15f, 0.22f, 0.02f), new Vector3(0.16f, 0.32f, 0.20f), materials.PlayerLeather);
-            GameObject sword = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Side Sword", new Vector3(0.38f, 0.72f, -0.04f), new Vector3(0.055f, 0.72f, 0.055f), materials.PlayerMetal);
-            sword.transform.localRotation = Quaternion.Euler(0f, 0f, -18f);
+            PsychoMirrorItem head = GetEquippedItem(database, playerSave, EquipmentHeadSlot);
+            PsychoMirrorItem cape = GetEquippedItem(database, playerSave, EquipmentCapeSlot);
+            PsychoMirrorItem weapon = GetEquippedItem(database, playerSave, EquipmentWeaponSlot);
+            PsychoMirrorItem body = GetEquippedItem(database, playerSave, EquipmentBodySlot);
+            PsychoMirrorItem shield = GetEquippedItem(database, playerSave, EquipmentShieldSlot);
+            PsychoMirrorItem legs = GetEquippedItem(database, playerSave, EquipmentLegSlot);
+            PsychoMirrorItem hands = GetEquippedItem(database, playerSave, EquipmentHandsSlot);
+            PsychoMirrorItem feet = GetEquippedItem(database, playerSave, EquipmentFeetSlot);
+
+            Material bodyMaterial = MaterialForEquippedItem(body, materials, materials.PlayerCloth);
+            Material legMaterial = MaterialForEquippedItem(legs, materials, materials.PlayerLeather);
+            Material bootMaterial = MaterialForEquippedItem(feet, materials, materials.PlayerLeather);
+            Material handMaterial = MaterialForEquippedItem(hands, materials, materials.PlayerLeather);
+
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Torso", new Vector3(0f, 1.02f, 0f), new Vector3(0.52f, 0.62f, 0.30f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Chest Plate", new Vector3(0f, 1.12f, -0.02f), new Vector3(0.58f, 0.40f, 0.08f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Shoulder", new Vector3(-0.36f, 1.24f, 0f), new Vector3(0.22f, 0.18f, 0.26f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Shoulder", new Vector3(0.36f, 1.24f, 0f), new Vector3(0.22f, 0.18f, 0.26f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Upper Arm", new Vector3(-0.42f, 0.93f, 0.02f), new Vector3(0.16f, 0.44f, 0.17f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Upper Arm", new Vector3(0.42f, 0.93f, 0.02f), new Vector3(0.16f, 0.44f, 0.17f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Hand", new Vector3(-0.43f, 0.63f, 0.04f), new Vector3(0.15f, 0.16f, 0.15f), handMaterial, hands);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Hand", new Vector3(0.43f, 0.63f, 0.04f), new Vector3(0.15f, 0.16f, 0.15f), handMaterial, hands);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Leg", new Vector3(-0.15f, 0.55f, 0.02f), new Vector3(0.18f, 0.58f, 0.20f), legMaterial, legs);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Leg", new Vector3(0.15f, 0.55f, 0.02f), new Vector3(0.18f, 0.58f, 0.20f), legMaterial, legs);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Boot", new Vector3(-0.15f, 0.15f, 0.04f), new Vector3(0.18f, 0.28f, 0.24f), bootMaterial, feet);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Boot", new Vector3(0.15f, 0.15f, 0.04f), new Vector3(0.18f, 0.28f, 0.24f), bootMaterial, feet);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.63f, 0f), new Vector3(0.27f, 0.29f, 0.25f), materials.PlayerSkin);
+
+            if (head != null)
+            {
+                Material helmetMaterial = MaterialForEquippedItem(head, materials, materials.PlayerMetal);
+                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Helmet", new Vector3(0f, 1.72f, 0f), new Vector3(0.30f, 0.25f, 0.28f), helmetMaterial, head);
+                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Helmet Visor", new Vector3(0f, 1.62f, -0.20f), new Vector3(0.34f, 0.09f, 0.08f), helmetMaterial, head);
+            }
+            else
+            {
+                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Hair", new Vector3(0f, 1.78f, 0f), new Vector3(0.28f, 0.12f, 0.24f), materials.PlayerHair);
+            }
+
+            if (cape != null)
+            {
+                GameObject capePanel = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Cape", new Vector3(0f, 0.92f, 0.22f), new Vector3(0.56f, 0.82f, 0.05f), MaterialForEquippedItem(cape, materials, materials.PlayerCloth), cape);
+                capePanel.transform.localRotation = Quaternion.Euler(-5f, 0f, 0f);
+            }
+
+            if (weapon != null)
+            {
+                CreateEquippedWeapon(visualRoot.transform, weapon, MaterialForEquippedItem(weapon, materials, materials.PlayerMetal), materials);
+            }
+
+            if (shield != null)
+            {
+                CreateEquippedOffhand(visualRoot.transform, shield, MaterialForEquippedItem(shield, materials, materials.PlayerMetal), materials);
+            }
+
+            CreatePlayerNameplate(visualRoot.transform, playerSave);
+            Debug.Log($"Hosted player visual loaded from Java save for {PlayerDisplayName(playerSave)} with {CountEquippedItems(playerSave)} equipped item slots.");
         }
 
-        private static GameObject CreatePlayerPrimitive(Transform parent, PrimitiveType type, string name, Vector3 localPosition, Vector3 localScale, Material material)
+        private static GameObject CreatePlayerPrimitive(Transform parent, PrimitiveType type, string name, Vector3 localPosition, Vector3 localScale, Material material, PsychoMirrorItem item = null)
         {
             GameObject primitive = GameObject.CreatePrimitive(type);
-            primitive.name = name;
+            primitive.name = item == null || string.IsNullOrWhiteSpace(item.name) ? name : $"{name} - {item.name}";
             primitive.transform.SetParent(parent, false);
             primitive.transform.localPosition = localPosition;
             primitive.transform.localScale = localScale;
             primitive.GetComponent<MeshRenderer>().sharedMaterial = material;
             RemoveCollider(primitive);
             return primitive;
+        }
+
+        private static void CreateEquippedWeapon(Transform visualRoot, PsychoMirrorItem weapon, Material material, HostedMaterials materials)
+        {
+            string weaponName = weapon.name == null ? string.Empty : weapon.name.ToLowerInvariant();
+            if (weaponName.Contains("scimitar"))
+            {
+                GameObject blade = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Scimitar Blade", new Vector3(0.48f, 0.88f, -0.02f), new Vector3(0.05f, 0.74f, 0.08f), material, weapon);
+                blade.transform.localRotation = Quaternion.Euler(0f, 0f, -30f);
+                GameObject tip = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Scimitar Tip", new Vector3(0.61f, 1.14f, -0.02f), new Vector3(0.04f, 0.28f, 0.075f), material, weapon);
+                tip.transform.localRotation = Quaternion.Euler(0f, 0f, -55f);
+                GameObject guard = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Scimitar Guard", new Vector3(0.40f, 0.62f, -0.02f), new Vector3(0.24f, 0.04f, 0.08f), materials.PlayerMetal, weapon);
+                guard.transform.localRotation = Quaternion.Euler(0f, 0f, -12f);
+                return;
+            }
+
+            if (weaponName.Contains("bow"))
+            {
+                GameObject bow = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Bow", new Vector3(0.48f, 0.90f, 0.00f), new Vector3(0.06f, 0.86f, 0.06f), materials.PlayerWood, weapon);
+                bow.transform.localRotation = Quaternion.Euler(0f, 0f, -10f);
+                CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Bow String", new Vector3(0.56f, 0.90f, 0.00f), new Vector3(0.015f, 0.82f, 0.015f), materials.PlayerPaper, weapon);
+                return;
+            }
+
+            if (weaponName.Contains("staff"))
+            {
+                GameObject staff = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Staff", new Vector3(0.46f, 0.93f, 0.00f), new Vector3(0.055f, 1.18f, 0.055f), materials.PlayerWood, weapon);
+                staff.transform.localRotation = Quaternion.Euler(0f, 0f, -8f);
+                CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, "Staff Focus", new Vector3(0.54f, 1.50f, 0.00f), new Vector3(0.13f, 0.13f, 0.13f), material, weapon);
+                return;
+            }
+
+            GameObject bladeFallback = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Weapon", new Vector3(0.46f, 0.88f, -0.02f), new Vector3(0.055f, 0.82f, 0.065f), material, weapon);
+            bladeFallback.transform.localRotation = Quaternion.Euler(0f, 0f, -18f);
+        }
+
+        private static void CreateEquippedOffhand(Transform visualRoot, PsychoMirrorItem shield, Material material, HostedMaterials materials)
+        {
+            string shieldName = shield.name == null ? string.Empty : shield.name.ToLowerInvariant();
+            if (shieldName.Contains("book"))
+            {
+                CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Offhand Book Cover", new Vector3(-0.46f, 0.86f, -0.02f), new Vector3(0.08f, 0.42f, 0.30f), material, shield);
+                CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Offhand Book Pages", new Vector3(-0.515f, 0.86f, -0.02f), new Vector3(0.025f, 0.36f, 0.25f), materials.PlayerPaper, shield);
+                return;
+            }
+
+            GameObject shieldObject = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Shield", new Vector3(-0.47f, 0.88f, -0.02f), new Vector3(0.08f, 0.52f, 0.36f), material, shield);
+            shieldObject.transform.localRotation = Quaternion.Euler(0f, 0f, 4f);
+        }
+
+        private static void CreatePlayerNameplate(Transform visualRoot, HostedPlayerSave playerSave)
+        {
+            GameObject plate = new GameObject("Player Nameplate");
+            plate.transform.SetParent(visualRoot, false);
+            plate.transform.localPosition = new Vector3(0f, 2.06f, 0f);
+            TextMesh text = plate.AddComponent<TextMesh>();
+            text.text = PlayerDisplayName(playerSave);
+            text.anchor = TextAnchor.MiddleCenter;
+            text.alignment = TextAlignment.Center;
+            text.characterSize = 0.028f;
+            text.fontSize = 52;
+            text.color = new Color(1f, 0.93f, 0.45f, 1f);
+        }
+
+        private static PsychoMirrorItem GetEquippedItem(PsychoMirrorDatabase database, HostedPlayerSave playerSave, int slot)
+        {
+            if (database == null || playerSave?.equipment == null || slot < 0 || slot >= playerSave.equipment.Length)
+            {
+                return null;
+            }
+
+            HostedSaveItem saveItem = playerSave.equipment[slot];
+            if (saveItem == null || saveItem.id < 0)
+            {
+                return null;
+            }
+
+            return database.TryGetItem(saveItem.id, out PsychoMirrorItem item) ? item : null;
+        }
+
+        private static Material MaterialForEquippedItem(PsychoMirrorItem item, HostedMaterials materials, Material fallback)
+        {
+            string materialClass = item?.materialClass == null ? string.Empty : item.materialClass.ToLowerInvariant();
+            switch (materialClass)
+            {
+                case "metal":
+                case "rune":
+                case "crystal":
+                    return materials.PlayerMetal;
+                case "leather":
+                    return materials.PlayerLeather;
+                case "paper":
+                case "note":
+                    return materials.PlayerPaper;
+                case "wood":
+                    return materials.PlayerWood;
+                case "cloth":
+                    return materials.PlayerCloth;
+                default:
+                    return fallback;
+            }
+        }
+
+        private static HostedPlayerSave LoadHostedPlayerSave(string username)
+        {
+            string savePath = FindHostedPlayerSavePath(username);
+            if (string.IsNullOrEmpty(savePath))
+            {
+                Debug.LogWarning($"Could not find Java player save for {username}. Using hosted visual defaults.");
+                return null;
+            }
+
+            try
+            {
+                string json = File.ReadAllText(savePath);
+                HostedPlayerSave save = JsonUtility.FromJson<HostedPlayerSave>(json);
+                if (save == null)
+                {
+                    Debug.LogWarning($"Could not parse Java player save at {savePath}. Using hosted visual defaults.");
+                }
+
+                return save;
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning($"Could not read Java player save for {username}: {exception.Message}");
+                return null;
+            }
+        }
+
+        private static string FindHostedPlayerSavePath(string username)
+        {
+            string repoRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
+            string charactersPath = Path.Combine(repoRoot, "necrotic_server-item_attributes", "data", "saves", "characters");
+            if (!Directory.Exists(charactersPath))
+            {
+                return null;
+            }
+
+            string directPath = Path.Combine(charactersPath, username + ".json");
+            if (File.Exists(directPath))
+            {
+                return directPath;
+            }
+
+            foreach (string file in Directory.GetFiles(charactersPath, "*.json", SearchOption.TopDirectoryOnly))
+            {
+                if (string.Equals(Path.GetFileNameWithoutExtension(file), username, StringComparison.OrdinalIgnoreCase))
+                {
+                    return file;
+                }
+            }
+
+            return null;
+        }
+
+        private static string PlayerDisplayName(HostedPlayerSave playerSave)
+        {
+            return string.IsNullOrWhiteSpace(playerSave?.username) ? HostedPlayerUsername : playerSave.username;
+        }
+
+        private static int CountEquippedItems(HostedPlayerSave playerSave)
+        {
+            if (playerSave?.equipment == null)
+            {
+                return 0;
+            }
+
+            int count = 0;
+            for (int i = 0; i < playerSave.equipment.Length; i++)
+            {
+                if (playerSave.equipment[i] != null && playerSave.equipment[i].id >= 0)
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         private static void BuildNetworkBootstrap()
@@ -1431,7 +1683,11 @@ namespace Psycho.Editor
                 WaterDepth = LoadOrCreateSolidMaterial(WaterDepthMaterialPath, new Color(0.02f, 0.12f, 0.18f, 0.30f), 0.54f),
                 PlayerCloth = LoadOrCreateTexturedMaterial(PlayerClothMaterialPath, "Cloth", new Color(0.28f, 0.42f, 0.56f, 1f), 0.34f, new Vector2(2.5f, 2.5f), 0.52f),
                 PlayerLeather = LoadOrCreateTexturedMaterial(PlayerLeatherMaterialPath, "Leather", new Color(0.52f, 0.34f, 0.22f, 1f), 0.30f, new Vector2(2.2f, 2.2f), 0.48f),
-                PlayerMetal = LoadOrCreateTexturedMaterial(PlayerMetalMaterialPath, "Metal", new Color(0.70f, 0.70f, 0.66f, 1f), 0.62f, new Vector2(2.2f, 2.2f), 0.42f)
+                PlayerMetal = LoadOrCreateTexturedMaterial(PlayerMetalMaterialPath, "Metal", new Color(0.70f, 0.70f, 0.66f, 1f), 0.62f, new Vector2(2.2f, 2.2f), 0.42f),
+                PlayerSkin = LoadOrCreateSolidMaterial(PlayerSkinMaterialPath, new Color(0.77f, 0.57f, 0.42f, 1f), 0.28f),
+                PlayerHair = LoadOrCreateSolidMaterial(PlayerHairMaterialPath, new Color(0.23f, 0.16f, 0.09f, 1f), 0.32f),
+                PlayerPaper = LoadOrCreateTexturedMaterial(PlayerPaperMaterialPath, "Paper", new Color(0.74f, 0.68f, 0.54f, 1f), 0.24f, new Vector2(1.8f, 1.8f), 0.36f),
+                PlayerWood = LoadOrCreateTexturedMaterial(PlayerWoodMaterialPath, "Wood", new Color(0.38f, 0.24f, 0.12f, 1f), 0.28f, new Vector2(2.2f, 2.2f), 0.50f)
             };
             ConfigureTransparent(materials.Water);
             ConfigureTransparent(materials.Cloud);
@@ -1648,6 +1904,35 @@ namespace Psycho.Editor
             public Material PlayerCloth;
             public Material PlayerLeather;
             public Material PlayerMetal;
+            public Material PlayerSkin;
+            public Material PlayerHair;
+            public Material PlayerPaper;
+            public Material PlayerWood;
+        }
+
+        [Serializable]
+        private sealed class HostedPlayerSave
+        {
+            public string username;
+            public string gender;
+            public HostedSavePosition position;
+            public int[] appearance;
+            public HostedSaveItem[] equipment;
+        }
+
+        [Serializable]
+        private sealed class HostedSavePosition
+        {
+            public int x;
+            public int y;
+            public int z;
+        }
+
+        [Serializable]
+        private sealed class HostedSaveItem
+        {
+            public int id;
+            public int amount;
         }
 
         [Serializable]
