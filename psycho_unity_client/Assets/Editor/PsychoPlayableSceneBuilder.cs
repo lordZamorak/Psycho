@@ -325,6 +325,10 @@ namespace Psycho.Editor
             }
 
             SetFloat(characterObject, "thirdPersonDistance", 3.8f);
+            SetFloat(characterObject, "minThirdPersonDistance", 1.55f);
+            SetFloat(characterObject, "maxThirdPersonDistance", 8.5f);
+            SetFloat(characterObject, "scrollZoomSensitivity", 1.15f);
+            SetFloat(characterObject, "middleMouseTurnSensitivity", 1.05f);
             SetFloat(characterObject, "thirdPersonHeight", 1.45f);
             SetFloat(characterObject, "cameraSideOffset", 0.22f);
             SetFloat(characterObject, "minPitch", -32f);

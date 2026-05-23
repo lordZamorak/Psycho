@@ -14,6 +14,10 @@ namespace Psycho.Gameplay
         [SerializeField] private float gravity = -22f;
         [SerializeField] private float mouseSensitivity = 2.2f;
         [SerializeField] private float thirdPersonDistance = 3.8f;
+        [SerializeField] private float minThirdPersonDistance = 1.55f;
+        [SerializeField] private float maxThirdPersonDistance = 8.5f;
+        [SerializeField] private float scrollZoomSensitivity = 1.15f;
+        [SerializeField] private float middleMouseTurnSensitivity = 1.05f;
         [SerializeField] private float thirdPersonHeight = 1.45f;
         [SerializeField] private float cameraSideOffset = 0.28f;
         [SerializeField] private float minPitch = -32f;
@@ -57,9 +61,15 @@ namespace Psycho.Gameplay
                 return;
             }
 
+            ZoomCamera();
+
             if (!hudActive || Input.GetMouseButton(1))
             {
                 Look();
+            }
+            else if (Input.GetMouseButton(2))
+            {
+                TurnHorizontal();
             }
 
             Move();
@@ -84,6 +94,26 @@ namespace Psycho.Gameplay
 
             pitch = Mathf.Clamp(pitch - mouseY, minPitch, maxPitch);
             cameraPivot.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+        }
+
+        private void TurnHorizontal()
+        {
+            float yaw = Input.GetAxis("Mouse X") * mouseSensitivity * middleMouseTurnSensitivity;
+            transform.Rotate(0f, yaw, 0f);
+        }
+
+        private void ZoomCamera()
+        {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (Mathf.Abs(scroll) <= 0.0001f)
+            {
+                return;
+            }
+
+            thirdPersonDistance = Mathf.Clamp(
+                thirdPersonDistance - scroll * scrollZoomSensitivity * 6f,
+                minThirdPersonDistance,
+                maxThirdPersonDistance);
         }
 
         private void Move()
@@ -145,6 +175,7 @@ namespace Psycho.Gameplay
             }
 
             EnsureCameraRig();
+            thirdPersonDistance = Mathf.Clamp(thirdPersonDistance, minThirdPersonDistance, maxThirdPersonDistance);
 
             Vector3 focus = cameraPivot.position;
             Vector3 desiredPosition = focus

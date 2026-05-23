@@ -1428,6 +1428,10 @@ namespace Psycho.Editor
             }
 
             SetSerializedFloat(characterObject, "thirdPersonDistance", 3.8f);
+            SetSerializedFloat(characterObject, "minThirdPersonDistance", 1.55f);
+            SetSerializedFloat(characterObject, "maxThirdPersonDistance", 8.5f);
+            SetSerializedFloat(characterObject, "scrollZoomSensitivity", 1.15f);
+            SetSerializedFloat(characterObject, "middleMouseTurnSensitivity", 1.05f);
             SetSerializedFloat(characterObject, "thirdPersonHeight", 1.45f);
             SetSerializedFloat(characterObject, "cameraSideOffset", 0.22f);
             SetSerializedFloat(characterObject, "minPitch", -32f);
