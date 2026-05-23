@@ -27,6 +27,7 @@ namespace Psycho.Editor
         private const int MaxModelsPerNpc = 12;
         private const int MaxNpcSpawns = 460;
         private const int GroundDetailCount = 1850;
+        private const float CharacterNormalSmoothingTolerance = 0.00075f;
         private const float TileScale = 0.72f;
         private const float HeightScale = 1f / 96f;
         private const string ScenePath = "Assets/Scenes/PsychoHostedTestWorld.unity";
@@ -113,7 +114,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, landmarks {context.Report.landmarkDressingObjects}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -759,10 +760,94 @@ namespace Psycho.Editor
                 return false;
             }
 
+            context.Report.smoothedCharacterMeshes += ApplySoftCharacterNormals(modelRoot.transform);
             NormalizeNpcModel(modelRoot.transform, npc, model);
             context.Report.cacheNpcVisuals++;
             npcObject = root;
             return true;
+        }
+
+        private static int ApplySoftCharacterNormals(Transform root)
+        {
+            int smoothedMeshes = 0;
+            MeshFilter[] filters = root.GetComponentsInChildren<MeshFilter>();
+            foreach (MeshFilter filter in filters)
+            {
+                if (TryCreateSoftNormalMesh(filter.sharedMesh, out Mesh smoothedMesh))
+                {
+                    filter.sharedMesh = smoothedMesh;
+                    smoothedMeshes++;
+                }
+            }
+
+            return smoothedMeshes;
+        }
+
+        private static bool TryCreateSoftNormalMesh(Mesh source, out Mesh smoothedMesh)
+        {
+            smoothedMesh = null;
+            if (source == null || source.vertexCount < 4)
+            {
+                return false;
+            }
+
+            Vector3[] vertices = source.vertices;
+            int[] triangles = source.triangles;
+            if (vertices == null || triangles == null || vertices.Length == 0 || triangles.Length < 3)
+            {
+                return false;
+            }
+
+            Dictionary<VertexNormalKey, Vector3> normalSums = new Dictionary<VertexNormalKey, Vector3>(vertices.Length);
+            for (int index = 0; index + 2 < triangles.Length; index += 3)
+            {
+                int a = triangles[index];
+                int b = triangles[index + 1];
+                int c = triangles[index + 2];
+                if (a < 0 || b < 0 || c < 0 || a >= vertices.Length || b >= vertices.Length || c >= vertices.Length)
+                {
+                    continue;
+                }
+
+                Vector3 normal = Vector3.Cross(vertices[b] - vertices[a], vertices[c] - vertices[a]);
+                if (normal.sqrMagnitude < 0.0000001f)
+                {
+                    continue;
+                }
+
+                normal.Normalize();
+                AddNormal(normalSums, vertices[a], normal);
+                AddNormal(normalSums, vertices[b], normal);
+                AddNormal(normalSums, vertices[c], normal);
+            }
+
+            Vector3[] smoothedNormals = new Vector3[vertices.Length];
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                VertexNormalKey key = new VertexNormalKey(vertices[i], CharacterNormalSmoothingTolerance);
+                smoothedNormals[i] = normalSums.TryGetValue(key, out Vector3 normal) && normal.sqrMagnitude > 0.0000001f
+                    ? normal.normalized
+                    : Vector3.up;
+            }
+
+            smoothedMesh = UnityEngine.Object.Instantiate(source);
+            smoothedMesh.name = source.name + "_soft_character_normals";
+            smoothedMesh.normals = smoothedNormals;
+            Vector2[] uv = smoothedMesh.uv;
+            if (uv != null && uv.Length == vertices.Length)
+            {
+                smoothedMesh.RecalculateTangents();
+            }
+
+            smoothedMesh.RecalculateBounds();
+            return true;
+        }
+
+        private static void AddNormal(Dictionary<VertexNormalKey, Vector3> normalSums, Vector3 vertex, Vector3 normal)
+        {
+            VertexNormalKey key = new VertexNormalKey(vertex, CharacterNormalSmoothingTolerance);
+            normalSums.TryGetValue(key, out Vector3 current);
+            normalSums[key] = current + normal;
         }
 
         private static void NormalizeNpcModel(Transform modelRoot, PsychoMirrorNpc npc, PsychoMirrorNpcModel model)
@@ -2151,6 +2236,43 @@ namespace Psycho.Editor
             public int amount;
         }
 
+        private struct VertexNormalKey : IEquatable<VertexNormalKey>
+        {
+            private readonly int x;
+            private readonly int y;
+            private readonly int z;
+
+            public VertexNormalKey(Vector3 position, float tolerance)
+            {
+                float safeTolerance = Mathf.Max(0.00001f, tolerance);
+                x = Mathf.RoundToInt(position.x / safeTolerance);
+                y = Mathf.RoundToInt(position.y / safeTolerance);
+                z = Mathf.RoundToInt(position.z / safeTolerance);
+            }
+
+            public bool Equals(VertexNormalKey other)
+            {
+                return x == other.x && y == other.y && z == other.z;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is VertexNormalKey other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int hash = 17;
+                    hash = hash * 31 + x;
+                    hash = hash * 31 + y;
+                    hash = hash * 31 + z;
+                    return hash;
+                }
+            }
+        }
+
         [Serializable]
         private sealed class HostedBuildReport
         {
@@ -2171,6 +2293,7 @@ namespace Psycho.Editor
             public int cacheNpcVisuals;
             public int fallbackNpcVisuals;
             public int missingNpcModels;
+            public int smoothedCharacterMeshes;
             public int terrainCollisionSamples;
             public int terrainCollisionMisses;
             public int enhancedFoliageObjects;

@@ -43,7 +43,7 @@ namespace Psycho.Editor
         public static Material LoadOrCreateNpcVertexColorMaterial()
         {
             EnsureGeneratedFolders();
-            return CreateOrUpdateVertexColorMaterial(NpcMaterialPath, 0.10f, 0.08f, 0.012f, 0.06f);
+            return CreateOrUpdateVertexColorMaterial(NpcMaterialPath, 0.24f, 0.035f, 0.006f, 0.035f);
         }
 
         [MenuItem("Psycho/Cache/Rebuild Generated Model Assets")]
