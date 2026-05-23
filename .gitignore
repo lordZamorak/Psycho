@@ -11,6 +11,13 @@
 **/Obj/
 **/Logs/
 **/UserSettings/
+psycho_unity_client/Assets/Generated/
+psycho_unity_client/Assets/Scenes/PsychoEdgevillePlayable.unity
+psycho_unity_client/Assets/Scenes/PsychoEdgevillePlayable.unity.meta
+psycho_unity_client/Assets/Scenes/PsychoHostedTestWorld.unity
+psycho_unity_client/Assets/Scenes/PsychoHostedTestWorld.unity.meta
+psycho_unity_client/Assets/Scenes/PsychoPrototype.unity
+psycho_unity_client/Assets/Scenes/PsychoPrototype.unity.meta
 **/.vs/
 **/*.csproj
 **/*.sln

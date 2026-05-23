@@ -92,6 +92,17 @@ Run the hosted playable:
 & 'C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\psycho_unity_client\Builds\PsychoHostedTestWorld\Psycho.exe'
 ```
 
+### Repository assets
+
+This repository uses Git LFS for required binary assets such as vendored JARs, packed data files, archives, and PNG textures. After cloning on a new machine, run:
+
+```powershell
+git lfs install
+git lfs pull
+```
+
+Unity outputs under `psycho_unity_client\Assets\Generated\` and generated playable scenes are intentionally ignored. Recreate them with the Unity batch commands above instead of committing the generated output.
+
 Server connection settings live in:
 
 ```text
