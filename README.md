@@ -108,3 +108,9 @@ Server connection settings live in:
 ```text
 psycho_unity_client\Assets\StreamingAssets\PsychoClient\server.json
 ```
+
+## Psycho NXT-Style Direction
+
+The Unity track is not a Jagex NXT clone. It is Psycho's own NXT-style MMO client: the Java server stays authoritative, Unity mirrors the live game, and weak old visuals are replaced with modern assets and rendering systems without changing gameplay or packet behavior.
+
+See `PSYCHO_NXT_UNITY_CLIENT_STRATEGY.md` for the guardrails, milestones, asset replacement policy, and coding style.

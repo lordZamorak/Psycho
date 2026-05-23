@@ -8,6 +8,14 @@ This is the next-generation Unity client track for Psycho. It is intentionally s
 - Preserve the current login flow, packet protocol, player saves, cache data, economy, and gameplay behavior.
 - Use Unity for presentation: modern camera, lighting, water, grass, trees, particles, UI, and post-processing.
 - Port protocol and cache systems in small milestones rather than rewriting the whole game at once.
+- Build Psycho's own NXT-style client, not a Jagex NXT clone.
+- Fully replace weak old visuals with modern original/cache-faithful assets only when identity, collision intent, and gameplay footprint remain stable.
+
+The full strategy and guardrails live in:
+
+```text
+..\PSYCHO_NXT_UNITY_CLIENT_STRATEGY.md
+```
 
 ## Current Milestone
 
