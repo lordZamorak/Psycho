@@ -19,8 +19,8 @@ namespace Psycho.UI
         [SerializeField] private string hostedWorldSceneName = "PsychoHostedTestWorld";
 
         [Header("Look")]
-        [SerializeField] private Vector2 panelSize = new Vector2(1440f, 810f);
-        [SerializeField] private Vector2 shadowOffset = new Vector2(-58f, -64f);
+        [SerializeField] private Vector2 panelSize = new Vector2(980f, 560f);
+        [SerializeField] private Vector2 shadowOffset = new Vector2(-38f, -42f);
 
         private Canvas canvas;
         private RawImage backgroundImage;
@@ -172,8 +172,8 @@ namespace Psycho.UI
                     new Color(0f, 0f, 0f, 0.10f + i * 0.025f),
                     new Vector2(0.5f, 0.5f),
                     new Vector2(0.5f, 0.5f),
-                    panelSize + new Vector2(i * 36f, i * 28f),
-                    shadowOffset + new Vector2(-i * 8f, -i * 5f));
+                    panelSize + new Vector2(i * 24f, i * 18f),
+                    shadowOffset + new Vector2(-i * 5f, -i * 3f));
                 shadow.raycastTarget = false;
             }
 
@@ -182,15 +182,15 @@ namespace Psycho.UI
             panel.raycastTarget = false;
             Stretch(panel.rectTransform, Vector2.zero, Vector2.zero);
 
-            CreateText("Psycho", panelRoot, 68, FontStyle.Bold, new Color(0.98f, 0.86f, 0.61f, 1f), new Vector2(0f, 270f), new Vector2(720f, 82f));
-            CreateText("Local hosted test world", panelRoot, 24, FontStyle.Normal, new Color(0.76f, 0.86f, 0.94f, 1f), new Vector2(0f, 220f), new Vector2(720f, 38f));
-            CreateText("PSYCHO UNITY CLIENT", panelRoot, 15, FontStyle.Bold, new Color(0.50f, 0.86f, 1f, 0.80f), new Vector2(0f, -342f), new Vector2(560f, 32f));
+            CreateText("Psycho", panelRoot, 58, FontStyle.Bold, new Color(0.98f, 0.86f, 0.61f, 1f), new Vector2(0f, 176f), new Vector2(620f, 72f));
+            CreateText("Local hosted test world", panelRoot, 21, FontStyle.Normal, new Color(0.76f, 0.86f, 0.94f, 1f), new Vector2(0f, 128f), new Vector2(580f, 34f));
+            CreateText("PSYCHO UNITY CLIENT", panelRoot, 13, FontStyle.Bold, new Color(0.50f, 0.86f, 1f, 0.72f), new Vector2(0f, -232f), new Vector2(460f, 26f));
 
-            usernameField = CreateInput("Username", new Vector2(0f, 84f), false);
-            passwordField = CreateInput("Password", new Vector2(0f, 12f), true);
-            loginButton = CreateButton("Login", new Vector2(106f, -76f), new Vector2(176f, 48f), OnLoginClicked);
-            previewButton = CreateButton("Preview World", new Vector2(-110f, -76f), new Vector2(204f, 48f), LoadHostedWorld);
-            statusText = CreateText("Ready.", panelRoot, 18, FontStyle.Normal, new Color(0.80f, 0.91f, 0.96f, 1f), new Vector2(0f, -144f), new Vector2(720f, 34f));
+            usernameField = CreateInput("Username", new Vector2(0f, 48f), false);
+            passwordField = CreateInput("Password", new Vector2(0f, -18f), true);
+            loginButton = CreateButton("Login", new Vector2(98f, -92f), new Vector2(160f, 46f), OnLoginClicked);
+            previewButton = CreateButton("Preview World", new Vector2(-104f, -92f), new Vector2(188f, 46f), LoadHostedWorld);
+            statusText = CreateText("Ready.", panelRoot, 16, FontStyle.Normal, new Color(0.80f, 0.91f, 0.96f, 1f), new Vector2(0f, -156f), new Vector2(560f, 32f));
         }
 
         private InputField CreateInput(string placeholder, Vector2 anchoredPosition, bool password)
@@ -499,9 +499,10 @@ namespace Psycho.UI
                 }
             }
 
-            DrawTextureLine(pixels, width, height, 42, 390, 212, 42, new Color32(190, 246, 255, 72));
-            DrawTextureLine(pixels, width, height, 212, 42, 414, 398, new Color32(255, 255, 255, 34));
-            DrawTextureLine(pixels, width, height, 696, 36, 534, 396, new Color32(114, 212, 255, 132));
+            DrawTextureLine(pixels, width, height, 54, 360, 124, 250, new Color32(190, 246, 255, 36));
+            DrawTextureLine(pixels, width, height, 124, 250, 82, 158, new Color32(255, 255, 255, 20));
+            DrawTextureLine(pixels, width, height, 704, 358, 642, 254, new Color32(114, 212, 255, 52));
+            DrawTextureLine(pixels, width, height, 642, 254, 690, 166, new Color32(255, 255, 255, 18));
             DrawTextureLine(pixels, width, height, 28, 82, 740, 82, new Color32(245, 194, 104, 90));
 
             crystalPanelTexture.SetPixels32(pixels);
