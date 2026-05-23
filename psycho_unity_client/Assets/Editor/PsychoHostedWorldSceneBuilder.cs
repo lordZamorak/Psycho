@@ -1511,8 +1511,7 @@ namespace Psycho.Editor
 
             if (cape != null)
             {
-                GameObject capePanel = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Cape", new Vector3(0f, 0.92f, 0.22f), new Vector3(0.56f, 0.82f, 0.05f), MaterialForEquippedItem(cape, materials, materials.PlayerCloth), cape);
-                capePanel.transform.localRotation = Quaternion.Euler(-5f, 0f, 0f);
+                CreateCapePanel(visualRoot.transform, MaterialForEquippedItem(cape, materials, materials.PlayerCloth), cape);
             }
 
             if (weapon != null)
@@ -1539,6 +1538,64 @@ namespace Psycho.Editor
             primitive.GetComponent<MeshRenderer>().sharedMaterial = material;
             RemoveCollider(primitive);
             return primitive;
+        }
+
+        private static void CreateCapePanel(Transform visualRoot, Material material, PsychoMirrorItem cape)
+        {
+            Mesh mesh = new Mesh { name = "Hosted Player Tapered Cape Mesh" };
+            Vector3[] vertices =
+            {
+                new Vector3(-0.29f, 1.31f, 0.24f),
+                new Vector3(0.29f, 1.31f, 0.24f),
+                new Vector3(-0.21f, 0.45f, 0.31f),
+                new Vector3(0.21f, 0.45f, 0.31f),
+                new Vector3(-0.14f, 0.12f, 0.24f),
+                new Vector3(0.14f, 0.12f, 0.24f),
+                new Vector3(-0.29f, 1.31f, 0.24f),
+                new Vector3(0.29f, 1.31f, 0.24f),
+                new Vector3(-0.21f, 0.45f, 0.31f),
+                new Vector3(0.21f, 0.45f, 0.31f),
+                new Vector3(-0.14f, 0.12f, 0.24f),
+                new Vector3(0.14f, 0.12f, 0.24f)
+            };
+
+            int[] triangles =
+            {
+                0, 2, 1,
+                1, 2, 3,
+                2, 4, 3,
+                3, 4, 5,
+                7, 8, 6,
+                9, 8, 7,
+                9, 10, 8,
+                11, 10, 9
+            };
+
+            Vector3[] normals =
+            {
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.back,
+                Vector3.back,
+                Vector3.back,
+                Vector3.back,
+                Vector3.back,
+                Vector3.back
+            };
+
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.normals = normals;
+            mesh.RecalculateBounds();
+
+            GameObject capeObject = new GameObject(cape == null || string.IsNullOrWhiteSpace(cape.name) ? "Cape" : $"Cape - {cape.name}");
+            capeObject.transform.SetParent(visualRoot, false);
+            capeObject.AddComponent<MeshFilter>().sharedMesh = mesh;
+            capeObject.AddComponent<MeshRenderer>().sharedMaterial = material;
         }
 
         private static void CreateEquippedWeapon(Transform visualRoot, PsychoMirrorItem weapon, Material material, HostedMaterials materials)
@@ -1585,8 +1642,9 @@ namespace Psycho.Editor
                 return;
             }
 
-            GameObject shieldObject = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Shield", new Vector3(-0.47f, 0.88f, -0.02f), new Vector3(0.08f, 0.52f, 0.36f), material, shield);
-            shieldObject.transform.localRotation = Quaternion.Euler(0f, 0f, 4f);
+            GameObject shieldObject = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cylinder, "Shield", new Vector3(-0.47f, 0.88f, -0.02f), new Vector3(0.24f, 0.035f, 0.34f), material, shield);
+            shieldObject.transform.localRotation = Quaternion.Euler(90f, 0f, 4f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cylinder, "Shield Boss", new Vector3(-0.51f, 0.88f, -0.02f), new Vector3(0.09f, 0.025f, 0.09f), materials.PlayerMetal, shield).transform.localRotation = Quaternion.Euler(90f, 0f, 4f);
         }
 
         private static void CreatePlayerNameplate(Transform visualRoot, HostedPlayerSave playerSave)
