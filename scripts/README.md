@@ -75,3 +75,28 @@ These scripts expect the portable JDK 12 at:
 ```text
 C:\Users\xzero\AppData\Local\Codex\jdks\jdk-12.0.2+10
 ```
+
+## Export model candidates from the ATD 921 cache
+
+Keep `C:\Users\xzero\Downloads\Atd 921 Cache Release` outside Git. Export only small decoded candidates into the ignored local `jcache_exports` folder:
+
+```powershell
+cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
+python ".\scripts\export-js5-dat2-models.py" --repo-root "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes" --source "C:\Users\xzero\Downloads\Atd 921 Cache Release\data" --output "necrotic_client-item_attributes\jcache_exports\atd-921\models" --indexes 7 --limit 900 --clear-output --model-layout exploratory
+```
+
+Then ask Unity to import that exported candidate folder:
+
+```powershell
+cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
+$env:PSYCHO_JCACHE_MODEL_EXPORT_PATH = (Resolve-Path ".\necrotic_client-item_attributes\jcache_exports\atd-921\models").Path
+& "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -batchmode -quit -projectPath ".\psycho_unity_client" -executeMethod Psycho.Editor.PsychoJCacheModelImporter.ImportJCacheModelPackBatch -logFile ".\run-logs\unity-atd921-model-import.log"
+```
+
+Render the imported model preview:
+
+```powershell
+cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
+$env:PSYCHO_JCACHE_MODEL_EXPORT_PATH = (Resolve-Path ".\necrotic_client-item_attributes\jcache_exports\atd-921\models").Path
+& "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -batchmode -quit -projectPath ".\psycho_unity_client" -executeMethod Psycho.Editor.PsychoJCacheModelImporter.RenderJCacheModelPreviewBatch -logFile ".\run-logs\unity-atd921-model-preview.log"
+```

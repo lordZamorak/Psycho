@@ -81,6 +81,23 @@ C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\psycho_unity_c
 
 The Unity menu item `Psycho/Generate 2K Visual Materials` creates the 2048x2048 procedural material library used by mirrored items and objects. The menu item `Psycho/Build Prototype Scene` adds the mirror loader, visual factory, and local-world preview spawner to the prototype scene.
 
+## Import ATD 921 Cache Model Candidates
+
+The ATD 921 cache at `C:\Users\xzero\Downloads\Atd 921 Cache Release` is treated as an external, read-only source. Export selected model candidates first:
+
+```powershell
+cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
+python ".\scripts\export-js5-dat2-models.py" --repo-root "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes" --source "C:\Users\xzero\Downloads\Atd 921 Cache Release\data" --output "necrotic_client-item_attributes\jcache_exports\atd-921\models" --indexes 7 --limit 900 --clear-output --model-layout exploratory
+```
+
+Then import the exported candidates into Unity's generated mesh preview:
+
+```powershell
+cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
+$env:PSYCHO_JCACHE_MODEL_EXPORT_PATH = (Resolve-Path ".\necrotic_client-item_attributes\jcache_exports\atd-921\models").Path
+& "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -batchmode -quit -projectPath ".\psycho_unity_client" -executeMethod Psycho.Editor.PsychoJCacheModelImporter.ImportJCacheModelPackBatch -logFile ".\run-logs\unity-atd921-model-import.log"
+```
+
 ## Next Milestones
 
 1. Verify C# login handshake against the local Java server.

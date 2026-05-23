@@ -38,6 +38,8 @@ _codex_backups/
 *.log
 *.tmp
 *.bak
+__pycache__/
+*.py[cod]
 
 # Large local cache artifacts. Keep these out of regular git; use release
 # artifacts or Git LFS for hosted cache distribution.
