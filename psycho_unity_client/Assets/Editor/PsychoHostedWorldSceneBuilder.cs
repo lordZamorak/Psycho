@@ -39,6 +39,13 @@ namespace Psycho.Editor
         private const string HillMaterialPath = GeneratedRoot + "/Psycho_Hosted_Hills.mat";
         private const string MountainMaterialPath = GeneratedRoot + "/Psycho_Hosted_Mountains.mat";
         private const string CloudMaterialPath = GeneratedRoot + "/Psycho_Hosted_Clouds.mat";
+        private const string TreeCanopyMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Canopy.mat";
+        private const string TreeBarkMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Bark.mat";
+        private const string WaterFoamMaterialPath = GeneratedRoot + "/Psycho_Hosted_Water_Foam.mat";
+        private const string WaterDepthMaterialPath = GeneratedRoot + "/Psycho_Hosted_Water_Depth.mat";
+        private const string PlayerClothMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Cloth.mat";
+        private const string PlayerLeatherMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Leather.mat";
+        private const string PlayerMetalMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Metal.mat";
         private const string FallbackMaterialPath = GeneratedRoot + "/Psycho_Hosted_Fallback.mat";
         private static readonly string[] WindResponsiveObjectNameFragments =
         {
@@ -69,15 +76,16 @@ namespace Psycho.Editor
             PsychoMirrorDatabase database = PsychoMirrorDatabase.LoadFromStreamingAssets();
             Material vertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateVertexColorMaterial();
             Material npcVertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateNpcVertexColorMaterial();
+            HostedMaterials hostedMaterials = LoadOrCreateHostedMaterials();
             HostedBuildContext context = new HostedBuildContext(database);
 
             using (PsychoCacheStore store = new PsychoCacheStore(PsychoCacheStore.DefaultClientCachePath))
             {
-                BuildRegions(store, database, vertexColorMaterial, context);
+                BuildRegions(store, database, vertexColorMaterial, hostedMaterials, context);
                 BuildNpcSpawns(store, database, npcVertexColorMaterial, context);
-                BuildWorldDressing(context);
+                BuildWorldDressing(context, hostedMaterials);
                 BuildLighting();
-                BuildPlayer(context);
+                BuildPlayer(context, hostedMaterials);
                 BuildNetworkBootstrap();
                 ValidateTerrainCollisionCoverage(context);
             }
@@ -86,7 +94,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -118,6 +126,36 @@ namespace Psycho.Editor
         public static void RenderHostedTestWorldPreviewBatch()
         {
             RenderHostedTestWorldPreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted Third Person Preview")]
+        public static void RenderHostedThirdPersonPreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject player = GameObject.Find("Playable Adventurer");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (player == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both the playable adventurer and camera.");
+            }
+
+            Vector3 focus = player.transform.position + new Vector3(0f, 1.12f, 0f);
+            Vector3 viewOffset = new Vector3(-4.6f, 2.35f, -5.2f);
+            camera.transform.position = focus + viewOffset;
+            camera.transform.rotation = Quaternion.LookRotation(focus + new Vector3(0.55f, 0.2f, 0.35f) - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 54f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-third-person-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedThirdPersonPreviewBatch()
+        {
+            RenderHostedThirdPersonPreview();
         }
 
         [MenuItem("Psycho/Render Hosted NPC Preview")]
@@ -254,7 +292,7 @@ namespace Psycho.Editor
             BuildWindowsHostedPlayable();
         }
 
-        private static void BuildRegions(PsychoCacheStore store, PsychoMirrorDatabase database, Material material, HostedBuildContext context)
+        private static void BuildRegions(PsychoCacheStore store, PsychoMirrorDatabase database, Material material, HostedMaterials hostedMaterials, HostedBuildContext context)
         {
             GameObject terrainRoot = new GameObject("Hosted Terrain Regions");
             GameObject objectRoot = new GameObject("Hosted Cache Objects");
@@ -285,7 +323,7 @@ namespace Psycho.Editor
                     context.Report.decodedObjectPlacements += objects.Placements.Count;
 
                     BuildTerrain(terrainRoot.transform, landscape, material);
-                    BuildObjects(store, database, objectRoot.transform, landscape, objects, material, context);
+                    BuildObjects(store, database, objectRoot.transform, landscape, objects, material, hostedMaterials, context);
                 }
             }
         }
@@ -309,6 +347,7 @@ namespace Psycho.Editor
             PsychoMapLandscape landscape,
             PsychoMapObjects objects,
             Material material,
+            HostedMaterials hostedMaterials,
             HostedBuildContext context)
         {
             int placedInRegion = 0;
@@ -384,6 +423,18 @@ namespace Psycho.Editor
                 {
                     AddFallbackBounds(placed.transform, definition, placement, fallbackMaterial);
                     context.Report.fallbackObjects++;
+                    if (windResponsive && IsTreeLikeObject(definition))
+                    {
+                        AddFoliageSilhouette(placed.transform, definition, placement, hostedMaterials);
+                        context.Report.enhancedFoliageObjects++;
+                        addedWind = true;
+                    }
+                }
+                else if (windResponsive && ShouldAddFoliageSilhouette(placed.transform, definition))
+                {
+                    AddFoliageSilhouette(placed.transform, definition, placement, hostedMaterials);
+                    context.Report.enhancedFoliageObjects++;
+                    addedWind = true;
                 }
 
                 AddInteractionAndCollision(placed, definition, placement);
@@ -414,6 +465,80 @@ namespace Psycho.Editor
             }
 
             return false;
+        }
+
+        private static bool IsTreeLikeObject(PsychoMirrorObject definition)
+        {
+            if (definition == null || string.IsNullOrWhiteSpace(definition.name))
+            {
+                return false;
+            }
+
+            string name = definition.name.ToLowerInvariant();
+            return name.Contains("tree")
+                || name.Contains("oak")
+                || name.Contains("willow")
+                || name.Contains("maple")
+                || name.Contains("yew")
+                || name.Contains("evergreen")
+                || name.Contains("palm")
+                || name.Contains("sapling");
+        }
+
+        private static bool ShouldAddFoliageSilhouette(Transform placed, PsychoMirrorObject definition)
+        {
+            if (!IsTreeLikeObject(definition))
+            {
+                return false;
+            }
+
+            if (!TryCalculateLocalBounds(placed, out Bounds bounds))
+            {
+                return true;
+            }
+
+            float horizontalWidth = Mathf.Max(bounds.size.x, bounds.size.z);
+            return horizontalWidth < 1.15f || bounds.size.y > horizontalWidth * 2.15f;
+        }
+
+        private static void AddFoliageSilhouette(Transform parent, PsychoMirrorObject definition, PsychoMapObjectPlacement placement, HostedMaterials materials)
+        {
+            float footprint = Mathf.Max(1f, Mathf.Max(definition.sizeX, definition.sizeY));
+            float trunkHeight = 1.35f + footprint * 0.22f;
+            float canopyWidth = 1.45f + footprint * 0.36f;
+            float canopyHeight = 1.10f + footprint * 0.18f;
+            float seed = placement.ObjectId * 0.071f + placement.LocalX * 0.19f + placement.LocalY * 0.13f;
+
+            GameObject trunk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            trunk.name = "Silhouette Bark Volume";
+            trunk.transform.SetParent(parent, false);
+            trunk.transform.localPosition = new Vector3(0f, trunkHeight * 0.36f, 0f);
+            trunk.transform.localScale = new Vector3(0.18f + footprint * 0.025f, trunkHeight * 0.36f, 0.18f + footprint * 0.025f);
+            trunk.GetComponent<MeshRenderer>().sharedMaterial = materials.TreeBark;
+            RemoveCollider(trunk);
+
+            for (int i = 0; i < 4; i++)
+            {
+                float angle = (i * Mathf.PI * 0.5f) + seed;
+                float radius = i == 0 ? 0f : 0.18f + Deterministic01(placement.ObjectId * 97 + i * 23) * 0.18f;
+                Vector3 offset = new Vector3(Mathf.Cos(angle) * radius, trunkHeight + i * 0.12f, Mathf.Sin(angle) * radius);
+                Vector3 scale = new Vector3(
+                    canopyWidth * (0.92f + Deterministic01(placement.ObjectId * 43 + i * 7) * 0.28f),
+                    canopyHeight * (0.72f + i * 0.06f),
+                    canopyWidth * (0.78f + Deterministic01(placement.ObjectId * 61 + i * 11) * 0.20f));
+                GameObject canopy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                canopy.name = "Wind Canopy Silhouette";
+                canopy.transform.SetParent(parent, false);
+                canopy.transform.localPosition = offset;
+                canopy.transform.localRotation = Quaternion.Euler(0f, i * 47f + seed * 29f, 0f);
+                canopy.transform.localScale = scale;
+                MeshRenderer renderer = canopy.GetComponent<MeshRenderer>();
+                renderer.sharedMaterial = materials.TreeCanopy;
+                renderer.shadowCastingMode = ShadowCastingMode.On;
+                renderer.receiveShadows = true;
+                RemoveCollider(canopy);
+                AddWind(canopy, 0.055f + i * 0.008f, 0.92f + i * 0.12f, 0.30f, 0.82f, 0.055f);
+            }
         }
 
         private static void AddWindToWorldObject(GameObject target, Mesh mesh, int objectId)
@@ -640,12 +765,11 @@ namespace Psycho.Editor
             return new Vector3(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
         }
 
-        private static void BuildWorldDressing(HostedBuildContext context)
+        private static void BuildWorldDressing(HostedBuildContext context, HostedMaterials materials)
         {
-            HostedMaterials materials = LoadOrCreateHostedMaterials();
             BuildGrassField(context, materials);
             BuildWaterways(context, materials);
-            BuildDistantVista(materials);
+            BuildDistantVista(context, materials);
             BuildCloudLayer(materials.Cloud);
         }
 
@@ -684,7 +808,7 @@ namespace Psycho.Editor
         private static void BuildWaterways(HostedBuildContext context, HostedMaterials materials)
         {
             GameObject root = new GameObject("Animated Waterways");
-            CreateWaterStrip(root.transform, "River Lum Ripple Strip", context, 3139, 3480, 2.35f, 78f, materials.Water);
+            CreateWaterStrip(root.transform, "River Lum Ripple Strip", context, 3139, 3480, 2.35f, 78f, materials.Water, materials.WaterFoam, materials.WaterDepth, context);
 
             for (int i = 0; i < 126; i++)
             {
@@ -695,7 +819,7 @@ namespace Psycho.Editor
             }
         }
 
-        private static void BuildDistantVista(HostedMaterials materials)
+        private static void BuildDistantVista(HostedBuildContext context, HostedMaterials materials)
         {
             GameObject vistaRoot = new GameObject("Distant Hosted Vista");
             vistaRoot.AddComponent<DistantVistaParallax>();
@@ -840,7 +964,7 @@ namespace Psycho.Editor
             RenderSettings.defaultReflectionMode = DefaultReflectionMode.Skybox;
         }
 
-        private static void BuildPlayer(HostedBuildContext context)
+        private static void BuildPlayer(HostedBuildContext context, HostedMaterials materials)
         {
             GameObject player = new GameObject("Playable Adventurer");
             CharacterController controller = player.AddComponent<CharacterController>();
@@ -853,17 +977,7 @@ namespace Psycho.Editor
             player.AddComponent<PsychoPlayableCharacter>();
             player.AddComponent<PsychoCharacterGroundGuard>();
             player.AddComponent<PsychoInteractionController>();
-
-            GameObject body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            body.name = "Body Preview";
-            body.transform.SetParent(player.transform, false);
-            body.transform.localPosition = new Vector3(0f, 0.9f, 0f);
-            body.transform.localScale = new Vector3(0.55f, 0.9f, 0.55f);
-            Collider bodyCollider = body.GetComponent<Collider>();
-            if (bodyCollider != null)
-            {
-                UnityEngine.Object.DestroyImmediate(bodyCollider);
-            }
+            BuildPlayerVisual(player.transform, materials);
 
             GameObject cameraObject = new GameObject("Player Camera");
             cameraObject.tag = "MainCamera";
@@ -893,6 +1007,32 @@ namespace Psycho.Editor
             SetSerializedFloat(colorGradeObject, "sharpen", 0.10f);
             colorGradeObject.ApplyModifiedPropertiesWithoutUndo();
             cameraObject.AddComponent<AudioListener>();
+        }
+
+        private static void BuildPlayerVisual(Transform parent, HostedMaterials materials)
+        {
+            GameObject visualRoot = new GameObject("Adventurer Visual");
+            visualRoot.transform.SetParent(parent, false);
+
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Tunic Body", new Vector3(0f, 0.92f, 0f), new Vector3(0.44f, 0.72f, 0.34f), materials.PlayerCloth);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.66f, 0f), new Vector3(0.26f, 0.28f, 0.25f), materials.PlayerLeather);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Cape", new Vector3(0f, 0.94f, -0.24f), new Vector3(0.50f, 0.68f, 0.045f), materials.PlayerCloth);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Boot", new Vector3(-0.15f, 0.22f, 0.02f), new Vector3(0.16f, 0.32f, 0.20f), materials.PlayerLeather);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Boot", new Vector3(0.15f, 0.22f, 0.02f), new Vector3(0.16f, 0.32f, 0.20f), materials.PlayerLeather);
+            GameObject sword = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Side Sword", new Vector3(0.38f, 0.72f, -0.04f), new Vector3(0.055f, 0.72f, 0.055f), materials.PlayerMetal);
+            sword.transform.localRotation = Quaternion.Euler(0f, 0f, -18f);
+        }
+
+        private static GameObject CreatePlayerPrimitive(Transform parent, PrimitiveType type, string name, Vector3 localPosition, Vector3 localScale, Material material)
+        {
+            GameObject primitive = GameObject.CreatePrimitive(type);
+            primitive.name = name;
+            primitive.transform.SetParent(parent, false);
+            primitive.transform.localPosition = localPosition;
+            primitive.transform.localScale = localScale;
+            primitive.GetComponent<MeshRenderer>().sharedMaterial = material;
+            RemoveCollider(primitive);
+            return primitive;
         }
 
         private static void BuildNetworkBootstrap()
@@ -1007,12 +1147,17 @@ namespace Psycho.Editor
             return false;
         }
 
-        private static void CreateWaterStrip(Transform root, string name, HostedBuildContext context, int worldX, int worldY, float width, float depth, Material material)
+        private static void CreateWaterStrip(Transform root, string name, HostedBuildContext context, int worldX, int worldY, float width, float depth, Material material, Material foamMaterial, Material depthMaterial, HostedBuildContext buildContext)
         {
             Vector3 position = WorldTilePosition(context, worldX, worldY) + Vector3.up * 0.08f;
             GameObject water = CreateSubdividedPlane(name, position, width, depth, 72, material);
             water.transform.SetParent(root, true);
             water.AddComponent<ProceduralWater>();
+            CreateWaterDepthRibbon(water.transform, "Deep Center Current", width * 0.52f, depth, depthMaterial);
+            CreateWaterFoamRibbon(water.transform, "West Shoreline Foam", -width * 0.47f, depth, foamMaterial, 0.17f);
+            CreateWaterFoamRibbon(water.transform, "East Shoreline Foam", width * 0.47f, depth, foamMaterial, 0.61f);
+            buildContext.Report.waterDepthChannels++;
+            buildContext.Report.waterFoamEdges += 2;
 
             BoxCollider trigger = water.AddComponent<BoxCollider>();
             trigger.center = Vector3.zero;
@@ -1065,6 +1210,102 @@ namespace Psycho.Editor
             plane.AddComponent<MeshFilter>().sharedMesh = mesh;
             plane.AddComponent<MeshRenderer>().sharedMaterial = material;
             return plane;
+        }
+
+        private static void CreateWaterDepthRibbon(Transform parent, string name, float width, float depth, Material material)
+        {
+            const int segments = 44;
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            Vector3[] vertices = new Vector3[(segments + 1) * 2];
+            Vector2[] uv = new Vector2[vertices.Length];
+            int[] triangles = new int[segments * 6];
+
+            for (int i = 0; i <= segments; i++)
+            {
+                float t = (float)i / segments;
+                float z = (t - 0.5f) * depth;
+                float edgeWobble = Mathf.Sin(t * Mathf.PI * 7.0f) * 0.055f + Mathf.Sin(t * Mathf.PI * 17.0f) * 0.024f;
+                int v = i * 2;
+                vertices[v] = new Vector3(-width * 0.5f + edgeWobble, 0.018f, z);
+                vertices[v + 1] = new Vector3(width * 0.5f + edgeWobble * 0.55f, 0.018f, z);
+                uv[v] = new Vector2(0f, t * 7f);
+                uv[v + 1] = new Vector2(1f, t * 7f);
+            }
+
+            int tri = 0;
+            for (int i = 0; i < segments; i++)
+            {
+                int v = i * 2;
+                triangles[tri++] = v;
+                triangles[tri++] = v + 2;
+                triangles[tri++] = v + 1;
+                triangles[tri++] = v + 1;
+                triangles[tri++] = v + 2;
+                triangles[tri++] = v + 3;
+            }
+
+            mesh.vertices = vertices;
+            mesh.uv = uv;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject ribbon = new GameObject(name);
+            ribbon.transform.SetParent(parent, false);
+            ribbon.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = ribbon.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+        }
+
+        private static void CreateWaterFoamRibbon(Transform parent, string name, float xOffset, float depth, Material material, float seed)
+        {
+            const int segments = 40;
+            const float ribbonWidth = 0.34f;
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            Vector3[] vertices = new Vector3[(segments + 1) * 2];
+            Vector2[] uv = new Vector2[vertices.Length];
+            int[] triangles = new int[segments * 6];
+
+            for (int i = 0; i <= segments; i++)
+            {
+                float t = (float)i / segments;
+                float z = (t - 0.5f) * depth;
+                float wobble = Mathf.Sin(t * Mathf.PI * 8.0f + seed * 11f) * 0.035f + Mathf.Sin(t * Mathf.PI * 19.0f + seed * 7f) * 0.018f;
+                float inner = Mathf.Sign(xOffset) * wobble;
+                int v = i * 2;
+                vertices[v] = new Vector3(xOffset + inner, 0.026f, z);
+                vertices[v + 1] = new Vector3(xOffset - Mathf.Sign(xOffset) * ribbonWidth + inner * 0.45f, 0.032f, z);
+                uv[v] = new Vector2(0f, t * 8f);
+                uv[v + 1] = new Vector2(1f, t * 8f);
+            }
+
+            int tri = 0;
+            for (int i = 0; i < segments; i++)
+            {
+                int v = i * 2;
+                triangles[tri++] = v;
+                triangles[tri++] = v + 2;
+                triangles[tri++] = v + 1;
+                triangles[tri++] = v + 1;
+                triangles[tri++] = v + 2;
+                triangles[tri++] = v + 3;
+            }
+
+            mesh.vertices = vertices;
+            mesh.uv = uv;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject ribbon = new GameObject(name);
+            ribbon.transform.SetParent(parent, false);
+            ribbon.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = ribbon.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
         }
 
         private static void CreateGrassBlade(Transform root, Vector3 position, float height, Material material)
@@ -1183,10 +1424,19 @@ namespace Psycho.Editor
                 Water = LoadOrCreateTexturedMaterial(WaterMaterialPath, "Water", new Color(0.06f, 0.32f, 0.48f, 0.58f), 0.88f, new Vector2(2.6f, 6.2f), 0.92f),
                 Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.27f, 0.40f, 0.24f, 1f), 0.30f, new Vector2(5.8f, 5.8f), 0.58f),
                 Mountains = LoadOrCreateTexturedMaterial(MountainMaterialPath, "Mountain", new Color(0.46f, 0.46f, 0.42f, 1f), 0.48f, new Vector2(3.2f, 3.2f), 0.72f),
-                Cloud = LoadOrCreateUnlitMaterial(CloudMaterialPath, new Color(0.93f, 0.96f, 0.98f, 0.70f))
+                Cloud = LoadOrCreateUnlitMaterial(CloudMaterialPath, new Color(0.93f, 0.96f, 0.98f, 0.70f)),
+                TreeCanopy = LoadOrCreateTexturedMaterial(TreeCanopyMaterialPath, "Leaf", new Color(0.25f, 0.47f, 0.18f, 1f), 0.23f, new Vector2(3.6f, 3.6f), 0.66f),
+                TreeBark = LoadOrCreateTexturedMaterial(TreeBarkMaterialPath, "Wood", new Color(0.37f, 0.22f, 0.11f, 1f), 0.24f, new Vector2(2.8f, 4.4f), 0.74f),
+                WaterFoam = LoadOrCreateSolidMaterial(WaterFoamMaterialPath, new Color(0.73f, 0.92f, 0.95f, 0.34f), 0.36f),
+                WaterDepth = LoadOrCreateSolidMaterial(WaterDepthMaterialPath, new Color(0.02f, 0.12f, 0.18f, 0.30f), 0.54f),
+                PlayerCloth = LoadOrCreateTexturedMaterial(PlayerClothMaterialPath, "Cloth", new Color(0.28f, 0.42f, 0.56f, 1f), 0.34f, new Vector2(2.5f, 2.5f), 0.52f),
+                PlayerLeather = LoadOrCreateTexturedMaterial(PlayerLeatherMaterialPath, "Leather", new Color(0.52f, 0.34f, 0.22f, 1f), 0.30f, new Vector2(2.2f, 2.2f), 0.48f),
+                PlayerMetal = LoadOrCreateTexturedMaterial(PlayerMetalMaterialPath, "Metal", new Color(0.70f, 0.70f, 0.66f, 1f), 0.62f, new Vector2(2.2f, 2.2f), 0.42f)
             };
             ConfigureTransparent(materials.Water);
             ConfigureTransparent(materials.Cloud);
+            ConfigureTransparent(materials.WaterFoam);
+            ConfigureTransparent(materials.WaterDepth);
             return materials;
         }
 
@@ -1313,6 +1563,15 @@ namespace Psycho.Editor
             windObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
+        private static void RemoveCollider(GameObject target)
+        {
+            Collider collider = target.GetComponent<Collider>();
+            if (collider != null)
+            {
+                UnityEngine.Object.DestroyImmediate(collider);
+            }
+        }
+
         private static void SetSerializedFloat(SerializedObject serializedObject, string propertyName, float value)
         {
             SerializedProperty property = serializedObject.FindProperty(propertyName);
@@ -1382,6 +1641,13 @@ namespace Psycho.Editor
             public Material Hills;
             public Material Mountains;
             public Material Cloud;
+            public Material TreeCanopy;
+            public Material TreeBark;
+            public Material WaterFoam;
+            public Material WaterDepth;
+            public Material PlayerCloth;
+            public Material PlayerLeather;
+            public Material PlayerMetal;
         }
 
         [Serializable]
@@ -1406,6 +1672,10 @@ namespace Psycho.Editor
             public int missingNpcModels;
             public int terrainCollisionSamples;
             public int terrainCollisionMisses;
+            public int enhancedFoliageObjects;
+            public int waterFoamEdges;
+            public int waterDepthChannels;
+            public int horizonMistPanels;
         }
     }
 }

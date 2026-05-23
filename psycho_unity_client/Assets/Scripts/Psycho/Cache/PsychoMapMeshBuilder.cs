@@ -24,7 +24,7 @@ namespace Psycho.Cache
                     int sampleX = Mathf.Min(x, RegionTileCount - 1);
                     int sampleY = Mathf.Min(y, RegionTileCount - 1);
                     vertices.Add(new Vector3(x * tileScale, -landscape.Heights[plane, sampleX, sampleY] * heightScale, y * tileScale));
-                    colors.Add(TileColor(landscape, plane, sampleX, sampleY));
+                    colors.Add(BlendedTileColor(landscape, plane, sampleX, sampleY));
                 }
             }
 
@@ -62,7 +62,82 @@ namespace Psycho.Cache
             return x * TerrainVertexCount + y;
         }
 
-        private static Color32 TileColor(PsychoMapLandscape landscape, int plane, int x, int y)
+        private static Color32 BlendedTileColor(PsychoMapLandscape landscape, int plane, int x, int y)
+        {
+            float boundary = MaterialBoundaryStrength(landscape, plane, x, y);
+            float centerWeight = Mathf.Lerp(0.82f, 0.48f, boundary);
+            float cardinalWeight = Mathf.Lerp(0.035f, 0.105f, boundary);
+            float diagonalWeight = Mathf.Lerp(0.01f, 0.025f, boundary);
+
+            Color color = RawTileColor(landscape, plane, x, y) * centerWeight;
+            float totalWeight = centerWeight;
+
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    if (dx == 0 && dy == 0)
+                    {
+                        continue;
+                    }
+
+                    int sampleX = Mathf.Clamp(x + dx, 0, RegionTileCount - 1);
+                    int sampleY = Mathf.Clamp(y + dy, 0, RegionTileCount - 1);
+                    float weight = dx == 0 || dy == 0 ? cardinalWeight : diagonalWeight;
+                    color += RawTileColor(landscape, plane, sampleX, sampleY) * weight;
+                    totalWeight += weight;
+                }
+            }
+
+            return ToColor32(color / Mathf.Max(0.001f, totalWeight));
+        }
+
+        private static float MaterialBoundaryStrength(PsychoMapLandscape landscape, int plane, int x, int y)
+        {
+            int materialClass = MaterialClass(landscape, plane, x, y);
+            int differences = 0;
+            int samples = 0;
+
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    if (dx == 0 && dy == 0)
+                    {
+                        continue;
+                    }
+
+                    int sampleX = Mathf.Clamp(x + dx, 0, RegionTileCount - 1);
+                    int sampleY = Mathf.Clamp(y + dy, 0, RegionTileCount - 1);
+                    samples++;
+                    if (MaterialClass(landscape, plane, sampleX, sampleY) != materialClass)
+                    {
+                        differences++;
+                    }
+                }
+            }
+
+            return Mathf.Clamp01(differences / Mathf.Max(1f, samples) * 1.65f);
+        }
+
+        private static int MaterialClass(PsychoMapLandscape landscape, int plane, int x, int y)
+        {
+            int overlay = landscape.OverlayIds[plane, x, y] & 0xff;
+            if (overlay != 0)
+            {
+                return overlay > 22 ? 2 : 1;
+            }
+
+            if ((landscape.RenderFlags[plane, x, y] & 1) == 1)
+            {
+                return 3;
+            }
+
+            int underlay = landscape.UnderlayIds[plane, x, y] & 0xff;
+            return underlay == 0 ? 0 : 4 + Mathf.Clamp(underlay / 12, 0, 4);
+        }
+
+        private static Color RawTileColor(PsychoMapLandscape landscape, int plane, int x, int y)
         {
             int underlay = landscape.UnderlayIds[plane, x, y] & 0xff;
             int overlay = landscape.OverlayIds[plane, x, y] & 0xff;
@@ -87,14 +162,14 @@ namespace Psycho.Cache
                 color = Color.Lerp(color, grassBlend, overlay > 22 ? 0.24f : 0.075f);
                 color *= Mathf.Lerp(0.86f, 1.08f, fineNoise);
                 color = Color.Lerp(color, rock, Mathf.Clamp01(slope * 0.22f + elevation * 0.06f));
-                return ToColor32(color);
+                return color;
             }
 
             if ((flag & 1) == 1)
             {
                 Color flagged = Color.Lerp(new Color(0.18f, 0.25f, 0.26f), new Color(0.33f, 0.40f, 0.37f), Mathf.Lerp(noise, moisture, 0.45f));
                 flagged = Color.Lerp(flagged, new Color(0.12f, 0.22f, 0.29f), 0.24f + elevation * 0.10f);
-                return ToColor32(flagged);
+                return flagged;
             }
 
             if (underlay == 0)
@@ -107,7 +182,7 @@ namespace Psycho.Cache
                 baseGrass = Color.Lerp(baseGrass, new Color(0.20f, 0.29f, 0.13f), macroNoise * 0.14f);
                 baseGrass *= Mathf.Lerp(0.87f, 1.13f, fineNoise);
                 baseGrass = Color.Lerp(baseGrass, rock, Mathf.Clamp01(slope * 0.46f + elevation * 0.12f));
-                return ToColor32(baseGrass);
+                return baseGrass;
             }
 
             float underlayBlend = Mathf.Clamp01(underlay / 32f);
@@ -116,7 +191,7 @@ namespace Psycho.Cache
             Color underlayColor = Color.Lerp(low, high, underlayBlend);
             underlayColor *= Mathf.Lerp(0.86f, 1.12f, fineNoise);
             underlayColor = Color.Lerp(underlayColor, rock, Mathf.Clamp01(slope * 0.44f + elevation * 0.11f));
-            return ToColor32(underlayColor);
+            return underlayColor;
         }
 
         private static float TileSlope(PsychoMapLandscape landscape, int plane, int x, int y)
