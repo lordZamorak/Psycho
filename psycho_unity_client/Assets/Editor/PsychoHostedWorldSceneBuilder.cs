@@ -20,12 +20,13 @@ namespace Psycho.Editor
         private const int MapCacheIndex = 4;
         private const int BaseRegionX = 48;
         private const int BaseRegionY = 54;
-        private const int RegionRadius = 1;
-        private const int MaxObjectsPerRegion = 1300;
-        private const int MaxObjectsTotal = 9000;
+        private const int RegionRadius = 4;
+        private const int MaxObjectsPerRegion = 540;
+        private const int MaxObjectsTotal = 28000;
         private const int MaxModelsPerObject = 4;
         private const int MaxModelsPerNpc = 12;
-        private const int MaxNpcSpawns = 180;
+        private const int MaxNpcSpawns = 460;
+        private const int GroundDetailCount = 1850;
         private const float TileScale = 0.72f;
         private const float HeightScale = 1f / 96f;
         private const string ScenePath = "Assets/Scenes/PsychoHostedTestWorld.unity";
@@ -59,6 +60,11 @@ namespace Psycho.Editor
         private const string PlayerHairMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Hair.mat";
         private const string PlayerPaperMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Paper.mat";
         private const string PlayerWoodMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Wood.mat";
+        private const string LandmarkStoneMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Stone.mat";
+        private const string LandmarkRoofMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Roof.mat";
+        private const string LandmarkRoadMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Road.mat";
+        private const string LandmarkBannerMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Banner.mat";
+        private const string LandmarkGlassMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Glass.mat";
         private const string FallbackMaterialPath = GeneratedRoot + "/Psycho_Hosted_Fallback.mat";
         private static readonly string[] WindResponsiveObjectNameFragments =
         {
@@ -107,7 +113,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, landmarks {context.Report.landmarkDressingObjects}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -130,8 +136,11 @@ namespace Psycho.Editor
                 throw new InvalidOperationException("Hosted test world scene does not contain a camera.");
             }
 
-            camera.transform.position = new Vector3(35f, 24f, 26f);
-            camera.transform.rotation = Quaternion.Euler(38f, 42f, 0f);
+            Vector3 focus = new Vector3(12f, 0f, 8f);
+            camera.transform.position = focus + new Vector3(112f, 76f, -126f);
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 44f;
+            camera.farClipPlane = 2400f;
             string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-test-world-preview.png"));
             RenderCameraToPng(camera, outputPath, 1600, 900);
         }
@@ -310,35 +319,62 @@ namespace Psycho.Editor
             GameObject terrainRoot = new GameObject("Hosted Terrain Regions");
             GameObject objectRoot = new GameObject("Hosted Cache Objects");
 
+            foreach (Vector2Int region in BuildHostedRegionTraversal())
+            {
+                int regionX = region.x;
+                int regionY = region.y;
+                int regionId = (regionX << 8) + regionY;
+                if (!database.TryGetMapRegion(regionId, out PsychoMirrorMapRegion mapRegion))
+                {
+                    context.Report.missingRegions++;
+                    continue;
+                }
+
+                byte[] landscapeBytes = store.ReadGzipFile(MapCacheIndex, mapRegion.landscapeFile);
+                byte[] objectBytes = store.ReadGzipFile(MapCacheIndex, mapRegion.objectFile);
+                if (landscapeBytes == null || objectBytes == null)
+                {
+                    context.Report.missingRegions++;
+                    continue;
+                }
+
+                PsychoMapLandscape landscape = PsychoMapDecoder.DecodeLandscape(landscapeBytes, regionX, regionY);
+                PsychoMapObjects objects = PsychoMapDecoder.DecodeObjects(objectBytes, regionX, regionY);
+                context.Landscapes[regionId] = landscape;
+                context.Report.loadedRegions++;
+                context.Report.decodedObjectPlacements += objects.Placements.Count;
+
+                BuildTerrain(terrainRoot.transform, landscape, material);
+                BuildObjects(store, database, objectRoot.transform, landscape, objects, material, hostedMaterials, context);
+            }
+        }
+
+        private static List<Vector2Int> BuildHostedRegionTraversal()
+        {
+            List<Vector2Int> regions = new List<Vector2Int>((RegionRadius * 2 + 1) * (RegionRadius * 2 + 1));
             for (int regionX = BaseRegionX - RegionRadius; regionX <= BaseRegionX + RegionRadius; regionX++)
             {
                 for (int regionY = BaseRegionY - RegionRadius; regionY <= BaseRegionY + RegionRadius; regionY++)
                 {
-                    int regionId = (regionX << 8) + regionY;
-                    if (!database.TryGetMapRegion(regionId, out PsychoMirrorMapRegion mapRegion))
-                    {
-                        context.Report.missingRegions++;
-                        continue;
-                    }
-
-                    byte[] landscapeBytes = store.ReadGzipFile(MapCacheIndex, mapRegion.landscapeFile);
-                    byte[] objectBytes = store.ReadGzipFile(MapCacheIndex, mapRegion.objectFile);
-                    if (landscapeBytes == null || objectBytes == null)
-                    {
-                        context.Report.missingRegions++;
-                        continue;
-                    }
-
-                    PsychoMapLandscape landscape = PsychoMapDecoder.DecodeLandscape(landscapeBytes, regionX, regionY);
-                    PsychoMapObjects objects = PsychoMapDecoder.DecodeObjects(objectBytes, regionX, regionY);
-                    context.Landscapes[regionId] = landscape;
-                    context.Report.loadedRegions++;
-                    context.Report.decodedObjectPlacements += objects.Placements.Count;
-
-                    BuildTerrain(terrainRoot.transform, landscape, material);
-                    BuildObjects(store, database, objectRoot.transform, landscape, objects, material, hostedMaterials, context);
+                    regions.Add(new Vector2Int(regionX, regionY));
                 }
             }
+
+            regions.Sort((left, right) =>
+            {
+                int leftDistance = (left.x - BaseRegionX) * (left.x - BaseRegionX) + (left.y - BaseRegionY) * (left.y - BaseRegionY);
+                int rightDistance = (right.x - BaseRegionX) * (right.x - BaseRegionX) + (right.y - BaseRegionY) * (right.y - BaseRegionY);
+                int distanceCompare = leftDistance.CompareTo(rightDistance);
+                if (distanceCompare != 0)
+                {
+                    return distanceCompare;
+                }
+
+                int xCompare = left.x.CompareTo(right.x);
+                return xCompare != 0 ? xCompare : left.y.CompareTo(right.y);
+            });
+
+            return regions;
         }
 
         private static void BuildTerrain(Transform root, PsychoMapLandscape landscape, Material material)
@@ -782,6 +818,7 @@ namespace Psycho.Editor
         {
             BuildGrassField(context, materials);
             BuildWaterways(context, materials);
+            BuildWorldLandmarks(context, materials);
             BuildDistantVista(context, materials);
             BuildCloudLayer(materials.Cloud);
         }
@@ -794,7 +831,7 @@ namespace Psycho.Editor
             int minY = (BaseRegionY - RegionRadius) * 64 + 4;
             int maxY = (BaseRegionY + RegionRadius + 1) * 64 - 4;
 
-            for (int i = 0; i < 980; i++)
+            for (int i = 0; i < GroundDetailCount; i++)
             {
                 int worldX = minX + Mathf.FloorToInt(Deterministic01(i * 31 + 7) * (maxX - minX));
                 int worldY = minY + Mathf.FloorToInt(Deterministic01(i * 47 + 19) * (maxY - minY));
@@ -832,6 +869,174 @@ namespace Psycho.Editor
             }
         }
 
+        private static void BuildWorldLandmarks(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("High Definition Necrotic Landmark Dressing");
+            CreateGrandExchangeLandmark(root.transform, context, materials);
+            CreateBankLandmark(root.transform, context, materials, "Edgeville Bank Landmark", 3094, 3498, 6.8f, 4.2f, 0f);
+            CreateBankLandmark(root.transform, context, materials, "Varrock West Bank Landmark", 3185, 3436, 8.4f, 5.6f, 90f);
+            CreateBankLandmark(root.transform, context, materials, "Draynor Bank Landmark", 3092, 3245, 6.6f, 4.8f, 0f);
+            CreateBankLandmark(root.transform, context, materials, "Falador Bank Landmark", 2946, 3368, 8.2f, 5.4f, 90f);
+            CreateHarborLandmark(root.transform, context, materials, "Port Sarim Harbor Landmark", 3028, 3216);
+            CreateTownClusterLandmark(root.transform, context, materials, "Varrock House Cluster", 3218, 3430, 5, 0f);
+            CreateTownClusterLandmark(root.transform, context, materials, "Draynor House Cluster", 3099, 3250, 4, 90f);
+            CreateTownClusterLandmark(root.transform, context, materials, "Falador House Cluster", 2965, 3377, 5, 0f);
+        }
+
+        private static void CreateGrandExchangeLandmark(Transform parent, HostedBuildContext context, HostedMaterials materials)
+        {
+            if (!TryCreateLandmarkRoot(parent, "Grand Exchange Landmark", context, 3165, 3487, out Transform root))
+            {
+                return;
+            }
+
+            CreateGroundPlate(root, "Grand Exchange Paved Plaza", Vector3.zero, 19.5f, 17.5f, materials.LandmarkRoad);
+            CreateLandmarkCylinder(root, "Grand Exchange Center Dais", new Vector3(0f, 0.10f, 0f), new Vector3(4.6f, 0.10f, 4.6f), materials.LandmarkStone);
+            CreateLandmarkCylinder(root, "Grand Exchange Inner Ring", new Vector3(0f, 0.24f, 0f), new Vector3(3.4f, 0.10f, 3.4f), materials.LandmarkRoad);
+
+            for (int i = 0; i < 8; i++)
+            {
+                float angle = i * Mathf.PI * 2f / 8f;
+                Vector3 columnPosition = new Vector3(Mathf.Cos(angle) * 4.9f, 1.05f, Mathf.Sin(angle) * 4.1f);
+                CreateLandmarkCylinder(root, $"Grand Exchange Stone Column {i + 1}", columnPosition, new Vector3(0.26f, 1.05f, 0.26f), materials.LandmarkStone);
+                CreateLandmarkBox(root, $"Grand Exchange Roof Beam {i + 1}", new Vector3(Mathf.Cos(angle) * 4.3f, 2.17f, Mathf.Sin(angle) * 3.6f), new Vector3(1.65f, 0.16f, 0.24f), materials.LandmarkRoof).transform.localRotation = Quaternion.Euler(0f, -angle * Mathf.Rad2Deg, 0f);
+            }
+
+            CreateLandmarkBox(root, "Grand Exchange Blue Canopy", new Vector3(0f, 2.38f, 0f), new Vector3(7.5f, 0.22f, 6.2f), materials.PlayerCloth);
+            for (int i = 0; i < 4; i++)
+            {
+                float angle = i * Mathf.PI * 0.5f + Mathf.PI * 0.25f;
+                Vector3 boothPosition = new Vector3(Mathf.Cos(angle) * 6.1f, 0.62f, Mathf.Sin(angle) * 5.2f);
+                GameObject booth = CreateLandmarkBox(root, $"Grand Exchange Trading Booth {i + 1}", boothPosition, new Vector3(1.8f, 1.05f, 0.72f), materials.TreeBark);
+                booth.transform.localRotation = Quaternion.Euler(0f, -angle * Mathf.Rad2Deg, 0f);
+                CreateLandmarkBox(root, $"Grand Exchange Booth Banner {i + 1}", boothPosition + Vector3.up * 0.78f, new Vector3(1.95f, 0.30f, 0.08f), materials.LandmarkBanner).transform.localRotation = booth.transform.localRotation;
+            }
+
+            context.Report.landmarkDressingObjects += 24;
+        }
+
+        private static void CreateBankLandmark(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY, float width, float depth, float yaw)
+        {
+            if (!TryCreateLandmarkRoot(parent, name, context, worldX, worldY, out Transform root))
+            {
+                return;
+            }
+
+            root.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            CreateGroundPlate(root, "Bank Stone Approach", new Vector3(0f, 0.01f, -depth * 0.70f), width * 0.96f, depth * 0.46f, materials.LandmarkRoad);
+            CreateLandmarkBox(root, "Bank Hall Walls", new Vector3(0f, 1.05f, 0f), new Vector3(width, 2.10f, depth), materials.LandmarkStone);
+            CreateLandmarkBox(root, "Bank Dark Timber Roof", new Vector3(0f, 2.36f, 0f), new Vector3(width * 1.08f, 0.42f, depth * 1.12f), materials.LandmarkRoof);
+            CreateLandmarkBox(root, "Bank Counter", new Vector3(0f, 0.72f, -depth * 0.18f), new Vector3(width * 0.70f, 0.62f, 0.42f), materials.TreeBark);
+            CreateLandmarkBox(root, "Bank Doorway", new Vector3(0f, 0.78f, -depth * 0.51f), new Vector3(1.25f, 1.45f, 0.16f), materials.LandmarkGlass);
+
+            for (int i = 0; i < 3; i++)
+            {
+                float x = (i - 1) * width * 0.25f;
+                CreateLandmarkBox(root, $"Bank Window {i + 1}", new Vector3(x, 1.38f, -depth * 0.515f), new Vector3(0.78f, 0.58f, 0.08f), materials.LandmarkGlass);
+            }
+
+            context.Report.landmarkDressingObjects += 8;
+        }
+
+        private static void CreateHarborLandmark(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY)
+        {
+            if (!TryCreateLandmarkRoot(parent, name, context, worldX, worldY, out Transform root))
+            {
+                return;
+            }
+
+            CreateGroundPlate(root, "Harbor Packed Sand", new Vector3(0f, 0.01f, 0f), 14f, 10f, materials.LandmarkRoad);
+            GameObject harborWater = CreateSubdividedPlane("Harbor Inlet Water", root.position + new Vector3(0f, 0.035f, -8.3f), 15.5f, 5.8f, 24, materials.Water);
+            harborWater.transform.SetParent(root, true);
+            harborWater.transform.localPosition = new Vector3(0f, 0.035f, -8.3f);
+            harborWater.AddComponent<ProceduralWater>();
+            for (int i = 0; i < 4; i++)
+            {
+                float x = (i - 1.5f) * 2.2f;
+                CreateLandmarkBox(root, $"Harbor Pier Span {i + 1}", new Vector3(x, 0.24f, -4.8f), new Vector3(1.75f, 0.22f, 7.4f), materials.TreeBark);
+                CreateLandmarkCylinder(root, $"Harbor Mooring Post {i + 1}A", new Vector3(x - 0.76f, 0.72f, -7.6f), new Vector3(0.14f, 0.72f, 0.14f), materials.TreeBark);
+                CreateLandmarkCylinder(root, $"Harbor Mooring Post {i + 1}B", new Vector3(x + 0.76f, 0.72f, -2.1f), new Vector3(0.14f, 0.72f, 0.14f), materials.TreeBark);
+            }
+
+            CreateLandmarkBox(root, "Harbor Ship Hull", new Vector3(5.2f, 0.62f, -7.2f), new Vector3(4.4f, 0.78f, 1.35f), materials.TreeBark);
+            CreateLandmarkBox(root, "Harbor Ship Deck", new Vector3(5.2f, 1.14f, -7.2f), new Vector3(3.7f, 0.18f, 1.04f), materials.LandmarkRoad);
+            CreateLandmarkBox(root, "Harbor Ship Sail", new Vector3(5.2f, 2.18f, -7.2f), new Vector3(0.12f, 1.9f, 1.45f), materials.PlayerPaper);
+            CreateLandmarkCylinder(root, "Harbor Ship Mast", new Vector3(5.2f, 1.92f, -7.2f), new Vector3(0.08f, 1.65f, 0.08f), materials.TreeBark);
+            context.Report.landmarkDressingObjects += 16;
+        }
+
+        private static void CreateTownClusterLandmark(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY, int houseCount, float yaw)
+        {
+            if (!TryCreateLandmarkRoot(parent, name, context, worldX, worldY, out Transform root))
+            {
+                return;
+            }
+
+            root.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            CreateGroundPlate(root, "Town Lane", new Vector3(0f, 0.01f, 0f), houseCount * 3.7f, 2.4f, materials.LandmarkRoad);
+            for (int i = 0; i < houseCount; i++)
+            {
+                float x = (i - (houseCount - 1) * 0.5f) * 3.45f;
+                float side = i % 2 == 0 ? 2.35f : -2.35f;
+                CreateLandmarkBox(root, $"House {i + 1} Stone Walls", new Vector3(x, 0.86f, side), new Vector3(2.6f, 1.72f, 2.35f), materials.LandmarkStone);
+                CreateLandmarkBox(root, $"House {i + 1} Roof", new Vector3(x, 1.93f, side), new Vector3(2.95f, 0.46f, 2.66f), materials.LandmarkRoof);
+                CreateLandmarkBox(root, $"House {i + 1} Door", new Vector3(x, 0.58f, side - Mathf.Sign(side) * 1.21f), new Vector3(0.58f, 1.05f, 0.12f), materials.TreeBark);
+            }
+
+            context.Report.landmarkDressingObjects += houseCount * 3 + 1;
+        }
+
+        private static bool TryCreateLandmarkRoot(Transform parent, string name, HostedBuildContext context, int worldX, int worldY, out Transform root)
+        {
+            root = null;
+            if (!IsWorldTileInsideHostedBounds(worldX, worldY))
+            {
+                return false;
+            }
+
+            GameObject landmark = new GameObject(name);
+            landmark.transform.SetParent(parent, false);
+            landmark.transform.position = WorldTilePosition(context, worldX, worldY) + Vector3.up * 0.04f;
+            root = landmark.transform;
+            return true;
+        }
+
+        private static void CreateGroundPlate(Transform parent, string name, Vector3 localPosition, float width, float depth, Material material)
+        {
+            GameObject plate = CreateSubdividedPlane(name, parent.position + localPosition, width, depth, 8, material);
+            plate.transform.SetParent(parent, true);
+            plate.transform.localRotation = Quaternion.identity;
+            plate.transform.localPosition = localPosition;
+        }
+
+        private static GameObject CreateLandmarkBox(Transform parent, string name, Vector3 localPosition, Vector3 localScale, Material material)
+        {
+            GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            box.name = name;
+            box.transform.SetParent(parent, false);
+            box.transform.localPosition = localPosition;
+            box.transform.localScale = localScale;
+            MeshRenderer renderer = box.GetComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.On;
+            renderer.receiveShadows = true;
+            return box;
+        }
+
+        private static GameObject CreateLandmarkCylinder(Transform parent, string name, Vector3 localPosition, Vector3 localScale, Material material)
+        {
+            GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            cylinder.name = name;
+            cylinder.transform.SetParent(parent, false);
+            cylinder.transform.localPosition = localPosition;
+            cylinder.transform.localScale = localScale;
+            MeshRenderer renderer = cylinder.GetComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.On;
+            renderer.receiveShadows = true;
+            return cylinder;
+        }
+
         private static void BuildDistantVista(HostedBuildContext context, HostedMaterials materials)
         {
             GameObject vistaRoot = new GameObject("Distant Hosted Vista");
@@ -866,11 +1071,11 @@ namespace Psycho.Editor
         private static void BuildCloudLayer(Material material)
         {
             GameObject root = new GameObject("Moving Cloud Layer");
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < 38; i++)
             {
-                float x = Mathf.Sin(i * 2.91f) * 112f;
-                float z = Mathf.Cos(i * 1.73f) * 118f;
-                float y = 36f + (i % 5) * 3.3f;
+                float x = Mathf.Sin(i * 2.91f) * 236f;
+                float z = Mathf.Cos(i * 1.73f) * 244f;
+                float y = 88f + (i % 6) * 5.6f;
                 GameObject cloud = new GameObject($"Moving Cloud {i + 1}");
                 cloud.transform.SetParent(root.transform, false);
                 cloud.transform.position = new Vector3(x, y, z);
@@ -882,9 +1087,9 @@ namespace Psycho.Editor
                     GameObject puff = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     puff.name = "Cloud Puff";
                     puff.transform.SetParent(cloud.transform, false);
-                    float localX = (lobe - (lobes - 1) * 0.5f) * 4.8f;
-                    puff.transform.localPosition = new Vector3(localX, Mathf.Sin(lobe * 1.7f) * 0.42f, Mathf.Cos(lobe * 1.1f) * 1.35f);
-                    puff.transform.localScale = new Vector3(9.4f + lobe * 0.82f, 0.78f + (lobe % 2) * 0.24f, 3.8f + (lobe % 3) * 0.78f);
+                    float localX = (lobe - (lobes - 1) * 0.5f) * 6.2f;
+                    puff.transform.localPosition = new Vector3(localX, Mathf.Sin(lobe * 1.7f) * 0.34f, Mathf.Cos(lobe * 1.1f) * 1.65f);
+                    puff.transform.localScale = new Vector3(8.4f + lobe * 0.68f, 0.42f + (lobe % 2) * 0.12f, 2.7f + (lobe % 3) * 0.46f);
                     MeshRenderer renderer = puff.GetComponent<MeshRenderer>();
                     renderer.sharedMaterial = material;
                     renderer.shadowCastingMode = ShadowCastingMode.Off;
@@ -898,8 +1103,8 @@ namespace Psycho.Editor
 
                 CloudDrift drift = cloud.AddComponent<CloudDrift>();
                 SerializedObject driftObject = new SerializedObject(drift);
-                driftObject.FindProperty("driftSpeed").floatValue = 0.28f + (i % 4) * 0.045f;
-                driftObject.FindProperty("wrapDistance").floatValue = 230f;
+                driftObject.FindProperty("driftSpeed").floatValue = 0.20f + (i % 4) * 0.035f;
+                driftObject.FindProperty("wrapDistance").floatValue = 480f;
                 driftObject.ApplyModifiedPropertiesWithoutUndo();
             }
         }
@@ -960,7 +1165,7 @@ namespace Psycho.Editor
             ReflectionProbe probe = reflectionObject.AddComponent<ReflectionProbe>();
             probe.mode = UnityEngine.Rendering.ReflectionProbeMode.Realtime;
             probe.refreshMode = UnityEngine.Rendering.ReflectionProbeRefreshMode.OnAwake;
-            probe.size = new Vector3(340f, 116f, 340f);
+            probe.size = new Vector3(920f, 180f, 920f);
             reflectionObject.transform.position = new Vector3(0f, 18f, 0f);
 
             RenderSettings.skybox = LoadOrCreateSkybox();
@@ -1676,7 +1881,7 @@ namespace Psycho.Editor
                 Water = LoadOrCreateTexturedMaterial(WaterMaterialPath, "Water", new Color(0.06f, 0.32f, 0.48f, 0.58f), 0.88f, new Vector2(2.6f, 6.2f), 0.92f),
                 Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.27f, 0.40f, 0.24f, 1f), 0.30f, new Vector2(5.8f, 5.8f), 0.58f),
                 Mountains = LoadOrCreateTexturedMaterial(MountainMaterialPath, "Mountain", new Color(0.46f, 0.46f, 0.42f, 1f), 0.48f, new Vector2(3.2f, 3.2f), 0.72f),
-                Cloud = LoadOrCreateUnlitMaterial(CloudMaterialPath, new Color(0.93f, 0.96f, 0.98f, 0.70f)),
+                Cloud = LoadOrCreateUnlitMaterial(CloudMaterialPath, new Color(0.93f, 0.96f, 0.98f, 0.42f)),
                 TreeCanopy = LoadOrCreateTexturedMaterial(TreeCanopyMaterialPath, "Leaf", new Color(0.25f, 0.47f, 0.18f, 1f), 0.23f, new Vector2(3.6f, 3.6f), 0.66f),
                 TreeBark = LoadOrCreateTexturedMaterial(TreeBarkMaterialPath, "Wood", new Color(0.37f, 0.22f, 0.11f, 1f), 0.24f, new Vector2(2.8f, 4.4f), 0.74f),
                 WaterFoam = LoadOrCreateSolidMaterial(WaterFoamMaterialPath, new Color(0.73f, 0.92f, 0.95f, 0.34f), 0.36f),
@@ -1687,12 +1892,18 @@ namespace Psycho.Editor
                 PlayerSkin = LoadOrCreateSolidMaterial(PlayerSkinMaterialPath, new Color(0.77f, 0.57f, 0.42f, 1f), 0.28f),
                 PlayerHair = LoadOrCreateSolidMaterial(PlayerHairMaterialPath, new Color(0.23f, 0.16f, 0.09f, 1f), 0.32f),
                 PlayerPaper = LoadOrCreateTexturedMaterial(PlayerPaperMaterialPath, "Paper", new Color(0.74f, 0.68f, 0.54f, 1f), 0.24f, new Vector2(1.8f, 1.8f), 0.36f),
-                PlayerWood = LoadOrCreateTexturedMaterial(PlayerWoodMaterialPath, "Wood", new Color(0.38f, 0.24f, 0.12f, 1f), 0.28f, new Vector2(2.2f, 2.2f), 0.50f)
+                PlayerWood = LoadOrCreateTexturedMaterial(PlayerWoodMaterialPath, "Wood", new Color(0.38f, 0.24f, 0.12f, 1f), 0.28f, new Vector2(2.2f, 2.2f), 0.50f),
+                LandmarkStone = LoadOrCreateTexturedMaterial(LandmarkStoneMaterialPath, "Stone", new Color(0.48f, 0.47f, 0.42f, 1f), 0.36f, new Vector2(3.2f, 3.2f), 0.62f),
+                LandmarkRoof = LoadOrCreateTexturedMaterial(LandmarkRoofMaterialPath, "Wood", new Color(0.17f, 0.15f, 0.13f, 1f), 0.42f, new Vector2(2.4f, 2.4f), 0.58f),
+                LandmarkRoad = LoadOrCreateTexturedMaterial(LandmarkRoadMaterialPath, "Stone", new Color(0.42f, 0.39f, 0.31f, 1f), 0.28f, new Vector2(4.8f, 4.8f), 0.48f),
+                LandmarkBanner = LoadOrCreateTexturedMaterial(LandmarkBannerMaterialPath, "Cloth", new Color(0.27f, 0.42f, 0.63f, 1f), 0.32f, new Vector2(1.6f, 1.6f), 0.44f),
+                LandmarkGlass = LoadOrCreateSolidMaterial(LandmarkGlassMaterialPath, new Color(0.40f, 0.63f, 0.72f, 0.46f), 0.72f)
             };
             ConfigureTransparent(materials.Water);
             ConfigureTransparent(materials.Cloud);
             ConfigureTransparent(materials.WaterFoam);
             ConfigureTransparent(materials.WaterDepth);
+            ConfigureTransparent(materials.LandmarkGlass);
             return materials;
         }
 
@@ -1908,6 +2119,11 @@ namespace Psycho.Editor
             public Material PlayerHair;
             public Material PlayerPaper;
             public Material PlayerWood;
+            public Material LandmarkStone;
+            public Material LandmarkRoof;
+            public Material LandmarkRoad;
+            public Material LandmarkBanner;
+            public Material LandmarkGlass;
         }
 
         [Serializable]
@@ -1961,6 +2177,7 @@ namespace Psycho.Editor
             public int waterFoamEdges;
             public int waterDepthChannels;
             public int horizonMistPanels;
+            public int landmarkDressingObjects;
         }
     }
 }

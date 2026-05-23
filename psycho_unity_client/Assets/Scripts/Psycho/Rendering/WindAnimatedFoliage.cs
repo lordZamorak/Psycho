@@ -10,7 +10,7 @@ namespace Psycho.Rendering
         [SerializeField] private float spatialFrequency = 1.4f;
         [SerializeField] private float gustStrength = 0.42f;
         [SerializeField] private float gustScale = 0.18f;
-        [SerializeField] private float turbulence = 0.045f;
+        [SerializeField] private float turbulence = 0.028f;
         [SerializeField] private Vector2 windDirection = new Vector2(1f, 0.35f);
 
         private Mesh mesh;
@@ -21,6 +21,8 @@ namespace Psycho.Rendering
         private float phase;
         private Vector3 primaryWind;
         private Vector3 crossWind;
+        private float smoothedGust = 1f;
+        private float gustVelocity;
 
         private void Awake()
         {
@@ -49,15 +51,18 @@ namespace Psycho.Rendering
 
         private void Update()
         {
-            float time = Time.time * speed + phase;
-            float gust = 1f + (Mathf.PerlinNoise(Time.time * gustScale, phase * 0.17f) - 0.5f) * gustStrength;
+            float clock = Time.timeSinceLevelLoad;
+            float time = clock * speed + phase;
+            float targetGust = 1f + (Mathf.PerlinNoise(clock * gustScale, phase * 0.17f) - 0.5f) * gustStrength;
+            smoothedGust = Mathf.SmoothDamp(smoothedGust, targetGust, ref gustVelocity, 0.42f);
+
             for (int i = 0; i < baseVertices.Length; i++)
             {
                 Vector3 vertex = baseVertices[i];
                 float heightWeight = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((vertex.y - minHeight) / heightRange));
                 float alongWind = vertex.x * primaryWind.x + vertex.z * primaryWind.z;
-                float wave = Mathf.Sin(time + alongWind * spatialFrequency + vertex.y * 0.82f) * amplitude * heightWeight * gust;
-                float flutter = Mathf.Sin(time * 0.73f + (vertex.x + vertex.z) * spatialFrequency * 0.62f) * amplitude * turbulence * heightWeight * gust;
+                float wave = Mathf.Sin(time + alongWind * spatialFrequency + vertex.y * 0.82f) * amplitude * heightWeight * smoothedGust;
+                float flutter = Mathf.Sin(time * 0.73f + (vertex.x + vertex.z) * spatialFrequency * 0.62f) * amplitude * turbulence * heightWeight * smoothedGust;
                 vertex += primaryWind * wave + crossWind * flutter;
                 workingVertices[i] = vertex;
             }
