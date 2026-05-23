@@ -16,6 +16,7 @@ namespace Psycho.Editor
         private static bool attemptedLooseImport;
         private static bool attemptedCache1Probe;
         private static bool attemptedJCacheImport;
+        private static readonly bool EnableRewardLikeObjectAccents = false;
         private static string[] cachedLooseShowcaseAssets;
         private static string[] cachedCache1ShowcaseAssets;
         private static string[] cachedJCacheShowcaseAssets;
@@ -126,7 +127,7 @@ namespace Psycho.Editor
 
         public static int AddObjectAccents(PsychoMirrorObject definition, Transform parent, Material material)
         {
-            if (definition == null || string.IsNullOrWhiteSpace(definition.name))
+            if (!EnableRewardLikeObjectAccents || definition == null || string.IsNullOrWhiteSpace(definition.name))
             {
                 return 0;
             }

@@ -21,6 +21,9 @@ namespace Psycho.UI
         [SerializeField] private int maxPrayer = 1;
         [SerializeField] private int runEnergy = 100;
         [SerializeField] private long moneyPouch;
+        [SerializeField] private string recipeForDisasterStatus = "Recipe for Disaster: Not started";
+        [SerializeField] private string nomadStatus = "Nomad's Requiem: Not started";
+        [SerializeField] private string questSummary = "Quest Progress: 0/2";
 
         private Canvas canvas;
         private RectTransform escapeMenu;
@@ -262,7 +265,7 @@ namespace Psycho.UI
                     SetContextPanel(true, "Prayers", "Quick prayers and curses will remain display-only until protocol actions are wired.");
                     break;
                 case "Quests":
-                    SetContextPanel(true, "Quests", "Quest journal and task progress panel.");
+                    SetContextPanel(true, "Quests", recipeForDisasterStatus + "\n" + nomadStatus + "\n\n" + questSummary);
                     break;
                 case "Achieve":
                     SetContextPanel(true, "Achievements", "Achievement tracker and Psycho progression goals.");

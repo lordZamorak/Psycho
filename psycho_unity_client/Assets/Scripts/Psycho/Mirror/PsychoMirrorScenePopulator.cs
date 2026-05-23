@@ -12,8 +12,10 @@ namespace Psycho.Mirror
 
         [Header("Preview limits")]
         [SerializeField] private int maxNpcSpawns = 160;
-        [SerializeField] private int itemPreviewCount = 72;
-        [SerializeField] private int objectPreviewCount = 72;
+        [SerializeField] private bool spawnItemVisualPreview;
+        [SerializeField] private bool spawnObjectVisualPreview;
+        [SerializeField] private int itemPreviewCount;
+        [SerializeField] private int objectPreviewCount;
 
         private PsychoMirrorLoader loader;
         private PsychoVisualFactory factory;
@@ -34,8 +36,15 @@ namespace Psycho.Mirror
             }
 
             PopulateNpcSpawns(database);
-            PopulateItemPreview(database);
-            PopulateObjectPreview(database);
+            if (spawnItemVisualPreview)
+            {
+                PopulateItemPreview(database);
+            }
+
+            if (spawnObjectVisualPreview)
+            {
+                PopulateObjectPreview(database);
+            }
         }
 
         private void PopulateNpcSpawns(PsychoMirrorDatabase database)

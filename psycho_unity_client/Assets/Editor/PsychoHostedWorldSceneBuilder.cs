@@ -69,6 +69,7 @@ namespace Psycho.Editor
         private const string LandmarkGlassMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Glass.mat";
         private const string FallbackMaterialPath = GeneratedRoot + "/Psycho_Hosted_Fallback.mat";
         private const bool EnableHostedJCacheScenePlacement = false;
+        private static readonly bool EnableHostedRewardModelShowcases = false;
         private static readonly string[] WindResponsiveObjectNameFragments =
         {
             "tree",
@@ -1052,45 +1053,51 @@ namespace Psycho.Editor
                 CreateLandmarkBox(root, $"Grand Exchange Booth Banner {i + 1}", boothPosition + Vector3.up * 0.78f, new Vector3(1.95f, 0.30f, 0.08f), materials.LandmarkBanner).transform.localRotation = booth.transform.localRotation;
             }
 
-            Material decodedModelMaterial = PsychoCacheMeshImporter.LoadOrCreateVertexColorMaterial();
-            int looseDisplays = PsychoHostedVisualOverrides.AddLooseModelShowcase(
-                root,
-                decodedModelMaterial,
-                "Grand Exchange Loose Cache Display",
-                0,
-                116,
-                new Vector3(0f, 0.29f, -7.25f),
-                16,
-                0.72f,
-                0.68f,
-                0.54f,
-                0.50f);
-            int cache1Displays = PsychoHostedVisualOverrides.AddCache1ModelShowcase(
-                root,
-                decodedModelMaterial,
-                "Grand Exchange Cache1 Display",
-                0,
-                160,
-                new Vector3(0f, 0.28f, 2.25f),
-                16,
-                0.72f,
-                0.58f,
-                0.46f,
-                0.48f);
-            int jcacheDisplays = EnableHostedJCacheScenePlacement
-                ? PsychoHostedVisualOverrides.AddJCacheModelShowcase(
+            int looseDisplays = 0;
+            int cache1Displays = 0;
+            int jcacheDisplays = 0;
+            if (EnableHostedRewardModelShowcases)
+            {
+                Material decodedModelMaterial = PsychoCacheMeshImporter.LoadOrCreateVertexColorMaterial();
+                looseDisplays = PsychoHostedVisualOverrides.AddLooseModelShowcase(
                     root,
                     decodedModelMaterial,
-                    "Grand Exchange JS5 NXT Display",
+                    "Grand Exchange Loose Cache Display",
                     0,
-                    24,
-                    new Vector3(-3.3f, 0.31f, -4.85f),
-                    4,
-                    1.45f,
-                    1.05f,
-                    0.96f,
-                    1.05f)
-                : 0;
+                    116,
+                    new Vector3(0f, 0.29f, -7.25f),
+                    16,
+                    0.72f,
+                    0.68f,
+                    0.54f,
+                    0.50f);
+                cache1Displays = PsychoHostedVisualOverrides.AddCache1ModelShowcase(
+                    root,
+                    decodedModelMaterial,
+                    "Grand Exchange Cache1 Display",
+                    0,
+                    160,
+                    new Vector3(0f, 0.28f, 2.25f),
+                    16,
+                    0.72f,
+                    0.58f,
+                    0.46f,
+                    0.48f);
+                jcacheDisplays = EnableHostedJCacheScenePlacement
+                    ? PsychoHostedVisualOverrides.AddJCacheModelShowcase(
+                        root,
+                        decodedModelMaterial,
+                        "Grand Exchange JS5 NXT Display",
+                        0,
+                        24,
+                        new Vector3(-3.3f, 0.31f, -4.85f),
+                        4,
+                        1.45f,
+                        1.05f,
+                        0.96f,
+                        1.05f)
+                    : 0;
+            }
 
             context.Report.landmarkDressingObjects += 24 + looseDisplays + cache1Displays + jcacheDisplays;
         }
@@ -1461,6 +1468,9 @@ namespace Psycho.Editor
             SetSerializedInt(hudSerializedObject, "maxPrayer", Mathf.Max(1, playerSave?.maxPrayer ?? 1));
             SetSerializedInt(hudSerializedObject, "runEnergy", Mathf.Clamp(playerSave?.runEnergy ?? 100, 0, 100));
             SetSerializedLong(hudSerializedObject, "moneyPouch", Math.Max(0L, playerSave?.moneyPouch ?? 0L));
+            SetSerializedString(hudSerializedObject, "recipeForDisasterStatus", playerSave?.recipeForDisasterStatus ?? "Recipe for Disaster: Not started");
+            SetSerializedString(hudSerializedObject, "nomadStatus", playerSave?.nomadStatus ?? "Nomad's Requiem: Not started");
+            SetSerializedString(hudSerializedObject, "questSummary", playerSave?.questSummary ?? "Quest Progress: 0/2");
             hudSerializedObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
@@ -1800,6 +1810,29 @@ namespace Psycho.Editor
             save.maxHealth = ReadSkillArrayValue(json, "maxLevel", 3, save.currentHealth);
             save.currentPrayer = ReadSkillArrayValue(json, "level", 5, 1);
             save.maxPrayer = ReadSkillArrayValue(json, "maxLevel", 5, save.currentPrayer);
+            PopulateHostedPlayerQuestValues(save, json);
+        }
+
+        private static void PopulateHostedPlayerQuestValues(HostedPlayerSave save, string json)
+        {
+            int rfdWavesCompleted = Mathf.Clamp(ReadIntProperty(json, "recipe-for-disaster-wave", 0), 0, 6);
+            bool rfdStarted = ReadBooleanArrayValue(json, "recipe-for-disaster", 0, false);
+            bool rfdComplete = rfdWavesCompleted >= 6 || ReadBooleanArrayValue(json, "recipe-for-disaster", 8, false);
+            bool nomadStarted = ReadBooleanArrayValue(json, "nomad", 0, false);
+            bool nomadComplete = ReadBooleanArrayValue(json, "nomad", 1, false);
+            int completed = (rfdComplete ? 1 : 0) + (nomadComplete ? 1 : 0);
+
+            save.recipeForDisasterStatus = rfdComplete
+                ? "Recipe for Disaster: Complete"
+                : rfdStarted
+                    ? "Recipe for Disaster: In progress (" + rfdWavesCompleted + "/6 waves)"
+                    : "Recipe for Disaster: Not started";
+            save.nomadStatus = nomadComplete
+                ? "Nomad's Requiem: Complete"
+                : nomadStarted
+                    ? "Nomad's Requiem: In progress"
+                    : "Nomad's Requiem: Not started";
+            save.questSummary = "Quest Progress: " + completed + "/2";
         }
 
         private static long ReadLongProperty(string json, string propertyName, long fallback)
@@ -1872,6 +1905,32 @@ namespace Psycho.Editor
             }
 
             return int.TryParse(values[skillIndex].Trim(), out int value) ? value : fallback;
+        }
+
+        private static bool ReadBooleanArrayValue(string json, string arrayName, int valueIndex, bool fallback)
+        {
+            string key = "\"" + arrayName + "\"";
+            int keyIndex = json.IndexOf(key, StringComparison.OrdinalIgnoreCase);
+            if (keyIndex < 0)
+            {
+                return fallback;
+            }
+
+            int openBracket = json.IndexOf('[', keyIndex + key.Length);
+            int closeBracket = json.IndexOf(']', openBracket + 1);
+            if (openBracket < 0 || closeBracket < 0 || closeBracket <= openBracket)
+            {
+                return fallback;
+            }
+
+            string[] values = json.Substring(openBracket + 1, closeBracket - openBracket - 1).Split(',');
+            if (valueIndex < 0 || valueIndex >= values.Length)
+            {
+                return fallback;
+            }
+
+            string value = values[valueIndex].Trim();
+            return bool.TryParse(value, out bool parsed) ? parsed : fallback;
         }
 
         private static string PlayerDisplayName(HostedPlayerSave playerSave)
@@ -2472,6 +2531,15 @@ namespace Psycho.Editor
             }
         }
 
+        private static void SetSerializedString(SerializedObject serializedObject, string propertyName, string value)
+        {
+            SerializedProperty property = serializedObject.FindProperty(propertyName);
+            if (property != null)
+            {
+                property.stringValue = value ?? string.Empty;
+            }
+        }
+
         private static void SetSerializedObject(SerializedObject serializedObject, string propertyName, UnityEngine.Object value)
         {
             SerializedProperty property = serializedObject.FindProperty(propertyName);
@@ -2573,6 +2641,9 @@ namespace Psycho.Editor
             [NonSerialized] public int maxHealth = 100;
             [NonSerialized] public int currentPrayer = 1;
             [NonSerialized] public int maxPrayer = 1;
+            [NonSerialized] public string recipeForDisasterStatus = "Recipe for Disaster: Not started";
+            [NonSerialized] public string nomadStatus = "Nomad's Requiem: Not started";
+            [NonSerialized] public string questSummary = "Quest Progress: 0/2";
         }
 
         [Serializable]

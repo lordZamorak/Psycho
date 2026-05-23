@@ -2,6 +2,7 @@ package com.ruse.world.content;
 
 import com.ruse.util.Misc;
 import com.ruse.world.World;
+import com.ruse.world.content.dialogue.quests.QuestManager;
 import com.ruse.world.content.randomevents.EvilTree;
 import com.ruse.world.content.randomevents.ShootingStar;
 import com.ruse.world.content.skill.slayer.SlayerTasks;
@@ -27,6 +28,11 @@ public class PlayerPanel {
 			"@or2@Rank: @yel@"+Misc.formatPlayerName(player.getRights().toString()),
 			"@or2@Claimed: @yel@$"+player.getAmountDonated(),
 			"@or2@Time played:  @yel@"+Misc.getTimePlayed((player.getTotalPlayTime() + player.getRecordedLogin().elapsed())),
+			"",
+			"@or3@ - @whi@ Quests",
+			QuestManager.getRecipeForDisasterPanelLine(player),
+			QuestManager.getNomadPanelLine(player),
+			QuestManager.getSummaryPanelLine(player),
 			"",
 			"@or3@ - @whi@ Statistics",
 			"@or2@Prestige Points: @yel@"+player.getPointsHandler().getPrestigePoints(),

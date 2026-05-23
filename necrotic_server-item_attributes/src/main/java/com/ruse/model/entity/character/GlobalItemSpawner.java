@@ -9,15 +9,22 @@ import com.ruse.model.entity.character.player.Player;
 public class GlobalItemSpawner {
 	
 	public static Position ROCKCAKE_POSITION = new Position(3667, 2994, 0);
+	private static boolean globalStarterItemSpawnsEnabled = false;
 	private static long timer = System.currentTimeMillis();
 	
 	public static void startup() {
+		if (!globalStarterItemSpawnsEnabled) {
+			return;
+		}
 		if (System.currentTimeMillis() - timer > 1000*60) { //every minute run spawnBarrowSpade for each online player
 			World.sendGlobalGroundItems(); //This loops through all online players who aren't null, then sends them back to spawnBarrowSpade after filtration
 		}
 	}
 	
 	public static void spawnGlobalGroundItems(Player player) {
+		if (!globalStarterItemSpawnsEnabled) {
+			return;
+		}
 		nullCheckAndSpawn(player, new Item(952, 1), new Position(3571, 3312, 0));
 		nullCheckAndSpawn(player, new Item(1351, 1), new Position(2693, 9560, 0));
 		nullCheckAndSpawn(player, new Item(1949, 1), new Position(3142, 3453, 0));
