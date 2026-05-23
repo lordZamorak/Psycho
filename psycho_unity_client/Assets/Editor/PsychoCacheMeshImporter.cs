@@ -45,14 +45,14 @@ namespace Psycho.Editor
         {
             EnsureGeneratedFolders();
             Material material = CreateOrUpdateVertexColorMaterial(TerrainMaterialPath, 0.20f, 0.58f, 0.16f, 0.54f);
-            SetMaterialFloat(material, "_GroundBlendStrength", 0.88f);
-            SetMaterialColor(material, "_GrassTint", new Color(0.20f, 0.36f, 0.18f, 1f));
-            SetMaterialColor(material, "_PathTint", new Color(0.46f, 0.37f, 0.24f, 1f));
-            SetMaterialColor(material, "_RockTint", new Color(0.36f, 0.38f, 0.35f, 1f));
-            SetMaterialFloat(material, "_BlendNoiseScale", 0.44f);
-            SetMaterialFloat(material, "_BlendNoiseStrength", 0.62f);
-            SetMaterialFloat(material, "_HighlandTextureStrength", 0.78f);
-            SetMaterialFloat(material, "_StoneStrataStrength", 0.62f);
+            SetMaterialFloat(material, "_GroundBlendStrength", 0.92f);
+            SetMaterialColor(material, "_GrassTint", new Color(0.18f, 0.35f, 0.17f, 1f));
+            SetMaterialColor(material, "_PathTint", new Color(0.48f, 0.39f, 0.26f, 1f));
+            SetMaterialColor(material, "_RockTint", new Color(0.34f, 0.37f, 0.35f, 1f));
+            SetMaterialFloat(material, "_BlendNoiseScale", 0.49f);
+            SetMaterialFloat(material, "_BlendNoiseStrength", 0.70f);
+            SetMaterialFloat(material, "_HighlandTextureStrength", 0.84f);
+            SetMaterialFloat(material, "_StoneStrataStrength", 0.66f);
             SetMaterialFloat(material, "_SnowDustStrength", 0.055f);
             SetMaterialColor(material, "_DistanceTint", new Color(0.46f, 0.55f, 0.62f, 1f));
             SetMaterialFloat(material, "_DistanceStart", 80f);
@@ -67,10 +67,10 @@ namespace Psycho.Editor
             SetMaterialTexture(material, "_GrassNormalMap", "Assets/Resources/PsychoMaterials/Psycho_Grass_Normal_2K.png");
             SetMaterialTexture(material, "_PathNormalMap", "Assets/Resources/PsychoMaterials/Psycho_Organic_Normal_2K.png");
             SetMaterialTexture(material, "_RockNormalMap", "Assets/Resources/PsychoMaterials/Psycho_Mountain_Normal_2K.png");
-            SetMaterialFloat(material, "_TerrainTexScale", 0.078f);
-            SetMaterialFloat(material, "_TerrainAlbedoStrength", 0.76f);
-            SetMaterialFloat(material, "_TerrainNormalStrength", 0.46f);
-            SetMaterialFloat(material, "_SplatContrast", 1.24f);
+            SetMaterialFloat(material, "_TerrainTexScale", 0.090f);
+            SetMaterialFloat(material, "_TerrainAlbedoStrength", 0.82f);
+            SetMaterialFloat(material, "_TerrainNormalStrength", 0.54f);
+            SetMaterialFloat(material, "_SplatContrast", 1.10f);
             EditorUtility.SetDirty(material);
             return material;
         }

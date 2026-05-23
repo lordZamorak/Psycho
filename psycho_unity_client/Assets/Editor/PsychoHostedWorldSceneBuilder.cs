@@ -27,7 +27,7 @@ namespace Psycho.Editor
         private const int MaxModelsPerObject = 4;
         private const int MaxModelsPerNpc = 12;
         private const int MaxNpcSpawns = 460;
-        private const int GroundDetailCount = 1850;
+        private const int GroundDetailCount = 2600;
         private const float DogSizedImpHeight = 0.62f;
         private const float CharacterNormalSmoothingTolerance = 0.00075f;
         private const float TileScale = 0.72f;
@@ -1301,8 +1301,16 @@ namespace Psycho.Editor
                 float scatterX = (Deterministic01(i * 13 + 3) - 0.5f) * TileScale * 0.78f;
                 float scatterZ = (Deterministic01(i * 17 + 5) - 0.5f) * TileScale * 0.78f;
                 Vector3 position = WorldTilePosition(context, worldX, worldY) + new Vector3(scatterX, 0.052f, scatterZ);
-                Material material = i % 17 == 0 ? materials.Flowers : materials.Grass;
-                CreateGrassBlade(root.transform, position, 0.18f + Deterministic01(i * 59 + 11) * 0.24f, material);
+                float height = 0.16f + Deterministic01(i * 59 + 11) * 0.28f;
+                CreateGrassBlade(root.transform, position, height, materials.Grass, i);
+                if (i % 17 == 0)
+                {
+                    CreateWildflowerCluster(root.transform, position + Vector3.up * 0.012f, height * 0.92f, materials.Flowers, i);
+                }
+                else if (i % 11 == 0)
+                {
+                    CreateHeatherPatch(root.transform, position + Vector3.up * 0.006f, height * 1.35f, materials.Moss, i);
+                }
             }
         }
 
@@ -1961,13 +1969,8 @@ namespace Psycho.Editor
 
         private static GameObject CreateLandmarkBox(Transform parent, string name, Vector3 localPosition, Vector3 localScale, Material material)
         {
-            GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            box.name = name;
-            box.transform.SetParent(parent, false);
-            box.transform.localPosition = localPosition;
-            box.transform.localScale = localScale;
+            GameObject box = CreateRoundedBox(parent, name, localPosition, localScale, material, true);
             MeshRenderer renderer = box.GetComponent<MeshRenderer>();
-            renderer.sharedMaterial = material;
             renderer.shadowCastingMode = ShadowCastingMode.On;
             renderer.receiveShadows = true;
             return box;
@@ -2459,6 +2462,11 @@ namespace Psycho.Editor
 
         private static GameObject CreatePlayerPrimitive(Transform parent, PrimitiveType type, string name, Vector3 localPosition, Vector3 localScale, Material material, PsychoMirrorItem item = null)
         {
+            if (type == PrimitiveType.Cube)
+            {
+                return CreateRoundedBox(parent, item == null || string.IsNullOrWhiteSpace(item.name) ? name : $"{name} - {item.name}", localPosition, localScale, material, false);
+            }
+
             GameObject primitive = GameObject.CreatePrimitive(type);
             primitive.name = item == null || string.IsNullOrWhiteSpace(item.name) ? name : $"{name} - {item.name}";
             primitive.transform.SetParent(parent, false);
@@ -2467,6 +2475,76 @@ namespace Psycho.Editor
             primitive.GetComponent<MeshRenderer>().sharedMaterial = material;
             RemoveCollider(primitive);
             return primitive;
+        }
+
+        private static GameObject CreateRoundedBox(Transform parent, string name, Vector3 localPosition, Vector3 localScale, Material material, bool addCollider)
+        {
+            GameObject box = new GameObject(name);
+            box.transform.SetParent(parent, false);
+            box.transform.localPosition = localPosition;
+            box.AddComponent<MeshFilter>().sharedMesh = CreateRoundedBoxMesh(name + " Mesh", localScale);
+            box.AddComponent<MeshRenderer>().sharedMaterial = material;
+            if (addCollider)
+            {
+                BoxCollider collider = box.AddComponent<BoxCollider>();
+                collider.size = localScale;
+            }
+
+            return box;
+        }
+
+        private static Mesh CreateRoundedBoxMesh(string name, Vector3 size)
+        {
+            const int longitudeSegments = 16;
+            const int latitudeSegments = 8;
+            const float exponent = 0.26f;
+            Vector3 half = new Vector3(Mathf.Max(0.001f, size.x * 0.5f), Mathf.Max(0.001f, size.y * 0.5f), Mathf.Max(0.001f, size.z * 0.5f));
+            List<Vector3> vertices = new List<Vector3>((longitudeSegments + 1) * (latitudeSegments + 1));
+            List<int> triangles = new List<int>(longitudeSegments * latitudeSegments * 6);
+
+            for (int lat = 0; lat <= latitudeSegments; lat++)
+            {
+                float v = Mathf.Lerp(-Mathf.PI * 0.5f, Mathf.PI * 0.5f, lat / (float)latitudeSegments);
+                float cosV = SignedPow(Mathf.Cos(v), exponent);
+                float sinV = SignedPow(Mathf.Sin(v), exponent);
+                for (int lon = 0; lon <= longitudeSegments; lon++)
+                {
+                    float u = Mathf.PI * 2f * lon / longitudeSegments;
+                    float cosU = SignedPow(Mathf.Cos(u), exponent);
+                    float sinU = SignedPow(Mathf.Sin(u), exponent);
+                    vertices.Add(new Vector3(half.x * cosV * cosU, half.y * sinV, half.z * cosV * sinU));
+                }
+            }
+
+            int row = longitudeSegments + 1;
+            for (int lat = 0; lat < latitudeSegments; lat++)
+            {
+                for (int lon = 0; lon < longitudeSegments; lon++)
+                {
+                    int a = lat * row + lon;
+                    int b = a + 1;
+                    int c = a + row;
+                    int d = c + 1;
+                    triangles.Add(a);
+                    triangles.Add(c);
+                    triangles.Add(b);
+                    triangles.Add(b);
+                    triangles.Add(c);
+                    triangles.Add(d);
+                }
+            }
+
+            Mesh mesh = new Mesh { name = name };
+            mesh.SetVertices(vertices);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            return mesh;
+        }
+
+        private static float SignedPow(float value, float exponent)
+        {
+            return Mathf.Sign(value) * Mathf.Pow(Mathf.Abs(value), exponent);
         }
 
         private static GameObject CreatePlayerTaperedPrism(Transform parent, string name, Vector3 localPosition, float topWidth, float bottomWidth, float height, float depth, Material material, PsychoMirrorItem item = null)
@@ -3304,27 +3382,177 @@ namespace Psycho.Editor
             renderer.receiveShadows = false;
         }
 
-        private static void CreateGrassBlade(Transform root, Vector3 position, float height, Material material)
+        private static void CreateGrassBlade(Transform root, Vector3 position, float height, Material material, int seed)
         {
-            Mesh mesh = new Mesh { name = "Hosted Wind Grass Mesh" };
-            float width = height * 0.22f;
-            const int bladeCount = 4;
-            Vector3[] vertices = new Vector3[bladeCount * 4];
-            int[] triangles = new int[bladeCount * 12];
+            Mesh mesh = new Mesh { name = "Hosted Curved Wind Grass Mesh" };
+            const int bladeCount = 7;
+            const int segmentCount = 3;
+            const int verticesPerBlade = (segmentCount + 1) * 2;
+            const int indicesPerBlade = segmentCount * 12;
+            Vector3[] vertices = new Vector3[bladeCount * verticesPerBlade];
+            Vector2[] uv = new Vector2[vertices.Length];
+            int[] triangles = new int[bladeCount * indicesPerBlade];
+
             for (int blade = 0; blade < bladeCount; blade++)
             {
-                float angle = blade * Mathf.PI * 2f / bladeCount;
+                float angle = (blade + Deterministic01(seed * 83 + blade * 19) * 0.55f) * Mathf.PI * 2f / bladeCount;
                 Vector3 side = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
-                Vector3 lean = new Vector3(Mathf.Sin(angle * 1.7f), 0f, Mathf.Cos(angle * 1.3f)) * height * 0.08f;
-                float localHeight = height * (0.88f + blade * 0.08f);
-                float localWidth = width * (1f - blade * 0.12f);
-                int v = blade * 4;
-                vertices[v] = -side * localWidth;
-                vertices[v + 1] = side * localWidth;
-                vertices[v + 2] = -side * localWidth * 0.24f + Vector3.up * localHeight + lean;
-                vertices[v + 3] = side * localWidth * 0.24f + Vector3.up * localHeight + lean;
+                Vector3 forward = new Vector3(-side.z, 0f, side.x);
+                float localHeight = height * (0.70f + Deterministic01(seed * 97 + blade * 23) * 0.58f);
+                float localWidth = height * (0.042f + Deterministic01(seed * 101 + blade * 29) * 0.030f);
+                float curve = height * (0.08f + Deterministic01(seed * 107 + blade * 31) * 0.15f);
+                float sideBias = (Deterministic01(seed * 109 + blade * 37) - 0.5f) * height * 0.055f;
+                int baseVertex = blade * verticesPerBlade;
 
-                int t = blade * 12;
+                for (int segment = 0; segment <= segmentCount; segment++)
+                {
+                    float t = segment / (float)segmentCount;
+                    float taper = Mathf.Lerp(1f, 0.08f, t);
+                    float curl = Mathf.Sin(t * Mathf.PI * 0.5f) * curve + Mathf.Sin(t * Mathf.PI * 2f + seed * 0.37f) * height * 0.010f;
+                    Vector3 center = forward * curl + side * sideBias * t + Vector3.up * (localHeight * t);
+                    Vector3 lateral = side * localWidth * taper;
+                    int vertex = baseVertex + segment * 2;
+                    vertices[vertex] = center - lateral;
+                    vertices[vertex + 1] = center + lateral;
+                    uv[vertex] = new Vector2(0f, t);
+                    uv[vertex + 1] = new Vector2(1f, t);
+                }
+
+                int baseTriangle = blade * indicesPerBlade;
+                for (int segment = 0; segment < segmentCount; segment++)
+                {
+                    int v = baseVertex + segment * 2;
+                    int t = baseTriangle + segment * 12;
+                    triangles[t] = v;
+                    triangles[t + 1] = v + 2;
+                    triangles[t + 2] = v + 1;
+                    triangles[t + 3] = v + 1;
+                    triangles[t + 4] = v + 2;
+                    triangles[t + 5] = v + 3;
+                    triangles[t + 6] = v;
+                    triangles[t + 7] = v + 1;
+                    triangles[t + 8] = v + 2;
+                    triangles[t + 9] = v + 1;
+                    triangles[t + 10] = v + 3;
+                    triangles[t + 11] = v + 2;
+                }
+            }
+
+            mesh.vertices = vertices;
+            mesh.uv = uv;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject clump = new GameObject("Curved Wind Grass");
+            clump.transform.SetParent(root, false);
+            clump.transform.position = position;
+            clump.transform.rotation = Quaternion.Euler(0f, position.x * 37f + position.z * 17f + seed * 11f, 0f);
+            clump.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = clump.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = true;
+            AddWind(clump, 0.11f + height * 0.05f, 1.82f + Deterministic01(seed * 43 + 5) * 0.42f, 0.50f);
+        }
+
+        private static void CreateWildflowerCluster(Transform root, Vector3 position, float height, Material material, int seed)
+        {
+            Mesh mesh = new Mesh { name = "Hosted Wildflower Cluster Mesh" };
+            const int flowerCount = 5;
+            const int verticesPerFlower = 8;
+            const int indicesPerFlower = 24;
+            Vector3[] vertices = new Vector3[flowerCount * verticesPerFlower];
+            Vector2[] uv = new Vector2[vertices.Length];
+            int[] triangles = new int[flowerCount * indicesPerFlower];
+
+            for (int flower = 0; flower < flowerCount; flower++)
+            {
+                float angle = Deterministic01(seed * 131 + flower * 17) * Mathf.PI * 2f;
+                float radius = height * (0.10f + Deterministic01(seed * 137 + flower * 19) * 0.26f);
+                float stemHeight = height * (0.44f + Deterministic01(seed * 139 + flower * 23) * 0.38f);
+                float petal = height * (0.045f + Deterministic01(seed * 149 + flower * 29) * 0.024f);
+                Vector3 center = new Vector3(Mathf.Cos(angle) * radius, stemHeight, Mathf.Sin(angle) * radius);
+                int baseVertex = flower * verticesPerFlower;
+                int baseTriangle = flower * indicesPerFlower;
+
+                for (int cross = 0; cross < 2; cross++)
+                {
+                    float petalAngle = angle + cross * Mathf.PI * 0.5f;
+                    Vector3 right = new Vector3(Mathf.Cos(petalAngle), 0f, Mathf.Sin(petalAngle)) * petal;
+                    Vector3 up = Vector3.up * petal * 1.55f;
+                    int v = baseVertex + cross * 4;
+                    vertices[v] = center - right;
+                    vertices[v + 1] = center + right;
+                    vertices[v + 2] = center + up - right * 0.18f;
+                    vertices[v + 3] = center + up + right * 0.18f;
+                    uv[v] = new Vector2(0f, 0f);
+                    uv[v + 1] = new Vector2(1f, 0f);
+                    uv[v + 2] = new Vector2(0f, 1f);
+                    uv[v + 3] = new Vector2(1f, 1f);
+
+                    int t = baseTriangle + cross * 12;
+                    triangles[t] = v;
+                    triangles[t + 1] = v + 2;
+                    triangles[t + 2] = v + 1;
+                    triangles[t + 3] = v + 1;
+                    triangles[t + 4] = v + 2;
+                    triangles[t + 5] = v + 3;
+                    triangles[t + 6] = v;
+                    triangles[t + 7] = v + 1;
+                    triangles[t + 8] = v + 2;
+                    triangles[t + 9] = v + 1;
+                    triangles[t + 10] = v + 3;
+                    triangles[t + 11] = v + 2;
+                }
+            }
+
+            mesh.vertices = vertices;
+            mesh.uv = uv;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject cluster = new GameObject("Yellow Highland Wildflowers");
+            cluster.transform.SetParent(root, false);
+            cluster.transform.position = position;
+            cluster.transform.rotation = Quaternion.Euler(0f, seed * 21.7f, 0f);
+            cluster.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = cluster.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = true;
+            AddWind(cluster, 0.055f, 2.12f, 0.42f);
+        }
+
+        private static void CreateHeatherPatch(Transform root, Vector3 position, float size, Material material, int seed)
+        {
+            Mesh mesh = new Mesh { name = "Hosted Heather Ground Cover Mesh" };
+            const int leafCount = 6;
+            Vector3[] vertices = new Vector3[leafCount * 4];
+            Vector2[] uv = new Vector2[vertices.Length];
+            int[] triangles = new int[leafCount * 12];
+
+            for (int leaf = 0; leaf < leafCount; leaf++)
+            {
+                float angle = (leaf + Deterministic01(seed * 157 + leaf * 11) * 0.42f) * Mathf.PI * 2f / leafCount;
+                Vector3 right = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
+                Vector3 forward = new Vector3(-right.z, 0f, right.x);
+                float length = size * (0.20f + Deterministic01(seed * 163 + leaf * 13) * 0.18f);
+                float width = size * (0.035f + Deterministic01(seed * 167 + leaf * 17) * 0.018f);
+                Vector3 baseCenter = forward * size * (Deterministic01(seed * 173 + leaf * 19) - 0.5f) * 0.10f;
+                Vector3 tip = baseCenter + right * length + Vector3.up * size * (0.015f + Deterministic01(seed * 179 + leaf * 23) * 0.026f);
+                int v = leaf * 4;
+                vertices[v] = baseCenter - forward * width;
+                vertices[v + 1] = baseCenter + forward * width;
+                vertices[v + 2] = tip - forward * width * 0.20f;
+                vertices[v + 3] = tip + forward * width * 0.20f;
+                uv[v] = new Vector2(0f, 0f);
+                uv[v + 1] = new Vector2(1f, 0f);
+                uv[v + 2] = new Vector2(0f, 1f);
+                uv[v + 3] = new Vector2(1f, 1f);
+
+                int t = leaf * 12;
                 triangles[t] = v;
                 triangles[t + 1] = v + 2;
                 triangles[t + 2] = v + 1;
@@ -3340,20 +3568,21 @@ namespace Psycho.Editor
             }
 
             mesh.vertices = vertices;
+            mesh.uv = uv;
             mesh.triangles = triangles;
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
 
-            GameObject clump = new GameObject("Wind Grass");
-            clump.transform.SetParent(root, false);
-            clump.transform.position = position;
-            clump.transform.rotation = Quaternion.Euler(0f, position.x * 37f + position.z * 17f, 0f);
-            clump.AddComponent<MeshFilter>().sharedMesh = mesh;
-            MeshRenderer renderer = clump.AddComponent<MeshRenderer>();
+            GameObject patch = new GameObject("Low Moss Heather Patch");
+            patch.transform.SetParent(root, false);
+            patch.transform.position = position;
+            patch.transform.rotation = Quaternion.Euler(0f, seed * 13.1f, 0f);
+            patch.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = patch.AddComponent<MeshRenderer>();
             renderer.sharedMaterial = material;
             renderer.shadowCastingMode = ShadowCastingMode.Off;
-            renderer.receiveShadows = false;
-            AddWind(clump, 0.13f, 1.95f, 0.44f);
+            renderer.receiveShadows = true;
+            AddWind(patch, 0.035f, 1.58f, 0.30f);
         }
 
         private static void CreateReed(Transform root, Vector3 position, float height, Material material)
