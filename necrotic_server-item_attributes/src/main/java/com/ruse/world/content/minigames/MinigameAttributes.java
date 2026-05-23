@@ -202,23 +202,36 @@ public class MinigameAttributes {
 		}
 
 		public void setWavesCompleted(int wavesCompleted) {
-			this.wavesCompleted = wavesCompleted;
+			this.wavesCompleted = Math.max(0, Math.min(6, wavesCompleted));
 		}
 
 		public boolean hasFinishedPart(int index) {
-			return questParts[index];
+			return questParts != null && index >= 0 && index < questParts.length && questParts[index];
 		}
 
 		public void setPartFinished(int index, boolean finished) {
+			if (questParts == null || questParts.length != 9) {
+				setQuestParts(questParts);
+			}
+			if (index < 0 || index >= questParts.length) {
+				return;
+			}
 			questParts[index] = finished;
 		}
 
 		public boolean[] getQuestParts() {
+			if (questParts == null || questParts.length != 9) {
+				setQuestParts(questParts);
+			}
 			return questParts;
 		}
 
 		public void setQuestParts(boolean[] questParts) {
-			this.questParts = questParts;
+			boolean[] normalized = new boolean[9];
+			if (questParts != null) {
+				System.arraycopy(questParts, 0, normalized, 0, Math.min(questParts.length, normalized.length));
+			}
+			this.questParts = normalized;
 		}
 
 		public void reset() {
@@ -231,19 +244,32 @@ public class MinigameAttributes {
 		private boolean[] questParts = new boolean[2];
 
 		public boolean hasFinishedPart(int index) {
-			return questParts[index];
+			return questParts != null && index >= 0 && index < questParts.length && questParts[index];
 		}
 
 		public void setPartFinished(int index, boolean finished) {
+			if (questParts == null || questParts.length != 2) {
+				setQuestParts(questParts);
+			}
+			if (index < 0 || index >= questParts.length) {
+				return;
+			}
 			questParts[index] = finished;
 		}
 
 		public boolean[] getQuestParts() {
+			if (questParts == null || questParts.length != 2) {
+				setQuestParts(questParts);
+			}
 			return questParts;
 		}
 
 		public void setQuestParts(boolean[] questParts) {
-			this.questParts = questParts;
+			boolean[] normalized = new boolean[2];
+			if (questParts != null) {
+				System.arraycopy(questParts, 0, normalized, 0, Math.min(questParts.length, normalized.length));
+			}
+			this.questParts = normalized;
 		}
 
 		public void reset() {
