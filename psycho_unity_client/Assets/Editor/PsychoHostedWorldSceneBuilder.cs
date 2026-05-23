@@ -39,6 +39,7 @@ namespace Psycho.Editor
         private const string HostedPlayerUsername = "Sirenicbeast";
         private const int EquipmentHeadSlot = 0;
         private const int EquipmentCapeSlot = 1;
+        private const int EquipmentAmuletSlot = 2;
         private const int EquipmentWeaponSlot = 3;
         private const int EquipmentBodySlot = 4;
         private const int EquipmentShieldSlot = 5;
@@ -187,6 +188,37 @@ namespace Psycho.Editor
         public static void RenderHostedThirdPersonPreviewBatch()
         {
             RenderHostedThirdPersonPreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted Player Character Preview")]
+        public static void RenderHostedPlayerCharacterPreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject player = GameObject.Find("Playable Adventurer");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (player == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both the playable adventurer and camera.");
+            }
+
+            Vector3 focus = player.transform.position + new Vector3(0f, 1.06f, 0f);
+            Vector3 viewOffset = new Vector3(0.78f, 0.40f, -2.25f);
+            camera.transform.position = focus + viewOffset;
+            camera.transform.rotation = Quaternion.LookRotation(focus + new Vector3(0f, 0.18f, 0f) - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 32f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-player-character-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1200, 900);
+        }
+
+        public static void RenderHostedPlayerCharacterPreviewBatch()
+        {
+            RenderHostedPlayerCharacterPreview();
         }
 
         [MenuItem("Psycho/Render Hosted NPC Preview")]
@@ -1981,6 +2013,7 @@ namespace Psycho.Editor
 
             PsychoMirrorItem head = GetEquippedItem(database, playerSave, EquipmentHeadSlot);
             PsychoMirrorItem cape = GetEquippedItem(database, playerSave, EquipmentCapeSlot);
+            PsychoMirrorItem amulet = GetEquippedItem(database, playerSave, EquipmentAmuletSlot);
             PsychoMirrorItem weapon = GetEquippedItem(database, playerSave, EquipmentWeaponSlot);
             PsychoMirrorItem body = GetEquippedItem(database, playerSave, EquipmentBodySlot);
             PsychoMirrorItem shield = GetEquippedItem(database, playerSave, EquipmentShieldSlot);
@@ -1996,50 +2029,39 @@ namespace Psycho.Editor
             bool armoredBody = IsMetalEquipment(body);
             bool armoredLegs = IsMetalEquipment(legs);
             bool armoredHands = IsMetalEquipment(hands);
-            Material tunicMaterial = armoredBody ? materials.PlayerCloth : bodyMaterial;
+            Material armorMaterial = armoredBody ? bodyMaterial : materials.PlayerMetal;
+            Material tunicMaterial = armoredBody ? materials.PlayerLeather : bodyMaterial;
             Material trouserMaterial = armoredLegs ? materials.PlayerLeather : legMaterial;
             Material palmMaterial = armoredHands ? materials.PlayerSkin : handMaterial;
 
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Torso", new Vector3(0f, 1.03f, 0f), new Vector3(0.25f, 0.34f, 0.18f), tunicMaterial);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Chest Detail", new Vector3(0f, 1.11f, -0.18f), new Vector3(0.43f, 0.25f, 0.035f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Waist Belt", new Vector3(0f, 0.76f, -0.04f), new Vector3(0.45f, 0.055f, 0.25f), materials.PlayerLeather);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Left Shoulder", new Vector3(-0.31f, 1.24f, 0f), new Vector3(0.13f, 0.115f, 0.13f), armoredBody ? bodyMaterial : tunicMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Right Shoulder", new Vector3(0.31f, 1.24f, 0f), new Vector3(0.13f, 0.115f, 0.13f), armoredBody ? bodyMaterial : tunicMaterial, body);
-            GameObject leftArm = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Left Arm", new Vector3(-0.39f, 0.91f, 0.02f), new Vector3(0.075f, 0.25f, 0.075f), tunicMaterial);
-            leftArm.transform.localRotation = Quaternion.Euler(0f, 0f, 5f);
-            GameObject rightArm = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Right Arm", new Vector3(0.39f, 0.91f, 0.02f), new Vector3(0.075f, 0.25f, 0.075f), tunicMaterial);
-            rightArm.transform.localRotation = Quaternion.Euler(0f, 0f, -5f);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Left Hand", new Vector3(-0.43f, 0.61f, 0.04f), new Vector3(0.095f, 0.095f, 0.095f), palmMaterial, hands);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Right Hand", new Vector3(0.43f, 0.61f, 0.04f), new Vector3(0.095f, 0.095f, 0.095f), palmMaterial, hands);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Left Leg", new Vector3(-0.14f, 0.53f, 0.02f), new Vector3(0.085f, 0.30f, 0.095f), trouserMaterial);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Right Leg", new Vector3(0.14f, 0.53f, 0.02f), new Vector3(0.085f, 0.30f, 0.095f), trouserMaterial);
-            if (armoredLegs)
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Rugged Highland Torso", new Vector3(0f, 1.03f, 0.015f), new Vector3(0.27f, 0.39f, 0.18f), tunicMaterial);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Layered Cuirass Front", new Vector3(0f, 1.13f, -0.205f), 0.40f, 0.30f, 0.37f, 0.050f, armorMaterial, body);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Left Cuirass Rib Plate", new Vector3(-0.170f, 1.08f, -0.220f), 0.075f, 0.060f, 0.30f, 0.032f, armorMaterial, body);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Right Cuirass Rib Plate", new Vector3(0.170f, 1.08f, -0.220f), 0.075f, 0.060f, 0.30f, 0.032f, armorMaterial, body);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Lower Mail Fauld", new Vector3(0f, 0.74f, -0.105f), 0.33f, 0.42f, 0.17f, 0.050f, armorMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Wide Leather War Belt", new Vector3(0f, 0.83f, -0.055f), new Vector3(0.45f, 0.062f, 0.24f), materials.PlayerLeather);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Belt Steel Buckle", new Vector3(0f, 0.83f, -0.205f), new Vector3(0.088f, 0.070f, 0.025f), materials.PlayerMetal);
+            CreatePlayerArmorStrap(visualRoot.transform, "Left Chest Harness", new Vector3(-0.12f, 1.15f, -0.245f), -24f, materials.PlayerLeather);
+            CreatePlayerArmorStrap(visualRoot.transform, "Right Chest Harness", new Vector3(0.12f, 1.15f, -0.245f), 24f, materials.PlayerLeather);
+            CreateHighlandFurMantle(visualRoot.transform, materials);
+            if (amulet != null)
             {
-                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Leg Armor", new Vector3(-0.14f, 0.55f, -0.09f), new Vector3(0.17f, 0.30f, 0.035f), legMaterial, legs);
-                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Leg Armor", new Vector3(0.14f, 0.55f, -0.09f), new Vector3(0.17f, 0.30f, 0.035f), legMaterial, legs);
+                CreatePlayerAmulet(visualRoot.transform, amulet, materials);
             }
 
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Boot", new Vector3(-0.15f, 0.13f, 0.06f), new Vector3(0.18f, 0.12f, 0.26f), bootMaterial, feet);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Boot", new Vector3(0.15f, 0.13f, 0.06f), new Vector3(0.18f, 0.12f, 0.26f), bootMaterial, feet);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.63f, 0f), new Vector3(0.27f, 0.29f, 0.25f), materials.PlayerSkin);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Nose", new Vector3(0f, 1.61f, -0.25f), new Vector3(0.045f, 0.04f, 0.065f), materials.PlayerSkin);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Eye", new Vector3(-0.075f, 1.68f, -0.235f), new Vector3(0.026f, 0.015f, 0.015f), materials.PlayerHair);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Eye", new Vector3(0.075f, 1.68f, -0.235f), new Vector3(0.026f, 0.015f, 0.015f), materials.PlayerHair);
-
-            if (head != null)
-            {
-                Material helmetMaterial = MaterialForEquippedItem(head, materials, materials.PlayerMetal);
-                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Helmet", new Vector3(0f, 1.72f, 0f), new Vector3(0.30f, 0.25f, 0.28f), helmetMaterial, head);
-                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Helmet Visor", new Vector3(0f, 1.62f, -0.20f), new Vector3(0.34f, 0.09f, 0.08f), helmetMaterial, head);
-            }
-            else
-            {
-                CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Hair", new Vector3(0f, 1.78f, 0f), new Vector3(0.28f, 0.12f, 0.24f), materials.PlayerHair);
-            }
+            CreateHighlandArm(visualRoot.transform, true, tunicMaterial, armorMaterial, handMaterial, palmMaterial, materials, body, hands);
+            CreateHighlandArm(visualRoot.transform, false, tunicMaterial, armorMaterial, handMaterial, palmMaterial, materials, body, hands);
+            CreateHighlandLeg(visualRoot.transform, true, trouserMaterial, legMaterial, bootMaterial, materials, legs, feet, armoredLegs);
+            CreateHighlandLeg(visualRoot.transform, false, trouserMaterial, legMaterial, bootMaterial, materials, legs, feet, armoredLegs);
+            CreateHighlandHead(visualRoot.transform, materials, head);
 
             if (cape != null)
             {
-                CreateCapePanel(visualRoot.transform, MaterialForEquippedItem(cape, materials, materials.PlayerCloth), cape);
+                CreateCapePanel(visualRoot.transform, MaterialForEquippedItem(cape, materials, materials.PlayerCloth), materials, cape);
+            }
+            else
+            {
+                CreateCapePanel(visualRoot.transform, materials.PlayerCloth, materials, null);
             }
 
             if (weapon != null)
@@ -2068,23 +2090,193 @@ namespace Psycho.Editor
             return primitive;
         }
 
-        private static void CreateCapePanel(Transform visualRoot, Material material, PsychoMirrorItem cape)
+        private static GameObject CreatePlayerTaperedPrism(Transform parent, string name, Vector3 localPosition, float topWidth, float bottomWidth, float height, float depth, Material material, PsychoMirrorItem item = null)
+        {
+            float top = topWidth * 0.5f;
+            float bottom = bottomWidth * 0.5f;
+            float halfHeight = height * 0.5f;
+            float halfDepth = depth * 0.5f;
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            mesh.vertices = new[]
+            {
+                new Vector3(-top, halfHeight, -halfDepth),
+                new Vector3(top, halfHeight, -halfDepth),
+                new Vector3(bottom, -halfHeight, -halfDepth),
+                new Vector3(-bottom, -halfHeight, -halfDepth),
+                new Vector3(-top, halfHeight, halfDepth),
+                new Vector3(top, halfHeight, halfDepth),
+                new Vector3(bottom, -halfHeight, halfDepth),
+                new Vector3(-bottom, -halfHeight, halfDepth)
+            };
+            mesh.triangles = new[]
+            {
+                0, 1, 2,
+                0, 2, 3,
+                4, 6, 5,
+                4, 7, 6,
+                4, 5, 1,
+                4, 1, 0,
+                3, 2, 6,
+                3, 6, 7,
+                1, 5, 6,
+                1, 6, 2,
+                4, 0, 3,
+                4, 3, 7
+            };
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject prism = new GameObject(item == null || string.IsNullOrWhiteSpace(item.name) ? name : $"{name} - {item.name}");
+            prism.transform.SetParent(parent, false);
+            prism.transform.localPosition = localPosition;
+            prism.AddComponent<MeshFilter>().sharedMesh = mesh;
+            prism.AddComponent<MeshRenderer>().sharedMaterial = material;
+            return prism;
+        }
+
+        private static GameObject CreatePlayerHelmetDome(Transform visualRoot, Material material, PsychoMirrorItem head)
+        {
+            const int radialSegments = 18;
+            const int verticalSegments = 5;
+            const float radiusX = 0.145f;
+            const float radiusY = 0.090f;
+            const float radiusZ = 0.132f;
+
+            List<Vector3> vertices = new List<Vector3> { new Vector3(0f, radiusY, 0f) };
+            for (int ring = 1; ring <= verticalSegments; ring++)
+            {
+                float theta = (Mathf.PI * 0.5f) * ring / verticalSegments;
+                float y = Mathf.Cos(theta) * radiusY;
+                float ringX = Mathf.Sin(theta) * radiusX;
+                float ringZ = Mathf.Sin(theta) * radiusZ;
+                for (int segment = 0; segment < radialSegments; segment++)
+                {
+                    float angle = (Mathf.PI * 2f) * segment / radialSegments;
+                    vertices.Add(new Vector3(Mathf.Cos(angle) * ringX, y, Mathf.Sin(angle) * ringZ));
+                }
+            }
+
+            List<int> triangles = new List<int>();
+            for (int segment = 0; segment < radialSegments; segment++)
+            {
+                int next = segment == radialSegments - 1 ? 0 : segment + 1;
+                triangles.Add(0);
+                triangles.Add(1 + next);
+                triangles.Add(1 + segment);
+            }
+
+            for (int ring = 1; ring < verticalSegments; ring++)
+            {
+                int current = 1 + (ring - 1) * radialSegments;
+                int nextRing = current + radialSegments;
+                for (int segment = 0; segment < radialSegments; segment++)
+                {
+                    int next = segment == radialSegments - 1 ? 0 : segment + 1;
+                    triangles.Add(current + next);
+                    triangles.Add(nextRing + segment);
+                    triangles.Add(current + segment);
+                    triangles.Add(current + next);
+                    triangles.Add(nextRing + next);
+                    triangles.Add(nextRing + segment);
+                }
+            }
+
+            Mesh mesh = new Mesh { name = "Highland Helmet Dome Mesh" };
+            mesh.SetVertices(vertices);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject helmet = new GameObject(head == null || string.IsNullOrWhiteSpace(head.name) ? "Highland Helmet Dome" : $"Highland Helmet Dome - {head.name}");
+            helmet.transform.SetParent(visualRoot, false);
+            helmet.transform.localPosition = new Vector3(0f, 1.675f, -0.01f);
+            helmet.AddComponent<MeshFilter>().sharedMesh = mesh;
+            helmet.AddComponent<MeshRenderer>().sharedMaterial = material;
+            return helmet;
+        }
+
+        private static void CreatePlayerAmulet(Transform visualRoot, PsychoMirrorItem amulet, HostedMaterials materials)
+        {
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Left Amulet Cord", new Vector3(-0.062f, 1.315f, -0.248f), new Vector3(0.018f, 0.185f, 0.014f), materials.PlayerLeather, amulet).transform.localRotation = Quaternion.Euler(0f, 0f, -23f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Right Amulet Cord", new Vector3(0.062f, 1.315f, -0.248f), new Vector3(0.018f, 0.185f, 0.014f), materials.PlayerLeather, amulet).transform.localRotation = Quaternion.Euler(0f, 0f, 23f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cylinder, "Amulet Medallion", new Vector3(0f, 1.205f, -0.258f), new Vector3(0.055f, 0.013f, 0.055f), materials.PlayerMetal, amulet).transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, "Amulet Center Stone", new Vector3(0f, 1.205f, -0.273f), new Vector3(0.027f, 0.027f, 0.012f), materials.LandmarkBanner, amulet);
+        }
+
+        private static void CreatePlayerArmorStrap(Transform visualRoot, string name, Vector3 localPosition, float zRotation, Material material)
+        {
+            GameObject strap = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, name, localPosition, new Vector3(0.038f, 0.37f, 0.020f), material);
+            strap.transform.localRotation = Quaternion.Euler(0f, 0f, zRotation);
+        }
+
+        private static void CreateHighlandFurMantle(Transform visualRoot, HostedMaterials materials)
+        {
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Layered Leather Gorget", new Vector3(0f, 1.31f, -0.135f), new Vector3(0.39f, 0.050f, 0.070f), materials.PlayerLeather);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Left Collar Strap", new Vector3(-0.16f, 1.28f, -0.220f), new Vector3(0.105f, 0.030f, 0.026f), materials.PlayerHair).transform.localRotation = Quaternion.Euler(0f, 0f, -15f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Right Collar Strap", new Vector3(0.16f, 1.28f, -0.220f), new Vector3(0.105f, 0.030f, 0.026f), materials.PlayerHair).transform.localRotation = Quaternion.Euler(0f, 0f, 15f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, "Left Weathered Collar Pad", new Vector3(-0.285f, 1.31f, 0.005f), new Vector3(0.090f, 0.038f, 0.082f), materials.PlayerHair);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, "Right Weathered Collar Pad", new Vector3(0.285f, 1.31f, 0.005f), new Vector3(0.090f, 0.038f, 0.082f), materials.PlayerHair);
+        }
+
+        private static void CreateHighlandArm(Transform visualRoot, bool left, Material sleeveMaterial, Material armorMaterial, Material gloveMaterial, Material palmMaterial, HostedMaterials materials, PsychoMirrorItem body, PsychoMirrorItem hands)
+        {
+            float side = left ? -1f : 1f;
+            GameObject upperArm = CreatePlayerPrimitive(visualRoot, PrimitiveType.Capsule, left ? "Left Upper Arm" : "Right Upper Arm", new Vector3(side * 0.37f, 1.05f, 0.02f), new Vector3(0.066f, 0.205f, 0.066f), sleeveMaterial);
+            upperArm.transform.localRotation = Quaternion.Euler(0f, 0f, side * 7f);
+            GameObject forearm = CreatePlayerPrimitive(visualRoot, PrimitiveType.Capsule, left ? "Left Leather Forearm" : "Right Leather Forearm", new Vector3(side * 0.405f, 0.74f, 0.035f), new Vector3(0.062f, 0.19f, 0.062f), gloveMaterial, hands);
+            forearm.transform.localRotation = Quaternion.Euler(0f, 0f, side * 4f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, left ? "Left Steel Pauldron" : "Right Steel Pauldron", new Vector3(side * 0.325f, 1.30f, -0.01f), new Vector3(0.145f, 0.085f, 0.135f), armorMaterial, body).transform.localRotation = Quaternion.Euler(0f, 0f, side * 10f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, left ? "Left Bracer Plate" : "Right Bracer Plate", new Vector3(side * 0.425f, 0.78f, -0.055f), new Vector3(0.115f, 0.150f, 0.040f), materials.PlayerMetal, hands).transform.localRotation = Quaternion.Euler(0f, 0f, side * 4f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, left ? "Left Hand" : "Right Hand", new Vector3(side * 0.425f, 0.555f, 0.04f), new Vector3(0.078f, 0.078f, 0.078f), palmMaterial, hands);
+        }
+
+        private static void CreateHighlandLeg(Transform visualRoot, bool left, Material trouserMaterial, Material legMaterial, Material bootMaterial, HostedMaterials materials, PsychoMirrorItem legs, PsychoMirrorItem feet, bool armoredLegs)
+        {
+            float side = left ? -1f : 1f;
+            GameObject thigh = CreatePlayerPrimitive(visualRoot, PrimitiveType.Capsule, left ? "Left Mail Thigh" : "Right Mail Thigh", new Vector3(side * 0.14f, 0.55f, 0.02f), new Vector3(0.09f, 0.24f, 0.095f), trouserMaterial);
+            thigh.transform.localRotation = Quaternion.Euler(0f, 0f, side * 1.5f);
+            GameObject shin = CreatePlayerPrimitive(visualRoot, PrimitiveType.Capsule, left ? "Left Greave" : "Right Greave", new Vector3(side * 0.14f, 0.30f, 0.03f), new Vector3(0.08f, 0.18f, 0.085f), armoredLegs ? legMaterial : materials.PlayerLeather, legs);
+            shin.transform.localRotation = Quaternion.Euler(0f, 0f, side * 1.0f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, left ? "Left Knee Plate" : "Right Knee Plate", new Vector3(side * 0.14f, 0.45f, -0.085f), new Vector3(0.16f, 0.08f, 0.04f), materials.PlayerMetal, legs);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, left ? "Left Rugged Boot" : "Right Rugged Boot", new Vector3(side * 0.15f, 0.10f, 0.055f), new Vector3(0.16f, 0.105f, 0.255f), bootMaterial, feet);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, left ? "Left Boot Toe" : "Right Boot Toe", new Vector3(side * 0.15f, 0.055f, -0.075f), new Vector3(0.15f, 0.060f, 0.105f), bootMaterial, feet);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, left ? "Left Boot Cuff" : "Right Boot Cuff", new Vector3(side * 0.15f, 0.20f, 0.015f), new Vector3(0.16f, 0.072f, 0.165f), materials.PlayerHair, feet);
+        }
+
+        private static void CreateHighlandHead(Transform visualRoot, HostedMaterials materials, PsychoMirrorItem head)
+        {
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, "Weathered Head", new Vector3(0f, 1.61f, -0.01f), new Vector3(0.215f, 0.255f, 0.198f), materials.PlayerSkin);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, "Jawline Beard", new Vector3(0f, 1.50f, -0.190f), new Vector3(0.095f, 0.048f, 0.028f), materials.PlayerHair);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Nose Bridge", new Vector3(0f, 1.615f, -0.214f), new Vector3(0.034f, 0.058f, 0.047f), materials.PlayerSkin);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Brow Shadow", new Vector3(0f, 1.68f, -0.207f), new Vector3(0.145f, 0.020f, 0.014f), materials.PlayerHair);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Left Eye", new Vector3(-0.056f, 1.655f, -0.216f), new Vector3(0.020f, 0.012f, 0.011f), materials.PlayerHair);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Right Eye", new Vector3(0.056f, 1.655f, -0.216f), new Vector3(0.020f, 0.012f, 0.011f), materials.PlayerHair);
+
+            Material helmetMaterial = head == null ? materials.PlayerMetal : MaterialForEquippedItem(head, materials, materials.PlayerMetal);
+            CreatePlayerHelmetDome(visualRoot, helmetMaterial, head);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Helmet Brow Plate", new Vector3(0f, 1.675f, -0.205f), new Vector3(0.205f, 0.030f, 0.022f), helmetMaterial, head);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Helmet Nasal Guard", new Vector3(0f, 1.605f, -0.223f), new Vector3(0.017f, 0.098f, 0.014f), helmetMaterial, head);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Left Cheek Guard", new Vector3(-0.112f, 1.59f, -0.150f), new Vector3(0.020f, 0.066f, 0.016f), helmetMaterial, head).transform.localRotation = Quaternion.Euler(0f, 10f, 0f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Right Cheek Guard", new Vector3(0.112f, 1.59f, -0.150f), new Vector3(0.020f, 0.066f, 0.016f), helmetMaterial, head).transform.localRotation = Quaternion.Euler(0f, -10f, 0f);
+        }
+
+        private static void CreateCapePanel(Transform visualRoot, Material material, HostedMaterials materials, PsychoMirrorItem cape)
         {
             Mesh mesh = new Mesh { name = "Hosted Player Tapered Cape Mesh" };
             Vector3[] vertices =
             {
-                new Vector3(-0.29f, 1.31f, 0.24f),
-                new Vector3(0.29f, 1.31f, 0.24f),
-                new Vector3(-0.21f, 0.45f, 0.31f),
-                new Vector3(0.21f, 0.45f, 0.31f),
-                new Vector3(-0.14f, 0.12f, 0.24f),
-                new Vector3(0.14f, 0.12f, 0.24f),
-                new Vector3(-0.29f, 1.31f, 0.24f),
-                new Vector3(0.29f, 1.31f, 0.24f),
-                new Vector3(-0.21f, 0.45f, 0.31f),
-                new Vector3(0.21f, 0.45f, 0.31f),
-                new Vector3(-0.14f, 0.12f, 0.24f),
-                new Vector3(0.14f, 0.12f, 0.24f)
+                new Vector3(-0.34f, 1.33f, 0.23f),
+                new Vector3(0.34f, 1.33f, 0.23f),
+                new Vector3(-0.27f, 0.72f, 0.35f),
+                new Vector3(0.27f, 0.72f, 0.35f),
+                new Vector3(-0.17f, 0.10f, 0.28f),
+                new Vector3(0.17f, 0.10f, 0.28f),
+                new Vector3(-0.34f, 1.33f, 0.23f),
+                new Vector3(0.34f, 1.33f, 0.23f),
+                new Vector3(-0.27f, 0.72f, 0.35f),
+                new Vector3(0.27f, 0.72f, 0.35f),
+                new Vector3(-0.17f, 0.10f, 0.28f),
+                new Vector3(0.17f, 0.10f, 0.28f)
             };
 
             int[] triangles =
@@ -2124,6 +2316,9 @@ namespace Psycho.Editor
             capeObject.transform.SetParent(visualRoot, false);
             capeObject.AddComponent<MeshFilter>().sharedMesh = mesh;
             capeObject.AddComponent<MeshRenderer>().sharedMaterial = material;
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cylinder, "Left Cloak Clasp", new Vector3(-0.18f, 1.31f, -0.20f), new Vector3(0.045f, 0.015f, 0.045f), materials.PlayerMetal, cape).transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cylinder, "Right Cloak Clasp", new Vector3(0.18f, 1.31f, -0.20f), new Vector3(0.045f, 0.015f, 0.045f), materials.PlayerMetal, cape).transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Cube, "Cloak Leather Cross Strap", new Vector3(0f, 1.28f, -0.225f), new Vector3(0.38f, 0.030f, 0.020f), materials.PlayerLeather, cape);
         }
 
         private static void CreateEquippedWeapon(Transform visualRoot, PsychoMirrorItem weapon, Material material, HostedMaterials materials)
