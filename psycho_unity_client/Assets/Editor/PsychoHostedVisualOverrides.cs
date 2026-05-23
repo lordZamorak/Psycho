@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Psycho.Mirror;
 using UnityEditor;
 using UnityEngine;
@@ -8,8 +9,13 @@ namespace Psycho.Editor
 {
     public static class PsychoHostedVisualOverrides
     {
+        private const string LooseModelRoot = "Assets/Generated/LooseModels";
+        private const string Cache1ModelRoot = "Assets/Generated/Cache1Models";
+
         private static bool attemptedLooseImport;
         private static bool attemptedCache1Probe;
+        private static string[] cachedLooseShowcaseAssets;
+        private static string[] cachedCache1ShowcaseAssets;
 
         private static readonly NpcReplacement[] NpcReplacements =
         {
@@ -147,6 +153,169 @@ namespace Psycho.Editor
             return added;
         }
 
+        public static int AddLooseModelShowcase(
+            Transform parent,
+            Material modelMaterial,
+            string displayPrefix,
+            int startIndex,
+            int maxItems,
+            Vector3 localOrigin,
+            int columns,
+            float spacingX,
+            float spacingZ,
+            float targetHeight,
+            float maxFootprint)
+        {
+            return AddGeneratedModelShowcase(
+                parent,
+                modelMaterial,
+                displayPrefix,
+                true,
+                LooseModelRoot,
+                ref cachedLooseShowcaseAssets,
+                startIndex,
+                maxItems,
+                localOrigin,
+                columns,
+                spacingX,
+                spacingZ,
+                targetHeight,
+                maxFootprint);
+        }
+
+        public static int AddCache1ModelShowcase(
+            Transform parent,
+            Material modelMaterial,
+            string displayPrefix,
+            int startIndex,
+            int maxItems,
+            Vector3 localOrigin,
+            int columns,
+            float spacingX,
+            float spacingZ,
+            float targetHeight,
+            float maxFootprint)
+        {
+            return AddGeneratedModelShowcase(
+                parent,
+                modelMaterial,
+                displayPrefix,
+                false,
+                Cache1ModelRoot,
+                ref cachedCache1ShowcaseAssets,
+                startIndex,
+                maxItems,
+                localOrigin,
+                columns,
+                spacingX,
+                spacingZ,
+                targetHeight,
+                maxFootprint);
+        }
+
+        private static int AddGeneratedModelShowcase(
+            Transform parent,
+            Material modelMaterial,
+            string displayPrefix,
+            bool looseModel,
+            string assetRoot,
+            ref string[] cachedAssetPaths,
+            int startIndex,
+            int maxItems,
+            Vector3 localOrigin,
+            int columns,
+            float spacingX,
+            float spacingZ,
+            float targetHeight,
+            float maxFootprint)
+        {
+            if (parent == null || maxItems <= 0)
+            {
+                return 0;
+            }
+
+            string[] assetPaths = CollectGeneratedMeshAssets(assetRoot, looseModel, ref cachedAssetPaths);
+            if (assetPaths.Length == 0)
+            {
+                return 0;
+            }
+
+            int safeColumns = Mathf.Max(1, columns);
+            int added = 0;
+            int itemCount = Mathf.Min(maxItems, assetPaths.Length);
+            for (int item = 0; item < itemCount; item++)
+            {
+                int assetIndex = PositiveModulo(startIndex + item, assetPaths.Length);
+                string assetPath = assetPaths[assetIndex];
+                Mesh mesh = LoadMesh(assetPath, looseModel);
+                if (mesh == null)
+                {
+                    continue;
+                }
+
+                int column = item % safeColumns;
+                int row = item / safeColumns;
+                Vector3 cellPosition = localOrigin + new Vector3(
+                    (column - (safeColumns - 1) * 0.5f) * spacingX,
+                    0f,
+                    row * spacingZ);
+
+                GameObject displayRoot = new GameObject($"{displayPrefix} {item + 1:D3} - {DisplayNameFromAsset(assetPath)}");
+                displayRoot.transform.SetParent(parent, false);
+                displayRoot.transform.localPosition = cellPosition;
+                displayRoot.transform.localRotation = Quaternion.Euler(0f, (assetIndex * 37) % 360, 0f);
+
+                GameObject meshObject = CreateMeshChild(displayRoot.transform, "Decoded Mesh Display", mesh, modelMaterial);
+                meshObject.transform.localRotation = Quaternion.Euler(0f, 180f + (assetIndex * 11) % 45, 0f);
+                float sizeJitter = 0.86f + Deterministic01(assetIndex * 131 + displayPrefix.Length * 17) * 0.28f;
+                NormalizeMeshRoot(meshObject.transform, targetHeight * sizeJitter, maxFootprint);
+                added++;
+            }
+
+            return added;
+        }
+
+        private static string[] CollectGeneratedMeshAssets(string assetRoot, bool looseModel, ref string[] cachedAssetPaths)
+        {
+            if (cachedAssetPaths != null)
+            {
+                return cachedAssetPaths;
+            }
+
+            string[] guids = AssetDatabase.FindAssets("t:Mesh", new[] { assetRoot });
+            if (guids.Length == 0)
+            {
+                if (looseModel && !attemptedLooseImport)
+                {
+                    attemptedLooseImport = true;
+                    PsychoLooseModelImporter.EnsureLooseModelAssets();
+                }
+                else if (!looseModel && !attemptedCache1Probe)
+                {
+                    attemptedCache1Probe = true;
+                    PsychoCache1ModelSampler.EnsureCache1ModelSampleAssets();
+                }
+
+                guids = AssetDatabase.FindAssets("t:Mesh", new[] { assetRoot });
+            }
+
+            List<string> paths = new List<string>(guids.Length);
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                if (string.IsNullOrWhiteSpace(path) || !path.EndsWith(".asset", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                paths.Add(path);
+            }
+
+            paths.Sort(StringComparer.OrdinalIgnoreCase);
+            cachedAssetPaths = paths.ToArray();
+            return cachedAssetPaths;
+        }
+
         private static GameObject CreateMeshChild(Transform parent, string name, Mesh mesh, Material material)
         {
             GameObject meshObject = new GameObject(name);
@@ -187,15 +356,27 @@ namespace Psycho.Editor
 
         private static void NormalizeMeshRoot(Transform root, float targetHeight, float maxFootprint)
         {
-            if (!TryCalculateLocalBounds(root, out Bounds bounds) || bounds.size.y <= 0.001f)
+            if (!TryCalculateLocalBounds(root, out Bounds bounds))
             {
                 return;
             }
 
-            float scaleByHeight = targetHeight / bounds.size.y;
+            float originalHeight = bounds.size.y;
             float footprint = Mathf.Max(bounds.size.x, bounds.size.z);
+            if (originalHeight <= 0.001f && footprint <= 0.001f)
+            {
+                return;
+            }
+
+            float height = Mathf.Max(originalHeight, 0.01f);
+            float scaleByHeight = targetHeight / height;
             float scaleByFootprint = footprint <= 0.001f ? scaleByHeight : maxFootprint / footprint;
             float scale = Mathf.Min(scaleByHeight, scaleByFootprint);
+            if (float.IsNaN(scale) || float.IsInfinity(scale) || scale <= 0.001f)
+            {
+                return;
+            }
+
             root.localScale = Vector3.one * scale;
             root.localPosition += new Vector3(-bounds.center.x * scale, -bounds.min.y * scale, -bounds.center.z * scale);
         }
@@ -233,6 +414,44 @@ namespace Psycho.Editor
         private static Vector3 Abs(Vector3 value)
         {
             return new Vector3(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
+        }
+
+        private static int PositiveModulo(int value, int divisor)
+        {
+            if (divisor <= 0)
+            {
+                return 0;
+            }
+
+            int result = value % divisor;
+            return result < 0 ? result + divisor : result;
+        }
+
+        private static float Deterministic01(int value)
+        {
+            unchecked
+            {
+                uint x = (uint)value;
+                x ^= x << 13;
+                x ^= x >> 17;
+                x ^= x << 5;
+                return (x & 0x00ffffff) / 16777215f;
+            }
+        }
+
+        private static string DisplayNameFromAsset(string assetPath)
+        {
+            string fileName = System.IO.Path.GetFileNameWithoutExtension(assetPath);
+            return string.IsNullOrWhiteSpace(fileName) ? "decoded_model" : fileName;
+        }
+
+        private static void RemoveCollider(GameObject target)
+        {
+            Collider collider = target.GetComponent<Collider>();
+            if (collider != null)
+            {
+                UnityEngine.Object.DestroyImmediate(collider);
+            }
         }
 
         public readonly struct PsychoMapObjectPlacementAdapter

@@ -219,6 +219,37 @@ namespace Psycho.Editor
             RenderHostedNpcPreview();
         }
 
+        [MenuItem("Psycho/Render Hosted Grand Exchange Preview")]
+        public static void RenderHostedGrandExchangePreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject grandExchange = GameObject.Find("Grand Exchange Landmark");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (grandExchange == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both the Grand Exchange landmark and camera.");
+            }
+
+            Vector3 focus = grandExchange.transform.position + new Vector3(0f, 0.78f, -5.25f);
+            Vector3 viewOffset = new Vector3(6.0f, 3.05f, -6.8f);
+            camera.transform.position = focus + viewOffset;
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 34f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-ge-showcase-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedGrandExchangePreviewBatch()
+        {
+            RenderHostedGrandExchangePreview();
+        }
+
         private static Bounds BuildNpcPreviewBounds(Transform npcRoot)
         {
             Vector3 average = Vector3.zero;
@@ -977,7 +1008,7 @@ namespace Psycho.Editor
 
         private static void BuildWorldLandmarks(HostedBuildContext context, HostedMaterials materials)
         {
-            GameObject root = new GameObject("High Definition Necrotic Landmark Dressing");
+            GameObject root = new GameObject("High Definition Psycho Landmark Dressing");
             CreateGrandExchangeLandmark(root.transform, context, materials);
             CreateBankLandmark(root.transform, context, materials, "Edgeville Bank Landmark", 3094, 3498, 6.8f, 4.2f, 0f);
             CreateBankLandmark(root.transform, context, materials, "Varrock West Bank Landmark", 3185, 3436, 8.4f, 5.6f, 90f);
@@ -1018,7 +1049,33 @@ namespace Psycho.Editor
                 CreateLandmarkBox(root, $"Grand Exchange Booth Banner {i + 1}", boothPosition + Vector3.up * 0.78f, new Vector3(1.95f, 0.30f, 0.08f), materials.LandmarkBanner).transform.localRotation = booth.transform.localRotation;
             }
 
-            context.Report.landmarkDressingObjects += 24;
+            Material decodedModelMaterial = PsychoCacheMeshImporter.LoadOrCreateVertexColorMaterial();
+            int looseDisplays = PsychoHostedVisualOverrides.AddLooseModelShowcase(
+                root,
+                decodedModelMaterial,
+                "Grand Exchange Loose Cache Display",
+                0,
+                116,
+                new Vector3(0f, 0.29f, -7.25f),
+                16,
+                0.72f,
+                0.68f,
+                0.54f,
+                0.50f);
+            int cache1Displays = PsychoHostedVisualOverrides.AddCache1ModelShowcase(
+                root,
+                decodedModelMaterial,
+                "Grand Exchange Cache1 Display",
+                0,
+                160,
+                new Vector3(0f, 0.28f, 2.25f),
+                16,
+                0.72f,
+                0.58f,
+                0.46f,
+                0.48f);
+
+            context.Report.landmarkDressingObjects += 24 + looseDisplays + cache1Displays;
         }
 
         private static void CreateBankLandmark(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY, float width, float depth, float yaw)
@@ -1363,18 +1420,20 @@ namespace Psycho.Editor
             Material bootMaterial = MaterialForEquippedItem(feet, materials, materials.PlayerLeather);
             Material handMaterial = MaterialForEquippedItem(hands, materials, materials.PlayerLeather);
 
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Torso", new Vector3(0f, 1.02f, 0f), new Vector3(0.52f, 0.62f, 0.30f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Chest Plate", new Vector3(0f, 1.12f, -0.02f), new Vector3(0.58f, 0.40f, 0.08f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Shoulder", new Vector3(-0.36f, 1.24f, 0f), new Vector3(0.22f, 0.18f, 0.26f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Shoulder", new Vector3(0.36f, 1.24f, 0f), new Vector3(0.22f, 0.18f, 0.26f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Upper Arm", new Vector3(-0.42f, 0.93f, 0.02f), new Vector3(0.16f, 0.44f, 0.17f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Upper Arm", new Vector3(0.42f, 0.93f, 0.02f), new Vector3(0.16f, 0.44f, 0.17f), bodyMaterial, body);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Hand", new Vector3(-0.43f, 0.63f, 0.04f), new Vector3(0.15f, 0.16f, 0.15f), handMaterial, hands);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Hand", new Vector3(0.43f, 0.63f, 0.04f), new Vector3(0.15f, 0.16f, 0.15f), handMaterial, hands);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Leg", new Vector3(-0.15f, 0.55f, 0.02f), new Vector3(0.18f, 0.58f, 0.20f), legMaterial, legs);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Leg", new Vector3(0.15f, 0.55f, 0.02f), new Vector3(0.18f, 0.58f, 0.20f), legMaterial, legs);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Boot", new Vector3(-0.15f, 0.15f, 0.04f), new Vector3(0.18f, 0.28f, 0.24f), bootMaterial, feet);
-            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Boot", new Vector3(0.15f, 0.15f, 0.04f), new Vector3(0.18f, 0.28f, 0.24f), bootMaterial, feet);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Torso", new Vector3(0f, 1.02f, 0f), new Vector3(0.27f, 0.34f, 0.18f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Chest Plate", new Vector3(0f, 1.11f, -0.03f), new Vector3(0.50f, 0.36f, 0.07f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Left Shoulder", new Vector3(-0.34f, 1.24f, 0f), new Vector3(0.15f, 0.13f, 0.15f), bodyMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Right Shoulder", new Vector3(0.34f, 1.24f, 0f), new Vector3(0.15f, 0.13f, 0.15f), bodyMaterial, body);
+            GameObject leftArm = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Left Arm", new Vector3(-0.41f, 0.90f, 0.02f), new Vector3(0.08f, 0.24f, 0.08f), bodyMaterial, body);
+            leftArm.transform.localRotation = Quaternion.Euler(0f, 0f, 5f);
+            GameObject rightArm = CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Right Arm", new Vector3(0.41f, 0.90f, 0.02f), new Vector3(0.08f, 0.24f, 0.08f), bodyMaterial, body);
+            rightArm.transform.localRotation = Quaternion.Euler(0f, 0f, -5f);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Left Hand", new Vector3(-0.43f, 0.60f, 0.04f), new Vector3(0.10f, 0.10f, 0.10f), handMaterial, hands);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Right Hand", new Vector3(0.43f, 0.60f, 0.04f), new Vector3(0.10f, 0.10f, 0.10f), handMaterial, hands);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Left Leg", new Vector3(-0.15f, 0.53f, 0.02f), new Vector3(0.09f, 0.30f, 0.10f), legMaterial, legs);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Right Leg", new Vector3(0.15f, 0.53f, 0.02f), new Vector3(0.09f, 0.30f, 0.10f), legMaterial, legs);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Left Boot", new Vector3(-0.15f, 0.13f, 0.06f), new Vector3(0.18f, 0.12f, 0.26f), bootMaterial, feet);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Right Boot", new Vector3(0.15f, 0.13f, 0.06f), new Vector3(0.18f, 0.12f, 0.26f), bootMaterial, feet);
             CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.63f, 0f), new Vector3(0.27f, 0.29f, 0.25f), materials.PlayerSkin);
 
             if (head != null)
