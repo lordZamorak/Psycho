@@ -7072,6 +7072,10 @@ public class Client extends GameRenderer {
 
 	private int loadingPercentage;
 	private BufferedImage[] loadingImages;
+	private BufferedImage loginSmithingBackground;
+	private int[] loginSmithingFramePixels;
+	private int loginSmithingFrameWidth = -1;
+	private int loginSmithingFrameHeight = -1;
 	
 	public void displayLoadingScreen() {
 		if (super.graphics == null) {
@@ -7326,13 +7330,70 @@ public class Client extends GameRenderer {
 	}
 
 	private void drawSoftLoginPanel(int x, int y, int width, int height) {
-		DrawingArea.fillRect(x + 9, y + 11, width, height, 0x000000, 95);
-		DrawingArea.fillRect(x, y, width, height, 0x081018, 218);
-		DrawingArea.fillRect(x + 8, y + 8, width - 16, height - 16, 0x132131, 92);
-		DrawingArea.drawAlphaGradient(x + 1, y + 1, width - 2, Math.max(1, height / 2), 0x30475f, 0x0a1018, 78);
-		DrawingArea.fillRect(x + 2, y + 2, width - 4, 1, 0xf1cf84, 165);
-		DrawingArea.fillPixels(x, width, height, 0xa57a39, y);
-		DrawingArea.fillPixels(x + 5, width - 10, height - 10, 0x26394d, y + 5);
+		DrawingArea.fillRect(x + 16, y + 20, width, height, 0x000000, 62);
+		DrawingArea.fillRect(x + 7, y + 9, width, height, 0x03101c, 82);
+		DrawingArea.fillRect(x, y, width, height, 0x071521, 206);
+		DrawingArea.drawAlphaGradient(x + 1, y + 1, width - 2, Math.max(1, height - 2), 0x17334a, 0x050b14, 154);
+		DrawingArea.fillRect(x + 9, y + 9, width - 18, height - 18, 0x102c3f, 74);
+		DrawingArea.drawAlphaGradient(x + 2, y + 2, width - 4, Math.max(1, height / 3), 0xb9f3ff, 0x143650, 46);
+		DrawingArea.drawAlphaGradient(x + 2, y + height * 2 / 3, width - 4, Math.max(1, height / 3 - 2), 0x020912, 0x061827, 64);
+		DrawingArea.fillPixels(x, width, height, 0x8fd8ff, y);
+		DrawingArea.fillPixels(x + 4, width - 8, height - 8, 0x2f6685, y + 4);
+		DrawingArea.fillRect(x + 2, y + 2, width - 4, 1, 0xffffff, 118);
+		DrawingArea.fillRect(x + 2, y + height - 3, width - 4, 1, 0x0b2234, 190);
+		DrawingArea.fillRect(x + 1, y + 1, 1, height - 2, 0xd7f8ff, 62);
+		DrawingArea.fillRect(x + width - 2, y + 1, 1, height - 2, 0x173f5a, 150);
+		drawLoginAlphaLine(x + 18, y + height - 26, x + width / 4, y + 12, 0xb7f5ff, 30);
+		drawLoginAlphaLine(x + width / 4, y + 12, x + width * 54 / 100, y + height - 18, 0xffffff, 18);
+		drawLoginAlphaLine(x + width - 24, y + 18, x + width * 70 / 100, y + height - 14, 0x65c7ff, 24);
+		drawLoginAlphaLine(x + width * 10 / 100, y + height / 2, x + width * 92 / 100, y + height * 44 / 100, 0x9fe9ff, 14);
+		DrawingArea.fillRect(x + 26, y + 74, Math.max(1, width - 52), 1, 0xf7c978, 64);
+	}
+
+	private void drawLoginPanelSceneShadow(int x, int y, int width, int height) {
+		int offsetX = -Math.max(22, width / 34);
+		int offsetY = Math.max(18, height / 15);
+		for (int layer = 8; layer >= 0; layer--) {
+			int growX = layer * Math.max(5, width / 100);
+			int growY = layer * Math.max(4, height / 110);
+			int alpha = 12 + (8 - layer) * 7;
+			DrawingArea.fillRect(x + offsetX - growX, y + offsetY - growY / 2, width + growX * 2, height + growY * 2, 0x02040a, alpha);
+		}
+		DrawingArea.fillRect(x + offsetX + width / 18, y + offsetY + height / 18, width - width / 9, height - height / 8, 0x000000, 36);
+	}
+
+	private void drawLoginAlphaLine(int x0, int y0, int x1, int y1, int color, int alpha) {
+		int dx = Math.abs(x1 - x0);
+		int dy = Math.abs(y1 - y0);
+		int sx = x0 < x1 ? 1 : -1;
+		int sy = y0 < y1 ? 1 : -1;
+		int error = dx - dy;
+		while (true) {
+			drawLoginAlphaPixel(x0, y0, color, alpha);
+			if (x0 == x1 && y0 == y1) {
+				break;
+			}
+			int doubledError = error * 2;
+			if (doubledError > -dy) {
+				error -= dy;
+				x0 += sx;
+			}
+			if (doubledError < dx) {
+				error += dx;
+				y0 += sy;
+			}
+		}
+	}
+
+	private void drawLoginAlphaPixel(int x, int y, int color, int alpha) {
+		if (x < DrawingArea.topX || x >= DrawingArea.bottomX || y < DrawingArea.topY || y >= DrawingArea.bottomY) {
+			return;
+		}
+		int index = x + y * DrawingArea.width;
+		int destination = DrawingArea.pixels[index];
+		int inverse = 256 - alpha;
+		DrawingArea.pixels[index] = ((color & 0xff00ff) * alpha + (destination & 0xff00ff) * inverse & 0xff00ff00)
+				+ ((color & 0xff00) * alpha + (destination & 0xff00) * inverse & 0xff0000) >> 8;
 	}
 
 	private void drawModernLoginInput(int x, int y, int width, int height, String label, boolean hover, boolean focused) {
@@ -7463,6 +7524,101 @@ public class Client extends GameRenderer {
 			return;
 		}
 		newSmallFont.drawCenteredString("Saved adventurers", loginPanelX + loginPanelWidth / 2, loginAccountY - 13, 0xb9c6d2, 0);
+	}
+
+	private void loadLoginSmithingBackground() {
+		try {
+			URL resource = getClass().getResource("login_smithing_bg.png");
+			if (resource != null) {
+				loginSmithingBackground = ImageIO.read(resource);
+			}
+		} catch (Exception e) {
+			System.err.println("Unable to load login_smithing_bg.png; using procedural login background.");
+			e.printStackTrace();
+		}
+	}
+
+	private void drawSmithingLoginBackground() {
+		if (loginSmithingBackground == null) {
+			drawMedievalLoginBackground();
+			return;
+		}
+
+		int width = Math.max(1, getScreenWidth());
+		int height = Math.max(1, getScreenHeight());
+		if (loginSmithingFramePixels == null || loginSmithingFrameWidth != width || loginSmithingFrameHeight != height) {
+			rebuildLoginSmithingFrame(width, height);
+		}
+
+		if (loginSmithingFramePixels == null) {
+			drawMedievalLoginBackground();
+			return;
+		}
+
+		int copyWidth = Math.min(width, DrawingArea.width);
+		int copyHeight = Math.min(height, DrawingArea.height);
+		for (int y = 0; y < copyHeight; y++) {
+			System.arraycopy(loginSmithingFramePixels, y * width, DrawingArea.pixels, y * DrawingArea.width, copyWidth);
+		}
+
+		drawSmithingLivePhotoOverlays(width, height, loopCycle);
+		DrawingArea.drawAlphaGradient(0, 0, width, Math.max(1, height / 4), 0x000000, 0x000000, 54);
+		DrawingArea.drawAlphaGradient(0, height - Math.max(1, height / 3), width, Math.max(1, height / 3), 0x000000, 0x000000, 76);
+		DrawingArea.fillRect(0, 0, Math.max(1, width / 10), height, 0x000000, 44);
+		DrawingArea.fillRect(width - Math.max(1, width / 12), 0, Math.max(1, width / 12), height, 0x000000, 36);
+	}
+
+	private void rebuildLoginSmithingFrame(int width, int height) {
+		BufferedImage frame = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics2D graphics = frame.createGraphics();
+		try {
+			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			double scale = Math.max(width / (double) loginSmithingBackground.getWidth(), height / (double) loginSmithingBackground.getHeight());
+			int drawWidth = Math.max(width, (int) Math.ceil(loginSmithingBackground.getWidth() * scale));
+			int drawHeight = Math.max(height, (int) Math.ceil(loginSmithingBackground.getHeight() * scale));
+			int drawX = (width - drawWidth) / 2;
+			int drawY = (height - drawHeight) / 2;
+			graphics.drawImage(loginSmithingBackground, drawX, drawY, drawWidth, drawHeight, null);
+		} finally {
+			graphics.dispose();
+		}
+
+		loginSmithingFramePixels = frame.getRGB(0, 0, width, height, null, 0, width);
+		for (int i = 0; i < loginSmithingFramePixels.length; i++) {
+			loginSmithingFramePixels[i] &= 0x00ffffff;
+		}
+		loginSmithingFrameWidth = width;
+		loginSmithingFrameHeight = height;
+	}
+
+	private void drawSmithingLivePhotoOverlays(int width, int height, int time) {
+		int forgeX = width * 19 / 100;
+		int forgeY = height * 52 / 100;
+		for (int i = 0; i < 9; i++) {
+			int drift = positiveModulo(time * (1 + i % 3) + i * 97, Math.max(1, width / 4));
+			int x = forgeX - width / 16 + drift / 4;
+			int y = height * (16 + i * 4) / 100 - positiveModulo(time + i * 19, Math.max(1, height / 16));
+			drawSoftEllipse(x, y, Math.max(22, width / 36), Math.max(8, height / 54), i % 2 == 0 ? 0x87909b : 0x56616c, 18 + i * 2);
+		}
+
+		for (int i = 0; i < 42; i++) {
+			int x = positiveModulo(forgeX - width / 12 + i * 29 + time * (1 + i % 4), Math.max(1, width * 3 / 5));
+			int y = positiveModulo(forgeY + i * 37 - time * (2 + i % 2), Math.max(1, height));
+			if (y < height * 18 / 100 || y > height * 82 / 100) {
+				continue;
+			}
+			int color = i % 3 == 0 ? 0xffc26b : i % 3 == 1 ? 0xff7e35 : 0x8ed8ff;
+			DrawingArea.fillRect(x, y, i % 5 == 0 ? 2 : 1, i % 5 == 0 ? 2 : 1, color, 70 + (i % 3) * 20);
+		}
+
+		for (int i = 0; i < 13; i++) {
+			int y = height * 58 / 100 + i * Math.max(2, height / 80);
+			int wave = (int) (Math.sin((time + i * 11) * 0.11) * Math.max(4, width / 180));
+			DrawingArea.fillRect(width * 8 / 100 + wave, y, width * 24 / 100, 1, 0xffb46a, 28);
+			DrawingArea.fillRect(width * 10 / 100 - wave / 2, y + 2, width * 18 / 100, 1, 0x8ed8ff, 18);
+		}
 	}
 
 	private void drawMedievalLoginBackground() {
@@ -7667,12 +7823,14 @@ public class Client extends GameRenderer {
 		resetImageProducers();
 		titleScreenIP.initDrawingArea();
 		titleAlpha += titleAlpha < 250 ? 8 : 0;
-		drawMedievalLoginBackground();
+		boolean hasLoginAlert = (loginMessage1 != null && !loginMessage1.isEmpty()) || (loginMessage2 != null && !loginMessage2.isEmpty());
+		updateLoginLayout(hasLoginAlert);
+		drawSmithingLoginBackground();
+		drawLoginPanelSceneShadow(loginPanelX, loginPanelY, loginPanelWidth, loginPanelHeight);
 		if (titleAlpha < 250) {
 			DrawingArea.fillRect(0, 0, getScreenWidth(), getScreenHeight(), 0x000000, 250 - titleAlpha);
 		}
 
-		boolean hasLoginAlert = (loginMessage1 != null && !loginMessage1.isEmpty()) || (loginMessage2 != null && !loginMessage2.isEmpty());
 		if(!hasLoginAlert) {
 			handleHovers(false);
 			drawModernLoginChrome(false);
@@ -15987,6 +16145,7 @@ public class Client extends GameRenderer {
 				e.printStackTrace();
 			}
 		}
+		loadLoginSmithingBackground();
 
 		if(CacheDownloader.updatedCache()) {
 			if (super.mainFrame != null) {
