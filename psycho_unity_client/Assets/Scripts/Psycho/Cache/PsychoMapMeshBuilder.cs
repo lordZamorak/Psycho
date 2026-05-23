@@ -162,14 +162,14 @@ namespace Psycho.Cache
                 color = Color.Lerp(color, grassBlend, overlay > 22 ? 0.18f : 0.045f);
                 color *= Mathf.Lerp(0.82f, 1.06f, fineNoise);
                 color = Color.Lerp(color, rock, Mathf.Clamp01(slope * 0.34f + elevation * 0.11f));
-                return color;
+                return ApplyHighlandFinish(color, rock, slope, elevation, moisture, noise, fineNoise);
             }
 
             if ((flag & 1) == 1)
             {
                 Color flagged = Color.Lerp(new Color(0.14f, 0.20f, 0.22f), new Color(0.29f, 0.35f, 0.34f), Mathf.Lerp(noise, moisture, 0.45f));
                 flagged = Color.Lerp(flagged, new Color(0.10f, 0.17f, 0.23f), 0.30f + elevation * 0.12f);
-                return flagged;
+                return ApplyHighlandFinish(flagged, rock, slope, elevation, moisture, noise, fineNoise);
             }
 
             if (underlay == 0)
@@ -182,7 +182,7 @@ namespace Psycho.Cache
                 baseGrass = Color.Lerp(baseGrass, new Color(0.15f, 0.22f, 0.13f), macroNoise * 0.18f);
                 baseGrass *= Mathf.Lerp(0.82f, 1.10f, fineNoise);
                 baseGrass = Color.Lerp(baseGrass, rock, Mathf.Clamp01(slope * 0.58f + elevation * 0.18f + (1f - moisture) * 0.04f));
-                return baseGrass;
+                return ApplyHighlandFinish(baseGrass, rock, slope, elevation, moisture, noise, fineNoise);
             }
 
             float underlayBlend = Mathf.Clamp01(underlay / 32f);
@@ -191,7 +191,26 @@ namespace Psycho.Cache
             Color underlayColor = Color.Lerp(low, high, underlayBlend);
             underlayColor *= Mathf.Lerp(0.82f, 1.08f, fineNoise);
             underlayColor = Color.Lerp(underlayColor, rock, Mathf.Clamp01(slope * 0.54f + elevation * 0.16f));
-            return underlayColor;
+            return ApplyHighlandFinish(underlayColor, rock, slope, elevation, moisture, noise, fineNoise);
+        }
+
+        private static Color ApplyHighlandFinish(Color color, Color rock, float slope, float elevation, float moisture, float noise, float fineNoise)
+        {
+            Color coldLichen = Color.Lerp(new Color(0.18f, 0.25f, 0.19f), new Color(0.33f, 0.36f, 0.27f), moisture);
+            float lichenMask = Mathf.Clamp01((noise - 0.58f) * 1.25f + (1f - moisture) * 0.10f);
+            color = Color.Lerp(color, coldLichen, lichenMask * 0.10f);
+
+            float exposedRock = Mathf.Clamp01(slope * 0.42f + elevation * 0.20f + (1f - moisture) * 0.06f);
+            color = Color.Lerp(color, rock, exposedRock * 0.22f);
+
+            float snowMask = Mathf.Clamp01((elevation - 0.68f) * 2.65f + slope * 0.16f + (fineNoise - 0.62f) * 0.18f);
+            Color snowDust = Color.Lerp(new Color(0.56f, 0.60f, 0.58f), new Color(0.76f, 0.78f, 0.73f), fineNoise);
+            color = Color.Lerp(color, snowDust, snowMask * 0.34f);
+
+            color.r *= 0.96f;
+            color.g *= 0.99f;
+            color.b *= 1.03f;
+            return color;
         }
 
         private static float TileSlope(PsychoMapLandscape landscape, int plane, int x, int y)

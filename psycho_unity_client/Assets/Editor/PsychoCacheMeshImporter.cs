@@ -44,13 +44,16 @@ namespace Psycho.Editor
         public static Material LoadOrCreateTerrainVertexColorMaterial()
         {
             EnsureGeneratedFolders();
-            Material material = CreateOrUpdateVertexColorMaterial(TerrainMaterialPath, 0.22f, 0.42f, 0.12f, 0.48f);
+            Material material = CreateOrUpdateVertexColorMaterial(TerrainMaterialPath, 0.20f, 0.58f, 0.16f, 0.54f);
             SetMaterialFloat(material, "_GroundBlendStrength", 0.88f);
-            SetMaterialColor(material, "_GrassTint", new Color(0.16f, 0.29f, 0.17f, 1f));
-            SetMaterialColor(material, "_PathTint", new Color(0.34f, 0.32f, 0.27f, 1f));
-            SetMaterialColor(material, "_RockTint", new Color(0.42f, 0.43f, 0.41f, 1f));
-            SetMaterialFloat(material, "_BlendNoiseScale", 0.36f);
-            SetMaterialFloat(material, "_BlendNoiseStrength", 0.54f);
+            SetMaterialColor(material, "_GrassTint", new Color(0.13f, 0.25f, 0.15f, 1f));
+            SetMaterialColor(material, "_PathTint", new Color(0.31f, 0.30f, 0.26f, 1f));
+            SetMaterialColor(material, "_RockTint", new Color(0.43f, 0.44f, 0.42f, 1f));
+            SetMaterialFloat(material, "_BlendNoiseScale", 0.44f);
+            SetMaterialFloat(material, "_BlendNoiseStrength", 0.62f);
+            SetMaterialFloat(material, "_HighlandTextureStrength", 0.78f);
+            SetMaterialFloat(material, "_StoneStrataStrength", 0.62f);
+            SetMaterialFloat(material, "_SnowDustStrength", 0.22f);
             SetMaterialColor(material, "_DistanceTint", new Color(0.46f, 0.55f, 0.62f, 1f));
             SetMaterialFloat(material, "_DistanceStart", 80f);
             SetMaterialFloat(material, "_DistanceEnd", 420f);
@@ -65,7 +68,14 @@ namespace Psycho.Editor
         public static Material LoadOrCreateNpcVertexColorMaterial()
         {
             EnsureGeneratedFolders();
-            return CreateOrUpdateVertexColorMaterial(NpcMaterialPath, 0.24f, 0.035f, 0.006f, 0.035f);
+            Material material = CreateOrUpdateVertexColorMaterial(NpcMaterialPath, 0.24f, 0.035f, 0.006f, 0.035f);
+            SetMaterialFloat(material, "_HighlandTextureStrength", 0.06f);
+            SetMaterialFloat(material, "_StoneStrataStrength", 0.0f);
+            SetMaterialFloat(material, "_SnowDustStrength", 0.0f);
+            SetMaterialFloat(material, "_RimStrength", 0.035f);
+            SetMaterialFloat(material, "_SpecularLift", 0.030f);
+            EditorUtility.SetDirty(material);
+            return material;
         }
 
         [MenuItem("Psycho/Cache/Rebuild Generated Model Assets")]
@@ -310,6 +320,9 @@ namespace Psycho.Editor
             SetMaterialColor(material, "_RimColor", new Color(0.70f, 0.84f, 1.00f, 1f));
             SetMaterialFloat(material, "_RimStrength", 0.075f);
             SetMaterialFloat(material, "_SpecularLift", 0.08f);
+            SetMaterialFloat(material, "_HighlandTextureStrength", 0.12f);
+            SetMaterialFloat(material, "_StoneStrataStrength", 0.18f);
+            SetMaterialFloat(material, "_SnowDustStrength", 0.0f);
 
             material.enableInstancing = true;
             EditorUtility.SetDirty(material);

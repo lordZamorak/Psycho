@@ -19,6 +19,9 @@ Shader "Psycho/Vertex Color Lit"
         _RockTint ("Rock Blend Tint", Color) = (0.46, 0.46, 0.41, 1)
         _BlendNoiseScale ("Ground Blend Noise Scale", Range(0.02, 2)) = 0.26
         _BlendNoiseStrength ("Ground Blend Noise Strength", Range(0, 1)) = 0.35
+        _HighlandTextureStrength ("Highland Texture Strength", Range(0, 1)) = 0.55
+        _StoneStrataStrength ("Stone Strata Strength", Range(0, 1)) = 0.45
+        _SnowDustStrength ("Snow Dust Strength", Range(0, 1)) = 0.18
         _RimColor ("NXT Rim Color", Color) = (0.70, 0.84, 1.00, 1)
         _RimStrength ("NXT Rim Strength", Range(0, 0.35)) = 0.08
         _SpecularLift ("NXT Specular Lift", Range(0, 0.35)) = 0.08
@@ -49,6 +52,9 @@ Shader "Psycho/Vertex Color Lit"
         fixed4 _RockTint;
         half _BlendNoiseScale;
         half _BlendNoiseStrength;
+        half _HighlandTextureStrength;
+        half _StoneStrataStrength;
+        half _SnowDustStrength;
         fixed4 _RimColor;
         half _RimStrength;
         half _SpecularLift;
@@ -68,6 +74,32 @@ Shader "Psycho/Vertex Color Lit"
             return frac(p.x * p.y);
         }
 
+        float ValueNoise(float2 p)
+        {
+            float2 i = floor(p);
+            float2 f = frac(p);
+            f = f * f * (3.0 - 2.0 * f);
+            float a = Hash21(i);
+            float b = Hash21(i + float2(1.0, 0.0));
+            float c = Hash21(i + float2(0.0, 1.0));
+            float d = Hash21(i + float2(1.0, 1.0));
+            return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
+        }
+
+        float Fbm(float2 p)
+        {
+            float value = 0.0;
+            float amplitude = 0.5;
+            for (int i = 0; i < 4; i++)
+            {
+                value += ValueNoise(p) * amplitude;
+                p = p * 2.07 + float2(17.13, -11.71);
+                amplitude *= 0.5;
+            }
+
+            return saturate(value);
+        }
+
         void surf(Input input, inout SurfaceOutputStandard output)
         {
             fixed4 color = input.color * _Tint;
@@ -75,26 +107,38 @@ Shader "Psycho/Vertex Color Lit"
             float2 noiseCoord = input.worldPos.xz * _NoiseScale;
             float broadNoise = sin(noiseCoord.x * 1.7 + noiseCoord.y * 1.1) * 0.5 + 0.5;
             float fineNoise = sin(noiseCoord.x * 4.1 - noiseCoord.y * 3.3) * 0.5 + 0.5;
-            float detail = ((broadNoise * 0.88 + fineNoise * 0.12) * 2.0 - 1.0) * _NoiseStrength;
+            float macroFbm = Fbm(input.worldPos.xz * (_BlendNoiseScale * 0.72));
+            float microFbm = Fbm(input.worldPos.xz * (_NoiseScale * 5.6));
+            float detail = ((broadNoise * 0.42 + fineNoise * 0.14 + microFbm * 0.44) * 2.0 - 1.0) * _NoiseStrength;
             float slope = 1.0 - saturate(normal.y);
             float sunFacing = saturate(dot(normal, normalize(float3(0.36, 0.82, 0.24))));
             float topLight = saturate(normal.y);
             float blendNoise = (sin(input.worldPos.x * _BlendNoiseScale + input.worldPos.z * (_BlendNoiseScale * 0.61)) * 0.5 + 0.5) * 0.65
-                + (sin(input.worldPos.x * (_BlendNoiseScale * 3.7) - input.worldPos.z * (_BlendNoiseScale * 2.9)) * 0.5 + 0.5) * 0.35;
+                + (sin(input.worldPos.x * (_BlendNoiseScale * 3.7) - input.worldPos.z * (_BlendNoiseScale * 2.9)) * 0.5 + 0.5) * 0.20
+                + macroFbm * 0.15;
             float greenDominance = saturate((color.g - max(color.r, color.b)) * 2.65 + 0.22 + (blendNoise - 0.5) * _BlendNoiseStrength);
             float pathWarmth = saturate((color.r - color.b) * 1.45 + (0.48 - color.g) * 0.72 + (0.5 - blendNoise) * _BlendNoiseStrength);
             float rockMask = saturate(slope * 1.85 + (1.0 - greenDominance) * 0.22 + (blendNoise - 0.54) * _BlendNoiseStrength - 0.30);
             float flatMask = saturate(normal.y * 1.35 - 0.18);
+            float pebble = saturate((microFbm - 0.48) * 2.2);
+            float striation = abs(sin(input.worldPos.y * 0.92 + input.worldPos.x * 0.18 + input.worldPos.z * 0.11));
+            float snowDust = saturate((input.worldPos.y - 21.0) / 24.0 + slope * 0.34 + (macroFbm - 0.58) * 0.45) * _SnowDustStrength;
             float3 groundBlend = color.rgb;
-            groundBlend = lerp(groundBlend, _GrassTint.rgb * lerp(0.78, 1.18, color.g), greenDominance * flatMask);
-            groundBlend = lerp(groundBlend, _PathTint.rgb * lerp(0.82, 1.16, saturate(color.r + color.g)), pathWarmth * flatMask * (1.0 - greenDominance * 0.42));
-            groundBlend = lerp(groundBlend, _RockTint.rgb * lerp(0.82, 1.12, blendNoise), rockMask);
+            float3 grassDetail = _GrassTint.rgb * lerp(0.66, 1.22, saturate(macroFbm * 0.52 + microFbm * 0.48));
+            float3 pathDetail = _PathTint.rgb * lerp(0.70, 1.18, saturate(pebble * 0.68 + fineNoise * 0.32));
+            float3 rockDetail = _RockTint.rgb * lerp(0.62, 1.20, saturate(striation * _StoneStrataStrength + microFbm * 0.45));
+            rockDetail = lerp(rockDetail, float3(0.68, 0.72, 0.70), snowDust);
+            groundBlend = lerp(groundBlend, grassDetail, greenDominance * flatMask);
+            groundBlend = lerp(groundBlend, pathDetail, pathWarmth * flatMask * (1.0 - greenDominance * 0.42));
+            groundBlend = lerp(groundBlend, rockDetail, rockMask);
             float rim = pow(1.0 - saturate(dot(normalize(input.viewDir), normal)), 2.2) * _RimStrength;
             float viewDistance = length((_WorldSpaceCameraPos.xyz - input.worldPos).xz);
             float distanceFade = saturate((viewDistance - _DistanceStart) / max(1.0, _DistanceEnd - _DistanceStart)) * _DistanceBlend;
 
             color.rgb = lerp(color.rgb, groundBlend, _GroundBlendStrength);
             color.rgb *= 1.0 + detail;
+            color.rgb = lerp(color.rgb, color.rgb * lerp(0.74, 1.18, microFbm), _HighlandTextureStrength * 0.42);
+            color.rgb = lerp(color.rgb, color.rgb * lerp(0.88, 1.10, pebble), _HighlandTextureStrength * pathWarmth * flatMask);
             color.rgb *= lerp(0.94, 1.11, sunFacing * _HemisphereContrast + topLight * 0.045);
             color.rgb = lerp(color.rgb, color.rgb * _TopWarmth.rgb, topLight * 0.24);
             color.rgb = lerp(color.rgb, color.rgb * 0.72, slope * _SlopeDarkening);

@@ -1220,8 +1220,10 @@ namespace Psycho.Editor
             CreateLandmarkBox(root, "Bank Upper Timber Fascia Back", new Vector3(0f, 1.86f, depth * 0.53f), new Vector3(width * 1.06f, 0.18f, 0.12f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Upper Timber Fascia Left", new Vector3(-width * 0.53f, 1.86f, 0f), new Vector3(0.12f, 0.18f, depth * 1.06f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Upper Timber Fascia Right", new Vector3(width * 0.53f, 1.86f, 0f), new Vector3(0.12f, 0.18f, depth * 1.06f), materials.TreeBark);
-            CreateLandmarkBox(root, "Bank Dark Timber Roof", new Vector3(0f, 2.36f, 0f), new Vector3(width * 1.08f, 0.42f, depth * 1.12f), materials.LandmarkRoof);
-            CreateLandmarkBox(root, "Bank Roof Ridge Beam", new Vector3(0f, 2.66f, 0f), new Vector3(width * 0.96f, 0.16f, 0.20f), materials.TreeBark);
+            CreateLandmarkGabledRoof(root, "Bank Dark Timber Gabled Roof", new Vector3(0f, 2.60f, 0f), width * 1.18f, depth * 1.22f, 0.92f, materials.LandmarkRoof);
+            CreateLandmarkBox(root, "Bank Roof Ridge Beam", new Vector3(0f, 3.10f, 0f), new Vector3(width * 1.04f, 0.13f, 0.18f), materials.TreeBark);
+            CreateLandmarkBox(root, "Bank Front Shadow Eave", new Vector3(0f, 2.12f, -depth * 0.66f), new Vector3(width * 1.22f, 0.12f, 0.16f), materials.TreeBark);
+            CreateLandmarkBox(root, "Bank Rear Shadow Eave", new Vector3(0f, 2.12f, depth * 0.66f), new Vector3(width * 1.22f, 0.12f, 0.16f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Counter", new Vector3(0f, 0.72f, -depth * 0.18f), new Vector3(width * 0.70f, 0.62f, 0.42f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Doorway", new Vector3(0f, 0.78f, -depth * 0.51f), new Vector3(1.25f, 1.45f, 0.16f), materials.LandmarkGlass);
 
@@ -1240,7 +1242,7 @@ namespace Psycho.Editor
                 CreateLandmarkBox(root, $"Bank Window {i + 1} Stone Sill", new Vector3(x, 1.02f, -depth * 0.525f), new Vector3(0.96f, 0.08f, 0.12f), materials.FrostStone);
             }
 
-            context.Report.landmarkDressingObjects += 23;
+            context.Report.landmarkDressingObjects += 25;
         }
 
         private static void CreateHarborLandmark(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY)
@@ -1284,11 +1286,14 @@ namespace Psycho.Editor
                 float x = (i - (houseCount - 1) * 0.5f) * 3.45f;
                 float side = i % 2 == 0 ? 2.35f : -2.35f;
                 CreateLandmarkBox(root, $"House {i + 1} Stone Walls", new Vector3(x, 0.86f, side), new Vector3(2.6f, 1.72f, 2.35f), materials.LandmarkStone);
-                CreateLandmarkBox(root, $"House {i + 1} Roof", new Vector3(x, 1.93f, side), new Vector3(2.95f, 0.46f, 2.66f), materials.LandmarkRoof);
+                CreateLandmarkGabledRoof(root, $"House {i + 1} Gabled Roof", new Vector3(x, 2.02f, side), 3.10f, 2.78f, 0.74f, materials.LandmarkRoof);
+                CreateLandmarkBox(root, $"House {i + 1} Ridge Beam", new Vector3(x, 2.43f, side), new Vector3(2.75f, 0.10f, 0.13f), materials.TreeBark);
+                CreateLandmarkBox(root, $"House {i + 1} Foundation", new Vector3(x, 0.20f, side), new Vector3(2.76f, 0.22f, 2.50f), materials.LandmarkRoad);
                 CreateLandmarkBox(root, $"House {i + 1} Door", new Vector3(x, 0.58f, side - Mathf.Sign(side) * 1.21f), new Vector3(0.58f, 1.05f, 0.12f), materials.TreeBark);
+                CreateLandmarkBox(root, $"House {i + 1} Window", new Vector3(x - 0.72f, 1.12f, side - Mathf.Sign(side) * 1.205f), new Vector3(0.46f, 0.40f, 0.08f), materials.LandmarkGlass);
             }
 
-            context.Report.landmarkDressingObjects += houseCount * 3 + 1;
+            context.Report.landmarkDressingObjects += houseCount * 6 + 1;
         }
 
         private static void BuildHighlandForestDressing(HostedBuildContext context, HostedMaterials materials)
@@ -1663,6 +1668,56 @@ namespace Psycho.Editor
             renderer.shadowCastingMode = ShadowCastingMode.On;
             renderer.receiveShadows = true;
             return cylinder;
+        }
+
+        private static GameObject CreateLandmarkGabledRoof(Transform parent, string name, Vector3 localPosition, float width, float depth, float height, Material material)
+        {
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            float halfWidth = width * 0.5f;
+            float halfDepth = depth * 0.5f;
+            float low = -height * 0.5f;
+            float high = height * 0.5f;
+            mesh.vertices = new[]
+            {
+                new Vector3(-halfWidth, low, -halfDepth),
+                new Vector3(halfWidth, low, -halfDepth),
+                new Vector3(-halfWidth, low, halfDepth),
+                new Vector3(halfWidth, low, halfDepth),
+                new Vector3(-halfWidth, high, 0f),
+                new Vector3(halfWidth, high, 0f)
+            };
+            mesh.uv = new[]
+            {
+                new Vector2(0f, 0f),
+                new Vector2(1f, 0f),
+                new Vector2(0f, 1f),
+                new Vector2(1f, 1f),
+                new Vector2(0.5f, 0f),
+                new Vector2(0.5f, 1f)
+            };
+            mesh.triangles = new[]
+            {
+                0, 4, 2,
+                1, 3, 5,
+                0, 1, 5,
+                0, 5, 4,
+                2, 4, 5,
+                2, 5, 3,
+                0, 2, 1,
+                1, 2, 3
+            };
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject roof = new GameObject(name);
+            roof.transform.SetParent(parent, false);
+            roof.transform.localPosition = localPosition;
+            roof.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = roof.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.On;
+            renderer.receiveShadows = true;
+            return roof;
         }
 
         private static void BuildDistantVista(HostedBuildContext context, HostedMaterials materials)
