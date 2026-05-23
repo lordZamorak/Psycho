@@ -52,8 +52,11 @@ namespace Psycho.Editor
         private const string HillMaterialPath = GeneratedRoot + "/Psycho_Hosted_Hills.mat";
         private const string MountainMaterialPath = GeneratedRoot + "/Psycho_Hosted_Mountains.mat";
         private const string CloudMaterialPath = GeneratedRoot + "/Psycho_Hosted_Clouds.mat";
+        private const string HorizonMistMaterialPath = GeneratedRoot + "/Psycho_Hosted_Horizon_Mist.mat";
         private const string TreeCanopyMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Canopy.mat";
         private const string TreeBarkMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Bark.mat";
+        private const string FrostStoneMaterialPath = GeneratedRoot + "/Psycho_Hosted_Frost_Stone.mat";
+        private const string MossMaterialPath = GeneratedRoot + "/Psycho_Hosted_Moss.mat";
         private const string WaterFoamMaterialPath = GeneratedRoot + "/Psycho_Hosted_Water_Foam.mat";
         private const string WaterDepthMaterialPath = GeneratedRoot + "/Psycho_Hosted_Water_Depth.mat";
         private const string PlayerClothMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Cloth.mat";
@@ -1057,7 +1060,10 @@ namespace Psycho.Editor
             BuildGrassField(context, materials);
             BuildWaterways(context, materials);
             BuildWorldLandmarks(context, materials);
+            BuildHighlandForestDressing(context, materials);
+            BuildRockOutcropDressing(context, materials);
             BuildDistantVista(context, materials);
+            BuildHorizonMist(context, materials);
             BuildCloudLayer(materials.Cloud);
         }
 
@@ -1089,7 +1095,7 @@ namespace Psycho.Editor
                 float scatterZ = (Deterministic01(i * 17 + 5) - 0.5f) * TileScale * 0.78f;
                 Vector3 position = WorldTilePosition(context, worldX, worldY) + new Vector3(scatterX, 0.052f, scatterZ);
                 Material material = i % 17 == 0 ? materials.Flowers : materials.Grass;
-                CreateGrassBlade(root.transform, position, 0.24f + Deterministic01(i * 59 + 11) * 0.34f, material);
+                CreateGrassBlade(root.transform, position, 0.18f + Deterministic01(i * 59 + 11) * 0.24f, material);
             }
         }
 
@@ -1209,17 +1215,32 @@ namespace Psycho.Editor
             root.localRotation = Quaternion.Euler(0f, yaw, 0f);
             CreateGroundPlate(root, "Bank Stone Approach", new Vector3(0f, 0.01f, -depth * 0.70f), width * 0.96f, depth * 0.46f, materials.LandmarkRoad);
             CreateLandmarkBox(root, "Bank Hall Walls", new Vector3(0f, 1.05f, 0f), new Vector3(width, 2.10f, depth), materials.LandmarkStone);
+            CreateLandmarkBox(root, "Bank Foundation Plinth", new Vector3(0f, 0.20f, 0f), new Vector3(width * 1.04f, 0.22f, depth * 1.06f), materials.LandmarkRoad);
+            CreateLandmarkBox(root, "Bank Upper Timber Fascia Front", new Vector3(0f, 1.86f, -depth * 0.53f), new Vector3(width * 1.06f, 0.18f, 0.12f), materials.TreeBark);
+            CreateLandmarkBox(root, "Bank Upper Timber Fascia Back", new Vector3(0f, 1.86f, depth * 0.53f), new Vector3(width * 1.06f, 0.18f, 0.12f), materials.TreeBark);
+            CreateLandmarkBox(root, "Bank Upper Timber Fascia Left", new Vector3(-width * 0.53f, 1.86f, 0f), new Vector3(0.12f, 0.18f, depth * 1.06f), materials.TreeBark);
+            CreateLandmarkBox(root, "Bank Upper Timber Fascia Right", new Vector3(width * 0.53f, 1.86f, 0f), new Vector3(0.12f, 0.18f, depth * 1.06f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Dark Timber Roof", new Vector3(0f, 2.36f, 0f), new Vector3(width * 1.08f, 0.42f, depth * 1.12f), materials.LandmarkRoof);
+            CreateLandmarkBox(root, "Bank Roof Ridge Beam", new Vector3(0f, 2.66f, 0f), new Vector3(width * 0.96f, 0.16f, 0.20f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Counter", new Vector3(0f, 0.72f, -depth * 0.18f), new Vector3(width * 0.70f, 0.62f, 0.42f), materials.TreeBark);
             CreateLandmarkBox(root, "Bank Doorway", new Vector3(0f, 0.78f, -depth * 0.51f), new Vector3(1.25f, 1.45f, 0.16f), materials.LandmarkGlass);
+
+            for (int i = 0; i < 4; i++)
+            {
+                float cornerX = i < 2 ? -width * 0.50f : width * 0.50f;
+                float cornerZ = i % 2 == 0 ? -depth * 0.50f : depth * 0.50f;
+                CreateLandmarkBox(root, $"Bank Stone Corner Quoin {i + 1}", new Vector3(cornerX, 1.04f, cornerZ), new Vector3(0.24f, 1.78f, 0.24f), materials.FrostStone);
+            }
 
             for (int i = 0; i < 3; i++)
             {
                 float x = (i - 1) * width * 0.25f;
                 CreateLandmarkBox(root, $"Bank Window {i + 1}", new Vector3(x, 1.38f, -depth * 0.515f), new Vector3(0.78f, 0.58f, 0.08f), materials.LandmarkGlass);
+                CreateLandmarkBox(root, $"Bank Window {i + 1} Timber Lintel", new Vector3(x, 1.72f, -depth * 0.525f), new Vector3(0.94f, 0.09f, 0.10f), materials.TreeBark);
+                CreateLandmarkBox(root, $"Bank Window {i + 1} Stone Sill", new Vector3(x, 1.02f, -depth * 0.525f), new Vector3(0.96f, 0.08f, 0.12f), materials.FrostStone);
             }
 
-            context.Report.landmarkDressingObjects += 8;
+            context.Report.landmarkDressingObjects += 23;
         }
 
         private static void CreateHarborLandmark(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY)
@@ -1268,6 +1289,329 @@ namespace Psycho.Editor
             }
 
             context.Report.landmarkDressingObjects += houseCount * 3 + 1;
+        }
+
+        private static void BuildHighlandForestDressing(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Rugged Highland Conifer Dressing");
+            Vector2Int[] anchors =
+            {
+                new Vector2Int(3058, 3516),
+                new Vector2Int(3084, 3528),
+                new Vector2Int(3122, 3511),
+                new Vector2Int(3152, 3502),
+                new Vector2Int(3188, 3456),
+                new Vector2Int(3214, 3428),
+                new Vector2Int(3032, 3264),
+                new Vector2Int(3090, 3248),
+                new Vector2Int(2962, 3374)
+            };
+
+            int created = 0;
+            for (int cluster = 0; cluster < anchors.Length; cluster++)
+            {
+                Vector2Int anchor = anchors[cluster];
+                for (int i = 0; i < 26; i++)
+                {
+                    int seed = cluster * 997 + i * 131;
+                    float angle = Deterministic01(seed + 11) * Mathf.PI * 2f;
+                    float radius = 3.5f + Mathf.Pow(Deterministic01(seed + 23), 0.62f) * 17.5f;
+                    int worldX = anchor.x + Mathf.RoundToInt(Mathf.Cos(angle) * radius);
+                    int worldY = anchor.y + Mathf.RoundToInt(Mathf.Sin(angle) * radius);
+                    if (!TryGetNaturalDressingPosition(context, worldX, worldY, seed, out Vector3 position))
+                    {
+                        continue;
+                    }
+
+                    float height = 2.45f + Deterministic01(seed + 37) * 2.35f;
+                    CreateHighlandConifer(root.transform, position, height, materials.TreeBark, materials.TreeCanopy, seed);
+                    created++;
+                }
+            }
+
+            context.Report.enhancedFoliageObjects += created;
+            context.Report.windAnimatedObjects += created;
+        }
+
+        private static void BuildRockOutcropDressing(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Rugged Highland Rock Outcrop Dressing");
+            Vector2Int[] anchors =
+            {
+                new Vector2Int(3076, 3510),
+                new Vector2Int(3138, 3496),
+                new Vector2Int(3176, 3470),
+                new Vector2Int(3218, 3422),
+                new Vector2Int(3014, 3242),
+                new Vector2Int(2968, 3386),
+                new Vector2Int(3095, 3256)
+            };
+
+            int created = 0;
+            for (int cluster = 0; cluster < anchors.Length; cluster++)
+            {
+                Vector2Int anchor = anchors[cluster];
+                for (int i = 0; i < 16; i++)
+                {
+                    int seed = 2900 + cluster * 733 + i * 113;
+                    float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+                    float radius = 2.5f + Deterministic01(seed + 7) * 13.5f;
+                    int worldX = anchor.x + Mathf.RoundToInt(Mathf.Cos(angle) * radius);
+                    int worldY = anchor.y + Mathf.RoundToInt(Mathf.Sin(angle) * radius);
+                    if (!TryGetNaturalDressingPosition(context, worldX, worldY, seed, out Vector3 position))
+                    {
+                        continue;
+                    }
+
+                    CreateHighlandRockOutcrop(root.transform, position, 0.78f + Deterministic01(seed + 41) * 1.05f, materials.FrostStone, materials.Moss, seed);
+                    created++;
+                }
+            }
+
+            context.Report.landmarkDressingObjects += created;
+        }
+
+        private static void BuildHorizonMist(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Cold Highland Horizon Mist");
+            int panels = 0;
+            for (int i = 0; i < 34; i++)
+            {
+                float angle = (i + 0.35f) * Mathf.PI * 2f / 34f;
+                float radius = 205f + Mathf.Sin(i * 1.37f) * 26f;
+                Vector3 position = new Vector3(Mathf.Cos(angle) * radius, -4.6f + (i % 4) * 0.25f, Mathf.Sin(angle) * radius);
+                CreateVerticalMistPanel(root.transform, $"Horizon Mist Veil {i + 1}", position, 22f + (i % 5) * 5f, 4.4f + (i % 4) * 1.2f, materials.HorizonMist);
+                panels++;
+            }
+
+            for (int i = 0; i < 14; i++)
+            {
+                int worldX = 3138 + Mathf.FloorToInt(Deterministic01(7000 + i * 19) * 4f);
+                int worldY = 3444 + Mathf.FloorToInt(Deterministic01(7100 + i * 23) * 78f);
+                Vector3 position = WorldTilePosition(context, worldX, worldY) + Vector3.up * (0.21f + Deterministic01(7200 + i * 29) * 0.12f);
+                GameObject fog = CreateSubdividedPlane($"River Surface Mist {i + 1}", position, 4.2f + (i % 3) * 1.0f, 1.5f + (i % 4) * 0.45f, 3, materials.HorizonMist);
+                fog.transform.SetParent(root.transform, true);
+                fog.transform.rotation = Quaternion.Euler(0f, Deterministic01(7300 + i * 31) * 180f, 0f);
+                MeshRenderer renderer = fog.GetComponent<MeshRenderer>();
+                renderer.shadowCastingMode = ShadowCastingMode.Off;
+                renderer.receiveShadows = false;
+                panels++;
+            }
+
+            context.Report.horizonMistPanels += panels;
+        }
+
+        private static bool TryGetNaturalDressingPosition(HostedBuildContext context, int worldX, int worldY, int seed, out Vector3 position)
+        {
+            position = default;
+            if (!TryGetLandscapeTile(context, worldX, worldY, out PsychoMapLandscape landscape, out int localX, out int localY))
+            {
+                return false;
+            }
+
+            byte flags = landscape.RenderFlags[0, localX, localY];
+            if ((flags & 1) == 1)
+            {
+                return false;
+            }
+
+            float scatterX = (Deterministic01(seed + 101) - 0.5f) * TileScale * 0.86f;
+            float scatterZ = (Deterministic01(seed + 103) - 0.5f) * TileScale * 0.86f;
+            position = WorldTilePosition(context, worldX, worldY) + new Vector3(scatterX, 0.045f, scatterZ);
+            return true;
+        }
+
+        private static void CreateHighlandConifer(Transform parent, Vector3 position, float height, Material barkMaterial, Material canopyMaterial, int seed)
+        {
+            GameObject tree = new GameObject("Wind Swept Highland Conifer");
+            tree.transform.SetParent(parent, false);
+            tree.transform.position = position;
+            tree.transform.rotation = Quaternion.Euler(0f, Deterministic01(seed + 5) * 360f, 0f);
+
+            float trunkHeight = height * (0.52f + Deterministic01(seed + 9) * 0.10f);
+            float trunkRadius = height * (0.026f + Deterministic01(seed + 13) * 0.010f);
+            GameObject trunk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            trunk.name = "Dark Bark Trunk";
+            trunk.transform.SetParent(tree.transform, false);
+            trunk.transform.localPosition = new Vector3(0f, trunkHeight * 0.5f, 0f);
+            trunk.transform.localScale = new Vector3(trunkRadius, trunkHeight * 0.5f, trunkRadius);
+            MeshRenderer trunkRenderer = trunk.GetComponent<MeshRenderer>();
+            trunkRenderer.sharedMaterial = barkMaterial;
+            trunkRenderer.shadowCastingMode = ShadowCastingMode.On;
+            trunkRenderer.receiveShadows = true;
+            RemoveCollider(trunk);
+
+            int layerCount = 5 + Mathf.FloorToInt(Deterministic01(seed + 17) * 2f);
+            for (int layer = 0; layer < layerCount; layer++)
+            {
+                float t = layer / Mathf.Max(1f, layerCount - 1f);
+                float baseY = height * Mathf.Lerp(0.20f, 0.76f, t);
+                float layerHeight = height * Mathf.Lerp(0.24f, 0.16f, t);
+                float radius = height * Mathf.Lerp(0.32f, 0.12f, t) * (0.92f + Deterministic01(seed + layer * 29) * 0.18f);
+                GameObject canopy = new GameObject($"Layered Blue-Green Boughs {layer + 1}");
+                canopy.transform.SetParent(tree.transform, false);
+                canopy.transform.localPosition = new Vector3(
+                    (Deterministic01(seed + layer * 41) - 0.5f) * 0.08f,
+                    baseY,
+                    (Deterministic01(seed + layer * 47) - 0.5f) * 0.08f);
+                canopy.transform.localRotation = Quaternion.Euler(0f, layer * 31f + Deterministic01(seed + layer * 53) * 18f, 0f);
+                canopy.AddComponent<MeshFilter>().sharedMesh = CreateTaperedConeMesh($"Conifer Bough Mesh {seed}_{layer}", 12, radius, radius * 0.10f, layerHeight, seed + layer * 71);
+                MeshRenderer renderer = canopy.AddComponent<MeshRenderer>();
+                renderer.sharedMaterial = canopyMaterial;
+                renderer.shadowCastingMode = ShadowCastingMode.On;
+                renderer.receiveShadows = true;
+                AddWind(canopy, 0.038f + t * 0.024f, 0.70f + t * 0.34f, 0.30f, 0.76f, 0.042f);
+            }
+        }
+
+        private static Mesh CreateTaperedConeMesh(string name, int segments, float bottomRadius, float topRadius, float height, int seed)
+        {
+            Mesh mesh = new Mesh { name = name };
+            Vector3[] vertices = new Vector3[segments * 2];
+            int[] triangles = new int[segments * 6];
+
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = i * Mathf.PI * 2f / segments;
+                float bottomNoise = 0.90f + Deterministic01(seed + i * 17) * 0.20f;
+                float topNoise = 0.86f + Deterministic01(seed + i * 19) * 0.24f;
+                vertices[i] = new Vector3(Mathf.Cos(angle) * bottomRadius * bottomNoise, 0f, Mathf.Sin(angle) * bottomRadius * bottomNoise);
+                vertices[i + segments] = new Vector3(Mathf.Cos(angle) * topRadius * topNoise, height, Mathf.Sin(angle) * topRadius * topNoise);
+            }
+
+            int tri = 0;
+            for (int i = 0; i < segments; i++)
+            {
+                int next = (i + 1) % segments;
+                triangles[tri++] = i;
+                triangles[tri++] = i + segments;
+                triangles[tri++] = next;
+                triangles[tri++] = next;
+                triangles[tri++] = i + segments;
+                triangles[tri++] = next + segments;
+            }
+
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            return mesh;
+        }
+
+        private static void CreateHighlandRockOutcrop(Transform parent, Vector3 position, float size, Material rockMaterial, Material mossMaterial, int seed)
+        {
+            GameObject outcrop = new GameObject("Layered Highland Rock Outcrop");
+            outcrop.transform.SetParent(parent, false);
+            outcrop.transform.position = position;
+            outcrop.transform.rotation = Quaternion.Euler(0f, Deterministic01(seed + 5) * 360f, 0f);
+
+            int rockCount = 3 + Mathf.FloorToInt(Deterministic01(seed + 11) * 3f);
+            for (int i = 0; i < rockCount; i++)
+            {
+                float angle = i * Mathf.PI * 2f / rockCount + Deterministic01(seed + i * 19) * 0.62f;
+                float offset = size * (0.10f + Deterministic01(seed + i * 23) * 0.36f);
+                GameObject rock = new GameObject($"Cold Slate Boulder {i + 1}");
+                rock.transform.SetParent(outcrop.transform, false);
+                rock.transform.localPosition = new Vector3(Mathf.Cos(angle) * offset, 0.04f, Mathf.Sin(angle) * offset);
+                rock.transform.localRotation = Quaternion.Euler(
+                    Deterministic01(seed + i * 31) * 6f,
+                    Deterministic01(seed + i * 37) * 360f,
+                    Deterministic01(seed + i * 41) * 6f);
+                float width = size * (0.42f + Deterministic01(seed + i * 43) * 0.54f);
+                float height = size * (0.34f + Deterministic01(seed + i * 47) * 0.64f);
+                float depth = size * (0.40f + Deterministic01(seed + i * 53) * 0.52f);
+                rock.AddComponent<MeshFilter>().sharedMesh = CreateIrregularRockMesh($"Cold Slate Boulder Mesh {seed}_{i}", width, height, depth, seed + i * 79);
+                MeshRenderer renderer = rock.AddComponent<MeshRenderer>();
+                renderer.sharedMaterial = rockMaterial;
+                renderer.shadowCastingMode = ShadowCastingMode.On;
+                renderer.receiveShadows = true;
+            }
+
+            GameObject moss = CreateSubdividedPlane("Moss and Heather Skirt", outcrop.transform.position + Vector3.up * 0.025f, size * 1.95f, size * 1.50f, 4, mossMaterial);
+            moss.transform.SetParent(outcrop.transform, true);
+            moss.transform.localRotation = Quaternion.Euler(0f, Deterministic01(seed + 97) * 360f, 0f);
+        }
+
+        private static Mesh CreateIrregularRockMesh(string name, float width, float height, float depth, int seed)
+        {
+            const int segments = 8;
+            Mesh mesh = new Mesh { name = name };
+            Vector3[] vertices = new Vector3[segments * 3];
+            List<int> triangles = new List<int>(segments * 12);
+
+            for (int ring = 0; ring < 3; ring++)
+            {
+                float y = ring == 0 ? 0f : ring == 1 ? height * 0.56f : height;
+                float ringScale = ring == 0 ? 0.86f : ring == 1 ? 1.0f : 0.25f;
+                for (int i = 0; i < segments; i++)
+                {
+                    float angle = i * Mathf.PI * 2f / segments;
+                    float noise = 0.72f + Deterministic01(seed + ring * 101 + i * 13) * 0.48f;
+                    vertices[ring * segments + i] = new Vector3(
+                        Mathf.Cos(angle) * width * ringScale * noise,
+                        y,
+                        Mathf.Sin(angle) * depth * ringScale * (0.82f + Deterministic01(seed + ring * 89 + i * 17) * 0.36f));
+                }
+            }
+
+            for (int ring = 0; ring < 2; ring++)
+            {
+                int current = ring * segments;
+                int nextRing = (ring + 1) * segments;
+                for (int i = 0; i < segments; i++)
+                {
+                    int next = (i + 1) % segments;
+                    triangles.Add(current + i);
+                    triangles.Add(nextRing + i);
+                    triangles.Add(current + next);
+                    triangles.Add(current + next);
+                    triangles.Add(nextRing + i);
+                    triangles.Add(nextRing + next);
+                }
+            }
+
+            mesh.vertices = vertices;
+            mesh.triangles = triangles.ToArray();
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            return mesh;
+        }
+
+        private static void CreateVerticalMistPanel(Transform parent, string name, Vector3 position, float width, float height, Material material)
+        {
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            mesh.vertices = new[]
+            {
+                new Vector3(-width * 0.5f, 0f, 0f),
+                new Vector3(width * 0.5f, 0f, 0f),
+                new Vector3(-width * 0.5f, height, 0f),
+                new Vector3(width * 0.5f, height, 0f)
+            };
+            mesh.uv = new[]
+            {
+                new Vector2(0f, 0f),
+                new Vector2(1f, 0f),
+                new Vector2(0f, 1f),
+                new Vector2(1f, 1f)
+            };
+            mesh.triangles = new[] { 0, 1, 2, 1, 3, 2 };
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject panel = new GameObject(name);
+            panel.transform.SetParent(parent, false);
+            panel.transform.position = position;
+            Vector3 inward = new Vector3(-position.x, 0f, -position.z);
+            if (inward.sqrMagnitude > 0.01f)
+            {
+                panel.transform.rotation = Quaternion.LookRotation(inward.normalized);
+            }
+
+            panel.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = panel.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
         }
 
         private static bool TryCreateLandmarkRoot(Transform parent, string name, HostedBuildContext context, int worldX, int worldY, out Transform root)
@@ -1373,7 +1717,7 @@ namespace Psycho.Editor
                     puff.transform.SetParent(cloud.transform, false);
                     float localX = (lobe - (lobes - 1) * 0.5f) * 6.2f;
                     puff.transform.localPosition = new Vector3(localX, Mathf.Sin(lobe * 1.7f) * 0.34f, Mathf.Cos(lobe * 1.1f) * 1.65f);
-                    puff.transform.localScale = new Vector3(8.4f + lobe * 0.68f, 0.42f + (lobe % 2) * 0.12f, 2.7f + (lobe % 3) * 0.46f);
+                    puff.transform.localScale = new Vector3(5.8f + lobe * 0.52f, 0.30f + (lobe % 2) * 0.08f, 1.85f + (lobe % 3) * 0.34f);
                     MeshRenderer renderer = puff.GetComponent<MeshRenderer>();
                     renderer.sharedMaterial = material;
                     renderer.shadowCastingMode = ShadowCastingMode.Off;
@@ -1401,9 +1745,9 @@ namespace Psycho.Editor
             QualitySettings.shadows = ShadowQuality.All;
             QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
             QualitySettings.shadowProjection = ShadowProjection.CloseFit;
-            QualitySettings.shadowDistance = Mathf.Max(QualitySettings.shadowDistance, 260f);
+            QualitySettings.shadowDistance = Mathf.Max(QualitySettings.shadowDistance, 420f);
             QualitySettings.shadowCascades = Mathf.Max(QualitySettings.shadowCascades, 4);
-            QualitySettings.lodBias = Mathf.Max(QualitySettings.lodBias, 1.65f);
+            QualitySettings.lodBias = Mathf.Max(QualitySettings.lodBias, 2.0f);
             QualitySettings.softParticles = true;
             QualitySettings.softVegetation = true;
             QualitySettings.realtimeReflectionProbes = true;
@@ -1411,24 +1755,24 @@ namespace Psycho.Editor
             GameObject sunObject = new GameObject("Sun");
             Light sun = sunObject.AddComponent<Light>();
             sun.type = LightType.Directional;
-            sun.intensity = 1.12f;
-            sun.color = new Color(1f, 0.93f, 0.82f);
+            sun.intensity = 1.02f;
+            sun.color = new Color(1f, 0.91f, 0.78f);
             sun.shadows = LightShadows.Soft;
-            sun.shadowStrength = 0.66f;
-            sunObject.transform.rotation = Quaternion.Euler(48f, -34f, 0f);
+            sun.shadowStrength = 0.78f;
+            sunObject.transform.rotation = Quaternion.Euler(42f, -39f, 0f);
 
             GameObject fillObject = new GameObject("Soft Sky Fill");
             Light fill = fillObject.AddComponent<Light>();
             fill.type = LightType.Directional;
-            fill.intensity = 0.25f;
-            fill.color = new Color(0.50f, 0.62f, 0.78f);
+            fill.intensity = 0.18f;
+            fill.color = new Color(0.42f, 0.53f, 0.68f);
             fillObject.transform.rotation = Quaternion.Euler(24f, 136f, 0f);
 
             GameObject bounceObject = new GameObject("Warm Ground Bounce");
             Light bounce = bounceObject.AddComponent<Light>();
             bounce.type = LightType.Directional;
-            bounce.intensity = 0.08f;
-            bounce.color = new Color(0.76f, 0.62f, 0.42f);
+            bounce.intensity = 0.045f;
+            bounce.color = new Color(0.58f, 0.48f, 0.34f);
             bounce.shadows = LightShadows.None;
             bounceObject.transform.rotation = Quaternion.Euler(-32f, -18f, 0f);
 
@@ -1454,15 +1798,15 @@ namespace Psycho.Editor
 
             RenderSettings.skybox = LoadOrCreateSkybox();
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.56f, 0.66f, 0.76f);
-            RenderSettings.ambientEquatorColor = new Color(0.35f, 0.43f, 0.39f);
-            RenderSettings.ambientGroundColor = new Color(0.17f, 0.17f, 0.14f);
-            RenderSettings.ambientIntensity = 0.96f;
+            RenderSettings.ambientSkyColor = new Color(0.46f, 0.56f, 0.66f);
+            RenderSettings.ambientEquatorColor = new Color(0.26f, 0.33f, 0.32f);
+            RenderSettings.ambientGroundColor = new Color(0.11f, 0.12f, 0.11f);
+            RenderSettings.ambientIntensity = 0.78f;
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.ExponentialSquared;
-            RenderSettings.fogColor = new Color(0.56f, 0.66f, 0.74f);
-            RenderSettings.fogDensity = 0.00085f;
-            RenderSettings.reflectionIntensity = 0.50f;
+            RenderSettings.fogColor = new Color(0.50f, 0.58f, 0.64f);
+            RenderSettings.fogDensity = 0.00115f;
+            RenderSettings.reflectionIntensity = 0.42f;
             RenderSettings.defaultReflectionMode = DefaultReflectionMode.Skybox;
         }
 
@@ -1545,12 +1889,12 @@ namespace Psycho.Editor
                 shaderProperty.objectReferenceValue = Shader.Find("Hidden/Psycho/Camera Color Grade");
             }
 
-            SetSerializedFloat(colorGradeObject, "exposure", 1.02f);
-            SetSerializedFloat(colorGradeObject, "contrast", 1.10f);
-            SetSerializedFloat(colorGradeObject, "saturation", 1.08f);
-            SetSerializedFloat(colorGradeObject, "warmth", 0.05f);
-            SetSerializedFloat(colorGradeObject, "vignette", 0.14f);
-            SetSerializedFloat(colorGradeObject, "sharpen", 0.14f);
+            SetSerializedFloat(colorGradeObject, "exposure", 0.98f);
+            SetSerializedFloat(colorGradeObject, "contrast", 1.16f);
+            SetSerializedFloat(colorGradeObject, "saturation", 0.96f);
+            SetSerializedFloat(colorGradeObject, "warmth", -0.04f);
+            SetSerializedFloat(colorGradeObject, "vignette", 0.18f);
+            SetSerializedFloat(colorGradeObject, "sharpen", 0.20f);
             colorGradeObject.ApplyModifiedPropertiesWithoutUndo();
             cameraObject.AddComponent<AudioListener>();
             BuildGameplayHud(player.transform, playerSave);
@@ -2334,10 +2678,10 @@ namespace Psycho.Editor
         private static void CreateGrassBlade(Transform root, Vector3 position, float height, Material material)
         {
             Mesh mesh = new Mesh { name = "Hosted Wind Grass Mesh" };
-            float width = height * 0.16f;
+            float width = height * 0.22f;
             const int bladeCount = 4;
             Vector3[] vertices = new Vector3[bladeCount * 4];
-            int[] triangles = new int[bladeCount * 6];
+            int[] triangles = new int[bladeCount * 12];
             for (int blade = 0; blade < bladeCount; blade++)
             {
                 float angle = blade * Mathf.PI * 2f / bladeCount;
@@ -2351,13 +2695,19 @@ namespace Psycho.Editor
                 vertices[v + 2] = -side * localWidth * 0.24f + Vector3.up * localHeight + lean;
                 vertices[v + 3] = side * localWidth * 0.24f + Vector3.up * localHeight + lean;
 
-                int t = blade * 6;
+                int t = blade * 12;
                 triangles[t] = v;
                 triangles[t + 1] = v + 2;
                 triangles[t + 2] = v + 1;
                 triangles[t + 3] = v + 1;
                 triangles[t + 4] = v + 2;
                 triangles[t + 5] = v + 3;
+                triangles[t + 6] = v;
+                triangles[t + 7] = v + 1;
+                triangles[t + 8] = v + 2;
+                triangles[t + 9] = v + 1;
+                triangles[t + 10] = v + 3;
+                triangles[t + 11] = v + 2;
             }
 
             mesh.vertices = vertices;
@@ -2370,7 +2720,10 @@ namespace Psycho.Editor
             clump.transform.position = position;
             clump.transform.rotation = Quaternion.Euler(0f, position.x * 37f + position.z * 17f, 0f);
             clump.AddComponent<MeshFilter>().sharedMesh = mesh;
-            clump.AddComponent<MeshRenderer>().sharedMaterial = material;
+            MeshRenderer renderer = clump.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
             AddWind(clump, 0.13f, 1.95f, 0.44f);
         }
 
@@ -2441,17 +2794,20 @@ namespace Psycho.Editor
         {
             HostedMaterials materials = new HostedMaterials
             {
-                Grass = LoadOrCreateTexturedMaterial(GrassMaterialPath, "Grass", new Color(0.29f, 0.47f, 0.23f, 1f), 0.24f, new Vector2(8.5f, 8.5f), 0.68f),
-                Flowers = LoadOrCreateTexturedMaterial(FlowerMaterialPath, "Organic", new Color(0.92f, 0.77f, 0.38f, 1f), 0.28f, new Vector2(5.2f, 5.2f), 0.56f),
-                Reeds = LoadOrCreateTexturedMaterial(ReedMaterialPath, "Leaf", new Color(0.42f, 0.55f, 0.24f, 1f), 0.20f, new Vector2(3.5f, 5.8f), 0.72f),
-                Water = LoadOrCreateTexturedMaterial(WaterMaterialPath, "Water", new Color(0.06f, 0.32f, 0.48f, 0.58f), 0.88f, new Vector2(2.6f, 6.2f), 0.92f),
-                Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.27f, 0.40f, 0.24f, 1f), 0.30f, new Vector2(5.8f, 5.8f), 0.58f),
-                Mountains = LoadOrCreateTexturedMaterial(MountainMaterialPath, "Mountain", new Color(0.46f, 0.46f, 0.42f, 1f), 0.48f, new Vector2(3.2f, 3.2f), 0.72f),
-                Cloud = LoadOrCreateUnlitMaterial(CloudMaterialPath, new Color(0.93f, 0.96f, 0.98f, 0.42f)),
-                TreeCanopy = LoadOrCreateTexturedMaterial(TreeCanopyMaterialPath, "Leaf", new Color(0.25f, 0.47f, 0.18f, 1f), 0.23f, new Vector2(3.6f, 3.6f), 0.66f),
-                TreeBark = LoadOrCreateTexturedMaterial(TreeBarkMaterialPath, "Wood", new Color(0.37f, 0.22f, 0.11f, 1f), 0.24f, new Vector2(2.8f, 4.4f), 0.74f),
-                WaterFoam = LoadOrCreateSolidMaterial(WaterFoamMaterialPath, new Color(0.73f, 0.92f, 0.95f, 0.34f), 0.36f),
-                WaterDepth = LoadOrCreateSolidMaterial(WaterDepthMaterialPath, new Color(0.02f, 0.12f, 0.18f, 0.30f), 0.54f),
+                Grass = LoadOrCreateTexturedMaterial(GrassMaterialPath, "Grass", new Color(0.20f, 0.34f, 0.18f, 1f), 0.18f, new Vector2(11.0f, 11.0f), 0.86f),
+                Flowers = LoadOrCreateTexturedMaterial(FlowerMaterialPath, "Organic", new Color(0.76f, 0.63f, 0.34f, 1f), 0.24f, new Vector2(6.4f, 6.4f), 0.62f),
+                Reeds = LoadOrCreateTexturedMaterial(ReedMaterialPath, "Leaf", new Color(0.26f, 0.37f, 0.20f, 1f), 0.16f, new Vector2(4.2f, 6.6f), 0.82f),
+                Water = LoadOrCreateTexturedMaterial(WaterMaterialPath, "Water", new Color(0.035f, 0.18f, 0.27f, 0.62f), 0.92f, new Vector2(2.8f, 7.8f), 1.08f),
+                Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.18f, 0.28f, 0.18f, 1f), 0.22f, new Vector2(7.6f, 7.6f), 0.78f),
+                Mountains = LoadOrCreateTexturedMaterial(MountainMaterialPath, "Mountain", new Color(0.39f, 0.40f, 0.39f, 1f), 0.42f, new Vector2(3.8f, 3.8f), 0.98f),
+                Cloud = LoadOrCreateSolidMaterial(CloudMaterialPath, new Color(0.68f, 0.76f, 0.82f, 0.18f), 0.12f),
+                HorizonMist = LoadOrCreateSolidMaterial(HorizonMistMaterialPath, new Color(0.54f, 0.62f, 0.70f, 0.085f), 0.08f),
+                TreeCanopy = LoadOrCreateTexturedMaterial(TreeCanopyMaterialPath, "Leaf", new Color(0.13f, 0.28f, 0.17f, 1f), 0.18f, new Vector2(4.8f, 4.8f), 0.82f),
+                TreeBark = LoadOrCreateTexturedMaterial(TreeBarkMaterialPath, "Wood", new Color(0.20f, 0.15f, 0.11f, 1f), 0.18f, new Vector2(3.2f, 5.6f), 0.92f),
+                FrostStone = LoadOrCreateTexturedMaterial(FrostStoneMaterialPath, "Stone", new Color(0.48f, 0.50f, 0.49f, 1f), 0.36f, new Vector2(3.6f, 3.6f), 1.02f),
+                Moss = LoadOrCreateTexturedMaterial(MossMaterialPath, "Organic", new Color(0.22f, 0.30f, 0.17f, 1f), 0.18f, new Vector2(7.2f, 7.2f), 0.72f),
+                WaterFoam = LoadOrCreateSolidMaterial(WaterFoamMaterialPath, new Color(0.76f, 0.88f, 0.90f, 0.30f), 0.30f),
+                WaterDepth = LoadOrCreateSolidMaterial(WaterDepthMaterialPath, new Color(0.01f, 0.07f, 0.12f, 0.36f), 0.60f),
                 PlayerCloth = LoadOrCreateTexturedMaterial(PlayerClothMaterialPath, "Cloth", new Color(0.28f, 0.42f, 0.56f, 1f), 0.34f, new Vector2(2.5f, 2.5f), 0.52f),
                 PlayerLeather = LoadOrCreateTexturedMaterial(PlayerLeatherMaterialPath, "Leather", new Color(0.52f, 0.34f, 0.22f, 1f), 0.30f, new Vector2(2.2f, 2.2f), 0.48f),
                 PlayerMetal = LoadOrCreateTexturedMaterial(PlayerMetalMaterialPath, "Metal", new Color(0.70f, 0.70f, 0.66f, 1f), 0.62f, new Vector2(2.2f, 2.2f), 0.42f),
@@ -2459,14 +2815,15 @@ namespace Psycho.Editor
                 PlayerHair = LoadOrCreateSolidMaterial(PlayerHairMaterialPath, new Color(0.23f, 0.16f, 0.09f, 1f), 0.32f),
                 PlayerPaper = LoadOrCreateTexturedMaterial(PlayerPaperMaterialPath, "Paper", new Color(0.74f, 0.68f, 0.54f, 1f), 0.24f, new Vector2(1.8f, 1.8f), 0.36f),
                 PlayerWood = LoadOrCreateTexturedMaterial(PlayerWoodMaterialPath, "Wood", new Color(0.38f, 0.24f, 0.12f, 1f), 0.28f, new Vector2(2.2f, 2.2f), 0.50f),
-                LandmarkStone = LoadOrCreateTexturedMaterial(LandmarkStoneMaterialPath, "Stone", new Color(0.48f, 0.47f, 0.42f, 1f), 0.36f, new Vector2(3.2f, 3.2f), 0.62f),
-                LandmarkRoof = LoadOrCreateTexturedMaterial(LandmarkRoofMaterialPath, "Wood", new Color(0.17f, 0.15f, 0.13f, 1f), 0.42f, new Vector2(2.4f, 2.4f), 0.58f),
-                LandmarkRoad = LoadOrCreateTexturedMaterial(LandmarkRoadMaterialPath, "Stone", new Color(0.42f, 0.39f, 0.31f, 1f), 0.28f, new Vector2(4.8f, 4.8f), 0.48f),
+                LandmarkStone = LoadOrCreateTexturedMaterial(LandmarkStoneMaterialPath, "Stone", new Color(0.40f, 0.40f, 0.37f, 1f), 0.30f, new Vector2(3.8f, 3.8f), 0.86f),
+                LandmarkRoof = LoadOrCreateTexturedMaterial(LandmarkRoofMaterialPath, "Wood", new Color(0.13f, 0.12f, 0.11f, 1f), 0.34f, new Vector2(3.0f, 3.0f), 0.82f),
+                LandmarkRoad = LoadOrCreateTexturedMaterial(LandmarkRoadMaterialPath, "Stone", new Color(0.34f, 0.33f, 0.29f, 1f), 0.24f, new Vector2(5.8f, 5.8f), 0.72f),
                 LandmarkBanner = LoadOrCreateTexturedMaterial(LandmarkBannerMaterialPath, "Cloth", new Color(0.27f, 0.42f, 0.63f, 1f), 0.32f, new Vector2(1.6f, 1.6f), 0.44f),
                 LandmarkGlass = LoadOrCreateSolidMaterial(LandmarkGlassMaterialPath, new Color(0.40f, 0.63f, 0.72f, 0.46f), 0.72f)
             };
             ConfigureTransparent(materials.Water);
             ConfigureTransparent(materials.Cloud);
+            ConfigureTransparent(materials.HorizonMist);
             ConfigureTransparent(materials.WaterFoam);
             ConfigureTransparent(materials.WaterDepth);
             ConfigureTransparent(materials.LandmarkGlass);
@@ -2483,12 +2840,12 @@ namespace Psycho.Editor
                 AssetDatabase.CreateAsset(skybox, skyboxPath);
             }
 
-            skybox.SetColor("_SkyTint", new Color(0.37f, 0.54f, 0.70f));
-            skybox.SetColor("_GroundColor", new Color(0.31f, 0.35f, 0.34f));
-            skybox.SetFloat("_AtmosphereThickness", 0.72f);
-            skybox.SetFloat("_Exposure", 1.12f);
-            skybox.SetFloat("_SunSize", 0.035f);
-            skybox.SetFloat("_SunSizeConvergence", 5.5f);
+            skybox.SetColor("_SkyTint", new Color(0.31f, 0.45f, 0.58f));
+            skybox.SetColor("_GroundColor", new Color(0.21f, 0.24f, 0.24f));
+            skybox.SetFloat("_AtmosphereThickness", 0.92f);
+            skybox.SetFloat("_Exposure", 0.98f);
+            skybox.SetFloat("_SunSize", 0.028f);
+            skybox.SetFloat("_SunSizeConvergence", 6.2f);
             EditorUtility.SetDirty(skybox);
             return skybox;
         }
@@ -2710,8 +3067,11 @@ namespace Psycho.Editor
             public Material Hills;
             public Material Mountains;
             public Material Cloud;
+            public Material HorizonMist;
             public Material TreeCanopy;
             public Material TreeBark;
+            public Material FrostStone;
+            public Material Moss;
             public Material WaterFoam;
             public Material WaterDepth;
             public Material PlayerCloth;

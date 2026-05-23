@@ -17,21 +17,21 @@ namespace Psycho.Editor
             MaterialSpec[] specs =
             {
                 new MaterialSpec("Default", new Color32(116, 111, 96, 255), new Color32(166, 158, 132, 255), Pattern.Stone, 0.22f, 0f, false),
-                new MaterialSpec("Grass", new Color32(44, 112, 38, 255), new Color32(118, 166, 64, 255), Pattern.Fibers, 0.18f, 0f, false),
-                new MaterialSpec("Leaf", new Color32(38, 104, 38, 255), new Color32(92, 156, 60, 255), Pattern.Fibers, 0.22f, 0f, false),
-                new MaterialSpec("Wood", new Color32(92, 54, 25, 255), new Color32(158, 104, 48, 255), Pattern.Wood, 0.20f, 0f, false),
-                new MaterialSpec("Stone", new Color32(88, 90, 84, 255), new Color32(146, 145, 134, 255), Pattern.Stone, 0.28f, 0f, false),
-                new MaterialSpec("Water", new Color32(20, 95, 140, 220), new Color32(76, 168, 210, 220), Pattern.Waves, 0.82f, 0f, true),
+                new MaterialSpec("Grass", new Color32(32, 74, 40, 255), new Color32(92, 126, 68, 255), Pattern.Fibers, 0.16f, 0f, false),
+                new MaterialSpec("Leaf", new Color32(24, 70, 40, 255), new Color32(72, 122, 72, 255), Pattern.Fibers, 0.18f, 0f, false),
+                new MaterialSpec("Wood", new Color32(54, 40, 30, 255), new Color32(118, 86, 54, 255), Pattern.Wood, 0.18f, 0f, false),
+                new MaterialSpec("Stone", new Color32(74, 78, 76, 255), new Color32(150, 150, 142, 255), Pattern.Stone, 0.30f, 0f, false),
+                new MaterialSpec("Water", new Color32(10, 58, 82, 220), new Color32(58, 126, 158, 220), Pattern.Waves, 0.86f, 0f, true),
                 new MaterialSpec("Metal", new Color32(122, 124, 124, 255), new Color32(210, 206, 190, 255), Pattern.Metal, 0.64f, 0.15f, false),
                 new MaterialSpec("Coin", new Color32(196, 129, 32, 255), new Color32(255, 210, 82, 255), Pattern.Metal, 0.58f, 0.25f, false),
                 new MaterialSpec("Rune", new Color32(52, 96, 176, 255), new Color32(116, 196, 255, 255), Pattern.Crystal, 0.46f, 0f, false),
                 new MaterialSpec("Cloth", new Color32(118, 46, 42, 255), new Color32(176, 93, 78, 255), Pattern.Fibers, 0.34f, 0f, false),
                 new MaterialSpec("Leather", new Color32(92, 48, 24, 255), new Color32(150, 92, 46, 255), Pattern.Leather, 0.30f, 0f, false),
                 new MaterialSpec("Crystal", new Color32(52, 172, 192, 230), new Color32(184, 250, 255, 230), Pattern.Crystal, 0.72f, 0f, true),
-                new MaterialSpec("Organic", new Color32(104, 126, 48, 255), new Color32(180, 160, 72, 255), Pattern.Organic, 0.24f, 0f, false),
+                new MaterialSpec("Organic", new Color32(76, 92, 50, 255), new Color32(142, 132, 78, 255), Pattern.Organic, 0.22f, 0f, false),
                 new MaterialSpec("Paper", new Color32(176, 160, 112, 255), new Color32(226, 214, 164, 255), Pattern.Fibers, 0.18f, 0f, false),
-                new MaterialSpec("Mountain", new Color32(92, 96, 96, 255), new Color32(156, 166, 166, 255), Pattern.Stone, 0.40f, 0f, false),
-                new MaterialSpec("Cloud", new Color32(205, 218, 226, 200), new Color32(255, 255, 255, 200), Pattern.Cloud, 0.70f, 0f, true)
+                new MaterialSpec("Mountain", new Color32(82, 86, 86, 255), new Color32(170, 174, 170, 255), Pattern.Stone, 0.38f, 0f, false),
+                new MaterialSpec("Cloud", new Color32(168, 188, 202, 200), new Color32(236, 244, 248, 200), Pattern.Cloud, 0.68f, 0f, true)
             };
 
             foreach (MaterialSpec spec in specs)
