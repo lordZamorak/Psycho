@@ -37,6 +37,7 @@ class Candidate:
     child: int | None
     codec: str
     format: str
+    layout: str
     compressed_bytes: int
     decompressed_bytes: int
     vertices: int
@@ -146,7 +147,8 @@ def classify_model_candidate(
     min_faces: int,
     max_faces: int,
     max_decompressed_bytes: int,
-) -> tuple[str, int, int, int] | None:
+    model_layout: str,
+) -> tuple[str, str, int, int, int] | None:
     if len(data) < 20 or len(data) > max_decompressed_bytes:
         return None
 
@@ -165,10 +167,167 @@ def classify_model_candidate(
     if not (min_faces <= faces <= max_faces):
         return None
 
+    legacy_layout = is_legacy_model_layout(data, model_format, vertices, faces)
+    if model_layout == "legacy" and not legacy_layout:
+        return None
+
+    layout = "legacy" if legacy_layout else "trailer-only"
+
     # Prefer detailed, non-tiny meshes while capping raw byte advantage so huge
     # non-model blobs do not dominate every export slot.
     score = vertices * 2 + faces * 3 + min(len(data), 250_000)
-    return model_format, vertices, faces, score
+    if legacy_layout:
+        score += 80_000
+
+    return model_format, layout, vertices, faces, score
+
+
+def is_legacy_model_layout(data: bytes, model_format: str, vertices: int, faces: int) -> bool:
+    if model_format == "old":
+        return is_old_model_layout(data, vertices, faces)
+
+    return is_new525_model_layout(data, vertices, faces)
+
+
+def is_old_model_layout(data: bytes, vertices: int, faces: int) -> bool:
+    if len(data) < 18:
+        return False
+
+    trailer = len(data) - 18
+    texture_faces = data[trailer + 4]
+    render_type_flag = data[trailer + 5]
+    priority_flag = data[trailer + 6]
+    alpha_flag = data[trailer + 7]
+    face_skin_flag = data[trailer + 8]
+    vertex_skin_flag = data[trailer + 9]
+    vertex_x_length = read_u16(data, trailer + 10)
+    vertex_y_length = read_u16(data, trailer + 12)
+    vertex_z_length = read_u16(data, trailer + 14)
+    face_index_length = read_u16(data, trailer + 16)
+
+    if render_type_flag not in (0, 1):
+        return False
+
+    if alpha_flag not in (0, 1) or face_skin_flag not in (0, 1) or vertex_skin_flag not in (0, 1):
+        return False
+
+    offset = 0
+    offset += vertices
+    offset += faces
+    if priority_flag == 255:
+        offset += faces
+
+    if face_skin_flag == 1:
+        offset += faces
+
+    if render_type_flag == 1:
+        offset += faces
+
+    if vertex_skin_flag == 1:
+        offset += vertices
+
+    if alpha_flag == 1:
+        offset += faces
+
+    offset += face_index_length
+    offset += faces * 2
+    offset += texture_faces * 6
+    offset += vertex_x_length + vertex_y_length + vertex_z_length
+    return offset == trailer
+
+
+def is_new525_model_layout(data: bytes, vertices: int, faces: int) -> bool:
+    if len(data) < 23:
+        return False
+
+    trailer = len(data) - 23
+    texture_faces = data[trailer + 4]
+    flags = data[trailer + 5]
+    if flags & 0x08:
+        # The project's Unity decoder has a 622-ish reader, but these JS5/NXT
+        # blobs need a dedicated format handler before being treated as clean
+        # legacy assets.
+        return False
+
+    if flags not in (0, 1):
+        return False
+
+    texture_counts = count_texture_types(data, texture_faces)
+    if texture_counts is None:
+        return False
+
+    priority_flag = data[trailer + 6]
+    alpha_flag = data[trailer + 7]
+    face_skin_flag = data[trailer + 8]
+    material_flag = data[trailer + 9]
+    vertex_skin_flag = data[trailer + 10]
+    vertex_x_length = read_u16(data, trailer + 11)
+    vertex_y_length = read_u16(data, trailer + 13)
+    vertex_z_length = read_u16(data, trailer + 15)
+    face_index_length = read_u16(data, trailer + 17)
+    texture_index_length = read_u16(data, trailer + 19)
+
+    if alpha_flag not in (0, 1) or face_skin_flag not in (0, 1):
+        return False
+
+    if material_flag not in (0, 1) or vertex_skin_flag not in (0, 1):
+        return False
+
+    simple_textures, complex_textures, translucent_textures = texture_counts
+    offset = texture_faces
+    offset += vertices
+    if flags == 1:
+        offset += faces
+
+    offset += faces
+    if priority_flag == 255:
+        offset += faces
+
+    if face_skin_flag == 1:
+        offset += faces
+
+    if vertex_skin_flag == 1:
+        offset += vertices
+
+    if alpha_flag == 1:
+        offset += faces
+
+    offset += face_index_length
+    if material_flag == 1:
+        offset += faces * 2
+
+    offset += texture_index_length
+    offset += faces * 2
+    offset += vertex_x_length + vertex_y_length + vertex_z_length
+    offset += simple_textures * 6
+    offset += complex_textures * 6
+    offset += complex_textures * 6
+    offset += complex_textures
+    offset += complex_textures
+    offset += complex_textures + translucent_textures * 2
+    return offset == trailer
+
+
+def count_texture_types(data: bytes, texture_faces: int) -> tuple[int, int, int] | None:
+    if texture_faces < 0 or texture_faces > len(data):
+        return None
+
+    simple = 0
+    complex_count = 0
+    translucent = 0
+    for index in range(texture_faces):
+        texture_type = data[index]
+        if texture_type == 0:
+            simple += 1
+        elif 1 <= texture_type <= 3:
+            complex_count += 1
+        else:
+            return None
+
+        if texture_type == 2:
+            translucent += 1
+
+    return simple, complex_count, translucent
 
 
 def connect_read_only(path: pathlib.Path) -> sqlite3.Connection:
@@ -355,6 +514,8 @@ def scan_candidates(args: argparse.Namespace) -> tuple[list[Candidate], dict[str
         "splitArchiveRows": 0,
         "splitFailures": 0,
         "candidateRows": 0,
+        "legacyLayoutCandidates": 0,
+        "trailerOnlyCandidates": 0,
         "duplicateCandidates": 0,
         "decodeFailures": 0,
     }
@@ -397,11 +558,12 @@ def scan_candidates(args: argparse.Namespace) -> tuple[list[Candidate], dict[str
                     args.min_faces,
                     args.max_faces,
                     args.max_decompressed_bytes,
+                    args.model_layout,
                 )
                 if classification is None:
                     continue
 
-                model_format, vertices, faces, score = classification
+                model_format, layout, vertices, faces, score = classification
                 sha1 = hashlib.sha1(child_data).hexdigest()
                 if sha1 in seen_hashes:
                     stats["duplicateCandidates"] += 1
@@ -409,12 +571,18 @@ def scan_candidates(args: argparse.Namespace) -> tuple[list[Candidate], dict[str
 
                 seen_hashes.add(sha1)
                 stats["candidateRows"] += 1
+                if layout == "legacy":
+                    stats["legacyLayoutCandidates"] += 1
+                else:
+                    stats["trailerOnlyCandidates"] += 1
+
                 candidates.append(
                     Candidate(
                         key=key,
                         child=child,
                         codec=codec,
                         format=model_format,
+                        layout=layout,
                         compressed_bytes=len(blob),
                         decompressed_bytes=len(child_data),
                         vertices=vertices,
@@ -535,7 +703,7 @@ def export_candidates(args: argparse.Namespace, candidates: list[Candidate]) -> 
                 child_part = f"_child_{child:06d}" if child is not None else ""
                 file_name = (
                     f"{source_label}_rank_{rank:04d}_key_{candidate.key:06d}"
-                    f"{child_part}_{candidate.format}_v{candidate.vertices}_f{candidate.faces}_"
+                    f"{child_part}_{candidate.format}_{candidate.layout}_v{candidate.vertices}_f{candidate.faces}_"
                     f"s{candidate.score}"
                 )
                 output_path = args.output / f"{sanitize_filename(file_name)}.dat"
@@ -581,6 +749,7 @@ def write_manifest(
             "minFaces": args.min_faces,
             "maxFaces": args.max_faces,
             "maxDecompressedBytes": args.max_decompressed_bytes,
+            "modelLayout": args.model_layout,
         },
         "exported": exported,
     }
@@ -605,6 +774,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--min-faces", type=int, default=1)
     parser.add_argument("--max-faces", type=int, default=70_000)
     parser.add_argument("--max-decompressed-bytes", type=int, default=4_500_000)
+    parser.add_argument(
+        "--model-layout",
+        choices=("legacy", "exploratory"),
+        default="legacy",
+        help=(
+            "legacy exports only payloads whose footer and section offsets match "
+            "known RS2/525 layouts; exploratory keeps the old trailer-count scan "
+            "for future NXT decoder research."
+        ),
+    )
     return parser
 
 
@@ -633,6 +812,10 @@ def main() -> int:
     print(
         "Rows scanned: {rowsScanned}, decoded: {decodedRows}, candidates: {candidateRows}, "
         "duplicates: {duplicateCandidates}, failures: {decodeFailures}".format(**stats)
+    )
+    print(
+        "Layout candidates: legacy={legacyLayoutCandidates}, trailer-only={trailerOnlyCandidates}, "
+        "mode={mode}".format(mode=args.model_layout, **stats)
     )
     print(
         "Child files scanned: {childFilesScanned}, split archives: {splitArchiveRows}, "
