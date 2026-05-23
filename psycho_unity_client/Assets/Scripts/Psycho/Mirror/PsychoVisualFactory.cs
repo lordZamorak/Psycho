@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Psycho.Rendering;
 using UnityEngine;
 
@@ -73,7 +74,17 @@ namespace Psycho.Mirror
 
             AddPrimitive(root, PrimitiveType.Capsule, "Clothed Ribcage Volume", new Vector3(0f, 0.97f * size, 0.035f * size), new Vector3(0.225f, 0.380f, 0.165f) * size, body);
             AddTaperedPrism(root, "Layered Humanoid Torso Front", new Vector3(0f, 0.94f * size, -0.140f * size), 0.44f * size, 0.34f * size, 0.58f * size, 0.042f * size, body);
-            AddTaperedPrism(root, "Layered Humanoid Coat Back", new Vector3(0f, 0.95f * size, 0.155f * size), 0.34f * size, 0.26f * size, 0.44f * size, 0.036f * size, body);
+            GameObject coatBack = AddNpcExtrudedPolygon(root, "Layered Humanoid Cloth Back", new[]
+            {
+                new Vector2(-0.19f, 0.23f),
+                new Vector2(0.19f, 0.23f),
+                new Vector2(0.155f, -0.20f),
+                new Vector2(0.070f, -0.31f),
+                new Vector2(-0.070f, -0.31f),
+                new Vector2(-0.155f, -0.20f)
+            }, 0.026f, body);
+            coatBack.transform.localPosition = new Vector3(0f, 0.94f * size, 0.170f * size);
+            coatBack.transform.localScale = Vector3.one * size;
             AddPrimitive(root, PrimitiveType.Cube, "Waist Belt", new Vector3(0f, 0.61f * size, -0.01f * size), new Vector3(0.44f, 0.07f, 0.27f) * size, leather);
             AddPrimitive(root, PrimitiveType.Cube, "Belt Buckle", new Vector3(0f, 0.61f * size, -0.175f * size), new Vector3(0.075f, 0.076f, 0.028f) * size, trim);
             AddPrimitive(root, PrimitiveType.Cube, "Chest Strap", new Vector3(-0.07f * size, 0.96f * size, -0.15f * size), new Vector3(0.045f, 0.50f, 0.025f) * size, leather).transform.localRotation = Quaternion.Euler(0f, 0f, -20f);
@@ -95,6 +106,7 @@ namespace Psycho.Mirror
             AddNpcLimb(root, false, size, body, trim, skin);
             AddNpcLeg(root, true, size, trim, leather);
             AddNpcLeg(root, false, size, trim, leather);
+            AddNpcRoleAccessory(root, npc, size, leather, trim);
 
             if (animateNpcPreviews)
             {
@@ -227,6 +239,73 @@ namespace Psycho.Mirror
             shin.transform.localRotation = Quaternion.Euler(0f, 0f, side * 1.0f);
             AddPrimitive(root, PrimitiveType.Cube, left ? "Left Boot" : "Right Boot", new Vector3(side * 0.13f * size, 0.062f * size, -0.052f * size), new Vector3(0.150f, 0.082f, 0.185f) * size, boot);
             AddPrimitive(root, PrimitiveType.Cube, left ? "Left Boot Toe" : "Right Boot Toe", new Vector3(side * 0.13f * size, 0.035f * size, -0.145f * size), new Vector3(0.138f, 0.048f, 0.090f) * size, boot);
+        }
+
+        private static void AddNpcRoleAccessory(GameObject root, PsychoMirrorNpc npc, float size, Material leather, Material trim)
+        {
+            string visualClass = npc?.visualClass == null ? string.Empty : npc.visualClass.ToLowerInvariant();
+            string name = npc?.name == null ? string.Empty : npc.name.ToLowerInvariant();
+            if (visualClass == "guard" || npc != null && npc.attackable)
+            {
+                if (name.Contains("axe") || name.Contains("dwarf") || name.Contains("warrior"))
+                {
+                    AddNpcBattleAxe(root, size, leather, trim);
+                }
+                else
+                {
+                    AddNpcSpear(root, size, leather, trim);
+                }
+
+                return;
+            }
+
+            if (visualClass == "merchant")
+            {
+                AddPrimitive(root, PrimitiveType.Cube, "Merchant Satchel", new Vector3(-0.31f * size, 0.73f * size, 0.17f * size), new Vector3(0.16f, 0.22f, 0.070f) * size, leather).transform.localRotation = Quaternion.Euler(0f, -8f, 4f);
+                AddPrimitive(root, PrimitiveType.Cube, "Merchant Satchel Flap", new Vector3(-0.31f * size, 0.80f * size, 0.12f * size), new Vector3(0.15f, 0.045f, 0.040f) * size, trim).transform.localRotation = Quaternion.Euler(0f, -8f, 4f);
+                return;
+            }
+
+            if (visualClass == "banker")
+            {
+                AddPrimitive(root, PrimitiveType.Cube, "Banker Ledger Cover", new Vector3(0.31f * size, 0.72f * size, -0.08f * size), new Vector3(0.035f, 0.20f, 0.145f) * size, trim);
+                AddPrimitive(root, PrimitiveType.Cube, "Banker Ledger Pages", new Vector3(0.335f * size, 0.72f * size, -0.08f * size), new Vector3(0.018f, 0.18f, 0.125f) * size, leather);
+            }
+        }
+
+        private static void AddNpcSpear(GameObject root, float size, Material leather, Material metal)
+        {
+            GameObject shaft = AddPrimitive(root, PrimitiveType.Cylinder, "NPC Polished Spear Shaft", new Vector3(0.49f * size, 0.88f * size, -0.035f * size), new Vector3(0.020f, 0.58f, 0.020f) * size, leather);
+            shaft.transform.localRotation = Quaternion.Euler(0f, 0f, -8f);
+            GameObject head = AddNpcExtrudedPolygon(root, "NPC Leaf Spear Head", new[]
+            {
+                new Vector2(-0.045f, -0.10f),
+                new Vector2(0.045f, -0.10f),
+                new Vector2(0.070f, 0.045f),
+                new Vector2(0.000f, 0.165f),
+                new Vector2(-0.070f, 0.045f)
+            }, 0.016f, metal);
+            head.transform.localPosition = new Vector3(0.57f * size, 1.45f * size, -0.035f * size);
+            head.transform.localRotation = Quaternion.Euler(0f, 0f, -8f);
+            head.transform.localScale = Vector3.one * size;
+        }
+
+        private static void AddNpcBattleAxe(GameObject root, float size, Material leather, Material metal)
+        {
+            GameObject handle = AddPrimitive(root, PrimitiveType.Cylinder, "NPC Battle Axe Handle", new Vector3(0.48f * size, 0.82f * size, -0.035f * size), new Vector3(0.023f, 0.43f, 0.023f) * size, leather);
+            handle.transform.localRotation = Quaternion.Euler(0f, 0f, -16f);
+            GameObject head = AddNpcExtrudedPolygon(root, "NPC Crescent Axe Head", new[]
+            {
+                new Vector2(-0.120f, -0.080f),
+                new Vector2(0.060f, -0.125f),
+                new Vector2(0.155f, -0.020f),
+                new Vector2(0.120f, 0.125f),
+                new Vector2(-0.090f, 0.120f),
+                new Vector2(-0.035f, 0.025f)
+            }, 0.020f, metal);
+            head.transform.localPosition = new Vector3(0.57f * size, 1.17f * size, -0.035f * size);
+            head.transform.localRotation = Quaternion.Euler(0f, 0f, -16f);
+            head.transform.localScale = Vector3.one * size;
         }
 
         public void SetNpcPreviewAnimation(bool enabled)
@@ -363,6 +442,52 @@ namespace Psycho.Mirror
             GameObject child = new GameObject(name);
             child.transform.SetParent(root.transform, false);
             child.transform.localPosition = localPosition;
+            child.AddComponent<MeshFilter>().sharedMesh = mesh;
+            child.AddComponent<MeshRenderer>().sharedMaterial = material;
+            return child;
+        }
+
+        private static GameObject AddNpcExtrudedPolygon(GameObject root, string name, Vector2[] shape, float depth, Material material)
+        {
+            int count = shape.Length;
+            float halfDepth = depth * 0.5f;
+            Vector3[] vertices = new Vector3[count * 2];
+            for (int i = 0; i < count; i++)
+            {
+                vertices[i] = new Vector3(shape[i].x, shape[i].y, -halfDepth);
+                vertices[i + count] = new Vector3(shape[i].x, shape[i].y, halfDepth);
+            }
+
+            List<int> triangles = new List<int>((count - 2) * 6 + count * 6);
+            for (int i = 1; i < count - 1; i++)
+            {
+                triangles.Add(0);
+                triangles.Add(i);
+                triangles.Add(i + 1);
+                triangles.Add(count);
+                triangles.Add(count + i + 1);
+                triangles.Add(count + i);
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                int next = (i + 1) % count;
+                triangles.Add(i);
+                triangles.Add(next);
+                triangles.Add(count + i);
+                triangles.Add(next);
+                triangles.Add(count + next);
+                triangles.Add(count + i);
+            }
+
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            mesh.vertices = vertices;
+            mesh.triangles = triangles.ToArray();
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject child = new GameObject(name);
+            child.transform.SetParent(root.transform, false);
             child.AddComponent<MeshFilter>().sharedMesh = mesh;
             child.AddComponent<MeshRenderer>().sharedMaterial = material;
             return child;

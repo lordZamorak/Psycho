@@ -2293,74 +2293,168 @@ namespace Psycho.Editor
 
         private static void BuildPlayerVisual(Transform parent, HostedMaterials materials, PsychoMirrorDatabase database, HostedPlayerSave playerSave)
         {
-            GameObject visualRoot = new GameObject("Adventurer Visual");
+            GameObject visualRoot = new GameObject("Psycho Hero Visual");
             visualRoot.transform.SetParent(parent, false);
 
-            PsychoMirrorItem head = GetEquippedItem(database, playerSave, EquipmentHeadSlot);
-            PsychoMirrorItem cape = GetEquippedItem(database, playerSave, EquipmentCapeSlot);
-            PsychoMirrorItem amulet = GetEquippedItem(database, playerSave, EquipmentAmuletSlot);
-            PsychoMirrorItem weapon = GetEquippedItem(database, playerSave, EquipmentWeaponSlot);
-            PsychoMirrorItem body = GetEquippedItem(database, playerSave, EquipmentBodySlot);
-            PsychoMirrorItem shield = GetEquippedItem(database, playerSave, EquipmentShieldSlot);
-            PsychoMirrorItem legs = GetEquippedItem(database, playerSave, EquipmentLegSlot);
-            PsychoMirrorItem hands = GetEquippedItem(database, playerSave, EquipmentHandsSlot);
-            PsychoMirrorItem feet = GetEquippedItem(database, playerSave, EquipmentFeetSlot);
+            PsychoMirrorItem heroHelm = CreateHostedHeroItem("Psycho Frost-Steel War Helm", "Helmet", "Metal");
+            PsychoMirrorItem heroCape = CreateHostedHeroItem("Psycho Highland Cloak", "Cape", "Cloth");
+            PsychoMirrorItem heroAmulet = CreateHostedHeroItem("Psycho Dawn Crystal Amulet", "Amulet", "Crystal");
+            PsychoMirrorItem heroBlade = CreateHostedHeroItem("Psycho Frost Runeblade", "TwoHandedWeapon", "Metal");
+            PsychoMirrorItem heroShield = CreateHostedHeroItem("Psycho Rune-Kite Ward", "Shield", "Metal");
+            PsychoMirrorItem heroBody = CreateHostedHeroItem("Psycho Layered Plate Harness", "Body", "Metal");
+            PsychoMirrorItem heroHands = CreateHostedHeroItem("Psycho Leather Gauntlets", "Gloves", "Leather");
+            PsychoMirrorItem heroLegs = CreateHostedHeroItem("Psycho Scale Greaves", "Legs", "Metal");
+            PsychoMirrorItem heroFeet = CreateHostedHeroItem("Psycho Highland Boots", "Boots", "Leather");
 
-            Material bodyMaterial = MaterialForEquippedItem(body, materials, materials.PlayerCloth);
-            Material legMaterial = MaterialForEquippedItem(legs, materials, materials.PlayerLeather);
-            Material bootMaterial = MaterialForEquippedItem(feet, materials, materials.PlayerLeather);
-            Material handMaterial = MaterialForEquippedItem(hands, materials, materials.PlayerLeather);
-
-            bool armoredBody = IsMetalEquipment(body);
-            bool armoredLegs = IsMetalEquipment(legs);
-            bool armoredHands = IsMetalEquipment(hands);
-            Material armorMaterial = armoredBody ? bodyMaterial : materials.PlayerMetal;
-            Material tunicMaterial = armoredBody ? materials.PlayerLeather : bodyMaterial;
-            Material trouserMaterial = armoredLegs ? materials.PlayerLeather : legMaterial;
-            Material palmMaterial = armoredHands ? materials.PlayerSkin : handMaterial;
+            Material armorMaterial = materials.PlayerMetal;
+            Material tunicMaterial = materials.PlayerLeather;
+            Material trouserMaterial = materials.PlayerLeather;
+            Material handMaterial = materials.PlayerLeather;
+            Material palmMaterial = materials.PlayerSkin;
 
             CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Capsule, "Rugged Highland Torso", new Vector3(0f, 1.03f, 0.015f), new Vector3(0.27f, 0.39f, 0.18f), tunicMaterial);
-            CreatePlayerTaperedPrism(visualRoot.transform, "Layered Cuirass Front", new Vector3(0f, 1.13f, -0.205f), 0.40f, 0.30f, 0.37f, 0.050f, armorMaterial, body);
-            CreatePlayerTaperedPrism(visualRoot.transform, "Left Cuirass Rib Plate", new Vector3(-0.170f, 1.08f, -0.220f), 0.075f, 0.060f, 0.30f, 0.032f, armorMaterial, body);
-            CreatePlayerTaperedPrism(visualRoot.transform, "Right Cuirass Rib Plate", new Vector3(0.170f, 1.08f, -0.220f), 0.075f, 0.060f, 0.30f, 0.032f, armorMaterial, body);
-            CreatePlayerTaperedPrism(visualRoot.transform, "Lower Mail Fauld", new Vector3(0f, 0.74f, -0.105f), 0.33f, 0.42f, 0.17f, 0.050f, armorMaterial, body);
+            CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Sphere, "Rounded Chest Volume", new Vector3(0f, 1.15f, -0.045f), new Vector3(0.245f, 0.190f, 0.150f), armorMaterial, heroBody);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Layered Cuirass Front", new Vector3(0f, 1.13f, -0.205f), 0.40f, 0.30f, 0.37f, 0.050f, armorMaterial, heroBody);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Left Cuirass Rib Plate", new Vector3(-0.170f, 1.08f, -0.220f), 0.075f, 0.060f, 0.30f, 0.032f, armorMaterial, heroBody);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Right Cuirass Rib Plate", new Vector3(0.170f, 1.08f, -0.220f), 0.075f, 0.060f, 0.30f, 0.032f, armorMaterial, heroBody);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Lower Mail Fauld", new Vector3(0f, 0.74f, -0.105f), 0.33f, 0.42f, 0.17f, 0.050f, armorMaterial, heroBody);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Left Hanging Scale Fauld", new Vector3(-0.145f, 0.61f, -0.085f), 0.11f, 0.15f, 0.22f, 0.038f, materials.PlayerMetal, heroBody).transform.localRotation = Quaternion.Euler(0f, 0f, 5f);
+            CreatePlayerTaperedPrism(visualRoot.transform, "Right Hanging Scale Fauld", new Vector3(0.145f, 0.61f, -0.085f), 0.11f, 0.15f, 0.22f, 0.038f, materials.PlayerMetal, heroBody).transform.localRotation = Quaternion.Euler(0f, 0f, -5f);
             CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Wide Leather War Belt", new Vector3(0f, 0.83f, -0.055f), new Vector3(0.45f, 0.062f, 0.24f), materials.PlayerLeather);
             CreatePlayerPrimitive(visualRoot.transform, PrimitiveType.Cube, "Belt Steel Buckle", new Vector3(0f, 0.83f, -0.205f), new Vector3(0.088f, 0.070f, 0.025f), materials.PlayerMetal);
             CreatePlayerArmorStrap(visualRoot.transform, "Left Chest Harness", new Vector3(-0.12f, 1.15f, -0.245f), -24f, materials.PlayerLeather);
             CreatePlayerArmorStrap(visualRoot.transform, "Right Chest Harness", new Vector3(0.12f, 1.15f, -0.245f), 24f, materials.PlayerLeather);
             CreateHighlandFurMantle(visualRoot.transform, materials);
-            if (amulet != null)
-            {
-                CreatePlayerAmulet(visualRoot.transform, amulet, materials);
-            }
+            CreatePlayerAmulet(visualRoot.transform, heroAmulet, materials);
 
-            CreateHighlandArm(visualRoot.transform, true, tunicMaterial, armorMaterial, handMaterial, palmMaterial, materials, body, hands);
-            CreateHighlandArm(visualRoot.transform, false, tunicMaterial, armorMaterial, handMaterial, palmMaterial, materials, body, hands);
-            CreateHighlandLeg(visualRoot.transform, true, trouserMaterial, legMaterial, bootMaterial, materials, legs, feet, armoredLegs);
-            CreateHighlandLeg(visualRoot.transform, false, trouserMaterial, legMaterial, bootMaterial, materials, legs, feet, armoredLegs);
-            CreateHighlandHead(visualRoot.transform, materials, head);
-
-            if (cape != null)
-            {
-                CreateCapePanel(visualRoot.transform, MaterialForEquippedItem(cape, materials, materials.PlayerCloth), materials, cape);
-            }
-            else
-            {
-                CreateCapePanel(visualRoot.transform, materials.PlayerCloth, materials, null);
-            }
-
-            if (weapon != null)
-            {
-                CreateEquippedWeapon(visualRoot.transform, weapon, MaterialForEquippedItem(weapon, materials, materials.PlayerMetal), materials);
-            }
-
-            if (shield != null)
-            {
-                CreateEquippedOffhand(visualRoot.transform, shield, MaterialForEquippedItem(shield, materials, materials.PlayerMetal), materials);
-            }
+            CreateHighlandArm(visualRoot.transform, true, tunicMaterial, armorMaterial, handMaterial, palmMaterial, materials, heroBody, heroHands);
+            CreateHighlandArm(visualRoot.transform, false, tunicMaterial, armorMaterial, handMaterial, palmMaterial, materials, heroBody, heroHands);
+            CreateHighlandLeg(visualRoot.transform, true, trouserMaterial, materials.PlayerMetal, materials.PlayerLeather, materials, heroLegs, heroFeet, true);
+            CreateHighlandLeg(visualRoot.transform, false, trouserMaterial, materials.PlayerMetal, materials.PlayerLeather, materials, heroLegs, heroFeet, true);
+            CreateHighlandHead(visualRoot.transform, materials, heroHelm);
+            CreateCapePanel(visualRoot.transform, materials.PlayerCloth, materials, heroCape);
+            CreatePsychoRuneblade(visualRoot.transform, materials, heroBlade);
+            CreatePsychoRuneKiteShield(visualRoot.transform, materials, heroShield);
 
             CreatePlayerNameplate(visualRoot.transform, playerSave);
-            Debug.Log($"Hosted player visual loaded from Java save for {PlayerDisplayName(playerSave)} with {CountEquippedItems(playerSave)} equipped item slots.");
+            Debug.Log($"Hosted player visual uses original Psycho hero art for {PlayerDisplayName(playerSave)}; Java equipment slots are ignored in the Unity visual preview.");
+        }
+
+        private static PsychoMirrorItem CreateHostedHeroItem(string name, string visualClass, string materialClass)
+        {
+            return new PsychoMirrorItem
+            {
+                id = -1,
+                name = name,
+                visualClass = visualClass,
+                materialClass = materialClass,
+                scale = 1f
+            };
+        }
+
+        private static void CreatePsychoRuneblade(Transform visualRoot, HostedMaterials materials, PsychoMirrorItem weapon)
+        {
+            GameObject blade = CreateExtrudedPolygon(
+                visualRoot,
+                "Psycho Frost Runeblade",
+                new[]
+                {
+                    new Vector2(-0.070f, -0.36f),
+                    new Vector2(0.070f, -0.36f),
+                    new Vector2(0.105f, 0.12f),
+                    new Vector2(0.055f, 0.42f),
+                    new Vector2(0.000f, 0.58f),
+                    new Vector2(-0.055f, 0.42f),
+                    new Vector2(-0.105f, 0.12f)
+                },
+                0.020f,
+                materials.PlayerMetal);
+            blade.name = weapon.name;
+            blade.transform.localPosition = new Vector3(0.51f, 0.95f, -0.035f);
+            blade.transform.localRotation = Quaternion.Euler(0f, 0f, -24f);
+
+            GameObject fuller = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cylinder, "Runeblade Central Fuller", new Vector3(0.55f, 1.02f, -0.060f), new Vector3(0.014f, 0.39f, 0.014f), materials.LandmarkGlass, weapon);
+            fuller.transform.localRotation = Quaternion.Euler(0f, 0f, -24f);
+            GameObject guard = CreatePlayerPrimitive(visualRoot, PrimitiveType.Cylinder, "Runeblade Curved Guard", new Vector3(0.40f, 0.61f, -0.035f), new Vector3(0.030f, 0.165f, 0.030f), materials.PlayerMetal, weapon);
+            guard.transform.localRotation = Quaternion.Euler(0f, 0f, 72f);
+            GameObject grip = CreatePlayerPrimitive(visualRoot, PrimitiveType.Capsule, "Runeblade Leather Grip", new Vector3(0.36f, 0.49f, -0.030f), new Vector3(0.043f, 0.155f, 0.043f), materials.PlayerLeather, weapon);
+            grip.transform.localRotation = Quaternion.Euler(0f, 0f, -18f);
+            CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, "Runeblade Crystal Pommel", new Vector3(0.32f, 0.36f, -0.030f), new Vector3(0.058f, 0.058f, 0.058f), materials.LandmarkBanner, weapon);
+        }
+
+        private static void CreatePsychoRuneKiteShield(Transform visualRoot, HostedMaterials materials, PsychoMirrorItem shield)
+        {
+            GameObject shieldBody = CreateExtrudedPolygon(
+                visualRoot,
+                "Psycho Rune-Kite Ward",
+                new[]
+                {
+                    new Vector2(-0.23f, 0.21f),
+                    new Vector2(0.23f, 0.21f),
+                    new Vector2(0.19f, -0.12f),
+                    new Vector2(0.00f, -0.43f),
+                    new Vector2(-0.19f, -0.12f)
+                },
+                0.030f,
+                materials.PlayerMetal);
+            shieldBody.name = shield.name;
+            shieldBody.transform.localPosition = new Vector3(-0.50f, 0.84f, -0.020f);
+            shieldBody.transform.localRotation = Quaternion.Euler(0f, 0f, 3f);
+
+            GameObject boss = CreatePlayerPrimitive(visualRoot, PrimitiveType.Sphere, "Rune-Kite Raised Boss", new Vector3(-0.505f, 0.85f, -0.060f), new Vector3(0.085f, 0.060f, 0.030f), materials.LandmarkBanner, shield);
+            boss.transform.localRotation = Quaternion.Euler(0f, 0f, 3f);
+            CreatePlayerTaperedPrism(visualRoot, "Rune-Kite Left Frost Inlay", new Vector3(-0.585f, 0.84f, -0.066f), 0.040f, 0.018f, 0.42f, 0.014f, materials.LandmarkGlass, shield).transform.localRotation = Quaternion.Euler(0f, 0f, -10f);
+            CreatePlayerTaperedPrism(visualRoot, "Rune-Kite Right Frost Inlay", new Vector3(-0.425f, 0.84f, -0.066f), 0.040f, 0.018f, 0.42f, 0.014f, materials.LandmarkGlass, shield).transform.localRotation = Quaternion.Euler(0f, 0f, 10f);
+        }
+
+        private static GameObject CreateExtrudedPolygon(Transform parent, string name, Vector2[] shape, float depth, Material material)
+        {
+            int count = shape.Length;
+            float halfDepth = depth * 0.5f;
+            Vector3[] vertices = new Vector3[count * 2];
+            for (int i = 0; i < count; i++)
+            {
+                vertices[i] = new Vector3(shape[i].x, shape[i].y, -halfDepth);
+                vertices[i + count] = new Vector3(shape[i].x, shape[i].y, halfDepth);
+            }
+
+            List<int> triangles = new List<int>((count - 2) * 6 + count * 6);
+            for (int i = 1; i < count - 1; i++)
+            {
+                triangles.Add(0);
+                triangles.Add(i);
+                triangles.Add(i + 1);
+
+                triangles.Add(count);
+                triangles.Add(count + i + 1);
+                triangles.Add(count + i);
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                int next = (i + 1) % count;
+                triangles.Add(i);
+                triangles.Add(next);
+                triangles.Add(count + i);
+                triangles.Add(next);
+                triangles.Add(count + next);
+                triangles.Add(count + i);
+            }
+
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            mesh.vertices = vertices;
+            mesh.triangles = triangles.ToArray();
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject polygon = new GameObject(name);
+            polygon.transform.SetParent(parent, false);
+            polygon.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = polygon.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.On;
+            renderer.receiveShadows = true;
+            return polygon;
         }
 
         private static GameObject CreatePlayerPrimitive(Transform parent, PrimitiveType type, string name, Vector3 localPosition, Vector3 localScale, Material material, PsychoMirrorItem item = null)
