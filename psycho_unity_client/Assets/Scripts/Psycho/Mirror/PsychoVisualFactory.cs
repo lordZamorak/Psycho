@@ -5,6 +5,8 @@ namespace Psycho.Mirror
 {
     public sealed class PsychoVisualFactory : MonoBehaviour
     {
+        private const float DogSizedImpFallbackScale = 0.40f;
+
         [SerializeField] private bool animateFoliage = true;
         [SerializeField] private bool animateNpcPreviews;
 
@@ -62,7 +64,7 @@ namespace Psycho.Mirror
         public GameObject CreateNpcVisual(PsychoMirrorNpc npc)
         {
             GameObject root = new GameObject($"NPC {npc.id} - {npc.name}");
-            float size = Mathf.Max(0.85f, npc.scale <= 0f ? 1f : npc.scale);
+            float size = ShouldUseDogSizedImpScale(npc) ? DogSizedImpFallbackScale : Mathf.Max(0.85f, npc.scale <= 0f ? 1f : npc.scale);
             Material body = ResolveMaterial(npc.materialClass);
             Material trim = ResolveMaterial(npc.attackable ? "Metal" : "Cloth");
 
@@ -82,6 +84,27 @@ namespace Psycho.Mirror
             }
 
             return root;
+        }
+
+        private static bool ShouldUseDogSizedImpScale(PsychoMirrorNpc npc)
+        {
+            if (npc == null || string.IsNullOrWhiteSpace(npc.name))
+            {
+                return false;
+            }
+
+            string name = npc.name.Trim().ToLowerInvariant();
+            if (name.Contains("impling") || name.Contains("chimp") || name.Contains("snow imp"))
+            {
+                return false;
+            }
+
+            return name == "imp"
+                || name == "imp champion"
+                || name == "imp defender"
+                || name == "booth imp"
+                || name == "reanimated imp"
+                || name == "revenant imp";
         }
 
         public void SetNpcPreviewAnimation(bool enabled)

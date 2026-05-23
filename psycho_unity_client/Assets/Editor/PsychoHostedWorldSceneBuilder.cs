@@ -28,6 +28,7 @@ namespace Psycho.Editor
         private const int MaxModelsPerNpc = 12;
         private const int MaxNpcSpawns = 460;
         private const int GroundDetailCount = 1850;
+        private const float DogSizedImpHeight = 0.62f;
         private const float CharacterNormalSmoothingTolerance = 0.00075f;
         private const float TileScale = 0.72f;
         private const float HeightScale = 1f / 96f;
@@ -223,6 +224,37 @@ namespace Psycho.Editor
             RenderHostedNpcPreview();
         }
 
+        [MenuItem("Psycho/Render Hosted Imp Scale Preview")]
+        public static void RenderHostedImpScalePreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject imp = FindHostedNpcByNameFragment(" - Imp (");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (imp == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both an Imp NPC and camera.");
+            }
+
+            Bounds bounds = BuildObjectPreviewBounds(imp.transform);
+            Vector3 focus = bounds.center + Vector3.up * 0.10f;
+            camera.transform.position = focus + new Vector3(-2.25f, 1.05f, -2.55f);
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 31f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-imp-scale-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1400, 900);
+        }
+
+        public static void RenderHostedImpScalePreviewBatch()
+        {
+            RenderHostedImpScalePreview();
+        }
+
         [MenuItem("Psycho/Render Hosted Grand Exchange Preview")]
         public static void RenderHostedGrandExchangePreview()
         {
@@ -290,6 +322,48 @@ namespace Psycho.Editor
             }
 
             bounds.Expand(0.35f);
+            return bounds;
+        }
+
+        private static GameObject FindHostedNpcByNameFragment(string fragment)
+        {
+            GameObject npcRoot = GameObject.Find("Hosted NPC Spawns");
+            if (npcRoot == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < npcRoot.transform.childCount; i++)
+            {
+                GameObject child = npcRoot.transform.GetChild(i).gameObject;
+                if (child.name.IndexOf(fragment, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return child;
+                }
+            }
+
+            return null;
+        }
+
+        private static Bounds BuildObjectPreviewBounds(Transform root)
+        {
+            Renderer[] renderers = root.GetComponentsInChildren<Renderer>();
+            Bounds bounds = new Bounds(root.position, Vector3.one * 0.8f);
+            bool hasRenderer = false;
+            foreach (Renderer renderer in renderers)
+            {
+                if (!hasRenderer)
+                {
+                    bounds = renderer.bounds;
+                    hasRenderer = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(renderer.bounds);
+                }
+            }
+
+            bounds.Expand(0.22f);
             return bounds;
         }
 
@@ -914,10 +988,33 @@ namespace Psycho.Editor
             }
 
             float declaredSize = Mathf.Max(1f, Mathf.Max(npc.size, model.size));
-            float targetHeight = Mathf.Clamp(1.72f + (declaredSize - 1f) * 0.58f, 1.35f, 5.8f);
+            float targetHeight = ShouldUseDogSizedImpScale(npc)
+                ? DogSizedImpHeight
+                : Mathf.Clamp(1.72f + (declaredSize - 1f) * 0.58f, 1.35f, 5.8f);
             float scale = targetHeight / bounds.size.y;
             modelRoot.localScale = Vector3.one * scale;
             modelRoot.localPosition = new Vector3(-bounds.center.x * scale, -bounds.min.y * scale, -bounds.center.z * scale);
+        }
+
+        private static bool ShouldUseDogSizedImpScale(PsychoMirrorNpc npc)
+        {
+            if (npc == null || string.IsNullOrWhiteSpace(npc.name))
+            {
+                return false;
+            }
+
+            string name = npc.name.Trim().ToLowerInvariant();
+            if (name.Contains("impling") || name.Contains("chimp") || name.Contains("snow imp"))
+            {
+                return false;
+            }
+
+            return name == "imp"
+                || name == "imp champion"
+                || name == "imp defender"
+                || name == "booth imp"
+                || name == "reanimated imp"
+                || name == "revenant imp";
         }
 
         private static bool TryCalculateLocalBounds(Transform root, out Bounds bounds)
