@@ -50,6 +50,8 @@ necrotic_client-item_attributes/cache1/**
 necrotic_client-item_attributes/these/**
 !necrotic_client-item_attributes/these/
 !necrotic_client-item_attributes/these/README.md
+necrotic_client-item_attributes/renamed/**
+necrotic_client-item_attributes/jcache_exports/**
 necrotic_server-item_attributes/cache/**
 !necrotic_server-item_attributes/cache/
 !necrotic_server-item_attributes/cache/README.md
