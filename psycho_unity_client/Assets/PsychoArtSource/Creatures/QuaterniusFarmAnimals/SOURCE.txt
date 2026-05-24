@@ -1,0 +1,5 @@
+Quaternius Farm Animal Pack
+Source: https://quaternius.com/packs/farmanimal.html
+Itch mirror: https://quaternius.itch.io/lowpoly-animated-animals
+License: Creative Commons CC0 1.0 Universal (public domain dedication)
+Imported into Psycho for dog/cow/sheep visual replacements.

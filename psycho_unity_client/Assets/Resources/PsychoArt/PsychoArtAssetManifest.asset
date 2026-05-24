@@ -371,6 +371,150 @@ MonoBehaviour:
     cullScreenRelativeHeight: 0.044
     receiveShadows: 1
     castShadows: 1
+  - kind: 1
+    displayName: Dog
+    prefab: {fileID: 6308144050700780922, guid: 37023b14031206f489ec928d7aeff775, type: 3}
+    ids: 620000006300000035030000390600003a060000fe0d00009e1200009f1200001d1700001e170000e6180000f11a0000381b0000591c00005a1c0000f5230000f6230000f7230000e6290000e7290000e8290000e9290000ea290000eb290000ec290000ed290000ee290000ef2900002a2d0000402d0000412d00007a3200007b3200007c3200007d3200007e3200007f320000803200008132000082320000833200009f750000a0750000a1750000a2750000b3750000868000009a8000002584000026840000b4850000a1900000599100008b93000099940000
+    visualClass:
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.58
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.036
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Puppy
+    prefab: {fileID: 7310799620596415347, guid: 8e2fb07c8eb3870488e59af5e14afd4d, type: 3}
+    ids: 2e1b0000301b0000321b0000341b0000391b0000451c0000471c0000491c00004b1c00004d1c00004f1c0000511c0000531c00005b1c00005c1c0000f47800004b810000
+    visualClass:
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.34
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.048
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Terror Dog
+    prefab: {fileID: 1755172109469850828, guid: 1dd6d2425c521924ba74a5944778adf3, type: 3}
+    ids: 291500002a150000652c0000798e00007a8e0000
+    visualClass:
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.85
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.032
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Cow
+    prefab: {fileID: 587652056215297165, guid: 0a2eee1f1ed93914686330637ed40e66, type: 3}
+    ids: 510000008d010000bb030000e7060000ed0c00004a3000004b3000004d3000001680000017800000198000001b800000028c0000f48d0000318e0000
+    visualClass:
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.95
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.03
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Cow Calf
+    prefab: {fileID: 5575816057079688746, guid: ecb232638d58ed04ebfda83ee725e9b7, type: 3}
+    ids: e6060000e8060000060900004c3000004e300000188000001a80000021800000
+    visualClass:
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.68
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.036
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Sheep
+    prefab: {fileID: 2931262136894288335, guid: 04e4cf7ed1b06c443880e5e7704e3e18, type: 3}
+    ids: 2a0000002b000000f7040000f8040000f9050000e2060000e3060000e4060000e5060000ee0c0000ef0c0000fb0d00001c1400001d1400001e1400001f140000201400002114000022140000231400002414000025140000261400002714000028140000291400002a1400002b1400002c1400002d1400003414000035140000ac220000ad22000026380000273800000b78000054780000557800005678000057780000ca790000437a0000447a0000457a0000467a0000477a0000487a00004c7a00004d7a0000b37f0000b47f0000b57f0000b67f0000b77f0000b87f0000b97f0000ba7f0000bb7f000012800000138000001480000015800000c3840000c4840000ea890000eb8900008e8b0000038c0000048c0000058c0000068c0000
+    visualClass:
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.58
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.038
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Lamb
+    prefab: {fileID: 9146573188307577099, guid: 6265c0d9b0c55244092fcd00240f987e, type: 3}
+    ids: 1a1400001b140000c8790000c9790000
+    visualClass:
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.36
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.048
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Ram
+    prefab: {fileID: 7732019023242293076, guid: fcc3f9e638db9b748ab015095a4cc78d, type: 3}
+    ids: 580e0000590e00003014000031140000321400005130000052300000533000001d7a00001e7a00001f7a0000207a0000217a0000
+    visualClass:
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.62
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.036
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Imp
+    prefab: {fileID: 2770966183154309783, guid: 26b25008f03da8947b6d0fa7515e0064, type: 3}
+    ids: c4020000c5020000fb050000f60b0000ba17000043180000b122000022230000552d00006e8100004b820000bf880000c0880000908b00009a8b00009c900000f9930000
+    visualClass:
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.62
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.034
+    receiveShadows: 1
+    castShadows: 1
   - kind: 2
     displayName: Common Tree A
     prefab: {fileID: 4572776465274567089, guid: 60f8683f53426514bade152dc88d59f7, type: 3}

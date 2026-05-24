@@ -1,0 +1,4 @@
+Quaternius LowPoly Animated Monsters
+Source: https://quaternius.itch.io/lowpoly-animated-monsters
+License: Creative Commons CC0 1.0 Universal (public domain dedication)
+Imported into Psycho for starter imp visual replacement.

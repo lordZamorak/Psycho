@@ -84,6 +84,11 @@ namespace Psycho.Rendering
             return matchAny || MatchesId(item.id) || MatchesVisualClass(item.visualClass) || MatchesName(item.name);
         }
 
+        public bool MatchesExplicitId(int id)
+        {
+            return MatchesId(id);
+        }
+
         private bool MatchesId(int id)
         {
             if (ids == null)

@@ -21,7 +21,15 @@ namespace Psycho.Rendering
         public static bool TryInstantiateNpc(PsychoMirrorNpc npc, Transform parent, out GameObject instance)
         {
             instance = null;
-            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesNpc(npc), StableHash(npc?.id ?? 0, npc?.name, npc?.visualClass));
+            int seed = StableHash(npc?.id ?? 0, npc?.name, npc?.visualClass);
+            PsychoArtAssetEntry entry = FindEntry(
+                entryCandidate => entryCandidate.kind == PsychoArtAssetKind.Npc && npc != null && entryCandidate.MatchesExplicitId(npc.id),
+                seed);
+            if (entry == null)
+            {
+                entry = FindEntry(entryCandidate => entryCandidate.MatchesNpc(npc), seed);
+            }
+
             return TryInstantiate(entry, parent, out instance);
         }
 

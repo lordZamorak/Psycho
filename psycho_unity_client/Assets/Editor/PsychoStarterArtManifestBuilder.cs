@@ -19,6 +19,8 @@ namespace Psycho.Editor
         private const string CharacterTextureRoot = "Assets/PsychoArtSource/Characters/QuaterniusRpgCharacters/Textures";
         private const string FoliageFbxRoot = "Assets/PsychoArtSource/Foliage/QuaterniusStylizedNature/FBX";
         private const string BuildingFbxRoot = "Assets/PsychoArtSource/Environment/KayKitMedievalBuilder/FBX";
+        private const string FarmAnimalFbxRoot = "Assets/PsychoArtSource/Creatures/QuaterniusFarmAnimals/FBX";
+        private const string MonsterFbxRoot = "Assets/PsychoArtSource/Creatures/QuaterniusAnimatedMonsters/FBX";
 
         private static readonly int[] RegularRatNpcIds =
         {
@@ -42,6 +44,67 @@ namespace Psycho.Editor
             32862, 32863, 32864, 32865, 32866, 32867, 33313, 33314, 33315,
             33607, 33608, 33609, 33969, 33970, 33971, 34501, 34534, 34535,
             34595, 34689, 34690, 34809, 36793, 39026, 39040
+        };
+
+        private static readonly int[] DogNpcIds =
+        {
+            98, 99, 821, 1593, 1594, 3582, 4766, 4767, 5917, 5918,
+            6374, 6897, 6968, 7257, 7258, 9205, 9206, 9207, 10726, 10727,
+            10728, 10729, 10730, 10731, 10732, 10733, 10734, 10735, 11562,
+            11584, 11585, 12922, 12923, 12924, 12925, 12926, 12927, 12928,
+            12929, 12930, 12931, 30111, 30112, 30113, 30114, 30131, 32902,
+            32922, 33829, 33830, 34228, 37025, 37209, 37771, 38041
+        };
+
+        private static readonly int[] PuppyNpcIds =
+        {
+            6958, 6960, 6962, 6964, 6969, 7237, 7239, 7241, 7243, 7245,
+            7247, 7249, 7251, 7259, 7260, 30964, 33099
+        };
+
+        private static readonly int[] TerrorDogNpcIds =
+        {
+            5417, 5418, 11365, 36473, 36474
+        };
+
+        private static readonly int[] CowNpcIds =
+        {
+            81, 397, 955, 1767, 3309, 12362, 12363, 12365, 32790, 32791,
+            32793, 32795, 35842, 36340, 36401
+        };
+
+        private static readonly int[] CalfNpcIds =
+        {
+            1766, 1768, 2310, 12364, 12366, 32792, 32794, 32801
+        };
+
+        private static readonly int[] SheepNpcIds =
+        {
+            42, 43, 1271, 1272, 1529, 1762, 1763, 1764, 1765, 3310,
+            3311, 3579, 5148, 5149, 5150, 5151, 5152, 5153, 5154, 5155,
+            5156, 5157, 5158, 5159, 5160, 5161, 5162, 5163, 5164, 5165,
+            5172, 5173, 8876, 8877, 14374, 14375, 30731, 30804, 30805,
+            30806, 30807, 31178, 31299, 31300, 31301, 31302, 31303, 31304,
+            31308, 31309, 32691, 32692, 32693, 32694, 32695, 32696, 32697,
+            32698, 32699, 32786, 32787, 32788, 32789, 33987, 33988, 35306,
+            35307, 35726, 35843, 35844, 35845, 35846
+        };
+
+        private static readonly int[] LambNpcIds =
+        {
+            5146, 5147, 31176, 31177
+        };
+
+        private static readonly int[] RamNpcIds =
+        {
+            3672, 3673, 5168, 5169, 5170, 12369, 12370, 12371, 31261,
+            31262, 31263, 31264, 31265
+        };
+
+        private static readonly int[] ImpNpcIds =
+        {
+            708, 709, 1531, 3062, 6074, 6211, 8881, 8994, 11605, 33134,
+            33355, 35007, 35008, 35728, 35738, 37020, 37881
         };
 
         [MenuItem("Psycho/Art Pipeline/Build Starter CC0 Manifest")]
@@ -72,6 +135,50 @@ namespace Psycho.Editor
             BuildCharacterPrefab(prefabs, "Warrior", "Warrior_Dwarf", 1.36f, new Color(0.82f, 0.66f, 0.48f), "Warrior_Dwarf");
             BuildRatPrefab(prefabs, "Starter_Rat", 0.18f, new Color(0.34f, 0.31f, 0.24f), new Color(0.63f, 0.45f, 0.38f));
             BuildRatPrefab(prefabs, "Starter_GiantRat", 0.36f, new Color(0.27f, 0.25f, 0.22f), new Color(0.52f, 0.36f, 0.32f));
+            if (!BuildSourceCreaturePrefab(prefabs, FarmAnimalFbxRoot, "Pug", "Starter_Dog", 0.58f))
+            {
+                BuildDogPrefab(prefabs, "Starter_Dog", 0.58f, new Color(0.38f, 0.28f, 0.20f), new Color(0.74f, 0.56f, 0.42f));
+            }
+
+            if (!BuildSourceCreaturePrefab(prefabs, FarmAnimalFbxRoot, "Pug", "Starter_Puppy", 0.34f))
+            {
+                BuildDogPrefab(prefabs, "Starter_Puppy", 0.34f, new Color(0.52f, 0.42f, 0.32f), new Color(0.78f, 0.60f, 0.45f));
+            }
+
+            if (!BuildSourceCreaturePrefab(prefabs, FarmAnimalFbxRoot, "Pug", "Starter_TerrorDog", 0.85f))
+            {
+                BuildDogPrefab(prefabs, "Starter_TerrorDog", 0.85f, new Color(0.15f, 0.12f, 0.10f), new Color(0.45f, 0.22f, 0.18f), true);
+            }
+
+            if (!BuildSourceCreaturePrefab(prefabs, FarmAnimalFbxRoot, "Cow", "Starter_Cow", 0.95f))
+            {
+                BuildCattlePrefab(prefabs, "Starter_Cow", 0.95f, new Color(0.52f, 0.42f, 0.30f), new Color(0.78f, 0.62f, 0.46f));
+            }
+
+            if (!BuildSourceCreaturePrefab(prefabs, FarmAnimalFbxRoot, "Cow", "Starter_Calf", 0.68f))
+            {
+                BuildCattlePrefab(prefabs, "Starter_Calf", 0.68f, new Color(0.58f, 0.46f, 0.34f), new Color(0.82f, 0.66f, 0.50f));
+            }
+
+            if (!BuildSourceCreaturePrefab(prefabs, FarmAnimalFbxRoot, "Sheep", "Starter_Sheep", 0.58f))
+            {
+                BuildSheepPrefab(prefabs, "Starter_Sheep", 0.58f, new Color(0.82f, 0.78f, 0.66f), new Color(0.23f, 0.20f, 0.18f), false);
+            }
+
+            if (!BuildSourceCreaturePrefab(prefabs, FarmAnimalFbxRoot, "Sheep", "Starter_Lamb", 0.36f))
+            {
+                BuildSheepPrefab(prefabs, "Starter_Lamb", 0.36f, new Color(0.88f, 0.84f, 0.72f), new Color(0.26f, 0.23f, 0.20f), false);
+            }
+
+            if (!BuildSourceCreaturePrefab(prefabs, FarmAnimalFbxRoot, "Sheep", "Starter_Ram", 0.62f))
+            {
+                BuildSheepPrefab(prefabs, "Starter_Ram", 0.62f, new Color(0.76f, 0.72f, 0.62f), new Color(0.25f, 0.22f, 0.19f), true);
+            }
+
+            if (!BuildSourceCreaturePrefab(prefabs, MonsterFbxRoot, "Dragon", "Starter_Imp", 0.62f))
+            {
+                BuildImpPrefab(prefabs, "Starter_Imp", 0.62f);
+            }
 
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "CommonTree_1", "CommonTree_1", 3.4f, true);
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "CommonTree_2", "CommonTree_2", 3.7f, true);
@@ -117,6 +224,77 @@ namespace Psycho.Editor
             BuildStarterManifest();
         }
 
+        [MenuItem("Psycho/Art Pipeline/Render Starter Creature Preview")]
+        public static void RenderStarterCreaturePreview()
+        {
+            if (!File.Exists($"{PrefabRoot}/Starter_Dog.prefab"))
+            {
+                BuildStarterManifest();
+            }
+
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+
+            GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            ground.name = "Creature Preview Ground";
+            ground.transform.localScale = new Vector3(2.5f, 1f, 1.1f);
+            Renderer groundRenderer = ground.GetComponent<Renderer>();
+            groundRenderer.sharedMaterial = new Material(Shader.Find("Standard"))
+            {
+                color = new Color(0.21f, 0.25f, 0.20f)
+            };
+
+            GameObject lightRoot = new GameObject("Creature Preview Key Light");
+            Light keyLight = lightRoot.AddComponent<Light>();
+            keyLight.type = LightType.Directional;
+            keyLight.intensity = 1.2f;
+            lightRoot.transform.rotation = Quaternion.Euler(45f, -35f, 0f);
+
+            string[] creaturePrefabs =
+            {
+                "Starter_Puppy", "Starter_Dog", "Starter_TerrorDog", "Starter_Calf",
+                "Starter_Cow", "Starter_Lamb", "Starter_Sheep", "Starter_Ram", "Starter_Imp"
+            };
+
+            float startX = -4.6f;
+            for (int i = 0; i < creaturePrefabs.Length; i++)
+            {
+                string prefabName = creaturePrefabs[i];
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabRoot}/{prefabName}.prefab");
+                if (prefab == null)
+                {
+                    Debug.LogWarning($"Creature preview prefab missing: {prefabName}");
+                    continue;
+                }
+
+                GameObject instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                if (instance == null)
+                {
+                    continue;
+                }
+
+                instance.name = prefabName;
+                instance.transform.position = new Vector3(startX + i * 1.15f, 0f, 0f);
+                instance.transform.rotation = Quaternion.Euler(0f, 155f, 0f);
+            }
+
+            GameObject cameraRoot = new GameObject("Creature Preview Camera");
+            Camera camera = cameraRoot.AddComponent<Camera>();
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color(0.08f, 0.10f, 0.11f);
+            camera.orthographic = true;
+            camera.orthographicSize = 1.65f;
+            camera.transform.position = new Vector3(0.1f, 1.55f, -5.2f);
+            camera.transform.LookAt(new Vector3(0.1f, 0.55f, 0f));
+
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-starter-creature-preview.png"));
+            RenderPreviewCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderStarterCreaturePreviewBatch()
+        {
+            RenderStarterCreaturePreview();
+        }
+
         private static List<PsychoArtAssetEntry> BuildManifestEntries(Dictionary<string, GameObject> prefabs)
         {
             List<PsychoArtAssetEntry> entries = new List<PsychoArtAssetEntry>();
@@ -141,6 +319,15 @@ namespace Psycho.Editor
             Add(entries, prefabs, "Warrior_Dwarf", PsychoArtAssetKind.Npc, "Dwarf Warrior", nameFragments: new[] { "dwarf" }, targetHeight: 1.36f, localEuler: new Vector3(0f, 180f, 0f));
             Add(entries, prefabs, "Starter_Rat", PsychoArtAssetKind.Npc, "Small Rat", ids: RegularRatNpcIds, targetHeight: 0.18f, cullHeight: 0.050f);
             Add(entries, prefabs, "Starter_GiantRat", PsychoArtAssetKind.Npc, "Giant Rat", ids: GiantRatNpcIds, targetHeight: 0.36f, cullHeight: 0.044f);
+            Add(entries, prefabs, "Starter_Dog", PsychoArtAssetKind.Npc, "Dog", ids: DogNpcIds, targetHeight: 0.58f, cullHeight: 0.036f);
+            Add(entries, prefabs, "Starter_Puppy", PsychoArtAssetKind.Npc, "Puppy", ids: PuppyNpcIds, targetHeight: 0.34f, cullHeight: 0.048f);
+            Add(entries, prefabs, "Starter_TerrorDog", PsychoArtAssetKind.Npc, "Terror Dog", ids: TerrorDogNpcIds, targetHeight: 0.85f, cullHeight: 0.032f);
+            Add(entries, prefabs, "Starter_Cow", PsychoArtAssetKind.Npc, "Cow", ids: CowNpcIds, targetHeight: 0.95f, cullHeight: 0.030f);
+            Add(entries, prefabs, "Starter_Calf", PsychoArtAssetKind.Npc, "Cow Calf", ids: CalfNpcIds, targetHeight: 0.68f, cullHeight: 0.036f);
+            Add(entries, prefabs, "Starter_Sheep", PsychoArtAssetKind.Npc, "Sheep", ids: SheepNpcIds, targetHeight: 0.58f, cullHeight: 0.038f);
+            Add(entries, prefabs, "Starter_Lamb", PsychoArtAssetKind.Npc, "Lamb", ids: LambNpcIds, targetHeight: 0.36f, cullHeight: 0.048f);
+            Add(entries, prefabs, "Starter_Ram", PsychoArtAssetKind.Npc, "Ram", ids: RamNpcIds, targetHeight: 0.62f, cullHeight: 0.036f);
+            Add(entries, prefabs, "Starter_Imp", PsychoArtAssetKind.Npc, "Imp", ids: ImpNpcIds, targetHeight: 0.62f, cullHeight: 0.034f);
 
             Add(entries, prefabs, "CommonTree_1", PsychoArtAssetKind.Object, "Common Tree A", visualClass: "Tree", targetHeight: 3.4f, markStatic: true, cullHeight: 0.012f);
             Add(entries, prefabs, "CommonTree_2", PsychoArtAssetKind.Object, "Common Tree B", visualClass: "Tree", targetHeight: 3.7f, markStatic: true, cullHeight: 0.012f);
@@ -275,6 +462,174 @@ namespace Psycho.Editor
             }
         }
 
+        private static void BuildDogPrefab(Dictionary<string, GameObject> prefabs, string prefabName, float targetHeight, Color furColor, Color skinColor, bool menacing = false)
+        {
+            Material fur = LoadOrCreateStarterMaterial($"{prefabName}_Fur", furColor, 0.01f, menacing ? 0.30f : 0.40f);
+            Material skin = LoadOrCreateStarterMaterial($"{prefabName}_Skin", skinColor, 0.0f, 0.28f);
+            Material eye = LoadOrCreateStarterMaterial($"{prefabName}_Eye", Color.black, 0.0f, 0.60f);
+
+            Mesh bodyMesh = LoadOrCreateMeshAsset($"{prefabName}_Ellipsoid", CreateEllipsoidMesh(22, 12));
+            Mesh legMesh = LoadOrCreateMeshAsset($"{prefabName}_Leg", CreateTaperedCylinderYMesh(10, 0.76f));
+            Mesh tailMesh = LoadOrCreateMeshAsset($"{prefabName}_Tail", CreateTaperedCylinderZMesh(10, 0.48f));
+
+            GameObject root = new GameObject(prefabName);
+            float h = Mathf.Max(0.16f, targetHeight);
+            AddMeshPart(root.transform, "Body", bodyMesh, fur, new Vector3(0f, h * 0.32f, -h * 0.04f), Quaternion.Euler(-3f, 0f, 0f), new Vector3(h * 0.46f, h * 0.36f, h * 0.88f));
+            AddMeshPart(root.transform, "Chest", bodyMesh, fur, new Vector3(0f, h * 0.40f, h * 0.28f), Quaternion.Euler(5f, 0f, 0f), new Vector3(h * 0.40f, h * 0.40f, h * 0.44f));
+            AddMeshPart(root.transform, "Head", bodyMesh, fur, new Vector3(0f, h * 0.56f, h * 0.60f), Quaternion.Euler(7f, 0f, 0f), new Vector3(h * 0.34f, h * 0.30f, h * 0.36f));
+            AddMeshPart(root.transform, "Muzzle", bodyMesh, skin, new Vector3(0f, h * 0.51f, h * 0.82f), Quaternion.identity, new Vector3(h * 0.20f, h * 0.13f, h * 0.20f));
+            AddMeshPart(root.transform, "Nose", bodyMesh, eye, new Vector3(0f, h * 0.54f, h * 0.95f), Quaternion.identity, Vector3.one * (h * 0.045f));
+            AddMeshPart(root.transform, "Ear L", bodyMesh, fur, new Vector3(-h * 0.14f, h * 0.72f, h * 0.55f), Quaternion.Euler(12f, 0f, -18f), new Vector3(h * 0.10f, h * 0.22f, h * 0.055f));
+            AddMeshPart(root.transform, "Ear R", bodyMesh, fur, new Vector3(h * 0.14f, h * 0.72f, h * 0.55f), Quaternion.Euler(12f, 0f, 18f), new Vector3(h * 0.10f, h * 0.22f, h * 0.055f));
+            AddMeshPart(root.transform, "Eye L", bodyMesh, eye, new Vector3(-h * 0.10f, h * 0.60f, h * 0.77f), Quaternion.identity, Vector3.one * (h * 0.032f));
+            AddMeshPart(root.transform, "Eye R", bodyMesh, eye, new Vector3(h * 0.10f, h * 0.60f, h * 0.77f), Quaternion.identity, Vector3.one * (h * 0.032f));
+
+            AddMeshPart(root.transform, "Leg FL", legMesh, skin, new Vector3(-h * 0.18f, h * 0.15f, h * 0.26f), Quaternion.identity, new Vector3(h * 0.075f, h * 0.30f, h * 0.075f));
+            AddMeshPart(root.transform, "Leg FR", legMesh, skin, new Vector3(h * 0.18f, h * 0.15f, h * 0.26f), Quaternion.identity, new Vector3(h * 0.075f, h * 0.30f, h * 0.075f));
+            AddMeshPart(root.transform, "Leg BL", legMesh, skin, new Vector3(-h * 0.19f, h * 0.15f, -h * 0.36f), Quaternion.identity, new Vector3(h * 0.080f, h * 0.30f, h * 0.080f));
+            AddMeshPart(root.transform, "Leg BR", legMesh, skin, new Vector3(h * 0.19f, h * 0.15f, -h * 0.36f), Quaternion.identity, new Vector3(h * 0.080f, h * 0.30f, h * 0.080f));
+            AddMeshPart(root.transform, "Tail", tailMesh, fur, new Vector3(0f, h * 0.48f, -h * 0.52f), Quaternion.Euler(-24f, 0f, 0f), new Vector3(h * 0.055f, h * 0.055f, h * 0.54f));
+
+            SaveGeneratedCreaturePrefab(prefabs, prefabName, root, menacing ? 0.030f : 0.038f);
+        }
+
+        private static void BuildCattlePrefab(Dictionary<string, GameObject> prefabs, string prefabName, float targetHeight, Color hideColor, Color muzzleColor)
+        {
+            Material hide = LoadOrCreateStarterMaterial($"{prefabName}_Hide", hideColor, 0.0f, 0.36f);
+            Material muzzle = LoadOrCreateStarterMaterial($"{prefabName}_Muzzle", muzzleColor, 0.0f, 0.30f);
+            Material horn = LoadOrCreateStarterMaterial($"{prefabName}_Horn", new Color(0.78f, 0.70f, 0.52f), 0.0f, 0.42f);
+            Material eye = LoadOrCreateStarterMaterial($"{prefabName}_Eye", Color.black, 0.0f, 0.58f);
+
+            Mesh bodyMesh = LoadOrCreateMeshAsset($"{prefabName}_Ellipsoid", CreateEllipsoidMesh(24, 12));
+            Mesh legMesh = LoadOrCreateMeshAsset($"{prefabName}_Leg", CreateTaperedCylinderYMesh(10, 0.82f));
+            Mesh hornMesh = LoadOrCreateMeshAsset($"{prefabName}_Horn", CreateTaperedCylinderYMesh(8, 0.12f));
+
+            GameObject root = new GameObject(prefabName);
+            float h = Mathf.Max(0.30f, targetHeight);
+            AddMeshPart(root.transform, "Body", bodyMesh, hide, new Vector3(0f, h * 0.43f, -h * 0.03f), Quaternion.Euler(-2f, 0f, 0f), new Vector3(h * 0.82f, h * 0.48f, h * 1.28f));
+            AddMeshPart(root.transform, "Chest", bodyMesh, hide, new Vector3(0f, h * 0.48f, h * 0.40f), Quaternion.identity, new Vector3(h * 0.62f, h * 0.50f, h * 0.48f));
+            AddMeshPart(root.transform, "Head", bodyMesh, hide, new Vector3(0f, h * 0.64f, h * 0.76f), Quaternion.Euler(4f, 0f, 0f), new Vector3(h * 0.42f, h * 0.34f, h * 0.46f));
+            AddMeshPart(root.transform, "Muzzle", bodyMesh, muzzle, new Vector3(0f, h * 0.57f, h * 1.03f), Quaternion.identity, new Vector3(h * 0.36f, h * 0.20f, h * 0.26f));
+            AddMeshPart(root.transform, "Ear L", bodyMesh, hide, new Vector3(-h * 0.28f, h * 0.72f, h * 0.72f), Quaternion.Euler(0f, 0f, -24f), new Vector3(h * 0.16f, h * 0.09f, h * 0.06f));
+            AddMeshPart(root.transform, "Ear R", bodyMesh, hide, new Vector3(h * 0.28f, h * 0.72f, h * 0.72f), Quaternion.Euler(0f, 0f, 24f), new Vector3(h * 0.16f, h * 0.09f, h * 0.06f));
+            AddMeshPart(root.transform, "Horn L", hornMesh, horn, new Vector3(-h * 0.18f, h * 0.86f, h * 0.72f), Quaternion.Euler(0f, 0f, 27f), new Vector3(h * 0.045f, h * 0.18f, h * 0.045f));
+            AddMeshPart(root.transform, "Horn R", hornMesh, horn, new Vector3(h * 0.18f, h * 0.86f, h * 0.72f), Quaternion.Euler(0f, 0f, -27f), new Vector3(h * 0.045f, h * 0.18f, h * 0.045f));
+            AddMeshPart(root.transform, "Eye L", bodyMesh, eye, new Vector3(-h * 0.13f, h * 0.66f, h * 0.98f), Quaternion.identity, Vector3.one * (h * 0.028f));
+            AddMeshPart(root.transform, "Eye R", bodyMesh, eye, new Vector3(h * 0.13f, h * 0.66f, h * 0.98f), Quaternion.identity, Vector3.one * (h * 0.028f));
+
+            AddMeshPart(root.transform, "Leg FL", legMesh, hide, new Vector3(-h * 0.30f, h * 0.20f, h * 0.34f), Quaternion.identity, new Vector3(h * 0.095f, h * 0.40f, h * 0.095f));
+            AddMeshPart(root.transform, "Leg FR", legMesh, hide, new Vector3(h * 0.30f, h * 0.20f, h * 0.34f), Quaternion.identity, new Vector3(h * 0.095f, h * 0.40f, h * 0.095f));
+            AddMeshPart(root.transform, "Leg BL", legMesh, hide, new Vector3(-h * 0.30f, h * 0.20f, -h * 0.43f), Quaternion.identity, new Vector3(h * 0.105f, h * 0.40f, h * 0.105f));
+            AddMeshPart(root.transform, "Leg BR", legMesh, hide, new Vector3(h * 0.30f, h * 0.20f, -h * 0.43f), Quaternion.identity, new Vector3(h * 0.105f, h * 0.40f, h * 0.105f));
+
+            SaveGeneratedCreaturePrefab(prefabs, prefabName, root, 0.032f);
+        }
+
+        private static void BuildSheepPrefab(Dictionary<string, GameObject> prefabs, string prefabName, float targetHeight, Color woolColor, Color faceColor, bool horns)
+        {
+            Material wool = LoadOrCreateStarterMaterial($"{prefabName}_Wool", woolColor, 0.0f, 0.52f);
+            Material face = LoadOrCreateStarterMaterial($"{prefabName}_Face", faceColor, 0.0f, 0.34f);
+            Material horn = LoadOrCreateStarterMaterial($"{prefabName}_Horn", new Color(0.66f, 0.58f, 0.42f), 0.0f, 0.40f);
+            Material eye = LoadOrCreateStarterMaterial($"{prefabName}_Eye", Color.black, 0.0f, 0.58f);
+
+            Mesh bodyMesh = LoadOrCreateMeshAsset($"{prefabName}_Ellipsoid", CreateEllipsoidMesh(22, 12));
+            Mesh legMesh = LoadOrCreateMeshAsset($"{prefabName}_Leg", CreateTaperedCylinderYMesh(10, 0.76f));
+            Mesh hornMesh = LoadOrCreateMeshAsset($"{prefabName}_Horn", CreateTaperedCylinderYMesh(8, 0.18f));
+
+            GameObject root = new GameObject(prefabName);
+            float h = Mathf.Max(0.20f, targetHeight);
+            AddMeshPart(root.transform, "Core Wool", bodyMesh, wool, new Vector3(0f, h * 0.40f, -h * 0.04f), Quaternion.identity, new Vector3(h * 0.70f, h * 0.50f, h * 0.92f));
+            int puffIndex = 0;
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    AddMeshPart(root.transform, $"Wool Puff {puffIndex++}", bodyMesh, wool, new Vector3(h * 0.18f * x, h * (0.48f + 0.05f * Mathf.Abs(x)), h * (0.20f * z - 0.05f)), Quaternion.identity, Vector3.one * (h * 0.24f));
+                }
+            }
+
+            AddMeshPart(root.transform, "Head", bodyMesh, face, new Vector3(0f, h * 0.48f, h * 0.55f), Quaternion.Euler(5f, 0f, 0f), new Vector3(h * 0.32f, h * 0.27f, h * 0.36f));
+            AddMeshPart(root.transform, "Muzzle", bodyMesh, face, new Vector3(0f, h * 0.42f, h * 0.77f), Quaternion.identity, new Vector3(h * 0.20f, h * 0.13f, h * 0.18f));
+            AddMeshPart(root.transform, "Ear L", bodyMesh, face, new Vector3(-h * 0.16f, h * 0.56f, h * 0.50f), Quaternion.Euler(0f, 0f, -18f), new Vector3(h * 0.10f, h * 0.055f, h * 0.05f));
+            AddMeshPart(root.transform, "Ear R", bodyMesh, face, new Vector3(h * 0.16f, h * 0.56f, h * 0.50f), Quaternion.Euler(0f, 0f, 18f), new Vector3(h * 0.10f, h * 0.055f, h * 0.05f));
+            AddMeshPart(root.transform, "Eye L", bodyMesh, eye, new Vector3(-h * 0.09f, h * 0.50f, h * 0.72f), Quaternion.identity, Vector3.one * (h * 0.026f));
+            AddMeshPart(root.transform, "Eye R", bodyMesh, eye, new Vector3(h * 0.09f, h * 0.50f, h * 0.72f), Quaternion.identity, Vector3.one * (h * 0.026f));
+
+            if (horns)
+            {
+                AddMeshPart(root.transform, "Horn L", hornMesh, horn, new Vector3(-h * 0.13f, h * 0.65f, h * 0.49f), Quaternion.Euler(0f, 0f, 38f), new Vector3(h * 0.04f, h * 0.16f, h * 0.04f));
+                AddMeshPart(root.transform, "Horn R", hornMesh, horn, new Vector3(h * 0.13f, h * 0.65f, h * 0.49f), Quaternion.Euler(0f, 0f, -38f), new Vector3(h * 0.04f, h * 0.16f, h * 0.04f));
+            }
+
+            AddMeshPart(root.transform, "Leg FL", legMesh, face, new Vector3(-h * 0.22f, h * 0.15f, h * 0.23f), Quaternion.identity, new Vector3(h * 0.070f, h * 0.30f, h * 0.070f));
+            AddMeshPart(root.transform, "Leg FR", legMesh, face, new Vector3(h * 0.22f, h * 0.15f, h * 0.23f), Quaternion.identity, new Vector3(h * 0.070f, h * 0.30f, h * 0.070f));
+            AddMeshPart(root.transform, "Leg BL", legMesh, face, new Vector3(-h * 0.22f, h * 0.15f, -h * 0.35f), Quaternion.identity, new Vector3(h * 0.075f, h * 0.30f, h * 0.075f));
+            AddMeshPart(root.transform, "Leg BR", legMesh, face, new Vector3(h * 0.22f, h * 0.15f, -h * 0.35f), Quaternion.identity, new Vector3(h * 0.075f, h * 0.30f, h * 0.075f));
+
+            SaveGeneratedCreaturePrefab(prefabs, prefabName, root, 0.038f);
+        }
+
+        private static void BuildImpPrefab(Dictionary<string, GameObject> prefabs, string prefabName, float targetHeight)
+        {
+            Material skin = LoadOrCreateStarterMaterial($"{prefabName}_Skin", new Color(0.58f, 0.14f, 0.11f), 0.0f, 0.42f);
+            Material wing = LoadOrCreateStarterMaterial($"{prefabName}_Wing", new Color(0.18f, 0.08f, 0.07f), 0.0f, 0.32f);
+            Material horn = LoadOrCreateStarterMaterial($"{prefabName}_Horn", new Color(0.85f, 0.72f, 0.52f), 0.0f, 0.44f);
+            Material eye = LoadOrCreateStarterMaterial($"{prefabName}_Eye", new Color(0.02f, 0.01f, 0.00f), 0.0f, 0.62f);
+
+            Mesh bodyMesh = LoadOrCreateMeshAsset($"{prefabName}_Ellipsoid", CreateEllipsoidMesh(22, 12));
+            Mesh limbMesh = LoadOrCreateMeshAsset($"{prefabName}_Limb", CreateTaperedCylinderYMesh(10, 0.70f));
+            Mesh tailMesh = LoadOrCreateMeshAsset($"{prefabName}_Tail", CreateTaperedCylinderZMesh(10, 0.20f));
+            Mesh hornMesh = LoadOrCreateMeshAsset($"{prefabName}_Horn", CreateTaperedCylinderYMesh(8, 0.08f));
+            Mesh wingMesh = LoadOrCreateMeshAsset($"{prefabName}_Wing", CreateWingMesh());
+
+            GameObject root = new GameObject(prefabName);
+            float h = Mathf.Max(0.32f, targetHeight);
+            AddMeshPart(root.transform, "Body", bodyMesh, skin, new Vector3(0f, h * 0.43f, 0f), Quaternion.identity, new Vector3(h * 0.42f, h * 0.48f, h * 0.30f));
+            AddMeshPart(root.transform, "Head", bodyMesh, skin, new Vector3(0f, h * 0.78f, h * 0.02f), Quaternion.identity, new Vector3(h * 0.34f, h * 0.30f, h * 0.32f));
+            AddMeshPart(root.transform, "Snout", bodyMesh, skin, new Vector3(0f, h * 0.74f, h * 0.22f), Quaternion.identity, new Vector3(h * 0.18f, h * 0.10f, h * 0.16f));
+            AddMeshPart(root.transform, "Horn L", hornMesh, horn, new Vector3(-h * 0.10f, h * 0.98f, h * 0.02f), Quaternion.Euler(0f, 0f, -20f), new Vector3(h * 0.040f, h * 0.16f, h * 0.040f));
+            AddMeshPart(root.transform, "Horn R", hornMesh, horn, new Vector3(h * 0.10f, h * 0.98f, h * 0.02f), Quaternion.Euler(0f, 0f, 20f), new Vector3(h * 0.040f, h * 0.16f, h * 0.040f));
+            AddMeshPart(root.transform, "Eye L", bodyMesh, eye, new Vector3(-h * 0.08f, h * 0.80f, h * 0.20f), Quaternion.identity, Vector3.one * (h * 0.030f));
+            AddMeshPart(root.transform, "Eye R", bodyMesh, eye, new Vector3(h * 0.08f, h * 0.80f, h * 0.20f), Quaternion.identity, Vector3.one * (h * 0.030f));
+
+            AddMeshPart(root.transform, "Arm L", limbMesh, skin, new Vector3(-h * 0.27f, h * 0.45f, h * 0.03f), Quaternion.Euler(0f, 0f, 24f), new Vector3(h * 0.055f, h * 0.30f, h * 0.055f));
+            AddMeshPart(root.transform, "Arm R", limbMesh, skin, new Vector3(h * 0.27f, h * 0.45f, h * 0.03f), Quaternion.Euler(0f, 0f, -24f), new Vector3(h * 0.055f, h * 0.30f, h * 0.055f));
+            AddMeshPart(root.transform, "Leg L", limbMesh, skin, new Vector3(-h * 0.11f, h * 0.16f, h * 0.03f), Quaternion.identity, new Vector3(h * 0.070f, h * 0.32f, h * 0.070f));
+            AddMeshPart(root.transform, "Leg R", limbMesh, skin, new Vector3(h * 0.11f, h * 0.16f, h * 0.03f), Quaternion.identity, new Vector3(h * 0.070f, h * 0.32f, h * 0.070f));
+            AddMeshPart(root.transform, "Tail", tailMesh, skin, new Vector3(0f, h * 0.34f, -h * 0.18f), Quaternion.Euler(-12f, 0f, 0f), new Vector3(h * 0.040f, h * 0.040f, h * 0.44f));
+            AddMeshPart(root.transform, "Wing L", wingMesh, wing, new Vector3(-h * 0.14f, h * 0.56f, -h * 0.18f), Quaternion.Euler(8f, -28f, 10f), new Vector3(h * 0.52f, h * 0.45f, h * 0.52f));
+            AddMeshPart(root.transform, "Wing R", wingMesh, wing, new Vector3(h * 0.14f, h * 0.56f, -h * 0.18f), Quaternion.Euler(8f, 28f, -10f), new Vector3(-h * 0.52f, h * 0.45f, h * 0.52f));
+
+            SaveGeneratedCreaturePrefab(prefabs, prefabName, root, 0.034f);
+        }
+
+        private static void SaveGeneratedCreaturePrefab(Dictionary<string, GameObject> prefabs, string prefabName, GameObject root, float cullHeight)
+        {
+            ConfigureRenderers(root);
+            AddCullLod(root, cullHeight);
+            AlignVisualBottomToRootGround(root.transform);
+            string prefabPath = $"{PrefabRoot}/{prefabName}.prefab";
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            UnityEngine.Object.DestroyImmediate(root);
+            if (prefab != null)
+            {
+                prefabs[prefabName] = prefab;
+            }
+        }
+
+        private static bool BuildSourceCreaturePrefab(Dictionary<string, GameObject> prefabs, string fbxRoot, string modelName, string prefabName, float targetHeight)
+        {
+            string modelPath = $"{fbxRoot}/{modelName}.fbx";
+            GameObject prefab = BuildPrefab(modelPath, prefabName, targetHeight, false, false);
+            if (prefab == null)
+            {
+                return false;
+            }
+
+            prefabs[prefabName] = prefab;
+            return true;
+        }
+
         private static Material LoadOrCreateStarterMaterial(string materialName, Color color, float metallic, float smoothness)
         {
             string materialPath = $"{MaterialRoot}/{materialName}.mat";
@@ -292,6 +647,30 @@ namespace Psycho.Editor
             material.SetFloat("_Glossiness", smoothness);
             EditorUtility.SetDirty(material);
             return material;
+        }
+
+        private static void RenderPreviewCameraToPng(Camera camera, string outputPath, int width, int height)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+            RenderTexture target = new RenderTexture(width, height, 24)
+            {
+                antiAliasing = 4
+            };
+
+            camera.targetTexture = target;
+            camera.Render();
+            RenderTexture previous = RenderTexture.active;
+            RenderTexture.active = target;
+            Texture2D capture = new Texture2D(width, height, TextureFormat.RGB24, false);
+            capture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+            capture.Apply();
+            File.WriteAllBytes(outputPath, capture.EncodeToPNG());
+            RenderTexture.active = previous;
+            camera.targetTexture = null;
+            UnityEngine.Object.DestroyImmediate(capture);
+            target.Release();
+            UnityEngine.Object.DestroyImmediate(target);
+            Debug.Log($"Rendered starter creature preview to {outputPath}");
         }
 
         private static void AddMeshPart(Transform root, string name, Mesh mesh, Material material, Vector3 localPosition, Quaternion localRotation, Vector3 localScale)
@@ -485,6 +864,30 @@ namespace Psycho.Editor
             mesh.SetNormals(normals);
             mesh.SetTriangles(triangles, 0);
             mesh.RecalculateTangents();
+            return mesh;
+        }
+
+        private static Mesh CreateWingMesh()
+        {
+            Mesh mesh = new Mesh();
+            mesh.SetVertices(new[]
+            {
+                new Vector3(0f, 0.10f, 0f),
+                new Vector3(0.54f, 0.48f, 0f),
+                new Vector3(0.30f, -0.48f, 0f),
+                new Vector3(0.06f, -0.16f, 0f)
+            });
+            mesh.SetUVs(0, new[]
+            {
+                new Vector2(0.0f, 0.5f),
+                new Vector2(1.0f, 1.0f),
+                new Vector2(0.8f, 0.0f),
+                new Vector2(0.2f, 0.2f)
+            });
+            mesh.SetTriangles(new[] { 0, 1, 3, 3, 1, 2, 3, 1, 0, 2, 1, 3 }, 0);
+            mesh.RecalculateNormals();
+            mesh.RecalculateTangents();
+            mesh.RecalculateBounds();
             return mesh;
         }
 
