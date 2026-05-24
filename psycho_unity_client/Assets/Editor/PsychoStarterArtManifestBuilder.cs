@@ -14,10 +14,35 @@ namespace Psycho.Editor
         private const string ManifestPath = "Assets/Resources/PsychoArt/PsychoArtAssetManifest.asset";
         private const string PrefabRoot = "Assets/Resources/PsychoArt/Prefabs/Starter";
         private const string MaterialRoot = "Assets/Resources/PsychoArt/Materials/Starter";
+        private const string MeshRoot = "Assets/Resources/PsychoArt/Meshes/Starter";
         private const string CharacterFbxRoot = "Assets/PsychoArtSource/Characters/QuaterniusRpgCharacters/FBX";
         private const string CharacterTextureRoot = "Assets/PsychoArtSource/Characters/QuaterniusRpgCharacters/Textures";
         private const string FoliageFbxRoot = "Assets/PsychoArtSource/Foliage/QuaterniusStylizedNature/FBX";
         private const string BuildingFbxRoot = "Assets/PsychoArtSource/Environment/KayKitMedievalBuilder/FBX";
+
+        private static readonly int[] RegularRatNpcIds =
+        {
+            47, 2682, 2980, 2981, 3007, 3008, 3009, 3010, 3011, 3012,
+            3013, 3014, 3015, 3016, 3017, 3018, 4396, 4415, 7202, 7204,
+            7461, 8209, 31020, 31021, 31022, 32492, 32513, 32854, 32855,
+            34593, 34594, 34610, 34611, 34612, 34613, 34614, 34615, 34616,
+            34617, 34618
+        };
+
+        private static readonly int[] GiantRatNpcIds =
+        {
+            86, 87, 88, 224, 446, 950, 978, 2032, 2033, 2982,
+            3382, 3647, 3662, 3707, 4395, 4920, 4921, 4922, 4923, 4924,
+            4925, 4926, 4927, 4928, 4929, 4936, 4937, 4938, 4939, 4940,
+            4941, 4942, 4943, 4944, 4945, 6088, 6089, 6090, 6847, 6848,
+            6899, 7920, 8828, 8829, 9472, 10480, 10481, 10482, 10483, 10484,
+            10485, 10486, 12348, 12349, 12350, 12351, 12914, 12915, 12916,
+            12917, 12918, 12919, 12920, 31062, 31679, 31680, 31681, 31682,
+            32510, 32511, 32512, 32856, 32857, 32858, 32859, 32860, 32861,
+            32862, 32863, 32864, 32865, 32866, 32867, 33313, 33314, 33315,
+            33607, 33608, 33609, 33969, 33970, 33971, 34501, 34534, 34535,
+            34595, 34689, 34690, 34809, 36793, 39026, 39040
+        };
 
         [MenuItem("Psycho/Art Pipeline/Build Starter CC0 Manifest")]
         public static void BuildStarterManifest()
@@ -32,6 +57,8 @@ namespace Psycho.Editor
             EnsureFolder("Assets/Resources/PsychoArt/Prefabs", "Starter");
             EnsureFolder("Assets/Resources/PsychoArt", "Materials");
             EnsureFolder("Assets/Resources/PsychoArt/Materials", "Starter");
+            EnsureFolder("Assets/Resources/PsychoArt", "Meshes");
+            EnsureFolder("Assets/Resources/PsychoArt/Meshes", "Starter");
 
             Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>(StringComparer.OrdinalIgnoreCase);
             BuildCharacterPrefab(prefabs, "Warrior", "Warrior_Player", 1.85f);
@@ -43,6 +70,8 @@ namespace Psycho.Editor
             BuildCharacterPrefab(prefabs, "Rogue", "Rogue_Undead", 1.66f, new Color(0.60f, 0.68f, 0.56f), "Rogue_Undead");
             BuildCharacterPrefab(prefabs, "Rogue", "Rogue_Goblin", 1.34f, new Color(0.50f, 0.68f, 0.38f), "Rogue_Goblin");
             BuildCharacterPrefab(prefabs, "Warrior", "Warrior_Dwarf", 1.36f, new Color(0.82f, 0.66f, 0.48f), "Warrior_Dwarf");
+            BuildRatPrefab(prefabs, "Starter_Rat", 0.18f, new Color(0.34f, 0.31f, 0.24f), new Color(0.63f, 0.45f, 0.38f));
+            BuildRatPrefab(prefabs, "Starter_GiantRat", 0.36f, new Color(0.27f, 0.25f, 0.22f), new Color(0.52f, 0.36f, 0.32f));
 
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "CommonTree_1", "CommonTree_1", 3.4f, true);
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "CommonTree_2", "CommonTree_2", 3.7f, true);
@@ -110,6 +139,8 @@ namespace Psycho.Editor
             Add(entries, prefabs, "Rogue_Undead", PsychoArtAssetKind.Npc, "Undead Rogue", nameFragments: new[] { "zombie", "skeleton", "undead", "revenant", "shade", "wight" }, targetHeight: 1.66f, localEuler: new Vector3(0f, 180f, 0f));
             Add(entries, prefabs, "Rogue_Goblin", PsychoArtAssetKind.Npc, "Goblin Rogue", nameFragments: new[] { "goblin", "hobgoblin" }, targetHeight: 1.34f, localEuler: new Vector3(0f, 180f, 0f));
             Add(entries, prefabs, "Warrior_Dwarf", PsychoArtAssetKind.Npc, "Dwarf Warrior", nameFragments: new[] { "dwarf" }, targetHeight: 1.36f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Starter_Rat", PsychoArtAssetKind.Npc, "Small Rat", ids: RegularRatNpcIds, targetHeight: 0.18f, cullHeight: 0.050f);
+            Add(entries, prefabs, "Starter_GiantRat", PsychoArtAssetKind.Npc, "Giant Rat", ids: GiantRatNpcIds, targetHeight: 0.36f, cullHeight: 0.044f);
 
             Add(entries, prefabs, "CommonTree_1", PsychoArtAssetKind.Object, "Common Tree A", visualClass: "Tree", targetHeight: 3.4f, markStatic: true, cullHeight: 0.012f);
             Add(entries, prefabs, "CommonTree_2", PsychoArtAssetKind.Object, "Common Tree B", visualClass: "Tree", targetHeight: 3.7f, markStatic: true, cullHeight: 0.012f);
@@ -200,6 +231,261 @@ namespace Psycho.Editor
             {
                 prefabs[prefabName] = prefab;
             }
+        }
+
+        private static void BuildRatPrefab(Dictionary<string, GameObject> prefabs, string prefabName, float targetHeight, Color furColor, Color skinColor)
+        {
+            Material fur = LoadOrCreateStarterMaterial($"{prefabName}_Fur", furColor, 0.01f, 0.38f);
+            Material skin = LoadOrCreateStarterMaterial($"{prefabName}_Skin", skinColor, 0.0f, 0.30f);
+            Material eye = LoadOrCreateStarterMaterial($"{prefabName}_Eye", new Color(0.025f, 0.022f, 0.018f), 0.0f, 0.64f);
+
+            Mesh bodyMesh = LoadOrCreateMeshAsset($"{prefabName}_Ellipsoid", CreateEllipsoidMesh(20, 12));
+            Mesh legMesh = LoadOrCreateMeshAsset($"{prefabName}_Leg", CreateTaperedCylinderYMesh(10, 0.70f));
+            Mesh tailMesh = LoadOrCreateMeshAsset($"{prefabName}_Tail", CreateTaperedCylinderZMesh(12, 0.30f));
+
+            GameObject root = new GameObject(prefabName);
+            float h = Mathf.Max(0.08f, targetHeight);
+            AddMeshPart(root.transform, "Body", bodyMesh, fur, new Vector3(0f, h * 0.27f, -h * 0.03f), Quaternion.Euler(-4f, 0f, 0f), new Vector3(h * 0.74f, h * 0.34f, h * 1.32f));
+            AddMeshPart(root.transform, "Head", bodyMesh, fur, new Vector3(0f, h * 0.35f, h * 0.55f), Quaternion.Euler(8f, 0f, 0f), new Vector3(h * 0.39f, h * 0.25f, h * 0.47f));
+            AddMeshPart(root.transform, "Nose", bodyMesh, skin, new Vector3(0f, h * 0.32f, h * 0.83f), Quaternion.identity, new Vector3(h * 0.14f, h * 0.085f, h * 0.17f));
+            AddMeshPart(root.transform, "Ear L", bodyMesh, fur, new Vector3(-h * 0.13f, h * 0.49f, h * 0.48f), Quaternion.Euler(0f, 0f, -19f), new Vector3(h * 0.095f, h * 0.13f, h * 0.052f));
+            AddMeshPart(root.transform, "Ear R", bodyMesh, fur, new Vector3(h * 0.13f, h * 0.49f, h * 0.48f), Quaternion.Euler(0f, 0f, 19f), new Vector3(h * 0.095f, h * 0.13f, h * 0.052f));
+            AddMeshPart(root.transform, "Eye L", bodyMesh, eye, new Vector3(-h * 0.11f, h * 0.39f, h * 0.75f), Quaternion.identity, Vector3.one * (h * 0.032f));
+            AddMeshPart(root.transform, "Eye R", bodyMesh, eye, new Vector3(h * 0.11f, h * 0.39f, h * 0.75f), Quaternion.identity, Vector3.one * (h * 0.032f));
+
+            AddMeshPart(root.transform, "Leg FL", legMesh, skin, new Vector3(-h * 0.20f, h * 0.09f, h * 0.25f), Quaternion.identity, new Vector3(h * 0.070f, h * 0.17f, h * 0.070f));
+            AddMeshPart(root.transform, "Leg FR", legMesh, skin, new Vector3(h * 0.20f, h * 0.09f, h * 0.25f), Quaternion.identity, new Vector3(h * 0.070f, h * 0.17f, h * 0.070f));
+            AddMeshPart(root.transform, "Leg BL", legMesh, skin, new Vector3(-h * 0.22f, h * 0.09f, -h * 0.36f), Quaternion.identity, new Vector3(h * 0.075f, h * 0.18f, h * 0.075f));
+            AddMeshPart(root.transform, "Leg BR", legMesh, skin, new Vector3(h * 0.22f, h * 0.09f, -h * 0.36f), Quaternion.identity, new Vector3(h * 0.075f, h * 0.18f, h * 0.075f));
+            AddMeshPart(root.transform, "Paw FL", bodyMesh, skin, new Vector3(-h * 0.20f, h * 0.02f, h * 0.31f), Quaternion.identity, new Vector3(h * 0.12f, h * 0.04f, h * 0.17f));
+            AddMeshPart(root.transform, "Paw FR", bodyMesh, skin, new Vector3(h * 0.20f, h * 0.02f, h * 0.31f), Quaternion.identity, new Vector3(h * 0.12f, h * 0.04f, h * 0.17f));
+            AddMeshPart(root.transform, "Paw BL", bodyMesh, skin, new Vector3(-h * 0.22f, h * 0.02f, -h * 0.31f), Quaternion.identity, new Vector3(h * 0.13f, h * 0.04f, h * 0.18f));
+            AddMeshPart(root.transform, "Paw BR", bodyMesh, skin, new Vector3(h * 0.22f, h * 0.02f, -h * 0.31f), Quaternion.identity, new Vector3(h * 0.13f, h * 0.04f, h * 0.18f));
+            AddMeshPart(root.transform, "Tail", tailMesh, skin, new Vector3(0f, h * 0.25f, -h * 0.64f), Quaternion.Euler(-7f, 0f, 0f), new Vector3(h * 0.050f, h * 0.050f, h * 0.94f));
+
+            ConfigureRenderers(root);
+            AddCullLod(root, 0.050f);
+            AlignVisualBottomToRootGround(root.transform);
+            string prefabPath = $"{PrefabRoot}/{prefabName}.prefab";
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            UnityEngine.Object.DestroyImmediate(root);
+            if (prefab != null)
+            {
+                prefabs[prefabName] = prefab;
+            }
+        }
+
+        private static Material LoadOrCreateStarterMaterial(string materialName, Color color, float metallic, float smoothness)
+        {
+            string materialPath = $"{MaterialRoot}/{materialName}.mat";
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+            if (material == null)
+            {
+                material = new Material(Shader.Find("Standard"));
+                AssetDatabase.CreateAsset(material, materialPath);
+            }
+
+            material.name = materialName;
+            material.color = color;
+            material.enableInstancing = true;
+            material.SetFloat("_Metallic", metallic);
+            material.SetFloat("_Glossiness", smoothness);
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        private static void AddMeshPart(Transform root, string name, Mesh mesh, Material material, Vector3 localPosition, Quaternion localRotation, Vector3 localScale)
+        {
+            GameObject part = new GameObject(name);
+            part.transform.SetParent(root, false);
+            part.transform.localPosition = localPosition;
+            part.transform.localRotation = localRotation;
+            part.transform.localScale = localScale;
+
+            MeshFilter filter = part.AddComponent<MeshFilter>();
+            filter.sharedMesh = mesh;
+            MeshRenderer renderer = part.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+        }
+
+        private static Mesh LoadOrCreateMeshAsset(string meshName, Mesh generated)
+        {
+            string meshPath = $"{MeshRoot}/{meshName}.asset";
+            Mesh existing = AssetDatabase.LoadAssetAtPath<Mesh>(meshPath);
+            generated.name = meshName;
+            generated.RecalculateBounds();
+            if (existing == null)
+            {
+                AssetDatabase.CreateAsset(generated, meshPath);
+                return generated;
+            }
+
+            EditorUtility.CopySerialized(generated, existing);
+            existing.name = meshName;
+            EditorUtility.SetDirty(existing);
+            UnityEngine.Object.DestroyImmediate(generated);
+            return existing;
+        }
+
+        private static Mesh CreateEllipsoidMesh(int segments, int rings)
+        {
+            List<Vector3> vertices = new List<Vector3>((segments + 1) * (rings + 1));
+            List<Vector3> normals = new List<Vector3>(vertices.Capacity);
+            List<Vector2> uvs = new List<Vector2>(vertices.Capacity);
+            List<int> triangles = new List<int>(segments * rings * 6);
+
+            for (int ring = 0; ring <= rings; ring++)
+            {
+                float v = ring / (float)rings;
+                float phi = Mathf.PI * v;
+                float sinPhi = Mathf.Sin(phi);
+                float cosPhi = Mathf.Cos(phi);
+                for (int segment = 0; segment <= segments; segment++)
+                {
+                    float u = segment / (float)segments;
+                    float theta = Mathf.PI * 2f * u;
+                    Vector3 normal = new Vector3(Mathf.Cos(theta) * sinPhi, cosPhi, Mathf.Sin(theta) * sinPhi);
+                    vertices.Add(normal * 0.5f);
+                    normals.Add(normal.normalized);
+                    uvs.Add(new Vector2(u, v));
+                }
+            }
+
+            int stride = segments + 1;
+            for (int ring = 0; ring < rings; ring++)
+            {
+                for (int segment = 0; segment < segments; segment++)
+                {
+                    int a = ring * stride + segment;
+                    int b = a + stride;
+                    int c = b + 1;
+                    int d = a + 1;
+                    triangles.Add(a);
+                    triangles.Add(b);
+                    triangles.Add(d);
+                    triangles.Add(d);
+                    triangles.Add(b);
+                    triangles.Add(c);
+                }
+            }
+
+            Mesh mesh = new Mesh();
+            mesh.SetVertices(vertices);
+            mesh.SetNormals(normals);
+            mesh.SetUVs(0, uvs);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateTangents();
+            return mesh;
+        }
+
+        private static Mesh CreateTaperedCylinderYMesh(int segments, float topRadiusMultiplier)
+        {
+            List<Vector3> vertices = new List<Vector3>((segments + 1) * 2 + 2);
+            List<Vector3> normals = new List<Vector3>(vertices.Capacity);
+            List<int> triangles = new List<int>(segments * 12);
+
+            for (int y = 0; y <= 1; y++)
+            {
+                float radius = y == 0 ? 0.5f : 0.5f * topRadiusMultiplier;
+                float height = y == 0 ? -0.5f : 0.5f;
+                for (int segment = 0; segment <= segments; segment++)
+                {
+                    float theta = Mathf.PI * 2f * (segment / (float)segments);
+                    Vector3 normal = new Vector3(Mathf.Cos(theta), 0f, Mathf.Sin(theta)).normalized;
+                    vertices.Add(new Vector3(normal.x * radius, height, normal.z * radius));
+                    normals.Add(normal);
+                }
+            }
+
+            int bottomCenter = vertices.Count;
+            vertices.Add(new Vector3(0f, -0.5f, 0f));
+            normals.Add(Vector3.down);
+            int topCenter = vertices.Count;
+            vertices.Add(new Vector3(0f, 0.5f, 0f));
+            normals.Add(Vector3.up);
+
+            int stride = segments + 1;
+            for (int segment = 0; segment < segments; segment++)
+            {
+                int a = segment;
+                int b = stride + segment;
+                int c = stride + segment + 1;
+                int d = segment + 1;
+                triangles.Add(a);
+                triangles.Add(b);
+                triangles.Add(d);
+                triangles.Add(d);
+                triangles.Add(b);
+                triangles.Add(c);
+                triangles.Add(bottomCenter);
+                triangles.Add(d);
+                triangles.Add(a);
+                triangles.Add(topCenter);
+                triangles.Add(b);
+                triangles.Add(c);
+            }
+
+            Mesh mesh = new Mesh();
+            mesh.SetVertices(vertices);
+            mesh.SetNormals(normals);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateTangents();
+            return mesh;
+        }
+
+        private static Mesh CreateTaperedCylinderZMesh(int segments, float tipRadiusMultiplier)
+        {
+            List<Vector3> vertices = new List<Vector3>((segments + 1) * 2 + 2);
+            List<Vector3> normals = new List<Vector3>(vertices.Capacity);
+            List<int> triangles = new List<int>(segments * 12);
+
+            for (int z = 0; z <= 1; z++)
+            {
+                float radius = z == 0 ? 0.5f : 0.5f * tipRadiusMultiplier;
+                float depth = z == 0 ? 0f : -1f;
+                for (int segment = 0; segment <= segments; segment++)
+                {
+                    float theta = Mathf.PI * 2f * (segment / (float)segments);
+                    Vector3 normal = new Vector3(Mathf.Cos(theta), Mathf.Sin(theta), 0f).normalized;
+                    vertices.Add(new Vector3(normal.x * radius, normal.y * radius, depth));
+                    normals.Add(normal);
+                }
+            }
+
+            int baseCenter = vertices.Count;
+            vertices.Add(Vector3.zero);
+            normals.Add(Vector3.forward);
+            int tipCenter = vertices.Count;
+            vertices.Add(new Vector3(0f, 0f, -1f));
+            normals.Add(Vector3.back);
+
+            int stride = segments + 1;
+            for (int segment = 0; segment < segments; segment++)
+            {
+                int a = segment;
+                int b = stride + segment;
+                int c = stride + segment + 1;
+                int d = segment + 1;
+                triangles.Add(a);
+                triangles.Add(d);
+                triangles.Add(b);
+                triangles.Add(d);
+                triangles.Add(c);
+                triangles.Add(b);
+                triangles.Add(baseCenter);
+                triangles.Add(a);
+                triangles.Add(d);
+                triangles.Add(tipCenter);
+                triangles.Add(c);
+                triangles.Add(b);
+            }
+
+            Mesh mesh = new Mesh();
+            mesh.SetVertices(vertices);
+            mesh.SetNormals(normals);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateTangents();
+            return mesh;
         }
 
         private static GameObject BuildPrefab(string modelPath, string prefabName, float targetHeight, bool addCollider, bool humanoid, bool foliage = false, Material overrideMaterial = null)
