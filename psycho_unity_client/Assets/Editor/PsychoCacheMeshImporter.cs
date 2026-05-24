@@ -79,6 +79,10 @@ namespace Psycho.Editor
             SetMaterialFloat(material, "_TerrainAlbedoStrength", 0.96f);
             SetMaterialFloat(material, "_TerrainNormalStrength", 0.68f);
             SetMaterialFloat(material, "_SplatContrast", 1.28f);
+            SetMaterialFloat(material, "_MacroVariationScale", 0.033f);
+            SetMaterialFloat(material, "_MacroVariationStrength", 0.18f);
+            SetMaterialFloat(material, "_SlopeProjectionStrength", 0.86f);
+            SetMaterialFloat(material, "_PathPebbleStrength", 0.52f);
             EditorUtility.SetDirty(material);
             return material;
         }

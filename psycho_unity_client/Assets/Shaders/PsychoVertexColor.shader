@@ -35,6 +35,10 @@ Shader "Psycho/Vertex Color Lit"
         _TerrainAlbedoStrength ("Terrain Splat Albedo Strength", Range(0, 1)) = 0.70
         _TerrainNormalStrength ("Terrain Splat Normal Strength", Range(0, 1)) = 0.42
         _SplatContrast ("Terrain Splat Mask Contrast", Range(0.5, 3)) = 1.35
+        _MacroVariationScale ("Terrain Macro Variation Scale", Range(0.005, 0.12)) = 0.035
+        _MacroVariationStrength ("Terrain Macro Variation Strength", Range(0, 0.45)) = 0.16
+        _SlopeProjectionStrength ("Slope Texture Projection Strength", Range(0, 1)) = 0.72
+        _PathPebbleStrength ("Path Pebble Strength", Range(0, 1)) = 0.42
     }
     SubShader
     {
@@ -78,6 +82,10 @@ Shader "Psycho/Vertex Color Lit"
         half _TerrainAlbedoStrength;
         half _TerrainNormalStrength;
         half _SplatContrast;
+        half _MacroVariationScale;
+        half _MacroVariationStrength;
+        half _SlopeProjectionStrength;
+        half _PathPebbleStrength;
 
         struct Input
         {
@@ -124,7 +132,8 @@ Shader "Psycho/Vertex Color Lit"
         float3 SafeNormalize(float3 value, float3 fallback)
         {
             float lengthSquared = dot(value, value);
-            return lengthSquared > 0.000001 ? value * rsqrt(lengthSquared) : fallback;
+            float invLength = rsqrt(max(lengthSquared, 0.000001));
+            return lerp(fallback, value * invLength, step(0.000001, lengthSquared));
         }
 
         void surf(Input input, inout SurfaceOutputStandard output)
@@ -165,12 +174,24 @@ Shader "Psycho/Vertex Color Lit"
             rockSplatMask /= totalSplatMask;
 
             float2 terrainUv = input.worldPos.xz * _TerrainTexScale;
+            float macroVariation = Fbm(input.worldPos.xz * _MacroVariationScale);
+            float macroShade = lerp(1.0 - _MacroVariationStrength, 1.0 + _MacroVariationStrength, macroVariation);
             float3 grassTex = tex2D(_GrassAlbedo, terrainUv * 1.05 + float2(0.031, -0.017)).rgb;
             float3 pathTex = tex2D(_PathAlbedo, terrainUv * 0.88 + float2(-0.047, 0.019)).rgb;
             float3 rockTex = tex2D(_RockAlbedo, terrainUv * 0.64 + float2(0.071, 0.043)).rgb;
+            float3 projectionWeights = pow(abs(normal), 4.0);
+            projectionWeights /= max(0.001, projectionWeights.x + projectionWeights.y + projectionWeights.z);
+            float3 rockProjected =
+                tex2D(_RockAlbedo, input.worldPos.zy * (_TerrainTexScale * 0.70) + float2(0.013, 0.061)).rgb * projectionWeights.x
+                + tex2D(_RockAlbedo, input.worldPos.xz * (_TerrainTexScale * 0.64) + float2(0.071, 0.043)).rgb * projectionWeights.y
+                + tex2D(_RockAlbedo, input.worldPos.xy * (_TerrainTexScale * 0.70) + float2(-0.029, 0.037)).rgb * projectionWeights.z;
+            rockTex = lerp(rockTex, rockProjected, saturate(slope * _SlopeProjectionStrength));
             grassDetail *= lerp(float3(1.0, 1.0, 1.0), grassTex * 1.38, _TerrainAlbedoStrength);
             pathDetail *= lerp(float3(1.0, 1.0, 1.0), pathTex * 1.42, _TerrainAlbedoStrength);
             rockDetail *= lerp(float3(1.0, 1.0, 1.0), rockTex * 1.34, _TerrainAlbedoStrength);
+            grassDetail *= macroShade;
+            pathDetail *= lerp(1.0, macroShade, 0.58) * lerp(1.0, lerp(0.76, 1.32, pebble), _PathPebbleStrength);
+            rockDetail *= lerp(1.0, macroShade, 0.78);
 
             float3 grassNormal = UnpackNormal(tex2D(_GrassNormalMap, terrainUv * 1.05 + float2(0.031, -0.017)));
             float3 pathNormal = UnpackNormal(tex2D(_PathNormalMap, terrainUv * 0.88 + float2(-0.047, 0.019)));

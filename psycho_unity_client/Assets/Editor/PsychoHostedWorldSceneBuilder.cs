@@ -139,7 +139,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -1743,6 +1743,12 @@ namespace Psycho.Editor
             harborWater.transform.SetParent(root, true);
             harborWater.transform.localPosition = new Vector3(0f, 0.035f, -8.3f);
             harborWater.AddComponent<ProceduralWater>();
+            CreateWaterDepthRibbon(harborWater.transform, "Harbor Deep Tidal Pocket", 10.2f, 5.6f, materials.WaterDepth);
+            CreateWaterFoamRibbon(harborWater.transform, "Harbor Western Wash Foam", -7.12f, 5.4f, materials.WaterFoam, 0.29f);
+            CreateWaterFoamRibbon(harborWater.transform, "Harbor Eastern Wash Foam", 7.12f, 5.4f, materials.WaterFoam, 0.73f);
+            context.Report.waterDepthChannels++;
+            context.Report.waterFoamEdges += 2;
+            context.Report.waterSurfaceStreaks += CreateWaterSurfaceStreaks(harborWater.transform, "Harbor Tidal Surface Current", 14.0f, 5.2f, materials.WaterFoam, 4, 12043);
             for (int i = 0; i < 4; i++)
             {
                 float x = (i - 1.5f) * 2.2f;
@@ -3649,8 +3655,10 @@ namespace Psycho.Editor
             CreateWaterDepthRibbon(water.transform, "Deep Center Current", width * 0.52f, depth, depthMaterial);
             CreateWaterFoamRibbon(water.transform, "West Shoreline Foam", -width * 0.47f, depth, foamMaterial, 0.17f);
             CreateWaterFoamRibbon(water.transform, "East Shoreline Foam", width * 0.47f, depth, foamMaterial, 0.61f);
+            int streaks = CreateWaterSurfaceStreaks(water.transform, "River Surface Current", width, depth, foamMaterial, 6, 9021);
             buildContext.Report.waterDepthChannels++;
             buildContext.Report.waterFoamEdges += 2;
+            buildContext.Report.waterSurfaceStreaks += streaks;
 
             BoxCollider trigger = water.AddComponent<BoxCollider>();
             trigger.center = Vector3.zero;
@@ -3843,6 +3851,79 @@ namespace Psycho.Editor
             ribbon.transform.SetParent(parent, false);
             ribbon.AddComponent<MeshFilter>().sharedMesh = mesh;
             MeshRenderer renderer = ribbon.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+        }
+
+        private static int CreateWaterSurfaceStreaks(Transform parent, string name, float width, float depth, Material material, int count, int seedBase)
+        {
+            int created = 0;
+            for (int i = 0; i < count; i++)
+            {
+                float xOffset = Mathf.Lerp(-width * 0.22f, width * 0.22f, Deterministic01(seedBase + i * 37));
+                float zOffset = Mathf.Lerp(-depth * 0.32f, depth * 0.32f, Deterministic01(seedBase + i * 41));
+                float streakWidth = Mathf.Lerp(width * 0.055f, width * 0.12f, Deterministic01(seedBase + i * 43));
+                float streakDepth = Mathf.Lerp(depth * 0.18f, depth * 0.36f, Deterministic01(seedBase + i * 47));
+                float yaw = Mathf.Lerp(-8f, 8f, Deterministic01(seedBase + i * 53));
+                CreateWaterStreakRibbon(parent, $"{name} {i + 1}", new Vector3(xOffset, 0.041f + i * 0.0015f, zOffset), streakWidth, streakDepth, yaw, material, seedBase + i * 59);
+                created++;
+            }
+
+            return created;
+        }
+
+        private static void CreateWaterStreakRibbon(Transform parent, string name, Vector3 localPosition, float width, float depth, float yaw, Material material, int seed)
+        {
+            const int segments = 14;
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            Vector3[] vertices = new Vector3[(segments + 1) * 2];
+            Vector2[] uv = new Vector2[vertices.Length];
+            Color[] colors = new Color[vertices.Length];
+            int[] triangles = new int[segments * 6];
+
+            for (int i = 0; i <= segments; i++)
+            {
+                float t = (float)i / segments;
+                float z = (t - 0.5f) * depth;
+                float wobble = Mathf.Sin(t * Mathf.PI * 3.0f + seed * 0.11f) * width * 0.18f
+                    + Mathf.Sin(t * Mathf.PI * 9.0f + seed * 0.07f) * width * 0.06f;
+                float taper = Mathf.Sin(t * Mathf.PI);
+                float halfWidth = width * (0.22f + taper * 0.78f);
+                int v = i * 2;
+                vertices[v] = new Vector3(wobble - halfWidth, 0f, z);
+                vertices[v + 1] = new Vector3(wobble + halfWidth, 0f, z);
+                uv[v] = new Vector2(0f, t * 2.2f);
+                uv[v + 1] = new Vector2(1f, t * 2.2f);
+                colors[v] = new Color(1f, 1f, 1f, taper);
+                colors[v + 1] = new Color(1f, 1f, 1f, taper);
+            }
+
+            int tri = 0;
+            for (int i = 0; i < segments; i++)
+            {
+                int v = i * 2;
+                triangles[tri++] = v;
+                triangles[tri++] = v + 2;
+                triangles[tri++] = v + 1;
+                triangles[tri++] = v + 1;
+                triangles[tri++] = v + 2;
+                triangles[tri++] = v + 3;
+            }
+
+            mesh.vertices = vertices;
+            mesh.uv = uv;
+            mesh.colors = colors;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject streak = new GameObject(name);
+            streak.transform.SetParent(parent, false);
+            streak.transform.localPosition = localPosition;
+            streak.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            streak.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = streak.AddComponent<MeshRenderer>();
             renderer.sharedMaterial = material;
             renderer.shadowCastingMode = ShadowCastingMode.Off;
             renderer.receiveShadows = false;
@@ -4383,6 +4464,7 @@ namespace Psycho.Editor
             public int cliffDressingObjects;
             public int waterFoamEdges;
             public int waterDepthChannels;
+            public int waterSurfaceStreaks;
             public int horizonMistPanels;
             public int landmarkDressingObjects;
         }
