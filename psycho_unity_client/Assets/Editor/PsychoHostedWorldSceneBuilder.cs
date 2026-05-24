@@ -66,6 +66,10 @@ namespace Psycho.Editor
         private const string WaterMaterialPath = GeneratedRoot + "/Psycho_Hosted_Water.mat";
         private const string HillMaterialPath = GeneratedRoot + "/Psycho_Hosted_Hills.mat";
         private const string MountainMaterialPath = GeneratedRoot + "/Psycho_Hosted_Mountains.mat";
+        private const string SnowMaterialPath = GeneratedRoot + "/Psycho_Hosted_Snow.mat";
+        private const string AutumnCanopyMaterialPath = GeneratedRoot + "/Psycho_Hosted_Autumn_Canopy.mat";
+        private const string WinterCanopyMaterialPath = GeneratedRoot + "/Psycho_Hosted_Winter_Canopy.mat";
+        private const string AutumnGroundMaterialPath = GeneratedRoot + "/Psycho_Hosted_Autumn_Ground.mat";
         private const string CloudMaterialPath = GeneratedRoot + "/Psycho_Hosted_Clouds.mat";
         private const string HorizonMistMaterialPath = GeneratedRoot + "/Psycho_Hosted_Horizon_Mist.mat";
         private const string TreeCanopyMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Canopy.mat";
@@ -142,7 +146,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, villages {context.Report.hostedVillages}, village NPCs {context.Report.hostedVillageNpcs}, village-cleared trees {context.Report.villageClearedObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, villages {context.Report.hostedVillages}, village NPCs {context.Report.hostedVillageNpcs}, village-cleared trees {context.Report.villageClearedObjects}, biome regions {context.Report.seasonalBiomeRegions}, mountains {context.Report.mountainMassifs}, hills {context.Report.hillMounds}, dense forest trees {context.Report.denseForestTrees}, snow patches {context.Report.snowPatches}, seasonal dressing {context.Report.seasonalDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -402,6 +406,76 @@ namespace Psycho.Editor
         public static void RenderHostedVillagePreviewBatch()
         {
             RenderHostedVillagePreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted Biome Preview")]
+        public static void RenderHostedBiomePreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject biome = GameObject.Find("Northern Frostspine Mountains")
+                ?? GameObject.Find("Northeast Snowwood")
+                ?? GameObject.Find("Western Autumnwood");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (biome == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both a generated biome region and camera.");
+            }
+
+            Bounds bounds = BuildObjectPreviewBounds(biome.transform);
+            Vector3 focus = bounds.center + Vector3.up * 3.4f;
+            float viewSize = Mathf.Max(bounds.size.x, bounds.size.z, bounds.size.y * 2.6f);
+            float cameraDistance = Mathf.Clamp(viewSize * 0.96f, 30f, 88f);
+            camera.transform.position = focus + new Vector3(0.76f, 0.42f, -0.64f).normalized * cameraDistance;
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 42f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-biome-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedBiomePreviewBatch()
+        {
+            RenderHostedBiomePreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted Seasonal Biome Preview")]
+        public static void RenderHostedSeasonalBiomePreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject biome = GameObject.Find("Western Autumnwood")
+                ?? GameObject.Find("Southern Amber Hills")
+                ?? GameObject.Find("Falador Rolling Meadows");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (biome == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both a generated seasonal biome region and camera.");
+            }
+
+            Bounds bounds = BuildObjectPreviewBounds(biome.transform);
+            Vector3 focus = bounds.center + Vector3.up * 2.2f;
+            float viewSize = Mathf.Max(bounds.size.x, bounds.size.z, bounds.size.y * 2.4f);
+            float cameraDistance = Mathf.Clamp(viewSize * 0.82f, 24f, 72f);
+            camera.transform.position = focus + new Vector3(-0.72f, 0.34f, -0.70f).normalized * cameraDistance;
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 40f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-seasonal-biome-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedSeasonalBiomePreviewBatch()
+        {
+            RenderHostedSeasonalBiomePreview();
         }
 
         private static Bounds BuildVillagePreviewBounds(GameObject village)
@@ -1569,6 +1643,7 @@ namespace Psycho.Editor
             BuildWaterways(context, materials);
             BuildWorldLandmarks(context, materials);
             BuildHostedVillageNetwork(context, materials);
+            BuildRegionalBiomeDressing(context, materials);
             BuildHighlandForestDressing(context, materials);
             BuildRockOutcropDressing(context, materials);
             BuildHighlandCliffDressing(context, materials);
@@ -2240,6 +2315,533 @@ namespace Psycho.Editor
             }
 
             return new[] { "Talk-to", "Examine" };
+        }
+
+        private static void BuildRegionalBiomeDressing(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Generated Regional Biome Dressing");
+            HostedBiomeSpec[] biomes = CreateHostedBiomeSpecs();
+            for (int i = 0; i < biomes.Length; i++)
+            {
+                CreateRegionalBiome(root.transform, context, materials, biomes[i], i);
+            }
+        }
+
+        private static HostedBiomeSpec[] CreateHostedBiomeSpecs()
+        {
+            return new[]
+            {
+                new HostedBiomeSpec("Northern Frostspine Mountains", 3138, 3655, 43f, HostedSeasonBiome.WinterHighland, 9, 6, 42, 32, 12f),
+                new HostedBiomeSpec("Northeast Snowwood", 3314, 3618, 37f, HostedSeasonBiome.Snowfield, 5, 4, 54, 38, -24f),
+                new HostedBiomeSpec("Western Autumnwood", 2918, 3488, 34f, HostedSeasonBiome.AutumnWoodland, 2, 7, 58, 0, 64f),
+                new HostedBiomeSpec("North Edgeville Pine Belt", 3078, 3534, 31f, HostedSeasonBiome.SummerForest, 1, 5, 52, 3, -8f),
+                new HostedBiomeSpec("Falador Rolling Meadows", 2962, 3372, 32f, HostedSeasonBiome.SpringMeadow, 0, 10, 34, 0, 22f),
+                new HostedBiomeSpec("Draynor Springwood", 3068, 3268, 30f, HostedSeasonBiome.SpringMeadow, 0, 8, 34, 0, 86f),
+                new HostedBiomeSpec("Southern Amber Hills", 3150, 3230, 33f, HostedSeasonBiome.AutumnWoodland, 1, 12, 36, 0, 36f),
+                new HostedBiomeSpec("Eastern Highland Ridges", 3265, 3442, 35f, HostedSeasonBiome.SummerForest, 6, 8, 42, 8, -42f)
+            };
+        }
+
+        private static void CreateRegionalBiome(Transform parent, HostedBuildContext context, HostedMaterials materials, HostedBiomeSpec biome, int biomeIndex)
+        {
+            if (!TryFindNearbyNaturalAnchor(context, biome.WorldX, biome.WorldY, 36, out Vector3 anchor))
+            {
+                return;
+            }
+
+            GameObject biomeObject = new GameObject(biome.Name);
+            biomeObject.transform.SetParent(parent, false);
+            biomeObject.transform.position = anchor;
+
+            int seasonalObjects = 0;
+            seasonalObjects += CreateBiomeGroundWash(biomeObject.transform, context, materials, biome, biomeIndex);
+            int mountains = CreateBiomeMountainRidge(biomeObject.transform, context, materials, biome, biomeIndex);
+            int hills = CreateBiomeHillField(biomeObject.transform, context, materials, biome, biomeIndex);
+            int denseTrees = CreateBiomeDenseForest(biomeObject.transform, context, materials, biome, biomeIndex);
+            int snowPatches = CreateBiomeSnowPockets(biomeObject.transform, context, materials, biome, biomeIndex);
+
+            context.Report.seasonalBiomeRegions++;
+            context.Report.mountainMassifs += mountains;
+            context.Report.hillMounds += hills;
+            context.Report.denseForestTrees += denseTrees;
+            context.Report.snowPatches += snowPatches;
+            context.Report.seasonalDressingObjects += seasonalObjects + snowPatches;
+            context.Report.enhancedFoliageObjects += denseTrees;
+            context.Report.foliageLodProxies += denseTrees;
+            context.Report.windAnimatedObjects += denseTrees;
+        }
+
+        private static bool TryFindNearbyNaturalAnchor(HostedBuildContext context, int anchorX, int anchorY, int maxRadius, out Vector3 position)
+        {
+            position = default;
+            for (int radius = 0; radius <= maxRadius; radius++)
+            {
+                for (int dx = -radius; dx <= radius; dx++)
+                {
+                    for (int dy = -radius; dy <= radius; dy++)
+                    {
+                        if (radius > 0 && Mathf.Abs(dx) != radius && Mathf.Abs(dy) != radius)
+                        {
+                            continue;
+                        }
+
+                        int worldX = anchorX + dx;
+                        int worldY = anchorY + dy;
+                        if (!TryGetLandscapeTile(context, worldX, worldY, out PsychoMapLandscape landscape, out int localX, out int localY))
+                        {
+                            continue;
+                        }
+
+                        byte flags = landscape.RenderFlags[0, localX, localY];
+                        if ((flags & 1) == 1)
+                        {
+                            continue;
+                        }
+
+                        position = TerrainSurfacePosition(WorldTilePosition(context, worldX, worldY), 0.035f);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static int CreateBiomeGroundWash(Transform root, HostedBuildContext context, HostedMaterials materials, HostedBiomeSpec biome, int biomeIndex)
+        {
+            int created = 0;
+            int patchCount = Mathf.Clamp(Mathf.RoundToInt(biome.Radius * 0.38f), 8, 18);
+            Material material = SeasonalGroundMaterial(biome.Season, materials);
+            for (int i = 0; i < patchCount; i++)
+            {
+                int seed = 91000 + biomeIndex * 2003 + i * 137;
+                if (!TryGetBiomeScatterPosition(context, biome, seed, biome.Radius * 0.74f, 0.72f, out int worldX, out int worldY, out Vector3 position))
+                {
+                    continue;
+                }
+
+                if (IsHostedVillageClearingTile(worldX, worldY))
+                {
+                    continue;
+                }
+
+                bool snowBiome = biome.Season == HostedSeasonBiome.WinterHighland || biome.Season == HostedSeasonBiome.Snowfield;
+                float width = snowBiome ? Mathf.Lerp(10.0f, 22.0f, Deterministic01(seed + 31)) : Mathf.Lerp(5.2f, 10.8f, Deterministic01(seed + 31));
+                float depth = snowBiome ? Mathf.Lerp(8.0f, 18.0f, Deterministic01(seed + 37)) : Mathf.Lerp(3.8f, 8.6f, Deterministic01(seed + 37));
+                GameObject patch = CreateGroundCoverPatch($"{biome.Name} Seasonal Ground Wash {i + 1}", position + Vector3.up * (0.018f + i * 0.00035f), width, depth, material, seed);
+                patch.transform.SetParent(root, true);
+                created++;
+            }
+
+            return created;
+        }
+
+        private static int CreateBiomeMountainRidge(Transform root, HostedBuildContext context, HostedMaterials materials, HostedBiomeSpec biome, int biomeIndex)
+        {
+            int created = 0;
+            float yaw = biome.Yaw * Mathf.Deg2Rad;
+            Vector2 ridge = new Vector2(Mathf.Cos(yaw), Mathf.Sin(yaw));
+            Vector2 cross = new Vector2(-ridge.y, ridge.x);
+
+            for (int i = 0; i < biome.MountainCount; i++)
+            {
+                int seed = 93000 + biomeIndex * 2027 + i * 173;
+                float t = biome.MountainCount <= 1 ? 0f : (i / (float)(biome.MountainCount - 1) - 0.5f);
+                float along = t * biome.Radius * 1.48f + (Deterministic01(seed + 3) - 0.5f) * 6.0f;
+                float lateral = (Deterministic01(seed + 7) - 0.5f) * biome.Radius * 0.36f;
+                int worldX = biome.WorldX + Mathf.RoundToInt(ridge.x * along + cross.x * lateral);
+                int worldY = biome.WorldY + Mathf.RoundToInt(ridge.y * along + cross.y * lateral);
+                if (IsHostedVillageClearingTile(worldX, worldY))
+                {
+                    continue;
+                }
+
+                if (!TryGetNaturalDressingPosition(context, worldX, worldY, seed, out Vector3 position))
+                {
+                    continue;
+                }
+
+                float width = Mathf.Lerp(8.0f, 16.4f, Deterministic01(seed + 13));
+                float height = Mathf.Lerp(5.8f, 14.2f, Deterministic01(seed + 17));
+                float depth = Mathf.Lerp(6.8f, 13.6f, Deterministic01(seed + 19));
+                bool snowCap = biome.Season == HostedSeasonBiome.WinterHighland
+                    || biome.Season == HostedSeasonBiome.Snowfield
+                    || Deterministic01(seed + 23) > 0.74f;
+                CreateRegionalMountainMassif(root, position, width, height, depth, materials.Mountains, materials.Snow, seed, snowCap);
+                created++;
+            }
+
+            return created;
+        }
+
+        private static int CreateBiomeHillField(Transform root, HostedBuildContext context, HostedMaterials materials, HostedBiomeSpec biome, int biomeIndex)
+        {
+            int created = 0;
+            for (int i = 0; i < biome.HillCount; i++)
+            {
+                int seed = 95000 + biomeIndex * 2113 + i * 149;
+                if (!TryGetBiomeScatterPosition(context, biome, seed, biome.Radius * 0.84f, 0.56f, out int worldX, out int worldY, out Vector3 position))
+                {
+                    continue;
+                }
+
+                if (IsHostedVillageClearingTile(worldX, worldY))
+                {
+                    continue;
+                }
+
+                float width = Mathf.Lerp(8.2f, 18.6f, Deterministic01(seed + 29));
+                float depth = Mathf.Lerp(6.2f, 14.8f, Deterministic01(seed + 31));
+                float height = Mathf.Lerp(0.58f, 2.25f, Deterministic01(seed + 37));
+                GameObject hill = CreateRegionalHillMound($"{biome.Name} Rolling Hill {i + 1}", position, width, depth, height, SeasonalHillMaterial(biome.Season, materials), seed);
+                hill.transform.SetParent(root, true);
+                created++;
+            }
+
+            return created;
+        }
+
+        private static int CreateBiomeDenseForest(Transform root, HostedBuildContext context, HostedMaterials materials, HostedBiomeSpec biome, int biomeIndex)
+        {
+            int created = 0;
+            for (int i = 0; i < biome.ForestTreeCount; i++)
+            {
+                int seed = 97000 + biomeIndex * 2213 + i * 167;
+                if (!TryGetBiomeScatterPosition(context, biome, seed, biome.Radius * 0.76f, 1.18f, out int worldX, out int worldY, out Vector3 position))
+                {
+                    continue;
+                }
+
+                if (IsHostedVillageClearingTile(worldX, worldY))
+                {
+                    continue;
+                }
+
+                bool conifer = biome.Season == HostedSeasonBiome.WinterHighland
+                    || biome.Season == HostedSeasonBiome.Snowfield
+                    || biome.Season == HostedSeasonBiome.SummerForest
+                    || Deterministic01(seed + 17) > 0.42f;
+                float height = Mathf.Lerp(2.6f, 5.6f, Deterministic01(seed + 23));
+                Material canopy = SeasonalCanopyMaterial(biome.Season, materials);
+                Material farCanopy = SeasonalFarCanopyMaterial(biome.Season, materials);
+                if (conifer)
+                {
+                    CreateHighlandConifer(root, position, height, materials.TreeBark, canopy, materials.TreeBarkFar, farCanopy, seed);
+                }
+                else
+                {
+                    CreateSeasonalBroadleaf(root, position, height, materials.TreeBark, canopy, materials.TreeBarkFar, farCanopy, seed);
+                }
+
+                if ((biome.Season == HostedSeasonBiome.WinterHighland || biome.Season == HostedSeasonBiome.Snowfield) && i % 4 == 0)
+                {
+                    GameObject snow = CreateGroundCoverPatch($"{biome.Name} Tree Snow Dusting {i + 1}", position + Vector3.up * 0.028f, 1.6f, 1.2f, materials.Snow, seed + 89);
+                    snow.transform.SetParent(root, true);
+                    context.Report.snowPatches++;
+                }
+
+                created++;
+            }
+
+            return created;
+        }
+
+        private static int CreateBiomeSnowPockets(Transform root, HostedBuildContext context, HostedMaterials materials, HostedBiomeSpec biome, int biomeIndex)
+        {
+            int created = 0;
+            for (int i = 0; i < biome.SnowPatchCount; i++)
+            {
+                int seed = 99000 + biomeIndex * 2297 + i * 181;
+                if (!TryGetBiomeScatterPosition(context, biome, seed, biome.Radius * 0.92f, 0.60f, out int worldX, out int worldY, out Vector3 position))
+                {
+                    continue;
+                }
+
+                if (IsHostedVillageClearingTile(worldX, worldY))
+                {
+                    continue;
+                }
+
+                float width = Mathf.Lerp(2.6f, 7.8f, Deterministic01(seed + 11));
+                float depth = Mathf.Lerp(2.0f, 6.2f, Deterministic01(seed + 13));
+                GameObject patch = CreateGroundCoverPatch($"{biome.Name} Snow Pocket {i + 1}", position + Vector3.up * (0.026f + i * 0.0002f), width, depth, materials.Snow, seed);
+                patch.transform.SetParent(root, true);
+
+                if (Deterministic01(seed + 17) > 0.54f)
+                {
+                    CreateHighlandRockOutcrop(root, position + new Vector3(0f, 0.035f, 0f), Mathf.Lerp(0.34f, 0.74f, Deterministic01(seed + 19)), materials.FrostStone, materials.Snow, seed + 47);
+                }
+
+                created++;
+            }
+
+            return created;
+        }
+
+        private static bool TryGetBiomeScatterPosition(
+            HostedBuildContext context,
+            HostedBiomeSpec biome,
+            int seed,
+            float maxRadius,
+            float radiusPower,
+            out int worldX,
+            out int worldY,
+            out Vector3 position)
+        {
+            float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+            float radius = Mathf.Pow(Deterministic01(seed + 5), radiusPower) * maxRadius;
+            worldX = biome.WorldX + Mathf.RoundToInt(Mathf.Cos(angle) * radius);
+            worldY = biome.WorldY + Mathf.RoundToInt(Mathf.Sin(angle) * radius);
+            return TryGetNaturalDressingPosition(context, worldX, worldY, seed, out position);
+        }
+
+        private static Material SeasonalGroundMaterial(HostedSeasonBiome season, HostedMaterials materials)
+        {
+            if (season == HostedSeasonBiome.WinterHighland || season == HostedSeasonBiome.Snowfield)
+            {
+                return materials.Snow;
+            }
+
+            if (season == HostedSeasonBiome.AutumnWoodland)
+            {
+                return materials.AutumnGround;
+            }
+
+            if (season == HostedSeasonBiome.SpringMeadow)
+            {
+                return materials.Flowers;
+            }
+
+            return materials.Moss;
+        }
+
+        private static Material SeasonalHillMaterial(HostedSeasonBiome season, HostedMaterials materials)
+        {
+            if (season == HostedSeasonBiome.WinterHighland || season == HostedSeasonBiome.Snowfield)
+            {
+                return materials.FrostStone;
+            }
+
+            if (season == HostedSeasonBiome.AutumnWoodland)
+            {
+                return materials.AutumnGround;
+            }
+
+            return materials.Hills;
+        }
+
+        private static Material SeasonalCanopyMaterial(HostedSeasonBiome season, HostedMaterials materials)
+        {
+            if (season == HostedSeasonBiome.WinterHighland || season == HostedSeasonBiome.Snowfield)
+            {
+                return materials.WinterCanopy;
+            }
+
+            if (season == HostedSeasonBiome.AutumnWoodland)
+            {
+                return materials.AutumnCanopy;
+            }
+
+            return materials.TreeCanopy;
+        }
+
+        private static Material SeasonalFarCanopyMaterial(HostedSeasonBiome season, HostedMaterials materials)
+        {
+            if (season == HostedSeasonBiome.WinterHighland || season == HostedSeasonBiome.Snowfield)
+            {
+                return materials.WinterCanopy;
+            }
+
+            if (season == HostedSeasonBiome.AutumnWoodland)
+            {
+                return materials.AutumnCanopy;
+            }
+
+            return materials.TreeCanopyFar;
+        }
+
+        private static void CreateRegionalMountainMassif(Transform parent, Vector3 position, float width, float height, float depth, Material mountainMaterial, Material snowMaterial, int seed, bool snowCap)
+        {
+            GameObject mountain = CreateMountain("Regional Mountain Massif", position, width, height, depth, mountainMaterial);
+            mountain.transform.SetParent(parent, true);
+            mountain.transform.localRotation *= Quaternion.Euler(0f, (Deterministic01(seed + 29) - 0.5f) * 28f, 0f);
+            MeshRenderer mountainRenderer = mountain.GetComponent<MeshRenderer>();
+            if (mountainRenderer != null)
+            {
+                mountainRenderer.shadowCastingMode = ShadowCastingMode.On;
+                mountainRenderer.receiveShadows = true;
+            }
+
+            if (!snowCap)
+            {
+                return;
+            }
+
+            GameObject cap = CreateMountainSnowCap("Snow Crown", position, width, height, depth, snowMaterial, seed);
+            cap.transform.SetParent(mountain.transform, true);
+        }
+
+        private static GameObject CreateMountainSnowCap(string name, Vector3 position, float width, float height, float depth, Material material, int seed)
+        {
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            float lowerY = height * Mathf.Lerp(0.40f, 0.52f, Deterministic01(seed + 31));
+            float halfWidth = width * 0.34f;
+            float halfDepth = depth * 0.28f;
+            mesh.vertices = new[]
+            {
+                new Vector3(-halfWidth, lowerY, -halfDepth),
+                new Vector3(halfWidth * 0.92f, lowerY * 0.98f, -halfDepth * 0.88f),
+                new Vector3(halfWidth * 0.76f, lowerY * 0.96f, halfDepth),
+                new Vector3(-halfWidth * 0.88f, lowerY * 1.01f, halfDepth * 0.82f),
+                new Vector3(-width * 0.08f, height * 0.76f, -depth * 0.03f),
+                new Vector3(width * 0.09f, height, depth * 0.05f)
+            };
+            mesh.triangles = new[]
+            {
+                0, 4, 1,
+                1, 4, 5,
+                1, 5, 2,
+                2, 5, 3,
+                3, 5, 4,
+                3, 4, 0
+            };
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject cap = new GameObject(name);
+            cap.transform.position = position + Vector3.up * 0.018f;
+            cap.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = cap.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.On;
+            renderer.receiveShadows = true;
+            return cap;
+        }
+
+        private static GameObject CreateRegionalHillMound(string name, Vector3 position, float width, float depth, float height, Material material, int seed)
+        {
+            GameObject hill = new GameObject(name);
+            hill.isStatic = true;
+            hill.transform.position = position + Vector3.up * 0.012f;
+            hill.transform.rotation = Quaternion.Euler(0f, Deterministic01(seed + 43) * 360f, 0f);
+            hill.AddComponent<MeshFilter>().sharedMesh = CreateRegionalHillMesh(name + " Mesh", width, depth, height, seed);
+            MeshRenderer renderer = hill.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.On;
+            renderer.receiveShadows = true;
+            return hill;
+        }
+
+        private static Mesh CreateRegionalHillMesh(string name, float width, float depth, float height, int seed)
+        {
+            const int segments = 14;
+            int stride = segments + 1;
+            Vector3[] vertices = new Vector3[stride * stride];
+            Vector2[] uv = new Vector2[vertices.Length];
+            int[] triangles = new int[segments * segments * 6];
+
+            int vertex = 0;
+            for (int z = 0; z <= segments; z++)
+            {
+                float vz = (float)z / segments;
+                for (int x = 0; x <= segments; x++)
+                {
+                    float vx = (float)x / segments;
+                    float px = (vx - 0.5f) * width;
+                    float pz = (vz - 0.5f) * depth;
+                    float nx = (vx - 0.5f) * 2f;
+                    float nz = (vz - 0.5f) * 2f;
+                    float dist = Mathf.Sqrt(nx * nx + nz * nz);
+                    float dome = Mathf.Clamp01(1f - dist);
+                    dome = Mathf.SmoothStep(0f, 1f, dome);
+                    float ripple = Mathf.Sin((vx * 4.9f + seed * 0.013f) * Mathf.PI) * Mathf.Sin((vz * 3.7f + seed * 0.017f) * Mathf.PI) * height * 0.055f;
+                    vertices[vertex] = new Vector3(px, dome * height + ripple, pz);
+                    uv[vertex] = new Vector2(vx * Mathf.Max(1f, width * 0.16f), vz * Mathf.Max(1f, depth * 0.16f));
+                    vertex++;
+                }
+            }
+
+            int tri = 0;
+            for (int z = 0; z < segments; z++)
+            {
+                for (int x = 0; x < segments; x++)
+                {
+                    int i = z * stride + x;
+                    triangles[tri++] = i;
+                    triangles[tri++] = i + stride;
+                    triangles[tri++] = i + 1;
+                    triangles[tri++] = i + 1;
+                    triangles[tri++] = i + stride;
+                    triangles[tri++] = i + stride + 1;
+                }
+            }
+
+            Mesh mesh = new Mesh { name = name };
+            mesh.vertices = vertices;
+            mesh.uv = uv;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateTangents();
+            mesh.RecalculateBounds();
+            return mesh;
+        }
+
+        private static void CreateSeasonalBroadleaf(Transform parent, Vector3 position, float height, Material barkMaterial, Material canopyMaterial, Material farBarkMaterial, Material farCanopyMaterial, int seed)
+        {
+            GameObject tree = new GameObject("Seasonal Dense Broadleaf Tree");
+            tree.transform.SetParent(parent, false);
+            tree.transform.position = position;
+            tree.transform.rotation = Quaternion.Euler(0f, Deterministic01(seed + 5) * 360f, 0f);
+
+            float trunkHeight = height * Mathf.Lerp(0.42f, 0.54f, Deterministic01(seed + 9));
+            float trunkRadius = height * Mathf.Lerp(0.030f, 0.046f, Deterministic01(seed + 11));
+            GameObject trunk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            trunk.name = "Seasonal Broadleaf Trunk";
+            trunk.transform.SetParent(tree.transform, false);
+            trunk.transform.localPosition = new Vector3(0f, trunkHeight * 0.45f, 0f);
+            trunk.transform.localRotation = Quaternion.Euler(0f, Deterministic01(seed + 13) * 360f, (Deterministic01(seed + 17) - 0.5f) * 3.2f);
+            trunk.transform.localScale = new Vector3(trunkRadius, trunkHeight * 0.46f, trunkRadius);
+            MeshRenderer trunkRenderer = trunk.GetComponent<MeshRenderer>();
+            trunkRenderer.sharedMaterial = barkMaterial;
+            trunkRenderer.shadowCastingMode = ShadowCastingMode.On;
+            trunkRenderer.receiveShadows = true;
+            RemoveCollider(trunk);
+
+            int branches = 5;
+            for (int i = 0; i < branches; i++)
+            {
+                float angle = i * Mathf.PI * 2f / branches + Deterministic01(seed + i * 23) * 0.36f;
+                Vector3 start = new Vector3(0f, trunkHeight * Mathf.Lerp(0.55f, 0.86f, i / (float)Mathf.Max(1, branches - 1)), 0f);
+                Vector3 end = start + new Vector3(Mathf.Cos(angle), 0.32f + Deterministic01(seed + i * 31) * 0.22f, Mathf.Sin(angle)) * height * Mathf.Lerp(0.20f, 0.32f, Deterministic01(seed + i * 37));
+                CreateFoliageBranch(tree.transform, $"Seasonal Crown Branch {i + 1}", start, end, trunkRadius * 0.42f, barkMaterial);
+            }
+
+            float canopyWidth = height * Mathf.Lerp(0.72f, 0.98f, Deterministic01(seed + 41));
+            float canopyHeight = height * Mathf.Lerp(0.34f, 0.46f, Deterministic01(seed + 43));
+            int lobes = 7;
+            for (int i = 0; i < lobes; i++)
+            {
+                float angle = i * Mathf.PI * 2f / lobes + Deterministic01(seed + i * 47) * 0.32f;
+                float radius = i == 0 ? 0f : canopyWidth * Mathf.Lerp(0.18f, 0.42f, Deterministic01(seed + i * 53));
+                Vector3 offset = new Vector3(Mathf.Cos(angle) * radius, trunkHeight + canopyHeight * Mathf.Lerp(0.08f, 0.54f, Deterministic01(seed + i * 59)), Mathf.Sin(angle) * radius);
+                Vector3 scale = new Vector3(
+                    canopyWidth * Mathf.Lerp(0.34f, 0.54f, Deterministic01(seed + i * 61)),
+                    canopyHeight * Mathf.Lerp(0.32f, 0.48f, Deterministic01(seed + i * 67)),
+                    canopyWidth * Mathf.Lerp(0.30f, 0.52f, Deterministic01(seed + i * 71)));
+                CreateFoliageSpray(
+                    tree.transform,
+                    $"Seasonal Leaf Mass {i + 1}",
+                    offset,
+                    scale,
+                    angle * Mathf.Rad2Deg,
+                    canopyMaterial,
+                    0.044f + i * 0.004f,
+                    0.76f + i * 0.055f);
+            }
+
+            Renderer[] highRenderers = tree.GetComponentsInChildren<Renderer>(true);
+            Renderer[] farRenderers = CreateBroadleafFarLodProxy(tree.transform, trunkHeight, canopyWidth, canopyHeight, farBarkMaterial, farCanopyMaterial, seed);
+            AddGeneratedFoliageLodGroup(tree, highRenderers, farRenderers);
         }
 
         private static void BuildHighlandForestDressing(HostedBuildContext context, HostedMaterials materials)
@@ -4654,6 +5256,10 @@ namespace Psycho.Editor
                 Water = LoadOrCreateTexturedMaterial(WaterMaterialPath, "Water", new Color(0.035f, 0.18f, 0.27f, 0.62f), 0.92f, new Vector2(2.8f, 7.8f), 1.08f),
                 Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.18f, 0.28f, 0.18f, 1f), 0.22f, new Vector2(7.6f, 7.6f), 0.78f),
                 Mountains = LoadOrCreateTexturedMaterial(MountainMaterialPath, "Mountain", new Color(0.39f, 0.40f, 0.39f, 1f), 0.42f, new Vector2(3.8f, 3.8f), 0.98f),
+                Snow = LoadOrCreatePlainMaterial(SnowMaterialPath, new Color(0.92f, 0.97f, 1.00f, 1f), 0.64f),
+                AutumnCanopy = LoadOrCreateTexturedMaterial(AutumnCanopyMaterialPath, "Leaf", new Color(0.70f, 0.42f, 0.17f, 1f), 0.18f, new Vector2(4.0f, 4.0f), 0.52f),
+                WinterCanopy = LoadOrCreateTexturedMaterial(WinterCanopyMaterialPath, "Leaf", new Color(0.36f, 0.48f, 0.44f, 1f), 0.16f, new Vector2(3.8f, 3.8f), 0.44f),
+                AutumnGround = LoadOrCreateTexturedMaterial(AutumnGroundMaterialPath, "Organic", new Color(0.44f, 0.30f, 0.16f, 1f), 0.20f, new Vector2(6.8f, 6.8f), 0.66f),
                 Cloud = LoadOrCreateSolidMaterial(CloudMaterialPath, new Color(0.68f, 0.76f, 0.82f, 0.18f), 0.12f),
                 HorizonMist = LoadOrCreateSolidMaterial(HorizonMistMaterialPath, new Color(0.54f, 0.62f, 0.70f, 0.085f), 0.08f),
                 TreeCanopy = LoadOrCreateTexturedMaterial(TreeCanopyMaterialPath, "Leaf", new Color(0.20f, 0.36f, 0.19f, 1f), 0.14f, new Vector2(4.8f, 4.8f), 0.58f),
@@ -4685,6 +5291,7 @@ namespace Psycho.Editor
             ConfigureTransparent(materials.WaterDepth);
             ConfigureTransparent(materials.LandmarkGlass);
             ConfigureDoubleSided(materials.CliffFace);
+            ConfigureDoubleSided(materials.Snow);
             return materials;
         }
 
@@ -4732,6 +5339,20 @@ namespace Psycho.Editor
             if (material.HasProperty("_Metallic"))
             {
                 material.SetFloat("_Metallic", 0f);
+            }
+
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        private static Material LoadOrCreatePlainMaterial(string assetPath, Color color, float smoothness)
+        {
+            Material material = LoadOrCreateSolidMaterial(assetPath, color, smoothness);
+            material.mainTexture = null;
+            if (material.HasProperty("_BumpMap"))
+            {
+                material.SetTexture("_BumpMap", null);
+                material.DisableKeyword("_NORMALMAP");
             }
 
             EditorUtility.SetDirty(material);
@@ -4941,6 +5562,10 @@ namespace Psycho.Editor
             public Material Water;
             public Material Hills;
             public Material Mountains;
+            public Material Snow;
+            public Material AutumnCanopy;
+            public Material WinterCanopy;
+            public Material AutumnGround;
             public Material Cloud;
             public Material HorizonMist;
             public Material TreeCanopy;
@@ -4964,6 +5589,43 @@ namespace Psycho.Editor
             public Material LandmarkRoad;
             public Material LandmarkBanner;
             public Material LandmarkGlass;
+        }
+
+        private enum HostedSeasonBiome
+        {
+            SpringMeadow,
+            SummerForest,
+            AutumnWoodland,
+            WinterHighland,
+            Snowfield
+        }
+
+        private readonly struct HostedBiomeSpec
+        {
+            public readonly string Name;
+            public readonly int WorldX;
+            public readonly int WorldY;
+            public readonly float Radius;
+            public readonly HostedSeasonBiome Season;
+            public readonly int MountainCount;
+            public readonly int HillCount;
+            public readonly int ForestTreeCount;
+            public readonly int SnowPatchCount;
+            public readonly float Yaw;
+
+            public HostedBiomeSpec(string name, int worldX, int worldY, float radius, HostedSeasonBiome season, int mountainCount, int hillCount, int forestTreeCount, int snowPatchCount, float yaw)
+            {
+                Name = name;
+                WorldX = worldX;
+                WorldY = worldY;
+                Radius = radius;
+                Season = season;
+                MountainCount = mountainCount;
+                HillCount = hillCount;
+                ForestTreeCount = forestTreeCount;
+                SnowPatchCount = snowPatchCount;
+                Yaw = yaw;
+            }
         }
 
         private readonly struct HostedVillageSpec
@@ -5086,6 +5748,12 @@ namespace Psycho.Editor
             public int hostedVillages;
             public int hostedVillageNpcs;
             public int villageClearedObjects;
+            public int seasonalBiomeRegions;
+            public int mountainMassifs;
+            public int hillMounds;
+            public int denseForestTrees;
+            public int snowPatches;
+            public int seasonalDressingObjects;
             public int terrainCollisionSamples;
             public int terrainCollisionMisses;
             public int groundCoverPatches;
