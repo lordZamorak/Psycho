@@ -50,17 +50,17 @@ namespace Psycho.Editor
                 CountTransformTree(root.transform, report);
             }
 
-            foreach (MeshFilter meshFilter in UnityEngine.Object.FindObjectsByType<MeshFilter>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (MeshFilter meshFilter in UnityEngine.Object.FindObjectsByType<MeshFilter>(FindObjectsInactive.Include))
             {
                 CountMesh(meshFilter.sharedMesh, uniqueMeshes, report);
             }
 
-            foreach (SkinnedMeshRenderer skinned in UnityEngine.Object.FindObjectsByType<SkinnedMeshRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (SkinnedMeshRenderer skinned in UnityEngine.Object.FindObjectsByType<SkinnedMeshRenderer>(FindObjectsInactive.Include))
             {
                 CountMesh(skinned.sharedMesh, uniqueMeshes, report);
             }
 
-            foreach (Renderer renderer in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (Renderer renderer in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsInactive.Include))
             {
                 report.renderers++;
                 if (HasAncestorName(renderer.transform, "Art Replacement")
@@ -81,11 +81,11 @@ namespace Psycho.Editor
 
             report.uniqueMeshes = uniqueMeshes.Count;
             report.uniqueMaterials = uniqueMaterials.Count;
-            report.lodGroups = UnityEngine.Object.FindObjectsByType<LODGroup>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
-            report.colliders = UnityEngine.Object.FindObjectsByType<Collider>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
-            report.windAnimatedFoliage = UnityEngine.Object.FindObjectsByType<WindAnimatedFoliage>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
-            report.lights = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
-            report.cameras = UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
+            report.lodGroups = UnityEngine.Object.FindObjectsByType<LODGroup>(FindObjectsInactive.Include).Length;
+            report.colliders = UnityEngine.Object.FindObjectsByType<Collider>(FindObjectsInactive.Include).Length;
+            report.windAnimatedFoliage = UnityEngine.Object.FindObjectsByType<WindAnimatedFoliage>(FindObjectsInactive.Include).Length;
+            report.lights = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsInactive.Include).Length;
+            report.cameras = UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsInactive.Include).Length;
             return report;
         }
 

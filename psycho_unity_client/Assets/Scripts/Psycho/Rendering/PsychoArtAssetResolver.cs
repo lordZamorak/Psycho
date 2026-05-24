@@ -85,6 +85,7 @@ namespace Psycho.Rendering
             instance.transform.localRotation = Quaternion.Euler(entry.localEuler);
             instance.transform.localScale = Vector3.Scale(instance.transform.localScale, entry.localScale);
             NormalizeHeight(instance.transform, entry.targetHeight);
+            AlignBottomToLocalGround(instance.transform, entry.localPosition.y);
             ConfigureRenderers(instance, entry);
             if (entry.markStatic)
             {
@@ -119,6 +120,21 @@ namespace Psycho.Rendering
 
             float scale = targetHeight / bounds.size.y;
             root.localScale *= scale;
+        }
+
+        private static void AlignBottomToLocalGround(Transform root, float localGroundY)
+        {
+            if (root == null || !TryGetRendererBounds(root, out Bounds bounds))
+            {
+                return;
+            }
+
+            Transform parent = root.parent;
+            Vector3 worldBottom = new Vector3(bounds.center.x, bounds.min.y, bounds.center.z);
+            float localBottomY = parent == null ? worldBottom.y : parent.InverseTransformPoint(worldBottom).y;
+            Vector3 localPosition = root.localPosition;
+            localPosition.y += localGroundY - localBottomY;
+            root.localPosition = localPosition;
         }
 
         private static bool TryGetRendererBounds(Transform root, out Bounds bounds)

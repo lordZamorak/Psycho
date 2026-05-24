@@ -211,6 +211,7 @@ namespace Psycho.Editor
             model.name = "Model";
             model.transform.SetParent(root.transform, false);
             NormalizeHeight(root.transform, targetHeight);
+            AlignVisualBottomToRootGround(root.transform);
             if (overrideMaterial != null)
             {
                 AssignMaterial(root, overrideMaterial);
@@ -240,6 +241,26 @@ namespace Psycho.Editor
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
             UnityEngine.Object.DestroyImmediate(root);
             return prefab;
+        }
+
+        private static void AlignVisualBottomToRootGround(Transform root)
+        {
+            if (root == null || !TryGetRendererBounds(root, out Bounds bounds))
+            {
+                return;
+            }
+
+            float bottomY = root.InverseTransformPoint(new Vector3(bounds.center.x, bounds.min.y, bounds.center.z)).y;
+            if (Mathf.Abs(bottomY) <= 0.0001f)
+            {
+                return;
+            }
+
+            for (int i = 0; i < root.childCount; i++)
+            {
+                Transform child = root.GetChild(i);
+                child.localPosition -= Vector3.up * bottomY;
+            }
         }
 
         private static Material LoadOrCreateCharacterMaterial(string modelName)

@@ -22,6 +22,13 @@ namespace Psycho.Editor
         private const string NpcMaterialPath = GeneratedRoot + "/Psycho_RS_Npc_VertexColor.mat";
         private const string ReportPath = GeneratedRoot + "/cache_model_import_report.json";
         private const string PreviewScenePath = GeneratedRoot + "/PsychoCacheMeshPreview.unity";
+        private const string AmbientCgRoot = "Assets/PsychoArtSource/Materials/AmbientCG";
+        private const string GrassAlbedoPath = AmbientCgRoot + "/Grass001/Grass001_2K-JPG_Color.jpg";
+        private const string GrassNormalPath = AmbientCgRoot + "/Grass001/Grass001_2K-JPG_NormalGL.jpg";
+        private const string PathAlbedoPath = AmbientCgRoot + "/PavingStones107/PavingStones107_2K-JPG_Color.jpg";
+        private const string PathNormalPath = AmbientCgRoot + "/PavingStones107/PavingStones107_2K-JPG_NormalGL.jpg";
+        private const string RockAlbedoPath = AmbientCgRoot + "/Rock015/Rock015_2K-JPG_Color.jpg";
+        private const string RockNormalPath = AmbientCgRoot + "/Rock015/Rock015_2K-JPG_NormalGL.jpg";
 
         [MenuItem("Psycho/Cache/Import Object Model Sample")]
         public static void ImportObjectModelSample()
@@ -44,33 +51,34 @@ namespace Psycho.Editor
         public static Material LoadOrCreateTerrainVertexColorMaterial()
         {
             EnsureGeneratedFolders();
+            ConfigureTerrainTextureImports();
             Material material = CreateOrUpdateVertexColorMaterial(TerrainMaterialPath, 0.20f, 0.58f, 0.16f, 0.54f);
-            SetMaterialFloat(material, "_GroundBlendStrength", 0.88f);
-            SetMaterialColor(material, "_GrassTint", new Color(0.20f, 0.36f, 0.18f, 1f));
-            SetMaterialColor(material, "_PathTint", new Color(0.46f, 0.37f, 0.24f, 1f));
-            SetMaterialColor(material, "_RockTint", new Color(0.36f, 0.38f, 0.35f, 1f));
-            SetMaterialFloat(material, "_BlendNoiseScale", 0.44f);
-            SetMaterialFloat(material, "_BlendNoiseStrength", 0.62f);
-            SetMaterialFloat(material, "_HighlandTextureStrength", 0.78f);
-            SetMaterialFloat(material, "_StoneStrataStrength", 0.62f);
-            SetMaterialFloat(material, "_SnowDustStrength", 0.055f);
-            SetMaterialColor(material, "_DistanceTint", new Color(0.46f, 0.55f, 0.62f, 1f));
-            SetMaterialFloat(material, "_DistanceStart", 80f);
-            SetMaterialFloat(material, "_DistanceEnd", 420f);
-            SetMaterialFloat(material, "_DistanceBlend", 0.24f);
-            SetMaterialColor(material, "_TopWarmth", new Color(0.93f, 0.96f, 0.92f, 1f));
-            SetMaterialFloat(material, "_HemisphereContrast", 0.20f);
-            SetMaterialFloat(material, "_SpecularLift", 0.045f);
-            SetMaterialTexture(material, "_GrassAlbedo", "Assets/Resources/PsychoMaterials/Psycho_Grass_Albedo_2K.png");
-            SetMaterialTexture(material, "_PathAlbedo", "Assets/Resources/PsychoMaterials/Psycho_Organic_Albedo_2K.png");
-            SetMaterialTexture(material, "_RockAlbedo", "Assets/Resources/PsychoMaterials/Psycho_Mountain_Albedo_2K.png");
-            SetMaterialTexture(material, "_GrassNormalMap", "Assets/Resources/PsychoMaterials/Psycho_Grass_Normal_2K.png");
-            SetMaterialTexture(material, "_PathNormalMap", "Assets/Resources/PsychoMaterials/Psycho_Organic_Normal_2K.png");
-            SetMaterialTexture(material, "_RockNormalMap", "Assets/Resources/PsychoMaterials/Psycho_Mountain_Normal_2K.png");
-            SetMaterialFloat(material, "_TerrainTexScale", 0.078f);
-            SetMaterialFloat(material, "_TerrainAlbedoStrength", 0.76f);
-            SetMaterialFloat(material, "_TerrainNormalStrength", 0.46f);
-            SetMaterialFloat(material, "_SplatContrast", 1.24f);
+            SetMaterialFloat(material, "_GroundBlendStrength", 0.94f);
+            SetMaterialColor(material, "_GrassTint", new Color(0.18f, 0.32f, 0.15f, 1f));
+            SetMaterialColor(material, "_PathTint", new Color(0.43f, 0.39f, 0.32f, 1f));
+            SetMaterialColor(material, "_RockTint", new Color(0.34f, 0.36f, 0.34f, 1f));
+            SetMaterialFloat(material, "_BlendNoiseScale", 0.52f);
+            SetMaterialFloat(material, "_BlendNoiseStrength", 0.70f);
+            SetMaterialFloat(material, "_HighlandTextureStrength", 0.86f);
+            SetMaterialFloat(material, "_StoneStrataStrength", 0.74f);
+            SetMaterialFloat(material, "_SnowDustStrength", 0.035f);
+            SetMaterialColor(material, "_DistanceTint", new Color(0.47f, 0.56f, 0.61f, 1f));
+            SetMaterialFloat(material, "_DistanceStart", 92f);
+            SetMaterialFloat(material, "_DistanceEnd", 460f);
+            SetMaterialFloat(material, "_DistanceBlend", 0.20f);
+            SetMaterialColor(material, "_TopWarmth", new Color(0.91f, 0.95f, 0.90f, 1f));
+            SetMaterialFloat(material, "_HemisphereContrast", 0.18f);
+            SetMaterialFloat(material, "_SpecularLift", 0.035f);
+            SetMaterialTextureWithFallback(material, "_GrassAlbedo", GrassAlbedoPath, "Assets/Resources/PsychoMaterials/Psycho_Grass_Albedo_2K.png");
+            SetMaterialTextureWithFallback(material, "_PathAlbedo", PathAlbedoPath, "Assets/Resources/PsychoMaterials/Psycho_Organic_Albedo_2K.png");
+            SetMaterialTextureWithFallback(material, "_RockAlbedo", RockAlbedoPath, "Assets/Resources/PsychoMaterials/Psycho_Mountain_Albedo_2K.png");
+            SetMaterialTextureWithFallback(material, "_GrassNormalMap", GrassNormalPath, "Assets/Resources/PsychoMaterials/Psycho_Grass_Normal_2K.png");
+            SetMaterialTextureWithFallback(material, "_PathNormalMap", PathNormalPath, "Assets/Resources/PsychoMaterials/Psycho_Organic_Normal_2K.png");
+            SetMaterialTextureWithFallback(material, "_RockNormalMap", RockNormalPath, "Assets/Resources/PsychoMaterials/Psycho_Mountain_Normal_2K.png");
+            SetMaterialFloat(material, "_TerrainTexScale", 0.18f);
+            SetMaterialFloat(material, "_TerrainAlbedoStrength", 0.92f);
+            SetMaterialFloat(material, "_TerrainNormalStrength", 0.62f);
+            SetMaterialFloat(material, "_SplatContrast", 1.42f);
             EditorUtility.SetDirty(material);
             return material;
         }
@@ -367,6 +375,43 @@ namespace Psycho.Editor
             {
                 material.SetTexture(propertyName, texture);
             }
+        }
+
+        private static void SetMaterialTextureWithFallback(Material material, string propertyName, string preferredAssetPath, string fallbackAssetPath)
+        {
+            string selectedPath = AssetDatabase.LoadAssetAtPath<Texture2D>(preferredAssetPath) != null
+                ? preferredAssetPath
+                : fallbackAssetPath;
+            SetMaterialTexture(material, propertyName, selectedPath);
+        }
+
+        private static void ConfigureTerrainTextureImports()
+        {
+            ConfigureTextureImport(GrassAlbedoPath, false);
+            ConfigureTextureImport(PathAlbedoPath, false);
+            ConfigureTextureImport(RockAlbedoPath, false);
+            ConfigureTextureImport(GrassNormalPath, true);
+            ConfigureTextureImport(PathNormalPath, true);
+            ConfigureTextureImport(RockNormalPath, true);
+        }
+
+        private static void ConfigureTextureImport(string assetPath, bool normalMap)
+        {
+            TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+            if (importer == null)
+            {
+                return;
+            }
+
+            importer.textureType = normalMap ? TextureImporterType.NormalMap : TextureImporterType.Default;
+            importer.sRGBTexture = !normalMap;
+            importer.mipmapEnabled = true;
+            importer.wrapMode = TextureWrapMode.Repeat;
+            importer.filterMode = FilterMode.Trilinear;
+            importer.anisoLevel = 12;
+            importer.maxTextureSize = 2048;
+            importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            AssetDatabase.WriteImportSettingsIfDirty(assetPath);
         }
 
         private static void BuildPreviewScene(List<ImportedModel> imported, Material material)

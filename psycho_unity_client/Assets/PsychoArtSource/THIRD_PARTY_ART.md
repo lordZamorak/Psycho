@@ -19,6 +19,15 @@ This folder contains the first legally safe starter-art pass for Psycho's Unity 
   - Imported files: selected FBX buildings and props.
   - License: CC0, public domain.
 
+- ambientCG 2K PBR Terrain Surfaces
+  - Sources:
+    - https://ambientcg.com/view?id=Grass001
+    - https://ambientcg.com/view?id=PavingStones107
+    - https://ambientcg.com/view?id=Rock015
+  - Imported files: selected color, normal, roughness, ambient-occlusion maps, and preview PNGs.
+  - License: CC0, public domain.
+  - Current use: terrain splat inputs for grass, stone/path, and rock layers in the hosted Unity scene.
+
 ## Art Direction Notes
 
 The Skyrim screenshots are only mood and quality references: rugged medieval fantasy, readable silhouettes, grounded materials, strong lighting, and cinematic composition. Do not copy Skyrim assets, textures, characters, names, or distinctive designs.

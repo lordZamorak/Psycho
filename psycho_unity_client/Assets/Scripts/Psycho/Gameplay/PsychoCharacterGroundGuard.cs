@@ -23,6 +23,17 @@ namespace Psycho.Gameplay
             hasLastSafePosition = true;
         }
 
+        private void Start()
+        {
+            if (TryFindGround(out RaycastHit groundHit))
+            {
+                Vector3 groundedPosition = new Vector3(transform.position.x, GroundedCenterY(groundHit.point.y), transform.position.z);
+                Teleport(groundedPosition);
+                lastSafePosition = groundedPosition;
+                hasLastSafePosition = true;
+            }
+        }
+
         private void LateUpdate()
         {
             if (!TryFindGround(out RaycastHit groundHit))

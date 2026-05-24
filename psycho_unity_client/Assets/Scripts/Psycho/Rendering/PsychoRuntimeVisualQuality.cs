@@ -5,9 +5,12 @@ namespace Psycho.Rendering
 {
     public sealed class PsychoRuntimeVisualQuality : MonoBehaviour
     {
-        [SerializeField] private int antiAliasing = 8;
-        [SerializeField] private float shadowDistance = 260f;
-        [SerializeField] private float lodBias = 1.65f;
+        [SerializeField] private int antiAliasing = 4;
+        [SerializeField] private int pixelLightCount = 2;
+        [SerializeField] private int shadowCascades = 2;
+        [SerializeField] private float shadowDistance = 150f;
+        [SerializeField] private float lodBias = 1.25f;
+        [SerializeField] private int targetFrameRate = 60;
 
         private void Awake()
         {
@@ -16,18 +19,19 @@ namespace Psycho.Rendering
 
         private void Apply()
         {
-            QualitySettings.antiAliasing = Mathf.Max(QualitySettings.antiAliasing, antiAliasing);
+            Application.targetFrameRate = targetFrameRate;
+            QualitySettings.antiAliasing = Mathf.Clamp(antiAliasing, 0, 8);
             QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
-            QualitySettings.pixelLightCount = Mathf.Max(QualitySettings.pixelLightCount, 4);
+            QualitySettings.pixelLightCount = Mathf.Clamp(pixelLightCount, 0, 4);
             QualitySettings.shadows = ShadowQuality.All;
-            QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
-            QualitySettings.shadowProjection = ShadowProjection.CloseFit;
-            QualitySettings.shadowDistance = Mathf.Max(QualitySettings.shadowDistance, shadowDistance);
-            QualitySettings.shadowCascades = Mathf.Max(QualitySettings.shadowCascades, 4);
-            QualitySettings.lodBias = Mathf.Max(QualitySettings.lodBias, lodBias);
+            QualitySettings.shadowResolution = ShadowResolution.High;
+            QualitySettings.shadowProjection = ShadowProjection.StableFit;
+            QualitySettings.shadowDistance = Mathf.Clamp(shadowDistance, 45f, 240f);
+            QualitySettings.shadowCascades = Mathf.Clamp(shadowCascades, 1, 4);
+            QualitySettings.lodBias = Mathf.Clamp(lodBias, 0.75f, 2.0f);
             QualitySettings.softParticles = true;
             QualitySettings.softVegetation = true;
-            QualitySettings.realtimeReflectionProbes = true;
+            QualitySettings.realtimeReflectionProbes = false;
         }
     }
 }

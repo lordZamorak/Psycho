@@ -2130,18 +2130,18 @@ namespace Psycho.Editor
 
         private static void BuildLighting()
         {
-            QualitySettings.antiAliasing = Mathf.Max(QualitySettings.antiAliasing, 8);
+            QualitySettings.antiAliasing = 4;
             QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
-            QualitySettings.pixelLightCount = Mathf.Max(QualitySettings.pixelLightCount, 4);
+            QualitySettings.pixelLightCount = 2;
             QualitySettings.shadows = ShadowQuality.All;
-            QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
-            QualitySettings.shadowProjection = ShadowProjection.CloseFit;
-            QualitySettings.shadowDistance = Mathf.Max(QualitySettings.shadowDistance, 420f);
-            QualitySettings.shadowCascades = Mathf.Max(QualitySettings.shadowCascades, 4);
-            QualitySettings.lodBias = Mathf.Max(QualitySettings.lodBias, 2.0f);
+            QualitySettings.shadowResolution = ShadowResolution.High;
+            QualitySettings.shadowProjection = ShadowProjection.StableFit;
+            QualitySettings.shadowDistance = 150f;
+            QualitySettings.shadowCascades = 2;
+            QualitySettings.lodBias = 1.25f;
             QualitySettings.softParticles = true;
             QualitySettings.softVegetation = true;
-            QualitySettings.realtimeReflectionProbes = true;
+            QualitySettings.realtimeReflectionProbes = false;
 
             GameObject sunObject = new GameObject("Sun");
             Light sun = sunObject.AddComponent<Light>();
@@ -2182,8 +2182,8 @@ namespace Psycho.Editor
 
             GameObject reflectionObject = new GameObject("World Reflection Probe");
             ReflectionProbe probe = reflectionObject.AddComponent<ReflectionProbe>();
-            probe.mode = UnityEngine.Rendering.ReflectionProbeMode.Realtime;
-            probe.refreshMode = UnityEngine.Rendering.ReflectionProbeRefreshMode.OnAwake;
+            probe.mode = UnityEngine.Rendering.ReflectionProbeMode.Baked;
+            probe.refreshMode = UnityEngine.Rendering.ReflectionProbeRefreshMode.ViaScripting;
             probe.size = new Vector3(920f, 180f, 920f);
             reflectionObject.transform.position = new Vector3(0f, 18f, 0f);
 
@@ -2204,11 +2204,11 @@ namespace Psycho.Editor
         private static void BuildPlayer(HostedBuildContext context, HostedMaterials materials, PsychoMirrorDatabase database)
         {
             HostedPlayerSave playerSave = LoadHostedPlayerSave(HostedPlayerUsername);
-            int spawnX = playerSave?.position != null ? playerSave.position.x : 3093;
-            int spawnY = playerSave?.position != null ? playerSave.position.y : 3493;
+            int spawnX = 3087;
+            int spawnY = 3489;
             if (!IsWorldTileInsideHostedBounds(spawnX, spawnY))
             {
-                Debug.LogWarning($"Hosted player save position {spawnX}, {spawnY} is outside the generated test world. Falling back to Edgeville.");
+                Debug.LogWarning($"Hosted visual spawn {spawnX}, {spawnY} is outside the generated test world. Falling back to Edgeville.");
                 spawnX = 3093;
                 spawnY = 3493;
             }
