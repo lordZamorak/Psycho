@@ -28,6 +28,9 @@ namespace Psycho.Editor
         private const int MaxModelsPerNpc = 12;
         private const int MaxNpcSpawns = 460;
         private const int HostedVillageNpcBaseId = 900000;
+        private const bool UseFlatHostedVisualBase = true;
+        private const bool PlaceCacheObjectsOnFlatBase = false;
+        private const bool PlaceCacheNpcsOnFlatBase = false;
         private const int GroundDetailCount = 1850;
         private const int GroundCoverPatchesPerAnchor = 24;
         private const int MaxWindAnimatedComponents = 1200;
@@ -146,7 +149,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, villages {context.Report.hostedVillages}, village NPCs {context.Report.hostedVillageNpcs}, village-cleared trees {context.Report.villageClearedObjects}, biome regions {context.Report.seasonalBiomeRegions}, mountains {context.Report.mountainMassifs}, hills {context.Report.hillMounds}, dense forest trees {context.Report.denseForestTrees}, snow patches {context.Report.snowPatches}, seasonal dressing {context.Report.seasonalDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, flat terrain regions {context.Report.flatBaseTerrainRegions}, objects {context.Report.placedObjects}, clean-base skipped cache objects {context.Report.cleanBaseSkippedCacheObjects}, NPCs {context.Report.npcSpawns}, clean-base skipped cache NPCs {context.Report.cleanBaseSkippedCacheNpcs}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, settlements {context.Report.hostedSettlements}, villages {context.Report.hostedVillages}, towns {context.Report.hostedTowns}, cities {context.Report.hostedCities}, settlement NPCs {context.Report.hostedSettlementNpcs}, village-cleared trees {context.Report.villageClearedObjects}, biome regions {context.Report.seasonalBiomeRegions}, mountains {context.Report.mountainMassifs}, hills {context.Report.hillMounds}, dense forest trees {context.Report.denseForestTrees}, snow patches {context.Report.snowPatches}, seasonal dressing {context.Report.seasonalDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -253,7 +256,7 @@ namespace Psycho.Editor
             }
 
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            GameObject npcRoot = GameObject.Find("Hosted NPC Spawns");
+            GameObject npcRoot = GameObject.Find("Hosted Settlement Ambient NPCs") ?? GameObject.Find("Hosted NPC Spawns");
             if (npcRoot == null || npcRoot.transform.childCount == 0)
             {
                 throw new InvalidOperationException("Hosted test world scene does not contain NPC spawns.");
@@ -384,7 +387,10 @@ namespace Psycho.Editor
             }
 
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            GameObject village = GameObject.Find("Varrock Road Village") ?? GameObject.Find("River Lum Bridge Hamlet");
+            GameObject village = GameObject.Find("Varrock Green City")
+                ?? GameObject.Find("Central Market City")
+                ?? GameObject.Find("River Lum Town")
+                ?? GameObject.Find("North Edgeville Farmstead");
             Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
             if (village == null || camera == null)
             {
@@ -481,7 +487,7 @@ namespace Psycho.Editor
         private static Bounds BuildVillagePreviewBounds(GameObject village)
         {
             Bounds bounds = BuildObjectPreviewBounds(village.transform);
-            GameObject npcRoot = GameObject.Find("Hosted Village Ambient NPCs");
+            GameObject npcRoot = GameObject.Find("Hosted Settlement Ambient NPCs") ?? GameObject.Find("Hosted Village Ambient NPCs");
             if (npcRoot != null)
             {
                 string villageMarker = "(" + village.name + ")";
@@ -645,8 +651,9 @@ namespace Psycho.Editor
 
         private static void BuildRegions(PsychoCacheStore store, PsychoMirrorDatabase database, Material terrainMaterial, Material objectMaterial, HostedMaterials hostedMaterials, HostedBuildContext context)
         {
-            GameObject terrainRoot = new GameObject("Hosted Terrain Regions");
-            GameObject objectRoot = new GameObject("Hosted Cache Objects");
+            context.Report.cleanFlatBase = UseFlatHostedVisualBase;
+            GameObject terrainRoot = new GameObject(UseFlatHostedVisualBase ? "Hosted Flat Green Terrain Regions" : "Hosted Terrain Regions");
+            GameObject objectRoot = new GameObject(UseFlatHostedVisualBase ? "Hosted Cache Objects (Disabled For Clean Base)" : "Hosted Cache Objects");
 
             foreach (Vector2Int region in BuildHostedRegionTraversal())
             {
@@ -673,8 +680,15 @@ namespace Psycho.Editor
                 context.Report.loadedRegions++;
                 context.Report.decodedObjectPlacements += objects.Placements.Count;
 
-                BuildTerrain(terrainRoot.transform, landscape, terrainMaterial);
-                BuildObjects(store, database, objectRoot.transform, landscape, objects, objectMaterial, hostedMaterials, context);
+                BuildTerrain(terrainRoot.transform, landscape, UseFlatHostedVisualBase ? hostedMaterials.Grass : terrainMaterial, context);
+                if (!UseFlatHostedVisualBase || PlaceCacheObjectsOnFlatBase)
+                {
+                    BuildObjects(store, database, objectRoot.transform, landscape, objects, objectMaterial, hostedMaterials, context);
+                }
+                else
+                {
+                    context.Report.cleanBaseSkippedCacheObjects += objects.Placements.Count;
+                }
             }
         }
 
@@ -706,9 +720,11 @@ namespace Psycho.Editor
             return regions;
         }
 
-        private static void BuildTerrain(Transform root, PsychoMapLandscape landscape, Material material)
+        private static void BuildTerrain(Transform root, PsychoMapLandscape landscape, Material material, HostedBuildContext context)
         {
-            Mesh terrainMesh = PsychoMapMeshBuilder.BuildTerrainMesh(landscape, 0, TileScale, HeightScale);
+            Mesh terrainMesh = UseFlatHostedVisualBase
+                ? BuildFlatHostedTerrainMesh(landscape)
+                : PsychoMapMeshBuilder.BuildTerrainMesh(landscape, 0, TileScale, HeightScale);
             GameObject terrain = new GameObject($"Terrain Region {(landscape.RegionX << 8) + landscape.RegionY}");
             terrain.isStatic = true;
             terrain.transform.SetParent(root, false);
@@ -716,6 +732,54 @@ namespace Psycho.Editor
             terrain.AddComponent<MeshFilter>().sharedMesh = terrainMesh;
             terrain.AddComponent<MeshRenderer>().sharedMaterial = material;
             terrain.AddComponent<MeshCollider>().sharedMesh = terrainMesh;
+            if (UseFlatHostedVisualBase)
+            {
+                context.Report.flatBaseTerrainRegions++;
+            }
+        }
+
+        private static Mesh BuildFlatHostedTerrainMesh(PsychoMapLandscape landscape)
+        {
+            const int segments = 64;
+            int stride = segments + 1;
+            Vector3[] vertices = new Vector3[stride * stride];
+            Vector2[] uv = new Vector2[vertices.Length];
+            int[] triangles = new int[segments * segments * 6];
+
+            int vertex = 0;
+            for (int y = 0; y <= segments; y++)
+            {
+                for (int x = 0; x <= segments; x++)
+                {
+                    vertices[vertex] = new Vector3(x * TileScale, 0f, y * TileScale);
+                    uv[vertex] = new Vector2(x / (float)segments * 16f, y / (float)segments * 16f);
+                    vertex++;
+                }
+            }
+
+            int tri = 0;
+            for (int y = 0; y < segments; y++)
+            {
+                for (int x = 0; x < segments; x++)
+                {
+                    int i = y * stride + x;
+                    triangles[tri++] = i;
+                    triangles[tri++] = i + stride;
+                    triangles[tri++] = i + 1;
+                    triangles[tri++] = i + 1;
+                    triangles[tri++] = i + stride;
+                    triangles[tri++] = i + stride + 1;
+                }
+            }
+
+            Mesh mesh = new Mesh { name = $"psycho_flat_base_region_{(landscape.RegionX << 8) + landscape.RegionY}" };
+            mesh.vertices = vertices;
+            mesh.uv = uv;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateTangents();
+            mesh.RecalculateBounds();
+            return mesh;
         }
 
         private static void BuildObjects(
@@ -1181,6 +1245,21 @@ namespace Psycho.Editor
 
         private static void BuildNpcSpawns(PsychoCacheStore store, PsychoMirrorDatabase database, Material npcMaterial, HostedBuildContext context)
         {
+            if (UseFlatHostedVisualBase && !PlaceCacheNpcsOnFlatBase)
+            {
+                GameObject disabledRoot = new GameObject("Hosted Cache NPC Spawns (Disabled For Clean Base)");
+                disabledRoot.SetActive(false);
+                foreach (PsychoMirrorNpcSpawn spawn in database.NpcSpawns)
+                {
+                    if (IsWorldTileInsideHostedBounds(spawn.x, spawn.y))
+                    {
+                        context.Report.cleanBaseSkippedCacheNpcs++;
+                    }
+                }
+
+                return;
+            }
+
             GameObject npcRoot = new GameObject("Hosted NPC Spawns");
             GameObject factoryObject = new GameObject("Psycho Visual Factory");
             PsychoVisualFactory factory = factoryObject.AddComponent<PsychoVisualFactory>();
@@ -1638,7 +1717,11 @@ namespace Psycho.Editor
 
         private static void BuildWorldDressing(HostedBuildContext context, HostedMaterials materials)
         {
-            BuildGrassField(context, materials);
+            if (!UseFlatHostedVisualBase)
+            {
+                BuildGrassField(context, materials);
+            }
+
             BuildGroundCoverPatches(context, materials);
             BuildWaterways(context, materials);
             BuildWorldLandmarks(context, materials);
@@ -1648,7 +1731,11 @@ namespace Psycho.Editor
             BuildRockOutcropDressing(context, materials);
             BuildHighlandCliffDressing(context, materials);
             BuildDistantVista(context, materials);
-            BuildHorizonMist(context, materials);
+            if (!UseFlatHostedVisualBase)
+            {
+                BuildHorizonMist(context, materials);
+            }
+
             BuildCloudLayer(materials.Cloud);
         }
 
@@ -1671,7 +1758,7 @@ namespace Psycho.Editor
 
                 byte overlay = landscape.OverlayIds[0, localX, localY];
                 byte flags = landscape.RenderFlags[0, localX, localY];
-                if (overlay != 0 || (flags & 1) == 1)
+                if (!UseFlatHostedVisualBase && (overlay != 0 || (flags & 1) == 1))
                 {
                     continue;
                 }
@@ -1742,7 +1829,7 @@ namespace Psycho.Editor
                     }
 
                     byte overlay = landscape.OverlayIds[0, localX, localY];
-                    if (overlay != 0 && Deterministic01(seed + 7) < 0.78f)
+                    if (!UseFlatHostedVisualBase && overlay != 0 && Deterministic01(seed + 7) < 0.78f)
                     {
                         continue;
                     }
@@ -1958,9 +2045,9 @@ namespace Psycho.Editor
 
         private static void BuildHostedVillageNetwork(HostedBuildContext context, HostedMaterials materials)
         {
-            GameObject villageRoot = new GameObject("Generated Hosted Village Network");
-            GameObject npcRoot = new GameObject("Hosted Village Ambient NPCs");
-            GameObject factoryObject = new GameObject("Psycho Village Visual Factory");
+            GameObject villageRoot = new GameObject("Generated Hosted Settlement Network");
+            GameObject npcRoot = new GameObject("Hosted Settlement Ambient NPCs");
+            GameObject factoryObject = new GameObject("Psycho Settlement Visual Factory");
             PsychoVisualFactory factory = factoryObject.AddComponent<PsychoVisualFactory>();
             factory.SetNpcPreviewAnimation(false);
 
@@ -1975,18 +2062,24 @@ namespace Psycho.Editor
         {
             return new[]
             {
-                new HostedVillageSpec("North Edgeville Farmstead", 3086, 3522, 4, 7, 8f, 0.92f),
-                new HostedVillageSpec("River Lum Bridge Hamlet", 3148, 3474, 5, 9, -18f, 1.04f),
-                new HostedVillageSpec("Varrock Road Village", 3202, 3422, 6, 10, 80f, 1.08f),
-                new HostedVillageSpec("East Highland Sheepfold", 3264, 3446, 4, 8, -36f, 0.94f),
-                new HostedVillageSpec("Northern Ridge Watch", 3130, 3610, 3, 7, 28f, 0.86f),
-                new HostedVillageSpec("Western Moor Camp", 2940, 3496, 4, 7, -64f, 0.90f),
-                new HostedVillageSpec("Falador Meadow Hamlet", 2975, 3370, 5, 9, 12f, 1.00f),
-                new HostedVillageSpec("Draynor Orchard Village", 3090, 3262, 5, 9, 92f, 1.00f),
-                new HostedVillageSpec("Port Sarim Outskirts", 3040, 3226, 4, 8, -8f, 0.94f),
-                new HostedVillageSpec("Southern Trade Yard", 3155, 3236, 4, 8, 42f, 0.96f),
-                new HostedVillageSpec("Northeast Hunter Camp", 3330, 3628, 3, 6, -28f, 0.84f),
-                new HostedVillageSpec("Southwest Stonecroft", 2878, 3248, 4, 7, 66f, 0.90f)
+                new HostedVillageSpec("North Edgeville Farmstead", 3086, 3522, 5, 14, 8f, 0.96f, HostedSettlementTier.Village),
+                new HostedVillageSpec("River Lum Town", 3148, 3474, 6, 18, -18f, 1.08f, HostedSettlementTier.Town),
+                new HostedVillageSpec("Varrock Green City", 3202, 3422, 16, 44, 80f, 1.42f, HostedSettlementTier.City),
+                new HostedVillageSpec("East Highland Sheepfold", 3264, 3446, 5, 14, -36f, 0.96f, HostedSettlementTier.Village),
+                new HostedVillageSpec("Northern Ridge Watch", 3130, 3610, 6, 18, 28f, 1.00f, HostedSettlementTier.Village),
+                new HostedVillageSpec("Western Autumnwood Village", 2940, 3496, 6, 16, -64f, 0.98f, HostedSettlementTier.Village),
+                new HostedVillageSpec("Falador Meadow Town", 2975, 3370, 10, 26, 12f, 1.18f, HostedSettlementTier.Town),
+                new HostedVillageSpec("Draynor Spring Town", 3090, 3262, 9, 24, 92f, 1.14f, HostedSettlementTier.Town),
+                new HostedVillageSpec("Port Sarim Harbor Town", 3040, 3226, 8, 24, -8f, 1.12f, HostedSettlementTier.Town),
+                new HostedVillageSpec("Southern Trade Yard", 3155, 3236, 7, 18, 42f, 1.02f, HostedSettlementTier.Village),
+                new HostedVillageSpec("Northeast Snowwood Village", 3330, 3628, 6, 16, -28f, 0.96f, HostedSettlementTier.Village),
+                new HostedVillageSpec("Southwest Stonecroft", 2878, 3248, 6, 16, 66f, 0.98f, HostedSettlementTier.Village),
+                new HostedVillageSpec("Frostgate Town", 3182, 3650, 9, 24, -16f, 1.16f, HostedSettlementTier.Town),
+                new HostedVillageSpec("Northwatch City", 3060, 3634, 14, 38, 34f, 1.34f, HostedSettlementTier.City),
+                new HostedVillageSpec("Central Market City", 3158, 3490, 15, 42, 4f, 1.38f, HostedSettlementTier.City),
+                new HostedVillageSpec("Autumnreach Town", 2915, 3440, 9, 24, -44f, 1.14f, HostedSettlementTier.Town),
+                new HostedVillageSpec("Highland Lake Village", 3298, 3520, 6, 16, 54f, 1.00f, HostedSettlementTier.Village),
+                new HostedVillageSpec("South Meadow Village", 3190, 3294, 6, 16, -12f, 0.98f, HostedSettlementTier.Village)
             };
         }
 
@@ -1998,7 +2091,7 @@ namespace Psycho.Editor
                 HostedVillageSpec village = villages[i];
                 float dx = worldX - village.WorldX;
                 float dy = worldY - village.WorldY;
-                float radius = 7.5f + village.Scale * (village.HouseCount * 0.92f + 2.8f);
+                float radius = HostedSettlementClearingRadius(village);
                 if (dx * dx + dy * dy <= radius * radius)
                 {
                     return true;
@@ -2006,6 +2099,31 @@ namespace Psycho.Editor
             }
 
             return false;
+        }
+
+        private static float HostedSettlementClearingRadius(HostedVillageSpec settlement)
+        {
+            float tierRadius = settlement.Tier == HostedSettlementTier.City
+                ? 16.0f
+                : settlement.Tier == HostedSettlementTier.Town
+                    ? 11.5f
+                    : 7.5f;
+            return tierRadius + settlement.Scale * (settlement.HouseCount * 0.92f + 2.8f);
+        }
+
+        private static float SettlementTierScale(HostedSettlementTier tier)
+        {
+            if (tier == HostedSettlementTier.City)
+            {
+                return 1.36f;
+            }
+
+            if (tier == HostedSettlementTier.Town)
+            {
+                return 1.16f;
+            }
+
+            return 1f;
         }
 
         private static void CreateHostedVillage(
@@ -2024,11 +2142,12 @@ namespace Psycho.Editor
 
             root.localRotation = Quaternion.Euler(0f, village.Yaw, 0f);
             float scale = village.Scale;
+            float tierScale = SettlementTierScale(village.Tier);
             int dressing = 0;
 
-            CreateGroundPlate(root, "Packed Village Green", Vector3.zero, scale * (8.6f + village.HouseCount * 0.58f), scale * 7.4f, materials.LandmarkRoad);
-            CreateGroundPlate(root, "Cross Village Lane", new Vector3(0f, 0.012f, 0f), scale * 3.0f, scale * 11.4f, materials.LandmarkRoad);
-            CreateLandmarkPaverBands(root, "Village Lane", scale * (7.2f + village.HouseCount * 0.45f), scale * 6.3f, materials.FrostStone);
+            CreateGroundPlate(root, "Packed Settlement Green", Vector3.zero, scale * tierScale * (8.6f + village.HouseCount * 0.58f), scale * tierScale * 7.4f, materials.LandmarkRoad);
+            CreateGroundPlate(root, "Cross Settlement Lane", new Vector3(0f, 0.012f, 0f), scale * tierScale * 3.0f, scale * tierScale * 11.4f, materials.LandmarkRoad);
+            CreateLandmarkPaverBands(root, "Settlement Lane", scale * tierScale * (7.2f + village.HouseCount * 0.45f), scale * tierScale * 6.3f, materials.FrostStone);
             dressing += 16;
 
             for (int house = 0; house < village.HouseCount; house++)
@@ -2047,9 +2166,23 @@ namespace Psycho.Editor
             dressing += CreateHostedVillageWell(root, materials, scale);
             dressing += CreateHostedVillageFencing(root, materials, scale, villageIndex);
             dressing += CreateHostedVillageProps(root, materials, scale, villageIndex);
+            dressing += CreateHostedSettlementTierDressing(root, materials, scale, villageIndex, village);
             CreateHostedVillageNpcCluster(npcParent, root, context, factory, village, villageIndex);
 
-            context.Report.hostedVillages++;
+            context.Report.hostedSettlements++;
+            if (village.Tier == HostedSettlementTier.City)
+            {
+                context.Report.hostedCities++;
+            }
+            else if (village.Tier == HostedSettlementTier.Town)
+            {
+                context.Report.hostedTowns++;
+            }
+            else
+            {
+                context.Report.hostedVillages++;
+            }
+
             context.Report.landmarkDressingObjects += dressing;
         }
 
@@ -2090,7 +2223,7 @@ namespace Psycho.Editor
                         }
 
                         byte flags = landscape.RenderFlags[0, localX, localY];
-                        if ((flags & 1) == 1)
+                        if (!UseFlatHostedVisualBase && (flags & 1) == 1)
                         {
                             continue;
                         }
@@ -2204,6 +2337,64 @@ namespace Psycho.Editor
             return created + 2;
         }
 
+        private static int CreateHostedSettlementTierDressing(Transform root, HostedMaterials materials, float scale, int villageIndex, HostedVillageSpec settlement)
+        {
+            if (settlement.Tier == HostedSettlementTier.Village)
+            {
+                return 0;
+            }
+
+            int created = 0;
+            float tierScale = SettlementTierScale(settlement.Tier);
+            float plazaWidth = scale * tierScale * (settlement.Tier == HostedSettlementTier.City ? 8.4f : 5.8f);
+            float plazaDepth = scale * tierScale * (settlement.Tier == HostedSettlementTier.City ? 6.8f : 4.6f);
+            CreateGroundPlate(root, $"{settlement.Tier} Stone Market Square", new Vector3(0f, 0.020f, 0f), plazaWidth, plazaDepth, materials.FrostStone);
+            created++;
+
+            int stallCount = settlement.Tier == HostedSettlementTier.City ? 6 : 4;
+            for (int i = 0; i < stallCount; i++)
+            {
+                int seed = 73500 + villageIndex * 409 + i * 61;
+                float side = i % 2 == 0 ? -1f : 1f;
+                float row = i / 2;
+                Vector3 position = new Vector3(side * scale * tierScale * 2.45f, scale * 0.45f, (row - 1f) * scale * tierScale * 1.25f);
+                GameObject stall = CreateLandmarkBox(root, $"{settlement.Tier} Market Stall {i + 1}", position, new Vector3(scale * 1.30f, scale * 0.34f, scale * 0.78f), materials.TreeBark);
+                stall.transform.localRotation = Quaternion.Euler(0f, side * (8f + Deterministic01(seed + 3) * 6f), 0f);
+                CreateLandmarkDetailBox(root, $"{settlement.Tier} Stall Cloth {i + 1}", position + Vector3.up * scale * 0.31f, new Vector3(scale * 1.44f, scale * 0.06f, scale * 0.86f), i % 3 == 0 ? materials.LandmarkBanner : materials.PlayerPaper);
+                created += 2;
+            }
+
+            int bannerCount = settlement.Tier == HostedSettlementTier.City ? 8 : 4;
+            float bannerRadius = scale * tierScale * (settlement.Tier == HostedSettlementTier.City ? 5.4f : 3.9f);
+            for (int i = 0; i < bannerCount; i++)
+            {
+                float angle = i * Mathf.PI * 2f / bannerCount;
+                Vector3 post = new Vector3(Mathf.Cos(angle) * bannerRadius, scale * 1.08f, Mathf.Sin(angle) * bannerRadius);
+                CreateLandmarkCylinder(root, $"{settlement.Tier} Banner Post {i + 1}", post, new Vector3(scale * 0.055f, scale * 1.08f, scale * 0.055f), materials.TreeBark);
+                CreateLandmarkDetailBox(root, $"{settlement.Tier} Hanging Banner {i + 1}", post + new Vector3(Mathf.Cos(angle) * scale * 0.12f, scale * 0.42f, Mathf.Sin(angle) * scale * 0.12f), new Vector3(scale * 0.06f, scale * 0.70f, scale * 0.32f), materials.LandmarkBanner);
+                created += 2;
+            }
+
+            if (settlement.Tier == HostedSettlementTier.City)
+            {
+                float towerRadius = scale * tierScale * 6.1f;
+                for (int i = 0; i < 4; i++)
+                {
+                    float angle = Mathf.PI * 0.25f + i * Mathf.PI * 0.5f;
+                    Vector3 tower = new Vector3(Mathf.Cos(angle) * towerRadius, scale * 1.35f, Mathf.Sin(angle) * towerRadius);
+                    CreateLandmarkCylinder(root, $"City Watch Tower {i + 1}", tower, new Vector3(scale * 0.44f, scale * 1.35f, scale * 0.44f), materials.LandmarkStone);
+                    CreateLandmarkGabledRoof(root, $"City Watch Tower Roof {i + 1}", tower + Vector3.up * scale * 1.50f, scale * 1.12f, scale * 1.12f, scale * 0.52f, materials.LandmarkRoof);
+                    created += 2;
+                }
+
+                CreateLandmarkCylinder(root, "City Central Fountain Basin", new Vector3(0f, scale * 0.18f, 0f), new Vector3(scale * 0.88f, scale * 0.18f, scale * 0.88f), materials.FrostStone);
+                CreateLandmarkCylinder(root, "City Central Fountain Water", new Vector3(0f, scale * 0.39f, 0f), new Vector3(scale * 0.70f, scale * 0.035f, scale * 0.70f), materials.Water);
+                created += 2;
+            }
+
+            return created;
+        }
+
         private static int CreateHostedVillageNpcCluster(
             Transform npcParent,
             Transform villageRoot,
@@ -2217,12 +2408,17 @@ namespace Psycho.Editor
             {
                 int seed = 70000 + villageIndex * 1543 + i * 97;
                 float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
-                float radius = village.Scale * (0.80f + Deterministic01(seed + 7) * 3.25f);
+                float maxRadius = village.Tier == HostedSettlementTier.City
+                    ? 8.4f
+                    : village.Tier == HostedSettlementTier.Town
+                        ? 5.8f
+                        : 3.6f;
+                float radius = village.Scale * (0.80f + Mathf.Pow(Deterministic01(seed + 7), 0.62f) * maxRadius);
                 Vector3 local = new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
-                string role = VillageNpcRole(i, villageIndex);
-                PsychoMirrorNpc npc = CreateHostedVillageNpc(HostedVillageNpcBaseId + villageIndex * 100 + i, role, seed);
+                string role = VillageNpcRole(i, villageIndex, village.Tier);
+                PsychoMirrorNpc npc = CreateHostedVillageNpc(HostedVillageNpcBaseId + villageIndex * 100 + i, role, village.Tier, seed);
                 GameObject npcObject = factory.CreateNpcVisual(npc);
-                npcObject.name = $"Village NPC {npc.id} - {npc.name} ({village.Name})";
+                npcObject.name = $"Settlement NPC {npc.id} - {npc.name} ({village.Name})";
                 npcObject.transform.SetParent(npcParent, true);
                 npcObject.transform.position = TerrainSurfacePosition(villageRoot.TransformPoint(local), 0.035f);
                 npcObject.transform.rotation = Quaternion.Euler(0f, village.Yaw + Deterministic01(seed + 13) * 360f, 0f);
@@ -2232,7 +2428,7 @@ namespace Psycho.Editor
                 npcObject.AddComponent<PsychoGroundFollower>();
                 PrototypeNpcWander wander = npcObject.AddComponent<PrototypeNpcWander>();
                 SerializedObject wanderObject = new SerializedObject(wander);
-                wanderObject.FindProperty("wanderRadius").floatValue = village.Scale * Mathf.Lerp(1.35f, 3.85f, Deterministic01(seed + 17));
+                wanderObject.FindProperty("wanderRadius").floatValue = village.Scale * Mathf.Lerp(1.65f, maxRadius * 0.75f, Deterministic01(seed + 17));
                 wanderObject.FindProperty("speed").floatValue = role == "Guard" ? 1.42f : role == "Merchant" ? 1.16f : 1.02f;
                 wanderObject.FindProperty("pauseDuration").floatValue = 0.78f + Deterministic01(seed + 19) * 0.82f;
                 SetSerializedFloat(wanderObject, "turnSpeed", role == "Guard" ? 5.4f : 4.6f);
@@ -2244,24 +2440,26 @@ namespace Psycho.Editor
             }
 
             context.Report.hostedVillageNpcs += created;
+            context.Report.hostedSettlementNpcs += created;
             return created;
         }
 
-        private static PsychoMirrorNpc CreateHostedVillageNpc(int id, string role, int seed)
+        private static PsychoMirrorNpc CreateHostedVillageNpc(int id, string role, HostedSettlementTier tier, int seed)
         {
             string visualClass = role;
+            string tierName = tier == HostedSettlementTier.City ? "City" : tier == HostedSettlementTier.Town ? "Town" : "Village";
             string displayName = role == "Merchant"
-                ? "Village Merchant"
+                ? $"{tierName} Merchant"
                 : role == "Guard"
-                    ? "Village Watch"
+                    ? $"{tierName} Watch"
                     : role == "Banker"
-                        ? "Village Clerk"
-                        : "Village Resident";
+                        ? $"{tierName} Clerk"
+                        : $"{tierName} Resident";
             return new PsychoMirrorNpc
             {
                 id = id,
                 name = displayName,
-                examine = "A hosted Unity village resident.",
+                examine = "A hosted Unity settlement resident.",
                 combat = role == "Guard" ? 24 : 0,
                 size = 1,
                 attackable = role == "Guard",
@@ -2276,20 +2474,20 @@ namespace Psycho.Editor
             };
         }
 
-        private static string VillageNpcRole(int index, int villageIndex)
+        private static string VillageNpcRole(int index, int villageIndex, HostedSettlementTier tier)
         {
-            int roll = (index + villageIndex) % 7;
+            int roll = (index + villageIndex * 3) % (tier == HostedSettlementTier.City ? 9 : 7);
             if (roll == 0)
             {
                 return "Merchant";
             }
 
-            if (roll == 3)
+            if (roll == 3 || (tier == HostedSettlementTier.City && roll == 7))
             {
                 return "Guard";
             }
 
-            if (roll == 5)
+            if (roll == 5 || (tier != HostedSettlementTier.Village && roll == 8))
             {
                 return "Banker";
             }
@@ -2331,14 +2529,14 @@ namespace Psycho.Editor
         {
             return new[]
             {
-                new HostedBiomeSpec("Northern Frostspine Mountains", 3138, 3655, 43f, HostedSeasonBiome.WinterHighland, 9, 6, 42, 32, 12f),
-                new HostedBiomeSpec("Northeast Snowwood", 3314, 3618, 37f, HostedSeasonBiome.Snowfield, 5, 4, 54, 38, -24f),
-                new HostedBiomeSpec("Western Autumnwood", 2918, 3488, 34f, HostedSeasonBiome.AutumnWoodland, 2, 7, 58, 0, 64f),
-                new HostedBiomeSpec("North Edgeville Pine Belt", 3078, 3534, 31f, HostedSeasonBiome.SummerForest, 1, 5, 52, 3, -8f),
-                new HostedBiomeSpec("Falador Rolling Meadows", 2962, 3372, 32f, HostedSeasonBiome.SpringMeadow, 0, 10, 34, 0, 22f),
-                new HostedBiomeSpec("Draynor Springwood", 3068, 3268, 30f, HostedSeasonBiome.SpringMeadow, 0, 8, 34, 0, 86f),
-                new HostedBiomeSpec("Southern Amber Hills", 3150, 3230, 33f, HostedSeasonBiome.AutumnWoodland, 1, 12, 36, 0, 36f),
-                new HostedBiomeSpec("Eastern Highland Ridges", 3265, 3442, 35f, HostedSeasonBiome.SummerForest, 6, 8, 42, 8, -42f)
+                new HostedBiomeSpec("Northern Frostspine Mountains", 3138, 3655, 43f, HostedSeasonBiome.WinterHighland, 11, 8, 55, 40, 12f),
+                new HostedBiomeSpec("Northeast Snowwood", 3314, 3618, 37f, HostedSeasonBiome.Snowfield, 6, 6, 70, 46, -24f),
+                new HostedBiomeSpec("Western Autumnwood", 2918, 3488, 34f, HostedSeasonBiome.AutumnWoodland, 3, 9, 70, 0, 64f),
+                new HostedBiomeSpec("North Edgeville Pine Belt", 3078, 3534, 31f, HostedSeasonBiome.SummerForest, 2, 7, 60, 4, -8f),
+                new HostedBiomeSpec("Falador Rolling Meadows", 2962, 3372, 32f, HostedSeasonBiome.SpringMeadow, 0, 12, 40, 0, 22f),
+                new HostedBiomeSpec("Draynor Springwood", 3068, 3268, 30f, HostedSeasonBiome.SpringMeadow, 0, 10, 42, 0, 86f),
+                new HostedBiomeSpec("Southern Amber Hills", 3150, 3230, 33f, HostedSeasonBiome.AutumnWoodland, 2, 14, 48, 0, 36f),
+                new HostedBiomeSpec("Eastern Highland Ridges", 3265, 3442, 35f, HostedSeasonBiome.SummerForest, 7, 10, 55, 10, -42f)
             };
         }
 
@@ -2393,7 +2591,7 @@ namespace Psycho.Editor
                         }
 
                         byte flags = landscape.RenderFlags[0, localX, localY];
-                        if ((flags & 1) == 1)
+                        if (!UseFlatHostedVisualBase && (flags & 1) == 1)
                         {
                             continue;
                         }
@@ -3119,7 +3317,7 @@ namespace Psycho.Editor
             }
 
             byte flags = landscape.RenderFlags[0, localX, localY];
-            if ((flags & 1) == 1)
+            if (!UseFlatHostedVisualBase && (flags & 1) == 1)
             {
                 return false;
             }
@@ -4720,7 +4918,7 @@ namespace Psycho.Editor
         {
             int x = Mathf.Clamp(localX, 0, 63);
             int y = Mathf.Clamp(localY, 0, 63);
-            float height = -landscape.Heights[0, x, y] * HeightScale;
+            float height = UseFlatHostedVisualBase ? 0f : -landscape.Heights[0, x, y] * HeightScale;
             return RegionOrigin(landscape.RegionX, landscape.RegionY) + new Vector3((x + 0.5f) * TileScale, height, (y + 0.5f) * TileScale);
         }
 
@@ -5600,6 +5798,13 @@ namespace Psycho.Editor
             Snowfield
         }
 
+        private enum HostedSettlementTier
+        {
+            Village,
+            Town,
+            City
+        }
+
         private readonly struct HostedBiomeSpec
         {
             public readonly string Name;
@@ -5637,8 +5842,9 @@ namespace Psycho.Editor
             public readonly int NpcCount;
             public readonly float Yaw;
             public readonly float Scale;
+            public readonly HostedSettlementTier Tier;
 
-            public HostedVillageSpec(string name, int worldX, int worldY, int houseCount, int npcCount, float yaw, float scale)
+            public HostedVillageSpec(string name, int worldX, int worldY, int houseCount, int npcCount, float yaw, float scale, HostedSettlementTier tier)
             {
                 Name = name;
                 WorldX = worldX;
@@ -5647,6 +5853,7 @@ namespace Psycho.Editor
                 NpcCount = npcCount;
                 Yaw = yaw;
                 Scale = scale;
+                Tier = tier;
             }
         }
 
@@ -5727,11 +5934,15 @@ namespace Psycho.Editor
             public string generatedAtUtc;
             public int baseRegionId;
             public int regionRadius;
+            public bool cleanFlatBase;
             public int loadedRegions;
             public int missingRegions;
             public int decodedObjectPlacements;
             public int placedObjects;
             public int skippedObjects;
+            public int flatBaseTerrainRegions;
+            public int cleanBaseSkippedCacheObjects;
+            public int cleanBaseSkippedCacheNpcs;
             public int importedModels;
             public int missingDefinitions;
             public int missingModels;
@@ -5745,8 +5956,12 @@ namespace Psycho.Editor
             public int visualReplacementNpcs;
             public int visualReplacementObjects;
             public int decodedObjectAccents;
+            public int hostedSettlements;
             public int hostedVillages;
+            public int hostedTowns;
+            public int hostedCities;
             public int hostedVillageNpcs;
+            public int hostedSettlementNpcs;
             public int villageClearedObjects;
             public int seasonalBiomeRegions;
             public int mountainMassifs;
