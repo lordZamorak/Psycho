@@ -883,6 +883,24 @@ MonoBehaviour:
     receiveShadows: 1
     castShadows: 1
   - kind: 2
+    displayName: Closed Wall Gate
+    prefab: {fileID: 6274830109756072887, guid: e42b1d40c8f5a43459c2b793be282a0b, type: 3}
+    ids:
+    visualClass:
+    nameFragments:
+    - closed gate
+    - large gate
+    matchAny: 0
+    targetHeight: 2.7
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
     displayName: Wall
     prefab: {fileID: 46177754398550549, guid: d268c659d389d5344a1da7402b969d59, type: 3}
     ids:
@@ -949,6 +967,24 @@ MonoBehaviour:
     markStatic: 1
     ensureCullLod: 1
     cullScreenRelativeHeight: 0.02
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Roofed Bridge
+    prefab: {fileID: 4985728765660249416, guid: f0fc6ff80adca4345945d5996c3a0f96, type: 3}
+    ids:
+    visualClass:
+    nameFragments:
+    - roofed bridge
+    - covered bridge
+    matchAny: 0
+    targetHeight: 1.45
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
     receiveShadows: 1
     castShadows: 1
   - kind: 2
@@ -1019,5 +1055,223 @@ MonoBehaviour:
     markStatic: 1
     ensureCullLod: 1
     cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Supply Crate
+    prefab: {fileID: 4960193283174033379, guid: 72ee070ffd354c3468e5e99620dcd42a, type: 3}
+    ids: 62010000630100006401000065010000660100006e010000
+    visualClass:
+    nameFragments:
+    - crate
+    matchAny: 0
+    targetHeight: 0.82
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.03
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Oak Barrel
+    prefab: {fileID: 8430235378091251633, guid: f660148fdaaf2094282cf98514383dba, type: 3}
+    ids: 6a0100006c010000
+    visualClass:
+    nameFragments:
+    - barrel
+    - cask
+    matchAny: 0
+    targetHeight: 0.92
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.03
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Ironbound Chest
+    prefab: {fileID: 6756156326722178130, guid: 7edca9cc976a7374489a02abaa538360, type: 3}
+    ids: ac00000077010000
+    visualClass:
+    nameFragments:
+    - closed chest
+    - chest
+    matchAny: 0
+    targetHeight: 0.78
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.032
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Wooden Cart
+    prefab: {fileID: 9195841289049554684, guid: a97178c3fff9aef45815c3f1da0f1647, type: 3}
+    ids: 320100003301000047010000
+    visualClass:
+    nameFragments:
+    - cart
+    - cart wheel
+    matchAny: 0
+    targetHeight: 1.05
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.028
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Reinforced Door
+    prefab: {fileID: 2457042724630696955, guid: 2af597b021e99d94ab9a3a12ce0d9d90, type: 3}
+    ids: 490000004a00000086000000e8050000fe050000af3c0000
+    visualClass:
+    nameFragments:
+    - large door
+    - door
+    matchAny: 0
+    targetHeight: 1.85
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.024
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Bank Booth
+    prefab: {fileID: 853699352841456203, guid: 261c39ef71d54bb4fae427b58cc5def8, type: 3}
+    ids: a5080000a70800008a2c0000
+    visualClass:
+    nameFragments:
+    - bank booth
+    - closed bank booth
+    matchAny: 0
+    targetHeight: 1.32
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.024
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Bank Table
+    prefab: {fileID: 1305612364505707376, guid: 557ddaebdb603124da517a38e1a4754a, type: 3}
+    ids: 4e0200004f020000
+    visualClass:
+    nameFragments:
+    - bank table
+    - counter
+    matchAny: 0
+    targetHeight: 0.86
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.03
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Market Stall
+    prefab: {fileID: 8719631863421958459, guid: 9d333a6c899e9764ab1517ad9114ba68, type: 3}
+    ids: 7a0200007b020000
+    visualClass:
+    nameFragments:
+    - market stall
+    - tea stall
+    - stall
+    matchAny: 0
+    targetHeight: 1.82
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.02
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Hanging Signpost
+    prefab: {fileID: 2940463281175540638, guid: 75601975adae4854896c2fad91fac799, type: 3}
+    ids: c1030000340400003d040000
+    visualClass:
+    nameFragments:
+    - signpost
+    - notice board
+    - sign
+    matchAny: 0
+    targetHeight: 1.42
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.026
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Timber Defence
+    prefab: {fileID: 6109038324554296917, guid: c887d4e214810e94e83d38c287f38735, type: 3}
+    ids: 38030000500300005103000048070000
+    visualClass:
+    nameFragments:
+    - wooden defence
+    - timber defence
+    - spear wall
+    matchAny: 0
+    targetHeight: 1.35
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.026
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Smithing Anvil
+    prefab: {fileID: 7049079199382711353, guid: 1484bea7bfd1e364b94661fcaf29d28b, type: 3}
+    ids: df0a0000
+    visualClass:
+    nameFragments:
+    - anvil
+    matchAny: 0
+    targetHeight: 0.68
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.032
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Stone Furnace
+    prefab: {fileID: 7322929158918977720, guid: 31aa5277ab41c4a42b9c4adb335c1ad3, type: 3}
+    ids:
+    visualClass:
+    nameFragments:
+    - furnace
+    - range
+    - forge
+    matchAny: 0
+    targetHeight: 1.22
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.026
     receiveShadows: 1
     castShadows: 1

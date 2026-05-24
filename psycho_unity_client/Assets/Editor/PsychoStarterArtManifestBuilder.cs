@@ -201,14 +201,17 @@ namespace Psycho.Editor
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "barracks", "KayKit_Barracks", 3.1f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "castle", "KayKit_Castle", 4.4f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "wall_gate", "KayKit_WallGate", 2.7f, false);
+            BuildStaticPrefab(prefabs, BuildingFbxRoot, "wall_gate_closed", "KayKit_WallGateClosed", 2.7f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "wall_straight", "KayKit_Wall", 1.7f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "watchtower", "KayKit_Watchtower", 4.1f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "well", "KayKit_Well", 1.15f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "bridge", "KayKit_Bridge", 0.9f, false);
+            BuildStaticPrefab(prefabs, BuildingFbxRoot, "bridge_roofed", "KayKit_RoofedBridge", 1.45f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "mine", "KayKit_Mine", 2.2f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "lumbermill", "KayKit_Lumbermill", 2.8f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "watermill", "KayKit_Watermill", 3.1f, false);
             BuildStaticPrefab(prefabs, BuildingFbxRoot, "mill", "KayKit_Mill", 3.3f, false);
+            BuildMedievalPropPrefabs(prefabs);
 
             PsychoArtAssetManifest manifest = AssetDatabase.LoadAssetAtPath<PsychoArtAssetManifest>(ManifestPath);
             if (manifest == null)
@@ -427,14 +430,28 @@ namespace Psycho.Editor
             Add(entries, prefabs, "KayKit_Barracks", PsychoArtAssetKind.Object, "Barracks", nameFragments: new[] { "barracks", "guild", "hall" }, targetHeight: 3.1f, markStatic: true, cullHeight: 0.018f);
             Add(entries, prefabs, "KayKit_Castle", PsychoArtAssetKind.Object, "Castle", nameFragments: new[] { "castle", "keep", "fortress" }, targetHeight: 4.4f, markStatic: true, cullHeight: 0.014f);
             Add(entries, prefabs, "KayKit_WallGate", PsychoArtAssetKind.Object, "Wall Gate", nameFragments: new[] { "gate" }, targetHeight: 2.7f, markStatic: true, cullHeight: 0.018f);
+            Add(entries, prefabs, "KayKit_WallGateClosed", PsychoArtAssetKind.Object, "Closed Wall Gate", nameFragments: new[] { "closed gate", "large gate" }, targetHeight: 2.7f, markStatic: true, cullHeight: 0.018f);
             Add(entries, prefabs, "KayKit_Wall", PsychoArtAssetKind.Object, "Wall", nameFragments: new[] { "wall" }, targetHeight: 1.7f, markStatic: true, cullHeight: 0.020f);
             Add(entries, prefabs, "KayKit_Watchtower", PsychoArtAssetKind.Object, "Watchtower", nameFragments: new[] { "watchtower", "tower" }, targetHeight: 4.1f, markStatic: true, cullHeight: 0.014f);
             Add(entries, prefabs, "KayKit_Well", PsychoArtAssetKind.Object, "Well", nameFragments: new[] { "well" }, targetHeight: 1.15f, markStatic: true, cullHeight: 0.024f);
             Add(entries, prefabs, "KayKit_Bridge", PsychoArtAssetKind.Object, "Bridge", nameFragments: new[] { "bridge" }, targetHeight: 0.9f, markStatic: true, cullHeight: 0.020f);
+            Add(entries, prefabs, "KayKit_RoofedBridge", PsychoArtAssetKind.Object, "Roofed Bridge", nameFragments: new[] { "roofed bridge", "covered bridge" }, targetHeight: 1.45f, markStatic: true, cullHeight: 0.018f);
             Add(entries, prefabs, "KayKit_Mine", PsychoArtAssetKind.Object, "Mine", nameFragments: new[] { "mine", "mining" }, targetHeight: 2.2f, markStatic: true, cullHeight: 0.018f);
             Add(entries, prefabs, "KayKit_Lumbermill", PsychoArtAssetKind.Object, "Lumbermill", nameFragments: new[] { "lumber", "sawmill" }, targetHeight: 2.8f, markStatic: true, cullHeight: 0.018f);
             Add(entries, prefabs, "KayKit_Watermill", PsychoArtAssetKind.Object, "Watermill", nameFragments: new[] { "watermill" }, targetHeight: 3.1f, markStatic: true, cullHeight: 0.018f);
             Add(entries, prefabs, "KayKit_Mill", PsychoArtAssetKind.Object, "Mill", nameFragments: new[] { "mill" }, targetHeight: 3.3f, markStatic: true, cullHeight: 0.018f);
+            Add(entries, prefabs, "Starter_Crate", PsychoArtAssetKind.Object, "Supply Crate", ids: new[] { 354, 355, 356, 357, 358, 366 }, nameFragments: new[] { "crate" }, targetHeight: 0.82f, markStatic: true, cullHeight: 0.030f);
+            Add(entries, prefabs, "Starter_Barrel", PsychoArtAssetKind.Object, "Oak Barrel", ids: new[] { 362, 364 }, nameFragments: new[] { "barrel", "cask" }, targetHeight: 0.92f, markStatic: true, cullHeight: 0.030f);
+            Add(entries, prefabs, "Starter_Chest", PsychoArtAssetKind.Object, "Ironbound Chest", ids: new[] { 172, 375 }, nameFragments: new[] { "closed chest", "chest" }, targetHeight: 0.78f, markStatic: true, cullHeight: 0.032f);
+            Add(entries, prefabs, "Starter_Cart", PsychoArtAssetKind.Object, "Wooden Cart", ids: new[] { 306, 307, 327 }, nameFragments: new[] { "cart", "cart wheel" }, targetHeight: 1.05f, markStatic: true, cullHeight: 0.028f);
+            Add(entries, prefabs, "Starter_Door", PsychoArtAssetKind.Object, "Reinforced Door", ids: new[] { 73, 74, 134, 1512, 1534, 15535 }, nameFragments: new[] { "large door", "door" }, targetHeight: 1.85f, markStatic: true, cullHeight: 0.024f);
+            Add(entries, prefabs, "Starter_BankBooth", PsychoArtAssetKind.Object, "Bank Booth", ids: new[] { 2213, 2215, 11402 }, nameFragments: new[] { "bank booth", "closed bank booth" }, targetHeight: 1.32f, markStatic: true, cullHeight: 0.024f);
+            Add(entries, prefabs, "Starter_BankTable", PsychoArtAssetKind.Object, "Bank Table", ids: new[] { 590, 591 }, nameFragments: new[] { "bank table", "counter" }, targetHeight: 0.86f, markStatic: true, cullHeight: 0.030f);
+            Add(entries, prefabs, "Starter_MarketStall", PsychoArtAssetKind.Object, "Market Stall", ids: new[] { 634, 635 }, nameFragments: new[] { "market stall", "tea stall", "stall" }, targetHeight: 1.82f, markStatic: true, cullHeight: 0.020f);
+            Add(entries, prefabs, "Starter_Signpost", PsychoArtAssetKind.Object, "Hanging Signpost", ids: new[] { 961, 1076, 1085 }, nameFragments: new[] { "signpost", "notice board", "sign" }, targetHeight: 1.42f, markStatic: true, cullHeight: 0.026f);
+            Add(entries, prefabs, "Starter_DefenceWall", PsychoArtAssetKind.Object, "Timber Defence", ids: new[] { 824, 848, 849, 1864 }, nameFragments: new[] { "wooden defence", "timber defence", "spear wall" }, targetHeight: 1.35f, markStatic: true, cullHeight: 0.026f);
+            Add(entries, prefabs, "Starter_Anvil", PsychoArtAssetKind.Object, "Smithing Anvil", ids: new[] { 2783 }, nameFragments: new[] { "anvil" }, targetHeight: 0.68f, markStatic: true, cullHeight: 0.032f);
+            Add(entries, prefabs, "Starter_Furnace", PsychoArtAssetKind.Object, "Stone Furnace", nameFragments: new[] { "furnace", "range", "forge" }, targetHeight: 1.22f, markStatic: true, cullHeight: 0.026f);
 
             return entries;
         }
@@ -495,6 +512,234 @@ namespace Psycho.Editor
         {
             string modelPath = $"{root}/{modelName}.fbx";
             GameObject prefab = BuildPrefab(modelPath, prefabName, targetHeight, true, false, foliage);
+            if (prefab != null)
+            {
+                prefabs[prefabName] = prefab;
+            }
+        }
+
+        private static void BuildMedievalPropPrefabs(Dictionary<string, GameObject> prefabs)
+        {
+            Material darkWood = LoadOrCreateStarterMaterial("Starter_Prop_DarkWood", new Color(0.24f, 0.15f, 0.08f), 0.00f, 0.30f);
+            Material warmWood = LoadOrCreateStarterMaterial("Starter_Prop_WarmWood", new Color(0.42f, 0.27f, 0.14f), 0.00f, 0.34f);
+            Material paleWood = LoadOrCreateStarterMaterial("Starter_Prop_PaleWood", new Color(0.58f, 0.42f, 0.25f), 0.00f, 0.32f);
+            Material iron = LoadOrCreateStarterMaterial("Starter_Prop_Iron", new Color(0.25f, 0.26f, 0.27f), 0.36f, 0.50f);
+            Material cloth = LoadOrCreateStarterMaterial("Starter_Prop_MarketCloth", new Color(0.45f, 0.08f, 0.08f), 0.00f, 0.42f);
+            Material glass = LoadOrCreateStarterMaterial("Starter_Prop_BoothGlass", new Color(0.48f, 0.66f, 0.70f), 0.00f, 0.58f);
+            Material stone = LoadOrCreateStarterMaterial("Starter_Prop_Stone", new Color(0.40f, 0.38f, 0.34f), 0.00f, 0.22f);
+            Material ember = LoadOrCreateStarterMaterial("Starter_Prop_Ember", new Color(0.96f, 0.38f, 0.08f), 0.00f, 0.68f);
+            Mesh stakeMesh = LoadOrCreateMeshAsset("Starter_Prop_TaperedStake", CreateTaperedCylinderYMesh(8, 0.08f));
+
+            BuildCratePrefab(prefabs, darkWood, paleWood, iron);
+            BuildBarrelPrefab(prefabs, darkWood, warmWood, iron);
+            BuildChestPrefab(prefabs, darkWood, paleWood, iron);
+            BuildCartPrefab(prefabs, darkWood, warmWood, iron);
+            BuildDoorPrefab(prefabs, darkWood, paleWood, iron);
+            BuildBankBoothPrefab(prefabs, darkWood, paleWood, iron, glass);
+            BuildBankTablePrefab(prefabs, darkWood, paleWood, iron);
+            BuildMarketStallPrefab(prefabs, darkWood, paleWood, cloth);
+            BuildSignpostPrefab(prefabs, darkWood, paleWood, iron);
+            BuildDefenceWallPrefab(prefabs, darkWood, iron, stakeMesh);
+            BuildAnvilPrefab(prefabs, iron);
+            BuildFurnacePrefab(prefabs, stone, iron, ember);
+        }
+
+        private static void BuildCratePrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material paleWood, Material iron)
+        {
+            GameObject root = new GameObject("Starter_Crate");
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Crate Core", paleWood, new Vector3(0f, 0.39f, 0f), Quaternion.identity, new Vector3(0.72f, 0.72f, 0.72f));
+            for (int i = -1; i <= 1; i += 2)
+            {
+                AddPrimitivePart(root.transform, PrimitiveType.Cube, $"Crate Front Plank {i}", darkWood, new Vector3(i * 0.22f, 0.40f, -0.372f), Quaternion.identity, new Vector3(0.045f, 0.78f, 0.045f));
+                AddPrimitivePart(root.transform, PrimitiveType.Cube, $"Crate Back Plank {i}", darkWood, new Vector3(i * 0.22f, 0.40f, 0.372f), Quaternion.identity, new Vector3(0.045f, 0.78f, 0.045f));
+                AddPrimitivePart(root.transform, PrimitiveType.Cube, $"Crate Side Plank {i}", darkWood, new Vector3(-0.372f, 0.40f, i * 0.22f), Quaternion.identity, new Vector3(0.045f, 0.78f, 0.045f));
+                AddPrimitivePart(root.transform, PrimitiveType.Cube, $"Crate Far Side Plank {i}", darkWood, new Vector3(0.372f, 0.40f, i * 0.22f), Quaternion.identity, new Vector3(0.045f, 0.78f, 0.045f));
+            }
+
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Crate Iron Band Front", iron, new Vector3(0f, 0.74f, -0.392f), Quaternion.identity, new Vector3(0.76f, 0.050f, 0.030f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Crate Iron Band Back", iron, new Vector3(0f, 0.74f, 0.392f), Quaternion.identity, new Vector3(0.76f, 0.050f, 0.030f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Crate Top Grain", darkWood, new Vector3(0f, 0.775f, 0f), Quaternion.identity, new Vector3(0.68f, 0.035f, 0.68f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_Crate", root, 0.030f);
+        }
+
+        private static void BuildBarrelPrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material warmWood, Material iron)
+        {
+            GameObject root = new GameObject("Starter_Barrel");
+            AddPrimitivePart(root.transform, PrimitiveType.Cylinder, "Barrel Body", warmWood, new Vector3(0f, 0.46f, 0f), Quaternion.identity, new Vector3(0.34f, 0.46f, 0.34f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cylinder, "Barrel Top Rim", iron, new Vector3(0f, 0.88f, 0f), Quaternion.identity, new Vector3(0.36f, 0.035f, 0.36f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cylinder, "Barrel Lower Rim", iron, new Vector3(0f, 0.16f, 0f), Quaternion.identity, new Vector3(0.36f, 0.035f, 0.36f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cylinder, "Barrel Mid Band", iron, new Vector3(0f, 0.51f, 0f), Quaternion.identity, new Vector3(0.365f, 0.028f, 0.365f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cylinder, "Barrel Lid", darkWood, new Vector3(0f, 0.94f, 0f), Quaternion.identity, new Vector3(0.31f, 0.018f, 0.31f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_Barrel", root, 0.030f);
+        }
+
+        private static void BuildChestPrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material paleWood, Material iron)
+        {
+            GameObject root = new GameObject("Starter_Chest");
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Chest Base", darkWood, new Vector3(0f, 0.30f, 0f), Quaternion.identity, new Vector3(0.86f, 0.42f, 0.52f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Chest Raised Lid", paleWood, new Vector3(0f, 0.57f, 0f), Quaternion.Euler(-5f, 0f, 0f), new Vector3(0.88f, 0.20f, 0.54f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Chest Front Lock Plate", iron, new Vector3(0f, 0.42f, -0.285f), Quaternion.identity, new Vector3(0.16f, 0.18f, 0.030f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Chest Left Band", iron, new Vector3(-0.31f, 0.42f, -0.292f), Quaternion.identity, new Vector3(0.045f, 0.50f, 0.030f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Chest Right Band", iron, new Vector3(0.31f, 0.42f, -0.292f), Quaternion.identity, new Vector3(0.045f, 0.50f, 0.030f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_Chest", root, 0.032f);
+        }
+
+        private static void BuildCartPrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material warmWood, Material iron)
+        {
+            GameObject root = new GameObject("Starter_Cart");
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Cart Bed", warmWood, new Vector3(0f, 0.50f, 0f), Quaternion.identity, new Vector3(1.18f, 0.22f, 0.82f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Cart Front Rail", darkWood, new Vector3(0f, 0.74f, -0.42f), Quaternion.identity, new Vector3(1.22f, 0.25f, 0.055f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Cart Back Rail", darkWood, new Vector3(0f, 0.74f, 0.42f), Quaternion.identity, new Vector3(1.22f, 0.25f, 0.055f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Cart Draw Beam", darkWood, new Vector3(0f, 0.42f, -0.94f), Quaternion.identity, new Vector3(0.16f, 0.16f, 1.08f));
+            for (int i = -1; i <= 1; i += 2)
+            {
+                AddPrimitivePart(root.transform, PrimitiveType.Cylinder, $"Cart Wheel {i}", darkWood, new Vector3(i * 0.68f, 0.34f, 0.18f), Quaternion.Euler(0f, 0f, 90f), new Vector3(0.25f, 0.060f, 0.25f));
+                AddPrimitivePart(root.transform, PrimitiveType.Cylinder, $"Cart Iron Hub {i}", iron, new Vector3(i * 0.69f, 0.34f, 0.18f), Quaternion.Euler(0f, 0f, 90f), new Vector3(0.11f, 0.070f, 0.11f));
+            }
+
+            SaveGeneratedStaticPrefab(prefabs, "Starter_Cart", root, 0.028f);
+        }
+
+        private static void BuildDoorPrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material paleWood, Material iron)
+        {
+            GameObject root = new GameObject("Starter_Door");
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Door Slab", darkWood, new Vector3(0f, 0.92f, 0f), Quaternion.identity, new Vector3(0.92f, 1.76f, 0.12f));
+            for (int i = -1; i <= 1; i++)
+            {
+                AddPrimitivePart(root.transform, PrimitiveType.Cube, $"Door Vertical Plank {i + 2}", paleWood, new Vector3(i * 0.25f, 0.92f, -0.07f), Quaternion.identity, new Vector3(0.055f, 1.70f, 0.035f));
+            }
+
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Door Upper Brace", iron, new Vector3(0f, 1.35f, -0.095f), Quaternion.identity, new Vector3(0.84f, 0.065f, 0.035f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Door Lower Brace", iron, new Vector3(0f, 0.48f, -0.095f), Quaternion.identity, new Vector3(0.84f, 0.065f, 0.035f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Door Diagonal Brace", iron, new Vector3(0f, 0.92f, -0.105f), Quaternion.Euler(0f, 0f, -32f), new Vector3(0.080f, 1.04f, 0.035f));
+            AddPrimitivePart(root.transform, PrimitiveType.Sphere, "Door Ring Pull", iron, new Vector3(0.28f, 0.94f, -0.14f), Quaternion.identity, new Vector3(0.11f, 0.11f, 0.025f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_Door", root, 0.024f);
+        }
+
+        private static void BuildBankBoothPrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material paleWood, Material iron, Material glass)
+        {
+            GameObject root = new GameObject("Starter_BankBooth");
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Bank Booth Counter", darkWood, new Vector3(0f, 0.42f, 0f), Quaternion.identity, new Vector3(1.22f, 0.64f, 0.56f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Bank Booth Stone Kick", iron, new Vector3(0f, 0.13f, -0.31f), Quaternion.identity, new Vector3(1.10f, 0.14f, 0.050f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Bank Booth Desk Top", paleWood, new Vector3(0f, 0.78f, 0f), Quaternion.identity, new Vector3(1.34f, 0.10f, 0.66f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Bank Booth Glass", glass, new Vector3(0f, 1.16f, -0.26f), Quaternion.identity, new Vector3(1.10f, 0.54f, 0.040f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Bank Booth Window Slot", darkWood, new Vector3(0f, 0.92f, -0.31f), Quaternion.identity, new Vector3(0.56f, 0.09f, 0.050f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_BankBooth", root, 0.024f);
+        }
+
+        private static void BuildBankTablePrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material paleWood, Material iron)
+        {
+            GameObject root = new GameObject("Starter_BankTable");
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Bank Table Top", paleWood, new Vector3(0f, 0.58f, 0f), Quaternion.identity, new Vector3(1.20f, 0.12f, 0.72f));
+            for (int x = -1; x <= 1; x += 2)
+            {
+                for (int z = -1; z <= 1; z += 2)
+                {
+                    AddPrimitivePart(root.transform, PrimitiveType.Cube, $"Bank Table Leg {x}.{z}", darkWood, new Vector3(x * 0.46f, 0.28f, z * 0.26f), Quaternion.identity, new Vector3(0.12f, 0.54f, 0.12f));
+                }
+            }
+
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Ledger Cover", darkWood, new Vector3(-0.22f, 0.67f, -0.04f), Quaternion.Euler(0f, 18f, 0f), new Vector3(0.34f, 0.035f, 0.25f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Ledger Pages", iron, new Vector3(-0.22f, 0.70f, -0.04f), Quaternion.Euler(0f, 18f, 0f), new Vector3(0.28f, 0.025f, 0.20f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_BankTable", root, 0.030f);
+        }
+
+        private static void BuildMarketStallPrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material paleWood, Material cloth)
+        {
+            GameObject root = new GameObject("Starter_MarketStall");
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Stall Counter", paleWood, new Vector3(0f, 0.56f, 0f), Quaternion.identity, new Vector3(1.46f, 0.24f, 0.78f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Stall Front Cloth", cloth, new Vector3(0f, 0.44f, -0.42f), Quaternion.identity, new Vector3(1.34f, 0.34f, 0.030f));
+            for (int x = -1; x <= 1; x += 2)
+            {
+                AddPrimitivePart(root.transform, PrimitiveType.Cube, $"Stall Post Front {x}", darkWood, new Vector3(x * 0.66f, 1.02f, -0.34f), Quaternion.identity, new Vector3(0.10f, 1.56f, 0.10f));
+                AddPrimitivePart(root.transform, PrimitiveType.Cube, $"Stall Post Back {x}", darkWood, new Vector3(x * 0.66f, 1.02f, 0.34f), Quaternion.identity, new Vector3(0.10f, 1.56f, 0.10f));
+            }
+
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Stall Canopy", cloth, new Vector3(0f, 1.74f, 0f), Quaternion.Euler(0f, 0f, 2f), new Vector3(1.62f, 0.16f, 1.10f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Stall Rear Beam", darkWood, new Vector3(0f, 1.60f, 0.42f), Quaternion.identity, new Vector3(1.56f, 0.12f, 0.10f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_MarketStall", root, 0.020f);
+        }
+
+        private static void BuildSignpostPrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material paleWood, Material iron)
+        {
+            GameObject root = new GameObject("Starter_Signpost");
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Signpost Upright", darkWood, new Vector3(0f, 0.70f, 0f), Quaternion.identity, new Vector3(0.14f, 1.34f, 0.14f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Signpost Cross Beam", darkWood, new Vector3(0f, 1.22f, 0f), Quaternion.identity, new Vector3(0.92f, 0.10f, 0.12f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Hanging Sign Board", paleWood, new Vector3(0f, 0.98f, -0.08f), Quaternion.identity, new Vector3(0.76f, 0.36f, 0.055f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Left Chain", iron, new Vector3(-0.26f, 1.10f, -0.10f), Quaternion.identity, new Vector3(0.025f, 0.24f, 0.025f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Right Chain", iron, new Vector3(0.26f, 1.10f, -0.10f), Quaternion.identity, new Vector3(0.025f, 0.24f, 0.025f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_Signpost", root, 0.026f);
+        }
+
+        private static void BuildDefenceWallPrefab(Dictionary<string, GameObject> prefabs, Material darkWood, Material iron, Mesh stakeMesh)
+        {
+            GameObject root = new GameObject("Starter_DefenceWall");
+            for (int i = -3; i <= 3; i++)
+            {
+                AddMeshPart(root.transform, $"Sharpened Stake {i + 4}", stakeMesh, darkWood, new Vector3(i * 0.16f, 0.65f, 0f), Quaternion.Euler(0f, 0f, i % 2 == 0 ? -4f : 5f), new Vector3(0.15f, 1.26f, 0.15f));
+            }
+
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Defence Cross Beam Low", iron, new Vector3(0f, 0.42f, -0.06f), Quaternion.identity, new Vector3(1.20f, 0.07f, 0.08f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Defence Cross Beam High", iron, new Vector3(0f, 0.82f, -0.06f), Quaternion.identity, new Vector3(1.14f, 0.07f, 0.08f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_DefenceWall", root, 0.026f);
+        }
+
+        private static void BuildAnvilPrefab(Dictionary<string, GameObject> prefabs, Material iron)
+        {
+            GameObject root = new GameObject("Starter_Anvil");
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Anvil Foot", iron, new Vector3(0f, 0.12f, 0f), Quaternion.identity, new Vector3(0.52f, 0.18f, 0.42f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Anvil Waist", iron, new Vector3(0f, 0.31f, 0f), Quaternion.identity, new Vector3(0.34f, 0.22f, 0.30f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Anvil Face", iron, new Vector3(0f, 0.49f, 0f), Quaternion.identity, new Vector3(0.82f, 0.20f, 0.36f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cylinder, "Anvil Horn", iron, new Vector3(0.48f, 0.49f, 0f), Quaternion.Euler(0f, 0f, 90f), new Vector3(0.18f, 0.20f, 0.18f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_Anvil", root, 0.032f);
+        }
+
+        private static void BuildFurnacePrefab(Dictionary<string, GameObject> prefabs, Material stone, Material iron, Material ember)
+        {
+            GameObject root = new GameObject("Starter_Furnace");
+            AddPrimitivePart(root.transform, PrimitiveType.Cylinder, "Furnace Stone Body", stone, new Vector3(0f, 0.54f, 0f), Quaternion.identity, new Vector3(0.50f, 0.54f, 0.50f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cylinder, "Furnace Iron Rim", iron, new Vector3(0f, 1.05f, 0f), Quaternion.identity, new Vector3(0.52f, 0.045f, 0.52f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cube, "Furnace Fire Mouth", ember, new Vector3(0f, 0.48f, -0.48f), Quaternion.identity, new Vector3(0.42f, 0.30f, 0.055f));
+            AddPrimitivePart(root.transform, PrimitiveType.Cylinder, "Furnace Ember Bed", ember, new Vector3(0f, 1.12f, 0f), Quaternion.identity, new Vector3(0.32f, 0.020f, 0.32f));
+            SaveGeneratedStaticPrefab(prefabs, "Starter_Furnace", root, 0.026f);
+        }
+
+        private static GameObject AddPrimitivePart(Transform root, PrimitiveType primitiveType, string name, Material material, Vector3 localPosition, Quaternion localRotation, Vector3 localScale)
+        {
+            GameObject part = GameObject.CreatePrimitive(primitiveType);
+            part.name = name;
+            part.transform.SetParent(root, false);
+            part.transform.localPosition = localPosition;
+            part.transform.localRotation = localRotation;
+            part.transform.localScale = localScale;
+            MeshRenderer renderer = part.GetComponent<MeshRenderer>();
+            if (renderer != null)
+            {
+                renderer.sharedMaterial = material;
+            }
+
+            RemovePrimitiveCollider(part);
+            return part;
+        }
+
+        private static void RemovePrimitiveCollider(GameObject target)
+        {
+            Collider collider = target.GetComponent<Collider>();
+            if (collider != null)
+            {
+                UnityEngine.Object.DestroyImmediate(collider);
+            }
+        }
+
+        private static void SaveGeneratedStaticPrefab(Dictionary<string, GameObject> prefabs, string prefabName, GameObject root, float cullHeight)
+        {
+            ConfigureRenderers(root);
+            AlignVisualBottomToRootGround(root.transform);
+            AddCullLod(root, cullHeight);
+            AddBoundsCollider(root);
+            string prefabPath = $"{PrefabRoot}/{prefabName}.prefab";
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+            UnityEngine.Object.DestroyImmediate(root);
             if (prefab != null)
             {
                 prefabs[prefabName] = prefab;

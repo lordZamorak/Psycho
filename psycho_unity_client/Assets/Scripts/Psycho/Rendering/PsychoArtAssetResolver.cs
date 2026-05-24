@@ -36,7 +36,15 @@ namespace Psycho.Rendering
         public static bool TryInstantiateObject(PsychoMirrorObject worldObject, Transform parent, out GameObject instance)
         {
             instance = null;
-            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesObject(worldObject), StableHash(worldObject?.id ?? 0, worldObject?.name, worldObject?.visualClass));
+            int seed = StableHash(worldObject?.id ?? 0, worldObject?.name, worldObject?.visualClass);
+            PsychoArtAssetEntry entry = FindEntry(
+                entryCandidate => entryCandidate.kind == PsychoArtAssetKind.Object && worldObject != null && entryCandidate.MatchesExplicitId(worldObject.id),
+                seed);
+            if (entry == null)
+            {
+                entry = FindEntry(entryCandidate => entryCandidate.MatchesObject(worldObject), seed);
+            }
+
             return TryInstantiate(entry, parent, out instance);
         }
 
