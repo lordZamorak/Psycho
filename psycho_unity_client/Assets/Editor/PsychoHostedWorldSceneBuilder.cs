@@ -59,6 +59,7 @@ namespace Psycho.Editor
         private const string TreeBarkMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Bark.mat";
         private const string FrostStoneMaterialPath = GeneratedRoot + "/Psycho_Hosted_Frost_Stone.mat";
         private const string MossMaterialPath = GeneratedRoot + "/Psycho_Hosted_Moss.mat";
+        private const string CliffFaceMaterialPath = GeneratedRoot + "/Psycho_Hosted_Cliff_Face.mat";
         private const string WaterFoamMaterialPath = GeneratedRoot + "/Psycho_Hosted_Water_Foam.mat";
         private const string WaterDepthMaterialPath = GeneratedRoot + "/Psycho_Hosted_Water_Depth.mat";
         private const string PlayerClothMaterialPath = GeneratedRoot + "/Psycho_Hosted_Player_Cloth.mat";
@@ -126,7 +127,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, cliffs {context.Report.cliffDressingObjects}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -1288,6 +1289,7 @@ namespace Psycho.Editor
             BuildWorldLandmarks(context, materials);
             BuildHighlandForestDressing(context, materials);
             BuildRockOutcropDressing(context, materials);
+            BuildHighlandCliffDressing(context, materials);
             BuildDistantVista(context, materials);
             BuildHorizonMist(context, materials);
             BuildCloudLayer(materials.Cloud);
@@ -1607,6 +1609,156 @@ namespace Psycho.Editor
             }
 
             context.Report.landmarkDressingObjects += created;
+        }
+
+        private static void BuildHighlandCliffDressing(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("High Definition Highland Cliff Dressing");
+            Vector2Int[] anchors =
+            {
+                new Vector2Int(3068, 3514),
+                new Vector2Int(3117, 3509),
+                new Vector2Int(3168, 3478),
+                new Vector2Int(3212, 3434),
+                new Vector2Int(3020, 3254),
+                new Vector2Int(2960, 3378),
+                new Vector2Int(3096, 3262)
+            };
+
+            int createdParts = 0;
+            for (int cluster = 0; cluster < anchors.Length; cluster++)
+            {
+                Vector2Int anchor = anchors[cluster];
+                for (int i = 0; i < 9; i++)
+                {
+                    int seed = 8100 + cluster * 947 + i * 151;
+                    float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+                    float radius = 3.0f + Deterministic01(seed + 5) * 15.5f;
+                    int worldX = anchor.x + Mathf.RoundToInt(Mathf.Cos(angle) * radius);
+                    int worldY = anchor.y + Mathf.RoundToInt(Mathf.Sin(angle) * radius);
+                    if (!TryGetNaturalDressingPosition(context, worldX, worldY, seed, out Vector3 position))
+                    {
+                        continue;
+                    }
+
+                    float width = 1.75f + Deterministic01(seed + 11) * 2.35f;
+                    float height = 0.95f + Deterministic01(seed + 17) * 1.15f;
+                    float depth = 0.72f + Deterministic01(seed + 23) * 0.54f;
+                    float yaw = angle * Mathf.Rad2Deg + 90f + (Deterministic01(seed + 29) - 0.5f) * 38f;
+                    createdParts += CreateLayeredDirtCliff(root.transform, position, yaw, width, height, depth, materials.CliffFace, materials.Moss, materials.FrostStone, seed);
+                }
+            }
+
+            context.Report.cliffDressingObjects += createdParts;
+        }
+
+        private static int CreateLayeredDirtCliff(Transform parent, Vector3 position, float yaw, float width, float height, float depth, Material cliffMaterial, Material mossMaterial, Material stoneMaterial, int seed)
+        {
+            GameObject cliff = new GameObject("Layered Highland Dirt Cliff");
+            cliff.isStatic = true;
+            cliff.transform.SetParent(parent, false);
+            cliff.transform.position = position;
+            cliff.transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+
+            int created = 0;
+            int ledges = 2 + Mathf.FloorToInt(Deterministic01(seed + 31) * 2f);
+            float yCursor = 0f;
+            for (int ledge = 0; ledge < ledges; ledge++)
+            {
+                float t = ledge / Mathf.Max(1f, ledges - 1f);
+                float ledgeWidth = width * Mathf.Lerp(1.0f, 0.66f, t) * (0.92f + Deterministic01(seed + ledge * 41) * 0.14f);
+                float ledgeHeight = height * Mathf.Lerp(0.48f, 0.30f, t);
+                float ledgeDepth = depth * Mathf.Lerp(1.0f, 0.70f, t);
+                Vector3 localPosition = new Vector3((Deterministic01(seed + ledge * 43) - 0.5f) * width * 0.12f, yCursor, -ledge * depth * 0.13f);
+
+                Mesh mesh = CreateCliffFaceMesh($"Layered Dirt Cliff Mesh {seed}_{ledge}", ledgeWidth, ledgeHeight, ledgeDepth, seed + ledge * 59);
+                GameObject face = new GameObject($"Stratified Cliff Face {ledge + 1}");
+                face.isStatic = true;
+                face.transform.SetParent(cliff.transform, false);
+                face.transform.localPosition = localPosition;
+                face.AddComponent<MeshFilter>().sharedMesh = mesh;
+                MeshRenderer renderer = face.AddComponent<MeshRenderer>();
+                renderer.sharedMaterial = cliffMaterial;
+                renderer.shadowCastingMode = ShadowCastingMode.On;
+                renderer.receiveShadows = true;
+
+                MeshCollider collider = face.AddComponent<MeshCollider>();
+                collider.sharedMesh = mesh;
+                created++;
+
+                GameObject mossCap = CreateLandmarkDetailBox(
+                    cliff.transform,
+                    $"Mossy Cliff Shelf {ledge + 1}",
+                    localPosition + new Vector3(0f, ledgeHeight + 0.025f, -ledgeDepth * 0.22f),
+                    new Vector3(ledgeWidth * 0.82f, 0.035f, ledgeDepth * 0.38f),
+                    mossMaterial);
+                mossCap.transform.localRotation = Quaternion.Euler(0f, (Deterministic01(seed + ledge * 67) - 0.5f) * 7f, 0f);
+                created++;
+
+                yCursor += ledgeHeight * 0.74f;
+            }
+
+            int footRocks = 2 + Mathf.FloorToInt(Deterministic01(seed + 101) * 2f);
+            for (int i = 0; i < footRocks; i++)
+            {
+                float x = (i - (footRocks - 1) * 0.5f) * width * 0.28f + (Deterministic01(seed + i * 19) - 0.5f) * width * 0.16f;
+                float z = -depth * (0.46f + Deterministic01(seed + i * 23) * 0.18f);
+                Vector3 rockPosition = cliff.transform.TransformPoint(new Vector3(x, 0.015f, z));
+                CreateHighlandRockOutcrop(parent, rockPosition, width * (0.16f + Deterministic01(seed + i * 29) * 0.09f), stoneMaterial, mossMaterial, seed + i * 127);
+                created++;
+            }
+
+            return created;
+        }
+
+        private static Mesh CreateCliffFaceMesh(string name, float width, float height, float depth, int seed)
+        {
+            const int horizontalSegments = 9;
+            const int verticalSegments = 4;
+            int stride = horizontalSegments + 1;
+            Mesh mesh = new Mesh { name = name };
+            Vector3[] vertices = new Vector3[(horizontalSegments + 1) * (verticalSegments + 1)];
+            Vector2[] uv = new Vector2[vertices.Length];
+            List<int> triangles = new List<int>(horizontalSegments * verticalSegments * 6);
+
+            for (int y = 0; y <= verticalSegments; y++)
+            {
+                float v = (float)y / verticalSegments;
+                float shelfInset = Mathf.Lerp(0f, depth * 0.28f, v);
+                float rowWidth = width * Mathf.Lerp(1.0f, 0.78f, v);
+                for (int x = 0; x <= horizontalSegments; x++)
+                {
+                    float u = (float)x / horizontalSegments;
+                    float centeredX = (u - 0.5f) * rowWidth;
+                    float fracture = Mathf.Sin((u * 6.7f + v * 2.1f + seed * 0.003f) * Mathf.PI) * depth * 0.045f;
+                    float chip = (Deterministic01(seed + x * 37 + y * 83) - 0.5f) * depth * 0.095f;
+                    float ledge = Mathf.Sin(v * Mathf.PI * 5f) * depth * 0.055f;
+                    vertices[y * stride + x] = new Vector3(centeredX, v * height, -shelfInset + fracture + chip + ledge);
+                    uv[y * stride + x] = new Vector2(u * Mathf.Max(1.0f, width * 0.72f), v * Mathf.Max(1.0f, height * 1.8f));
+                }
+            }
+
+            for (int y = 0; y < verticalSegments; y++)
+            {
+                for (int x = 0; x < horizontalSegments; x++)
+                {
+                    int i = y * stride + x;
+                    triangles.Add(i);
+                    triangles.Add(i + stride);
+                    triangles.Add(i + 1);
+                    triangles.Add(i + 1);
+                    triangles.Add(i + stride);
+                    triangles.Add(i + stride + 1);
+                }
+            }
+
+            mesh.vertices = vertices;
+            mesh.uv = uv;
+            mesh.triangles = triangles.ToArray();
+            mesh.RecalculateNormals();
+            mesh.RecalculateTangents();
+            mesh.RecalculateBounds();
+            return mesh;
         }
 
         private static void BuildHorizonMist(HostedBuildContext context, HostedMaterials materials)
@@ -3463,6 +3615,7 @@ namespace Psycho.Editor
                 TreeBark = LoadOrCreateTexturedMaterial(TreeBarkMaterialPath, "Wood", new Color(0.20f, 0.15f, 0.11f, 1f), 0.18f, new Vector2(3.2f, 5.6f), 0.92f),
                 FrostStone = LoadOrCreateTexturedMaterial(FrostStoneMaterialPath, "Stone", new Color(0.48f, 0.50f, 0.49f, 1f), 0.36f, new Vector2(3.6f, 3.6f), 1.02f),
                 Moss = LoadOrCreateTexturedMaterial(MossMaterialPath, "Organic", new Color(0.22f, 0.30f, 0.17f, 1f), 0.18f, new Vector2(7.2f, 7.2f), 0.72f),
+                CliffFace = LoadOrCreateTexturedMaterial(CliffFaceMaterialPath, "Stone", new Color(0.36f, 0.31f, 0.25f, 1f), 0.44f, new Vector2(4.6f, 3.2f), 1.18f),
                 WaterFoam = LoadOrCreateSolidMaterial(WaterFoamMaterialPath, new Color(0.76f, 0.88f, 0.90f, 0.30f), 0.30f),
                 WaterDepth = LoadOrCreateSolidMaterial(WaterDepthMaterialPath, new Color(0.01f, 0.07f, 0.12f, 0.36f), 0.60f),
                 PlayerCloth = LoadOrCreateTexturedMaterial(PlayerClothMaterialPath, "Cloth", new Color(0.28f, 0.42f, 0.56f, 1f), 0.34f, new Vector2(2.5f, 2.5f), 0.52f),
@@ -3484,6 +3637,7 @@ namespace Psycho.Editor
             ConfigureTransparent(materials.WaterFoam);
             ConfigureTransparent(materials.WaterDepth);
             ConfigureTransparent(materials.LandmarkGlass);
+            ConfigureDoubleSided(materials.CliffFace);
             return materials;
         }
 
@@ -3596,6 +3750,17 @@ namespace Psycho.Editor
             material.EnableKeyword("_ALPHABLEND_ON");
             material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
             material.renderQueue = (int)RenderQueue.Transparent;
+        }
+
+        private static void ConfigureDoubleSided(Material material)
+        {
+            if (material == null)
+            {
+                return;
+            }
+
+            material.SetInt("_Cull", (int)CullMode.Off);
+            EditorUtility.SetDirty(material);
         }
 
         private static void AddWind(GameObject target, float amplitude, float speed, float gustStrength, float spatialFrequency = 1.4f, float turbulence = 0.045f)
@@ -3735,6 +3900,7 @@ namespace Psycho.Editor
             public Material TreeBark;
             public Material FrostStone;
             public Material Moss;
+            public Material CliffFace;
             public Material WaterFoam;
             public Material WaterDepth;
             public Material PlayerCloth;
@@ -3849,6 +4015,7 @@ namespace Psycho.Editor
             public int terrainCollisionSamples;
             public int terrainCollisionMisses;
             public int enhancedFoliageObjects;
+            public int cliffDressingObjects;
             public int waterFoamEdges;
             public int waterDepthChannels;
             public int horizonMistPanels;

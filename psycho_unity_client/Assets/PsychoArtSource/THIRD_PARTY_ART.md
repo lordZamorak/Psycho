@@ -33,3 +33,7 @@ This folder contains the first legally safe starter-art pass for Psycho's Unity 
 The Skyrim screenshots are only mood and quality references: rugged medieval fantasy, readable silhouettes, grounded materials, strong lighting, and cinematic composition. Do not copy Skyrim assets, textures, characters, names, or distinctive designs.
 
 The next production step is to replace these starter packs with a cohesive original/licensed art set as budget allows. Keep every imported pack documented here before it is assigned in the manifest.
+
+## Reviewed But Not Imported
+
+See `MOD_ASSET_TRIAGE.md` for Nexus/mod archives that were inspected but not copied into the Unity project. These may be used as art direction only until they pass the legal and technical intake checklist.

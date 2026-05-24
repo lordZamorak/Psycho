@@ -121,10 +121,16 @@ Shader "Psycho/Vertex Color Lit"
             return saturate(value);
         }
 
+        float3 SafeNormalize(float3 value, float3 fallback)
+        {
+            float lengthSquared = dot(value, value);
+            return lengthSquared > 0.000001 ? value * rsqrt(lengthSquared) : fallback;
+        }
+
         void surf(Input input, inout SurfaceOutputStandard output)
         {
             fixed4 color = input.color * _Tint;
-            float3 normal = normalize(input.worldNormal);
+            float3 normal = SafeNormalize(input.worldNormal, float3(0.0, 1.0, 0.0));
             float2 noiseCoord = input.worldPos.xz * _NoiseScale;
             float broadNoise = sin(noiseCoord.x * 1.7 + noiseCoord.y * 1.1) * 0.5 + 0.5;
             float fineNoise = sin(noiseCoord.x * 4.1 - noiseCoord.y * 3.3) * 0.5 + 0.5;
@@ -132,7 +138,7 @@ Shader "Psycho/Vertex Color Lit"
             float microFbm = Fbm(input.worldPos.xz * (_NoiseScale * 5.6));
             float detail = ((broadNoise * 0.42 + fineNoise * 0.14 + microFbm * 0.44) * 2.0 - 1.0) * _NoiseStrength;
             float slope = 1.0 - saturate(normal.y);
-            float sunFacing = saturate(dot(normal, normalize(float3(0.36, 0.82, 0.24))));
+            float sunFacing = saturate(dot(normal, SafeNormalize(float3(0.36, 0.82, 0.24), float3(0.0, 1.0, 0.0))));
             float topLight = saturate(normal.y);
             float blendNoise = (sin(input.worldPos.x * _BlendNoiseScale + input.worldPos.z * (_BlendNoiseScale * 0.61)) * 0.5 + 0.5) * 0.65
                 + (sin(input.worldPos.x * (_BlendNoiseScale * 3.7) - input.worldPos.z * (_BlendNoiseScale * 2.9)) * 0.5 + 0.5) * 0.20
@@ -169,12 +175,12 @@ Shader "Psycho/Vertex Color Lit"
             float3 grassNormal = UnpackNormal(tex2D(_GrassNormalMap, terrainUv * 1.05 + float2(0.031, -0.017)));
             float3 pathNormal = UnpackNormal(tex2D(_PathNormalMap, terrainUv * 0.88 + float2(-0.047, 0.019)));
             float3 rockNormal = UnpackNormal(tex2D(_RockNormalMap, terrainUv * 0.64 + float2(0.071, 0.043)));
-            float3 splatNormal = normalize(grassNormal * grassMask + pathNormal * pathMask + rockNormal * rockSplatMask);
+            float3 splatNormal = SafeNormalize(grassNormal * grassMask + pathNormal * pathMask + rockNormal * rockSplatMask, float3(0.0, 0.0, 1.0));
 
             groundBlend = lerp(groundBlend, grassDetail, greenDominance * flatMask);
             groundBlend = lerp(groundBlend, pathDetail, pathWarmth * flatMask * (1.0 - greenDominance * 0.42));
             groundBlend = lerp(groundBlend, rockDetail, rockMask * lerp(0.30, 1.0, slope));
-            float rim = pow(1.0 - saturate(dot(normalize(input.viewDir), normal)), 2.2) * _RimStrength;
+            float rim = pow(1.0 - saturate(dot(SafeNormalize(input.viewDir, normal), normal)), 2.2) * _RimStrength;
             float viewDistance = length((_WorldSpaceCameraPos.xyz - input.worldPos).xz);
             float distanceFade = saturate((viewDistance - _DistanceStart) / max(1.0, _DistanceEnd - _DistanceStart)) * _DistanceBlend;
 
@@ -191,7 +197,7 @@ Shader "Psycho/Vertex Color Lit"
             output.Metallic = 0;
             output.Smoothness = saturate(_Smoothness + sunFacing * _SpecularLift);
             output.Occlusion = lerp(1.0, 0.84, slope * _SlopeDarkening);
-            output.Normal = normalize(lerp(float3(0.0, 0.0, 1.0), splatNormal, _TerrainNormalStrength * _GroundBlendStrength));
+            output.Normal = SafeNormalize(lerp(float3(0.0, 0.0, 1.0), splatNormal, _TerrainNormalStrength * _GroundBlendStrength), float3(0.0, 0.0, 1.0));
             output.Alpha = color.a;
         }
         ENDCG
