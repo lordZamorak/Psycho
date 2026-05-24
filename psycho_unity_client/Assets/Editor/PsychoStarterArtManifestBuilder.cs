@@ -1450,8 +1450,8 @@ namespace Psycho.Editor
             GameObject proxyRoot = new GameObject("Foliage LOD Proxy");
             proxyRoot.transform.SetParent(root, false);
 
-            Material leaf = LoadOrCreateStarterMaterial("Foliage_LOD_Leaf", new Color(0.15f, 0.31f, 0.17f), 0f, 0.24f);
-            Material bark = LoadOrCreateStarterMaterial("Foliage_LOD_Bark", new Color(0.23f, 0.16f, 0.10f), 0f, 0.28f);
+            Material leaf = LoadOrCreateStarterMaterial("Foliage_LOD_Leaf", new Color(0.22f, 0.40f, 0.20f), 0f, 0.20f);
+            Material bark = LoadOrCreateStarterMaterial("Foliage_LOD_Bark", new Color(0.27f, 0.19f, 0.12f), 0f, 0.24f);
             Material flower = LoadOrCreateStarterMaterial("Foliage_LOD_Flower", new Color(0.70f, 0.64f, 0.38f), 0f, 0.36f);
             Mesh trunkMesh = LoadOrCreateMeshAsset("Foliage_LOD_Trunk_8", CreateTaperedCylinderYMesh(8, 0.62f));
             Mesh ellipsoidMesh = LoadOrCreateMeshAsset("Foliage_LOD_Ellipsoid_10x5", CreateEllipsoidMesh(10, 5));
