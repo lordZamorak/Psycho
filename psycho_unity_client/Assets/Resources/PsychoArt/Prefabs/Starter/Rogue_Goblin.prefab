@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3936102384448292486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7081977998244249430}
+  m_Layer: 0
+  m_Name: Humanoid Presentation Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7081977998244249430
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936102384448292486}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.05256045, z: 0}
+  m_LocalScale: {x: 0.43010873, y: 0.43010873, z: 0.43010873}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3054176492040541332}
+  m_Father: {fileID: 404282342469933871}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7406372919414489211
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,7 +63,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3054176492040541332}
+  - {fileID: 7081977998244249430}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &2328014035855658436
@@ -90,31 +122,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 404282342469933871}
+    m_TransformParent: {fileID: 7081977998244249430}
     m_Modifications:
     - target: {fileID: -8739811960770352944, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value:
       objectReference: {fileID: 2100000, guid: 1b4f7b6f4356b804c8712841596fcd3f, type: 2}
     - target: {fileID: -8679921383154817045, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.43010873
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.43010873
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.43010873
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.05256045
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
       propertyPath: m_LocalPosition.z
@@ -183,7 +203,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7237134357099852455}
   m_SourcePrefab: {fileID: 100100000, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
 --- !u!23 &377082027790375407 stripped
 MeshRenderer:
@@ -205,6 +228,32 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -5039517470286371990, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
   m_PrefabInstance: {fileID: 3307933693537006463}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2389526817256803886 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}
+  m_PrefabInstance: {fileID: 3307933693537006463}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7237134357099852455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2389526817256803886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46ee9e541cd9a564aa36aae60fffafa9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::Psycho.Rendering.PsychoHumanoidPresentationRig
+  motionSource: {fileID: 0}
+  idleBreathAmplitude: 0.006
+  idleBreathFrequency: 0.92
+  gaitBobAmplitude: 0.018
+  gaitRollDegrees: 1.55
+  gaitPitchDegrees: 0.85
+  turnLeanDegrees: 1.15
+  strideCyclesPerMeter: 1.68
+  motionSmoothing: 8.5
 --- !u!4 &3054176492040541332 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4e72d24f4ad4c7c4ca4276daf79cd0ef, type: 3}

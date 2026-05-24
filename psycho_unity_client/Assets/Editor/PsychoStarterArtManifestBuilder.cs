@@ -974,6 +974,14 @@ namespace Psycho.Editor
 
             string prefabPath = $"{PrefabRoot}/{prefabName}.prefab";
             GameObject root = new GameObject(prefabName);
+            Transform modelParent = root.transform;
+            if (humanoid)
+            {
+                GameObject presentationRoot = new GameObject("Humanoid Presentation Root");
+                presentationRoot.transform.SetParent(root.transform, false);
+                modelParent = presentationRoot.transform;
+            }
+
             GameObject model = PrefabUtility.InstantiatePrefab(modelAsset) as GameObject;
             if (model == null)
             {
@@ -983,7 +991,7 @@ namespace Psycho.Editor
             }
 
             model.name = "Model";
-            model.transform.SetParent(root.transform, false);
+            model.transform.SetParent(modelParent, false);
             NormalizeHeight(root.transform, targetHeight);
             AlignVisualBottomToRootGround(root.transform);
             if (overrideMaterial != null)
@@ -1001,6 +1009,9 @@ namespace Psycho.Editor
 
             if (humanoid)
             {
+                PsychoHumanoidPresentationRig presentationRig = model.AddComponent<PsychoHumanoidPresentationRig>();
+                presentationRig.Configure(null, 0.006f, 0.018f, 1.55f, 0.85f, 1.15f);
+
                 CapsuleCollider collider = root.AddComponent<CapsuleCollider>();
                 collider.center = new Vector3(0f, targetHeight * 0.5f, 0f);
                 collider.height = targetHeight;

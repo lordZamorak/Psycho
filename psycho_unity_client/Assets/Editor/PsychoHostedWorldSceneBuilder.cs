@@ -2789,6 +2789,9 @@ namespace Psycho.Editor
             CreatePsychoRuneblade(overlay.transform, materials, heroBlade);
             CreatePsychoRuneKiteShield(overlay.transform, materials, heroShield);
             CreatePlayerNameplate(overlay.transform, playerSave);
+
+            PsychoHumanoidPresentationRig overlayRig = overlay.AddComponent<PsychoHumanoidPresentationRig>();
+            overlayRig.Configure(parent, 0.0035f, 0.010f, 0.80f, 0.40f, 0.65f);
         }
 
         private static PsychoMirrorItem CreateHostedHeroItem(string name, string visualClass, string materialClass)
