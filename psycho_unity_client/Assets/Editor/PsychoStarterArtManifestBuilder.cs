@@ -89,7 +89,7 @@ namespace Psycho.Editor
         {
             List<PsychoArtAssetEntry> entries = new List<PsychoArtAssetEntry>();
 
-            Add(entries, prefabs, "Warrior_Player", PsychoArtAssetKind.Player, "Psycho Warrior Player", targetHeight: 1.85f, matchAny: true, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Warrior_Player", PsychoArtAssetKind.Player, "Psycho Warrior Player", targetHeight: 1.85f, matchAny: true);
 
             Add(entries, prefabs, "Monk_Citizen", PsychoArtAssetKind.Npc, "Citizen Monk", visualClass: "Citizen", targetHeight: 1.72f, localEuler: new Vector3(0f, 180f, 0f));
             Add(entries, prefabs, "Ranger_Citizen", PsychoArtAssetKind.Npc, "Citizen Ranger", visualClass: "Citizen", targetHeight: 1.72f, localEuler: new Vector3(0f, 180f, 0f));

@@ -2315,7 +2315,7 @@ namespace Psycho.Editor
             if (PsychoArtAssetResolver.TryInstantiatePlayer(PlayerDisplayName(playerSave), parent, out GameObject artPlayer))
             {
                 artPlayer.name = "Psycho Hero Art Prefab";
-                CreatePlayerNameplate(artPlayer.transform, playerSave, 180f);
+                CreatePlayerNameplate(artPlayer.transform, playerSave);
                 Debug.Log($"Hosted player visual uses art-pipeline prefab for {PlayerDisplayName(playerSave)}.");
                 return;
             }
