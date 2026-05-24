@@ -23,10 +23,28 @@ namespace Psycho.Rendering
         private Vector3 crossWind;
         private float smoothedGust = 1f;
         private float gustVelocity;
+        private Renderer attachedRenderer;
+
+        public void Configure(float amplitude, float speed, float spatialFrequency, float gustStrength, float turbulence, Vector2 windDirection)
+        {
+            this.amplitude = Mathf.Max(0f, amplitude);
+            this.speed = Mathf.Max(0.01f, speed);
+            this.spatialFrequency = Mathf.Max(0.01f, spatialFrequency);
+            this.gustStrength = Mathf.Max(0f, gustStrength);
+            this.turbulence = Mathf.Max(0f, turbulence);
+            this.windDirection = windDirection.sqrMagnitude <= 0.001f ? new Vector2(1f, 0.35f) : windDirection;
+        }
 
         private void Awake()
         {
             MeshFilter filter = GetComponent<MeshFilter>();
+            attachedRenderer = GetComponent<Renderer>();
+            if (filter.sharedMesh == null)
+            {
+                enabled = false;
+                return;
+            }
+
             mesh = Instantiate(filter.sharedMesh);
             mesh.MarkDynamic();
             filter.sharedMesh = mesh;
@@ -51,6 +69,11 @@ namespace Psycho.Rendering
 
         private void Update()
         {
+            if (attachedRenderer != null && !attachedRenderer.isVisible)
+            {
+                return;
+            }
+
             float clock = Time.timeSinceLevelLoad;
             float time = clock * speed + phase;
             float targetGust = 1f + (Mathf.PerlinNoise(clock * gustScale, phase * 0.17f) - 0.5f) * gustStrength;

@@ -526,7 +526,7 @@ MonoBehaviour:
     localPosition: {x: 0, y: 0, z: 0}
     localEuler: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
-    markStatic: 1
+    markStatic: 0
     ensureCullLod: 1
     cullScreenRelativeHeight: 0.012
     receiveShadows: 1
@@ -542,7 +542,7 @@ MonoBehaviour:
     localPosition: {x: 0, y: 0, z: 0}
     localEuler: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
-    markStatic: 1
+    markStatic: 0
     ensureCullLod: 1
     cullScreenRelativeHeight: 0.012
     receiveShadows: 1
@@ -558,7 +558,7 @@ MonoBehaviour:
     localPosition: {x: 0, y: 0, z: 0}
     localEuler: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
-    markStatic: 1
+    markStatic: 0
     ensureCullLod: 1
     cullScreenRelativeHeight: 0.012
     receiveShadows: 1
@@ -577,7 +577,7 @@ MonoBehaviour:
     localPosition: {x: 0, y: 0, z: 0}
     localEuler: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
-    markStatic: 1
+    markStatic: 0
     ensureCullLod: 1
     cullScreenRelativeHeight: 0.01
     receiveShadows: 1
@@ -596,7 +596,26 @@ MonoBehaviour:
     localPosition: {x: 0, y: 0, z: 0}
     localEuler: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
-    markStatic: 1
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.01
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Pine Tree C
+    prefab: {fileID: 3710071458379400107, guid: 9a84d969bc8b66c468c4bf0c3780a275, type: 3}
+    ids:
+    visualClass: Tree
+    nameFragments:
+    - pine
+    - conifer
+    - evergreen
+    matchAny: 0
+    targetHeight: 4
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
     ensureCullLod: 1
     cullScreenRelativeHeight: 0.01
     receiveShadows: 1
@@ -615,7 +634,7 @@ MonoBehaviour:
     localPosition: {x: 0, y: 0, z: 0}
     localEuler: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
-    markStatic: 1
+    markStatic: 0
     ensureCullLod: 1
     cullScreenRelativeHeight: 0.01
     receiveShadows: 1
@@ -634,9 +653,92 @@ MonoBehaviour:
     localPosition: {x: 0, y: 0, z: 0}
     localEuler: {x: 0, y: 0, z: 0}
     localScale: {x: 1, y: 1, z: 1}
-    markStatic: 1
+    markStatic: 0
     ensureCullLod: 1
     cullScreenRelativeHeight: 0.01
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Common Bush
+    prefab: {fileID: 3005477847815666924, guid: 96ec67b3eae49964c8c752fb25876812, type: 3}
+    ids:
+    visualClass:
+    nameFragments:
+    - bush
+    - shrub
+    - bramble
+    - fern
+    - plant
+    matchAny: 0
+    targetHeight: 0.74
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Flowering Bush
+    prefab: {fileID: 9100477709948704278, guid: f730a74a6d53bd14a99dceaa41fa1408, type: 3}
+    ids:
+    visualClass:
+    nameFragments:
+    - flower
+    - flowers
+    - flowering
+    - rose
+    - heather
+    matchAny: 0
+    targetHeight: 0.78
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Tall Grass
+    prefab: {fileID: 4294864392417303830, guid: 008d0c19da5a5dd40b3ff5e6bf19debf, type: 3}
+    ids:
+    visualClass:
+    nameFragments:
+    - grass
+    - reeds
+    - reed
+    - weeds
+    matchAny: 0
+    targetHeight: 0.58
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.022
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Wispy Grass
+    prefab: {fileID: 48724494053053137, guid: 22a79e074fcf77448a5144f9f47e0413, type: 3}
+    ids:
+    visualClass:
+    nameFragments:
+    - grass
+    - reed
+    - reeds
+    - rush
+    - rushes
+    matchAny: 0
+    targetHeight: 0.64
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.022
     receiveShadows: 1
     castShadows: 1
   - kind: 2

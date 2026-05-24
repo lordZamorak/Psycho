@@ -188,6 +188,10 @@ namespace Psycho.Editor
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "Pine_3", "Pine_3", 4.0f, true);
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "TwistedTree_1", "TwistedTree_1", 3.8f, true);
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "DeadTree_1", "DeadTree_1", 3.3f, true);
+            BuildStaticPrefab(prefabs, FoliageFbxRoot, "Bush_Common", "Bush_Common", 0.74f, true);
+            BuildStaticPrefab(prefabs, FoliageFbxRoot, "Bush_Common_Flowers", "Bush_Common_Flowers", 0.78f, true);
+            BuildStaticPrefab(prefabs, FoliageFbxRoot, "Grass_Common_Tall", "Grass_Common_Tall", 0.58f, true);
+            BuildStaticPrefab(prefabs, FoliageFbxRoot, "Grass_Wispy_Tall", "Grass_Wispy_Tall", 0.64f, true);
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "Rock_Medium_1", "Rock_Medium_1", 0.75f, false);
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "Rock_Medium_2", "Rock_Medium_2", 0.68f, false);
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "Rock_Medium_3", "Rock_Medium_3", 0.82f, false);
@@ -401,13 +405,18 @@ namespace Psycho.Editor
             Add(entries, prefabs, "Starter_Ram", PsychoArtAssetKind.Npc, "Ram", ids: RamNpcIds, targetHeight: 0.62f, cullHeight: 0.036f);
             Add(entries, prefabs, "Starter_Imp", PsychoArtAssetKind.Npc, "Imp", ids: ImpNpcIds, targetHeight: 0.62f, cullHeight: 0.034f);
 
-            Add(entries, prefabs, "CommonTree_1", PsychoArtAssetKind.Object, "Common Tree A", visualClass: "Tree", targetHeight: 3.4f, markStatic: true, cullHeight: 0.012f);
-            Add(entries, prefabs, "CommonTree_2", PsychoArtAssetKind.Object, "Common Tree B", visualClass: "Tree", targetHeight: 3.7f, markStatic: true, cullHeight: 0.012f);
-            Add(entries, prefabs, "CommonTree_3", PsychoArtAssetKind.Object, "Common Tree C", visualClass: "Tree", targetHeight: 3.2f, markStatic: true, cullHeight: 0.012f);
-            Add(entries, prefabs, "Pine_1", PsychoArtAssetKind.Object, "Pine Tree A", visualClass: "Tree", nameFragments: new[] { "pine", "conifer", "evergreen" }, targetHeight: 4.2f, markStatic: true, cullHeight: 0.010f);
-            Add(entries, prefabs, "Pine_2", PsychoArtAssetKind.Object, "Pine Tree B", visualClass: "Tree", nameFragments: new[] { "pine", "conifer", "evergreen" }, targetHeight: 4.5f, markStatic: true, cullHeight: 0.010f);
-            Add(entries, prefabs, "TwistedTree_1", PsychoArtAssetKind.Object, "Twisted Tree", visualClass: "Tree", nameFragments: new[] { "dead tree", "dying tree", "twisted tree" }, targetHeight: 3.8f, markStatic: true, cullHeight: 0.010f);
-            Add(entries, prefabs, "DeadTree_1", PsychoArtAssetKind.Object, "Dead Tree", visualClass: "Tree", nameFragments: new[] { "dead tree", "burnt tree", "hollow tree" }, targetHeight: 3.3f, markStatic: true, cullHeight: 0.010f);
+            Add(entries, prefabs, "CommonTree_1", PsychoArtAssetKind.Object, "Common Tree A", visualClass: "Tree", targetHeight: 3.4f, cullHeight: 0.012f);
+            Add(entries, prefabs, "CommonTree_2", PsychoArtAssetKind.Object, "Common Tree B", visualClass: "Tree", targetHeight: 3.7f, cullHeight: 0.012f);
+            Add(entries, prefabs, "CommonTree_3", PsychoArtAssetKind.Object, "Common Tree C", visualClass: "Tree", targetHeight: 3.2f, cullHeight: 0.012f);
+            Add(entries, prefabs, "Pine_1", PsychoArtAssetKind.Object, "Pine Tree A", visualClass: "Tree", nameFragments: new[] { "pine", "conifer", "evergreen" }, targetHeight: 4.2f, cullHeight: 0.010f);
+            Add(entries, prefabs, "Pine_2", PsychoArtAssetKind.Object, "Pine Tree B", visualClass: "Tree", nameFragments: new[] { "pine", "conifer", "evergreen" }, targetHeight: 4.5f, cullHeight: 0.010f);
+            Add(entries, prefabs, "Pine_3", PsychoArtAssetKind.Object, "Pine Tree C", visualClass: "Tree", nameFragments: new[] { "pine", "conifer", "evergreen" }, targetHeight: 4.0f, cullHeight: 0.010f);
+            Add(entries, prefabs, "TwistedTree_1", PsychoArtAssetKind.Object, "Twisted Tree", visualClass: "Tree", nameFragments: new[] { "dead tree", "dying tree", "twisted tree" }, targetHeight: 3.8f, cullHeight: 0.010f);
+            Add(entries, prefabs, "DeadTree_1", PsychoArtAssetKind.Object, "Dead Tree", visualClass: "Tree", nameFragments: new[] { "dead tree", "burnt tree", "hollow tree" }, targetHeight: 3.3f, cullHeight: 0.010f);
+            Add(entries, prefabs, "Bush_Common", PsychoArtAssetKind.Object, "Common Bush", nameFragments: new[] { "bush", "shrub", "bramble", "fern", "plant" }, targetHeight: 0.74f, cullHeight: 0.018f);
+            Add(entries, prefabs, "Bush_Common_Flowers", PsychoArtAssetKind.Object, "Flowering Bush", nameFragments: new[] { "flower", "flowers", "flowering", "rose", "heather" }, targetHeight: 0.78f, cullHeight: 0.018f);
+            Add(entries, prefabs, "Grass_Common_Tall", PsychoArtAssetKind.Object, "Tall Grass", nameFragments: new[] { "grass", "reeds", "reed", "weeds" }, targetHeight: 0.58f, cullHeight: 0.022f);
+            Add(entries, prefabs, "Grass_Wispy_Tall", PsychoArtAssetKind.Object, "Wispy Grass", nameFragments: new[] { "grass", "reed", "reeds", "rush", "rushes" }, targetHeight: 0.64f, cullHeight: 0.022f);
 
             Add(entries, prefabs, "Rock_Medium_1", PsychoArtAssetKind.Object, "Rock A", visualClass: "Rock", targetHeight: 0.75f, markStatic: true, cullHeight: 0.020f);
             Add(entries, prefabs, "Rock_Medium_2", PsychoArtAssetKind.Object, "Rock B", visualClass: "Rock", targetHeight: 0.68f, markStatic: true, cullHeight: 0.020f);
@@ -1000,7 +1009,14 @@ namespace Psycho.Editor
             }
 
             ConfigureRenderers(root);
-            AddCullLod(root, foliage ? 0.010f : 0.018f);
+            if (foliage)
+            {
+                ConfigureFoliagePresentation(root, prefabName, targetHeight, 0.010f);
+            }
+            else
+            {
+                AddCullLod(root, 0.018f);
+            }
 
             if (addCollider)
             {
@@ -1016,11 +1032,6 @@ namespace Psycho.Editor
                 collider.center = new Vector3(0f, targetHeight * 0.5f, 0f);
                 collider.height = targetHeight;
                 collider.radius = 0.32f;
-            }
-
-            if (foliage)
-            {
-                MarkStatic(root);
             }
 
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
@@ -1136,6 +1147,173 @@ namespace Psycho.Editor
 
                 renderer.sharedMaterials = replacement;
             }
+        }
+
+        private static void ConfigureFoliagePresentation(GameObject root, string prefabName, float targetHeight, float cullHeight)
+        {
+            Renderer[] highRenderers = root.GetComponentsInChildren<Renderer>(true);
+            AddFoliageWind(root, prefabName, targetHeight);
+            Renderer[] lowRenderers = CreateFoliageLodProxy(root.transform, prefabName, targetHeight);
+            AddFoliageLods(root, highRenderers, lowRenderers, cullHeight);
+        }
+
+        private static void AddFoliageWind(GameObject root, string prefabName, float targetHeight)
+        {
+            MeshFilter[] filters = root.GetComponentsInChildren<MeshFilter>(true);
+            bool grassLike = IsGrassLikeFoliage(prefabName);
+            bool bushLike = IsBushLikeFoliage(prefabName);
+            bool deadTree = IsDeadTreeFoliage(prefabName);
+            float amplitude = grassLike
+                ? Mathf.Clamp(targetHeight * 0.055f, 0.018f, 0.052f)
+                : bushLike
+                    ? Mathf.Clamp(targetHeight * 0.040f, 0.020f, 0.058f)
+                    : Mathf.Clamp(targetHeight * (deadTree ? 0.006f : 0.011f), 0.018f, 0.064f);
+            float speed = grassLike ? 1.24f : bushLike ? 0.98f : 0.74f;
+            float spatialFrequency = grassLike ? 2.15f : bushLike ? 1.62f : 0.92f;
+            float gustStrength = grassLike ? 0.34f : bushLike ? 0.30f : 0.22f;
+            float turbulence = grassLike ? 0.070f : bushLike ? 0.050f : 0.030f;
+
+            for (int i = 0; i < filters.Length; i++)
+            {
+                MeshFilter filter = filters[i];
+                if (filter == null || filter.sharedMesh == null)
+                {
+                    continue;
+                }
+
+                WindAnimatedFoliage wind = filter.GetComponent<WindAnimatedFoliage>();
+                if (wind == null)
+                {
+                    wind = filter.gameObject.AddComponent<WindAnimatedFoliage>();
+                }
+
+                float offset = 1f + (i % 3) * 0.07f;
+                wind.Configure(
+                    amplitude * offset,
+                    speed + i * 0.05f,
+                    spatialFrequency,
+                    gustStrength,
+                    turbulence,
+                    new Vector2(1f, 0.35f));
+                EditorUtility.SetDirty(wind);
+            }
+        }
+
+        private static Renderer[] CreateFoliageLodProxy(Transform root, string prefabName, float targetHeight)
+        {
+            List<Renderer> renderers = new List<Renderer>(4);
+            GameObject proxyRoot = new GameObject("Foliage LOD Proxy");
+            proxyRoot.transform.SetParent(root, false);
+
+            Material leaf = LoadOrCreateStarterMaterial("Foliage_LOD_Leaf", new Color(0.15f, 0.31f, 0.17f), 0f, 0.24f);
+            Material bark = LoadOrCreateStarterMaterial("Foliage_LOD_Bark", new Color(0.23f, 0.16f, 0.10f), 0f, 0.28f);
+            Material flower = LoadOrCreateStarterMaterial("Foliage_LOD_Flower", new Color(0.70f, 0.64f, 0.38f), 0f, 0.36f);
+            Mesh trunkMesh = LoadOrCreateMeshAsset("Foliage_LOD_Trunk_8", CreateTaperedCylinderYMesh(8, 0.62f));
+            Mesh ellipsoidMesh = LoadOrCreateMeshAsset("Foliage_LOD_Ellipsoid_10x5", CreateEllipsoidMesh(10, 5));
+            Mesh coneMesh = LoadOrCreateMeshAsset("Foliage_LOD_Cone_10", CreateTaperedCylinderYMesh(10, 0.06f));
+
+            if (IsGrassLikeFoliage(prefabName))
+            {
+                renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Grass Blade A", ellipsoidMesh, leaf, new Vector3(-0.08f, targetHeight * 0.38f, 0f), Quaternion.Euler(0f, 18f, -8f), new Vector3(targetHeight * 0.20f, targetHeight * 0.78f, targetHeight * 0.055f)));
+                renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Grass Blade B", ellipsoidMesh, leaf, new Vector3(0.08f, targetHeight * 0.34f, 0.02f), Quaternion.Euler(0f, -28f, 7f), new Vector3(targetHeight * 0.18f, targetHeight * 0.70f, targetHeight * 0.050f)));
+                return renderers.ToArray();
+            }
+
+            if (IsBushLikeFoliage(prefabName))
+            {
+                renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Bush Mass", ellipsoidMesh, leaf, new Vector3(0f, targetHeight * 0.46f, 0f), Quaternion.identity, new Vector3(targetHeight * 1.20f, targetHeight * 0.78f, targetHeight * 1.04f)));
+                if (prefabName.IndexOf("Flower", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Flower Flecks", ellipsoidMesh, flower, new Vector3(0.03f, targetHeight * 0.72f, 0.02f), Quaternion.Euler(0f, 31f, 0f), new Vector3(targetHeight * 0.62f, targetHeight * 0.14f, targetHeight * 0.48f)));
+                }
+
+                return renderers.ToArray();
+            }
+
+            bool pineLike = IsPineLikeFoliage(prefabName);
+            bool deadTree = IsDeadTreeFoliage(prefabName);
+            renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Bark Trunk", trunkMesh, bark, new Vector3(0f, targetHeight * 0.42f, 0f), Quaternion.identity, new Vector3(targetHeight * 0.080f, targetHeight * 0.84f, targetHeight * 0.080f)));
+
+            if (deadTree)
+            {
+                renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Bare Branch A", trunkMesh, bark, new Vector3(-targetHeight * 0.10f, targetHeight * 0.70f, 0f), Quaternion.Euler(0f, 0f, 58f), new Vector3(targetHeight * 0.035f, targetHeight * 0.45f, targetHeight * 0.035f)));
+                renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Bare Branch B", trunkMesh, bark, new Vector3(targetHeight * 0.11f, targetHeight * 0.82f, 0.03f), Quaternion.Euler(12f, 0f, -46f), new Vector3(targetHeight * 0.030f, targetHeight * 0.36f, targetHeight * 0.030f)));
+                return renderers.ToArray();
+            }
+
+            if (pineLike)
+            {
+                renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Lower Conifer Mass", coneMesh, leaf, new Vector3(0f, targetHeight * 0.48f, 0f), Quaternion.identity, new Vector3(targetHeight * 0.46f, targetHeight * 0.72f, targetHeight * 0.46f)));
+                renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Upper Conifer Mass", coneMesh, leaf, new Vector3(0f, targetHeight * 0.77f, 0f), Quaternion.Euler(0f, 32f, 0f), new Vector3(targetHeight * 0.30f, targetHeight * 0.54f, targetHeight * 0.30f)));
+                return renderers.ToArray();
+            }
+
+            renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Broadleaf Mass", ellipsoidMesh, leaf, new Vector3(0f, targetHeight * 0.72f, 0f), Quaternion.identity, new Vector3(targetHeight * 0.70f, targetHeight * 0.46f, targetHeight * 0.66f)));
+            renderers.Add(CreateFoliageProxyPart(proxyRoot.transform, "LOD Side Leaf Mass", ellipsoidMesh, leaf, new Vector3(targetHeight * 0.18f, targetHeight * 0.66f, -targetHeight * 0.05f), Quaternion.Euler(0f, 38f, 0f), new Vector3(targetHeight * 0.48f, targetHeight * 0.34f, targetHeight * 0.42f)));
+            return renderers.ToArray();
+        }
+
+        private static Renderer CreateFoliageProxyPart(Transform root, string name, Mesh mesh, Material material, Vector3 localPosition, Quaternion localRotation, Vector3 localScale)
+        {
+            GameObject part = new GameObject(name);
+            part.transform.SetParent(root, false);
+            part.transform.localPosition = localPosition;
+            part.transform.localRotation = localRotation;
+            part.transform.localScale = localScale;
+            part.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = part.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.On;
+            renderer.receiveShadows = true;
+            renderer.lightProbeUsage = LightProbeUsage.BlendProbes;
+            renderer.reflectionProbeUsage = ReflectionProbeUsage.BlendProbes;
+            return renderer;
+        }
+
+        private static void AddFoliageLods(GameObject root, Renderer[] highRenderers, Renderer[] lowRenderers, float cullHeight)
+        {
+            if (highRenderers == null || highRenderers.Length == 0)
+            {
+                AddCullLod(root, cullHeight);
+                return;
+            }
+
+            LODGroup lodGroup = root.GetComponent<LODGroup>();
+            if (lodGroup == null)
+            {
+                lodGroup = root.AddComponent<LODGroup>();
+            }
+
+            float nearHeight = Mathf.Clamp(cullHeight * 6.5f, 0.055f, 0.095f);
+            float farHeight = Mathf.Clamp(cullHeight, 0.006f, 0.045f);
+            lodGroup.fadeMode = LODFadeMode.CrossFade;
+            lodGroup.animateCrossFading = true;
+            lodGroup.SetLODs(lowRenderers != null && lowRenderers.Length > 0
+                ? new[] { new LOD(nearHeight, highRenderers), new LOD(farHeight, lowRenderers) }
+                : new[] { new LOD(farHeight, highRenderers) });
+            lodGroup.RecalculateBounds();
+        }
+
+        private static bool IsPineLikeFoliage(string prefabName)
+        {
+            return prefabName.IndexOf("Pine", StringComparison.OrdinalIgnoreCase) >= 0
+                || prefabName.IndexOf("Conifer", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static bool IsDeadTreeFoliage(string prefabName)
+        {
+            return prefabName.IndexOf("Dead", StringComparison.OrdinalIgnoreCase) >= 0
+                || prefabName.IndexOf("Twisted", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static bool IsBushLikeFoliage(string prefabName)
+        {
+            return prefabName.IndexOf("Bush", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static bool IsGrassLikeFoliage(string prefabName)
+        {
+            return prefabName.IndexOf("Grass", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static void AddCullLod(GameObject root, float cullHeight)
