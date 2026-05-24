@@ -64,6 +64,11 @@ namespace Psycho.Mirror
 
         public GameObject CreateNpcVisual(PsychoMirrorNpc npc)
         {
+            if (PsychoArtAssetResolver.TryInstantiateNpc(npc, null, out GameObject artNpc))
+            {
+                return artNpc;
+            }
+
             GameObject root = new GameObject($"NPC {npc.id} - {npc.name}");
             float size = ShouldUseDogSizedImpScale(npc) ? DogSizedImpFallbackScale : Mathf.Max(0.85f, npc.scale <= 0f ? 1f : npc.scale);
             Material body = CreateNpcClothingMaterial(npc, false);
@@ -315,6 +320,11 @@ namespace Psycho.Mirror
 
         public GameObject CreateObjectVisual(PsychoMirrorObject worldObject)
         {
+            if (PsychoArtAssetResolver.TryInstantiateObject(worldObject, null, out GameObject artObject))
+            {
+                return artObject;
+            }
+
             GameObject root = new GameObject($"Object {worldObject.id} - {worldObject.name}");
             Material material = ResolveMaterial(worldObject.materialClass);
             float width = Mathf.Max(0.8f, worldObject.sizeX);

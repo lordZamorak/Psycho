@@ -577,7 +577,14 @@ namespace Psycho.Editor
                 placed.transform.localScale = Vector3.one * TileScale;
 
                 int addedMeshes = 0;
-                if (hasDefinition && definition.modelIds != null)
+                if (hasDefinition && PsychoArtAssetResolver.TryInstantiateObject(definition, placed.transform, out GameObject artObject))
+                {
+                    artObject.name = $"Art Replacement - {definition.name}";
+                    context.Report.visualReplacementObjects++;
+                    addedMeshes++;
+                }
+
+                if (addedMeshes == 0 && hasDefinition && definition.modelIds != null)
                 {
                     for (int i = 0; i < definition.modelIds.Length && i < MaxModelsPerObject; i++)
                     {
@@ -982,7 +989,11 @@ namespace Psycho.Editor
 
                 bool cacheVisual = false;
                 GameObject npcObject;
-                if (ShouldUseProceduralHumanoidNpc(npc))
+                if (PsychoArtAssetResolver.TryInstantiateNpc(npc, null, out npcObject))
+                {
+                    context.Report.visualReplacementNpcs++;
+                }
+                else if (ShouldUseProceduralHumanoidNpc(npc))
                 {
                     npcObject = factory.CreateNpcVisual(npc);
                     context.Report.visualReplacementNpcs++;
@@ -2293,6 +2304,14 @@ namespace Psycho.Editor
 
         private static void BuildPlayerVisual(Transform parent, HostedMaterials materials, PsychoMirrorDatabase database, HostedPlayerSave playerSave)
         {
+            if (PsychoArtAssetResolver.TryInstantiatePlayer(PlayerDisplayName(playerSave), parent, out GameObject artPlayer))
+            {
+                artPlayer.name = "Psycho Hero Art Prefab";
+                CreatePlayerNameplate(artPlayer.transform, playerSave);
+                Debug.Log($"Hosted player visual uses art-pipeline prefab for {PlayerDisplayName(playerSave)}.");
+                return;
+            }
+
             GameObject visualRoot = new GameObject("Psycho Hero Visual");
             visualRoot.transform.SetParent(parent, false);
 
