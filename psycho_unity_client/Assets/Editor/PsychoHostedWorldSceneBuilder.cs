@@ -27,6 +27,7 @@ namespace Psycho.Editor
         private const int MaxModelsPerObject = 4;
         private const int MaxModelsPerNpc = 12;
         private const int MaxNpcSpawns = 460;
+        private const int HostedVillageNpcBaseId = 900000;
         private const int GroundDetailCount = 1850;
         private const int GroundCoverPatchesPerAnchor = 24;
         private const int MaxWindAnimatedComponents = 1200;
@@ -141,7 +142,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, villages {context.Report.hostedVillages}, village NPCs {context.Report.hostedVillageNpcs}, village-cleared trees {context.Report.villageClearedObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -368,6 +369,66 @@ namespace Psycho.Editor
         public static void RenderHostedGrandExchangePreviewBatch()
         {
             RenderHostedGrandExchangePreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted Village Preview")]
+        public static void RenderHostedVillagePreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject village = GameObject.Find("Varrock Road Village") ?? GameObject.Find("River Lum Bridge Hamlet");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (village == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both a generated village and camera.");
+            }
+
+            Bounds bounds = BuildVillagePreviewBounds(village);
+            Vector3 focus = bounds.center + Vector3.up * 0.55f;
+            float viewSize = Mathf.Max(bounds.size.x, bounds.size.z, bounds.size.y * 2.2f);
+            float cameraDistance = Mathf.Clamp(viewSize * 0.78f, 9.5f, 17.5f);
+            camera.transform.position = focus + new Vector3(0.72f, 0.36f, -0.78f).normalized * cameraDistance;
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 38f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-village-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedVillagePreviewBatch()
+        {
+            RenderHostedVillagePreview();
+        }
+
+        private static Bounds BuildVillagePreviewBounds(GameObject village)
+        {
+            Bounds bounds = BuildObjectPreviewBounds(village.transform);
+            GameObject npcRoot = GameObject.Find("Hosted Village Ambient NPCs");
+            if (npcRoot != null)
+            {
+                string villageMarker = "(" + village.name + ")";
+                for (int i = 0; i < npcRoot.transform.childCount; i++)
+                {
+                    Transform child = npcRoot.transform.GetChild(i);
+                    if (child.name.IndexOf(villageMarker, StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        continue;
+                    }
+
+                    Renderer[] renderers = child.GetComponentsInChildren<Renderer>();
+                    foreach (Renderer renderer in renderers)
+                    {
+                        bounds.Encapsulate(renderer.bounds);
+                    }
+                }
+            }
+
+            bounds.Expand(1.3f);
+            return bounds;
         }
 
         private static Bounds BuildNpcPreviewBounds(Transform npcRoot)
@@ -616,6 +677,15 @@ namespace Psycho.Editor
                 }
 
                 string objectName = hasDefinition ? definition.name : "Unknown cache object";
+                int worldX = landscape.RegionX * 64 + placement.LocalX;
+                int worldY = landscape.RegionY * 64 + placement.LocalY;
+                if (hasDefinition && IsTreeLikeObject(definition) && IsHostedVillageClearingTile(worldX, worldY))
+                {
+                    context.Report.skippedObjects++;
+                    context.Report.villageClearedObjects++;
+                    continue;
+                }
+
                 bool windResponsive = IsWindResponsiveObject(definition);
                 bool addedWind = false;
                 GameObject placed = new GameObject($"Object {placement.ObjectId} - {objectName}");
@@ -1498,6 +1568,7 @@ namespace Psycho.Editor
             BuildGroundCoverPatches(context, materials);
             BuildWaterways(context, materials);
             BuildWorldLandmarks(context, materials);
+            BuildHostedVillageNetwork(context, materials);
             BuildHighlandForestDressing(context, materials);
             BuildRockOutcropDressing(context, materials);
             BuildHighlandCliffDressing(context, materials);
@@ -1580,6 +1651,11 @@ namespace Psycho.Editor
                     float radius = 2.0f + Mathf.Pow(Deterministic01(seed + 5), 0.72f) * 20.5f;
                     int worldX = anchor.x + Mathf.RoundToInt(Mathf.Cos(angle) * radius);
                     int worldY = anchor.y + Mathf.RoundToInt(Mathf.Sin(angle) * radius);
+                    if (IsHostedVillageClearingTile(worldX, worldY))
+                    {
+                        continue;
+                    }
+
                     if (!TryGetNaturalDressingPosition(context, worldX, worldY, seed, out Vector3 position))
                     {
                         continue;
@@ -1805,6 +1881,367 @@ namespace Psycho.Editor
             context.Report.landmarkDressingObjects += houseCount * 20 + 1;
         }
 
+        private static void BuildHostedVillageNetwork(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject villageRoot = new GameObject("Generated Hosted Village Network");
+            GameObject npcRoot = new GameObject("Hosted Village Ambient NPCs");
+            GameObject factoryObject = new GameObject("Psycho Village Visual Factory");
+            PsychoVisualFactory factory = factoryObject.AddComponent<PsychoVisualFactory>();
+            factory.SetNpcPreviewAnimation(false);
+
+            HostedVillageSpec[] villages = CreateHostedVillageSpecs();
+            for (int i = 0; i < villages.Length; i++)
+            {
+                CreateHostedVillage(villageRoot.transform, npcRoot.transform, context, materials, factory, villages[i], i);
+            }
+        }
+
+        private static HostedVillageSpec[] CreateHostedVillageSpecs()
+        {
+            return new[]
+            {
+                new HostedVillageSpec("North Edgeville Farmstead", 3086, 3522, 4, 7, 8f, 0.92f),
+                new HostedVillageSpec("River Lum Bridge Hamlet", 3148, 3474, 5, 9, -18f, 1.04f),
+                new HostedVillageSpec("Varrock Road Village", 3202, 3422, 6, 10, 80f, 1.08f),
+                new HostedVillageSpec("East Highland Sheepfold", 3264, 3446, 4, 8, -36f, 0.94f),
+                new HostedVillageSpec("Northern Ridge Watch", 3130, 3610, 3, 7, 28f, 0.86f),
+                new HostedVillageSpec("Western Moor Camp", 2940, 3496, 4, 7, -64f, 0.90f),
+                new HostedVillageSpec("Falador Meadow Hamlet", 2975, 3370, 5, 9, 12f, 1.00f),
+                new HostedVillageSpec("Draynor Orchard Village", 3090, 3262, 5, 9, 92f, 1.00f),
+                new HostedVillageSpec("Port Sarim Outskirts", 3040, 3226, 4, 8, -8f, 0.94f),
+                new HostedVillageSpec("Southern Trade Yard", 3155, 3236, 4, 8, 42f, 0.96f),
+                new HostedVillageSpec("Northeast Hunter Camp", 3330, 3628, 3, 6, -28f, 0.84f),
+                new HostedVillageSpec("Southwest Stonecroft", 2878, 3248, 4, 7, 66f, 0.90f)
+            };
+        }
+
+        private static bool IsHostedVillageClearingTile(int worldX, int worldY)
+        {
+            HostedVillageSpec[] villages = CreateHostedVillageSpecs();
+            for (int i = 0; i < villages.Length; i++)
+            {
+                HostedVillageSpec village = villages[i];
+                float dx = worldX - village.WorldX;
+                float dy = worldY - village.WorldY;
+                float radius = 7.5f + village.Scale * (village.HouseCount * 0.92f + 2.8f);
+                if (dx * dx + dy * dy <= radius * radius)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static void CreateHostedVillage(
+            Transform villageParent,
+            Transform npcParent,
+            HostedBuildContext context,
+            HostedMaterials materials,
+            PsychoVisualFactory factory,
+            HostedVillageSpec village,
+            int villageIndex)
+        {
+            if (!TryCreateVillageRoot(villageParent, village, context, out Transform root))
+            {
+                return;
+            }
+
+            root.localRotation = Quaternion.Euler(0f, village.Yaw, 0f);
+            float scale = village.Scale;
+            int dressing = 0;
+
+            CreateGroundPlate(root, "Packed Village Green", Vector3.zero, scale * (8.6f + village.HouseCount * 0.58f), scale * 7.4f, materials.LandmarkRoad);
+            CreateGroundPlate(root, "Cross Village Lane", new Vector3(0f, 0.012f, 0f), scale * 3.0f, scale * 11.4f, materials.LandmarkRoad);
+            CreateLandmarkPaverBands(root, "Village Lane", scale * (7.2f + village.HouseCount * 0.45f), scale * 6.3f, materials.FrostStone);
+            dressing += 16;
+
+            for (int house = 0; house < village.HouseCount; house++)
+            {
+                int seed = 51000 + villageIndex * 997 + house * 131;
+                float laneOffset = (house - (village.HouseCount - 1) * 0.5f) * scale * 2.65f;
+                float side = house % 2 == 0 ? scale * 3.0f : -scale * 3.0f;
+                float width = scale * (2.25f + Deterministic01(seed + 3) * 0.62f);
+                float depth = scale * (2.05f + Deterministic01(seed + 7) * 0.58f);
+                float yaw = house % 2 == 0 ? 0f : 180f;
+                yaw += (Deterministic01(seed + 11) - 0.5f) * 18f;
+                dressing += CreateHostedVillageHouse(root, materials, $"Village Cottage {house + 1}", new Vector3(laneOffset, 0f, side), yaw, width, depth, seed);
+            }
+
+            dressing += CreateHostedVillageMarket(root, materials, scale, villageIndex);
+            dressing += CreateHostedVillageWell(root, materials, scale);
+            dressing += CreateHostedVillageFencing(root, materials, scale, villageIndex);
+            dressing += CreateHostedVillageProps(root, materials, scale, villageIndex);
+            CreateHostedVillageNpcCluster(npcParent, root, context, factory, village, villageIndex);
+
+            context.Report.hostedVillages++;
+            context.Report.landmarkDressingObjects += dressing;
+        }
+
+        private static bool TryCreateVillageRoot(Transform parent, HostedVillageSpec village, HostedBuildContext context, out Transform root)
+        {
+            root = null;
+            if (!TryFindNearbyVillageAnchor(context, village.WorldX, village.WorldY, out Vector3 position))
+            {
+                return false;
+            }
+
+            GameObject villageObject = new GameObject(village.Name);
+            villageObject.transform.SetParent(parent, false);
+            villageObject.transform.position = position;
+            root = villageObject.transform;
+            return true;
+        }
+
+        private static bool TryFindNearbyVillageAnchor(HostedBuildContext context, int anchorX, int anchorY, out Vector3 position)
+        {
+            position = default;
+            for (int radius = 0; radius <= 32; radius++)
+            {
+                for (int dx = -radius; dx <= radius; dx++)
+                {
+                    for (int dy = -radius; dy <= radius; dy++)
+                    {
+                        if (radius > 0 && Mathf.Abs(dx) != radius && Mathf.Abs(dy) != radius)
+                        {
+                            continue;
+                        }
+
+                        int worldX = anchorX + dx;
+                        int worldY = anchorY + dy;
+                        if (!TryGetLandscapeTile(context, worldX, worldY, out PsychoMapLandscape landscape, out int localX, out int localY))
+                        {
+                            continue;
+                        }
+
+                        byte flags = landscape.RenderFlags[0, localX, localY];
+                        if ((flags & 1) == 1)
+                        {
+                            continue;
+                        }
+
+                        position = TerrainSurfacePosition(WorldTilePosition(context, worldX, worldY), 0.045f);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static int CreateHostedVillageHouse(Transform parent, HostedMaterials materials, string prefix, Vector3 localPosition, float yaw, float width, float depth, int seed)
+        {
+            GameObject house = new GameObject(prefix);
+            house.transform.SetParent(parent, false);
+            house.transform.localPosition = localPosition;
+            house.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+
+            CreateLandmarkBox(house.transform, "Warm Stone Walls", new Vector3(0f, 0.82f, 0f), new Vector3(width, 1.64f, depth), materials.LandmarkStone);
+            CreateLandmarkBox(house.transform, "Raised Stone Footing", new Vector3(0f, 0.18f, 0f), new Vector3(width * 1.08f, 0.20f, depth * 1.08f), materials.LandmarkRoad);
+            CreateLandmarkGabledRoof(house.transform, "Pitched Timber Roof", new Vector3(0f, 2.02f, 0f), width * 1.22f, depth * 1.20f, 0.72f, materials.LandmarkRoof);
+            CreateHouseDetailSet(house.transform, prefix, Vector3.zero, width, depth, materials);
+            CreateLandmarkBox(house.transform, "Front Door", new Vector3(0f, 0.58f, -depth * 0.525f), new Vector3(width * 0.24f, 1.02f, 0.12f), materials.TreeBark);
+            CreateLandmarkBox(house.transform, "Window Left", new Vector3(-width * 0.30f, 1.10f, -depth * 0.535f), new Vector3(width * 0.18f, 0.34f, 0.08f), materials.LandmarkGlass);
+            CreateLandmarkBox(house.transform, "Window Right", new Vector3(width * 0.30f, 1.10f, -depth * 0.535f), new Vector3(width * 0.18f, 0.34f, 0.08f), materials.LandmarkGlass);
+            if (Deterministic01(seed + 17) > 0.48f)
+            {
+                CreateLandmarkChimney(house.transform, "Cottage Chimney", new Vector3(width * 0.24f, 2.34f, depth * 0.08f), materials.FrostStone, materials.TreeBark);
+            }
+
+            return 19;
+        }
+
+        private static int CreateHostedVillageMarket(Transform root, HostedMaterials materials, float scale, int villageIndex)
+        {
+            int created = 0;
+            for (int stall = 0; stall < 2; stall++)
+            {
+                float side = stall == 0 ? -1f : 1f;
+                Vector3 position = new Vector3(side * scale * 2.15f, 0.42f, scale * 0.55f);
+                GameObject table = CreateLandmarkBox(root, $"Village Market Table {stall + 1}", position, new Vector3(scale * 1.34f, scale * 0.34f, scale * 0.72f), materials.TreeBark);
+                table.transform.localRotation = Quaternion.Euler(0f, side * 8f, 0f);
+                CreateLandmarkDetailBox(root, $"Village Market Cloth {stall + 1}", position + Vector3.up * scale * 0.26f, new Vector3(scale * 1.48f, scale * 0.06f, scale * 0.84f), stall == 0 ? materials.LandmarkBanner : materials.PlayerPaper);
+                CreateLandmarkDetailBox(root, $"Village Crate Stack {stall + 1}", new Vector3(side * scale * 3.05f, scale * 0.25f, -scale * 0.38f), new Vector3(scale * 0.46f, scale * 0.50f, scale * 0.46f), materials.PlayerWood);
+                created += 3;
+            }
+
+            return created;
+        }
+
+        private static int CreateHostedVillageWell(Transform root, HostedMaterials materials, float scale)
+        {
+            CreateLandmarkCylinder(root, "Village Stone Well", new Vector3(0f, scale * 0.32f, -scale * 1.58f), new Vector3(scale * 0.52f, scale * 0.32f, scale * 0.52f), materials.FrostStone);
+            CreateLandmarkCylinder(root, "Village Well Water", new Vector3(0f, scale * 0.66f, -scale * 1.58f), new Vector3(scale * 0.42f, scale * 0.035f, scale * 0.42f), materials.Water);
+            CreateLandmarkBox(root, "Village Well Beam", new Vector3(0f, scale * 1.38f, -scale * 1.58f), new Vector3(scale * 1.16f, scale * 0.12f, scale * 0.16f), materials.TreeBark);
+            CreateLandmarkCylinder(root, "Village Well Left Post", new Vector3(-scale * 0.48f, scale * 0.98f, -scale * 1.58f), new Vector3(scale * 0.07f, scale * 0.72f, scale * 0.07f), materials.TreeBark);
+            CreateLandmarkCylinder(root, "Village Well Right Post", new Vector3(scale * 0.48f, scale * 0.98f, -scale * 1.58f), new Vector3(scale * 0.07f, scale * 0.72f, scale * 0.07f), materials.TreeBark);
+            return 5;
+        }
+
+        private static int CreateHostedVillageFencing(Transform root, HostedMaterials materials, float scale, int villageIndex)
+        {
+            int created = 0;
+            float width = scale * 6.2f;
+            float depth = scale * 5.0f;
+            for (int i = -3; i <= 3; i++)
+            {
+                float x = i * width / 6f;
+                CreateLandmarkDetailBox(root, $"Village North Fence Rail {i + 4}", new Vector3(x, scale * 0.55f, depth), new Vector3(scale * 0.86f, scale * 0.10f, scale * 0.08f), materials.TreeBark);
+                CreateLandmarkDetailBox(root, $"Village South Fence Rail {i + 4}", new Vector3(x, scale * 0.55f, -depth), new Vector3(scale * 0.86f, scale * 0.10f, scale * 0.08f), materials.TreeBark);
+                created += 2;
+            }
+
+            for (int i = -2; i <= 2; i++)
+            {
+                float z = i * depth / 4f;
+                CreateLandmarkDetailBox(root, $"Village East Fence Rail {i + 3}", new Vector3(width, scale * 0.55f, z), new Vector3(scale * 0.08f, scale * 0.10f, scale * 0.92f), materials.TreeBark);
+                CreateLandmarkDetailBox(root, $"Village West Fence Rail {i + 3}", new Vector3(-width, scale * 0.55f, z), new Vector3(scale * 0.08f, scale * 0.10f, scale * 0.92f), materials.TreeBark);
+                created += 2;
+            }
+
+            return created;
+        }
+
+        private static int CreateHostedVillageProps(Transform root, HostedMaterials materials, float scale, int villageIndex)
+        {
+            int created = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                int seed = 62000 + villageIndex * 503 + i * 41;
+                float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+                float radius = scale * (2.2f + Deterministic01(seed + 7) * 3.8f);
+                Vector3 position = new Vector3(Mathf.Cos(angle) * radius, scale * 0.22f, Mathf.Sin(angle) * radius);
+                if (i % 3 == 0)
+                {
+                    CreateLandmarkCylinder(root, $"Village Barrel {i + 1}", position, new Vector3(scale * 0.18f, scale * 0.28f, scale * 0.18f), materials.TreeBark);
+                }
+                else
+                {
+                    GameObject crate = CreateLandmarkBox(root, $"Village Supply Crate {i + 1}", position, new Vector3(scale * 0.42f, scale * 0.40f, scale * 0.42f), materials.PlayerWood);
+                    crate.transform.localRotation = Quaternion.Euler(0f, Deterministic01(seed + 11) * 180f, 0f);
+                }
+
+                created++;
+            }
+
+            CreateLandmarkBox(root, "Village Notice Sign", new Vector3(0f, scale * 0.82f, scale * 2.2f), new Vector3(scale * 0.76f, scale * 0.42f, scale * 0.08f), materials.PlayerPaper);
+            CreateLandmarkCylinder(root, "Village Notice Post", new Vector3(0f, scale * 0.42f, scale * 2.2f), new Vector3(scale * 0.055f, scale * 0.42f, scale * 0.055f), materials.TreeBark);
+            return created + 2;
+        }
+
+        private static int CreateHostedVillageNpcCluster(
+            Transform npcParent,
+            Transform villageRoot,
+            HostedBuildContext context,
+            PsychoVisualFactory factory,
+            HostedVillageSpec village,
+            int villageIndex)
+        {
+            int created = 0;
+            for (int i = 0; i < village.NpcCount; i++)
+            {
+                int seed = 70000 + villageIndex * 1543 + i * 97;
+                float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+                float radius = village.Scale * (0.80f + Deterministic01(seed + 7) * 3.25f);
+                Vector3 local = new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+                string role = VillageNpcRole(i, villageIndex);
+                PsychoMirrorNpc npc = CreateHostedVillageNpc(HostedVillageNpcBaseId + villageIndex * 100 + i, role, seed);
+                GameObject npcObject = factory.CreateNpcVisual(npc);
+                npcObject.name = $"Village NPC {npc.id} - {npc.name} ({village.Name})";
+                npcObject.transform.SetParent(npcParent, true);
+                npcObject.transform.position = TerrainSurfacePosition(villageRoot.TransformPoint(local), 0.035f);
+                npcObject.transform.rotation = Quaternion.Euler(0f, village.Yaw + Deterministic01(seed + 13) * 360f, 0f);
+
+                PsychoInteractable interactable = npcObject.AddComponent<PsychoInteractable>();
+                interactable.Configure(npc.id, npc.name, VillageNpcActions(role));
+                npcObject.AddComponent<PsychoGroundFollower>();
+                PrototypeNpcWander wander = npcObject.AddComponent<PrototypeNpcWander>();
+                SerializedObject wanderObject = new SerializedObject(wander);
+                wanderObject.FindProperty("wanderRadius").floatValue = village.Scale * Mathf.Lerp(1.35f, 3.85f, Deterministic01(seed + 17));
+                wanderObject.FindProperty("speed").floatValue = role == "Guard" ? 1.42f : role == "Merchant" ? 1.16f : 1.02f;
+                wanderObject.FindProperty("pauseDuration").floatValue = 0.78f + Deterministic01(seed + 19) * 0.82f;
+                SetSerializedFloat(wanderObject, "turnSpeed", role == "Guard" ? 5.4f : 4.6f);
+                SetSerializedFloat(wanderObject, "acceleration", 3.1f);
+                SetSerializedFloat(wanderObject, "visualStrideBob", 0.0022f);
+                SetSerializedFloat(wanderObject, "visualStrideSway", 0.28f);
+                wanderObject.ApplyModifiedPropertiesWithoutUndo();
+                created++;
+            }
+
+            context.Report.hostedVillageNpcs += created;
+            return created;
+        }
+
+        private static PsychoMirrorNpc CreateHostedVillageNpc(int id, string role, int seed)
+        {
+            string visualClass = role;
+            string displayName = role == "Merchant"
+                ? "Village Merchant"
+                : role == "Guard"
+                    ? "Village Watch"
+                    : role == "Banker"
+                        ? "Village Clerk"
+                        : "Village Resident";
+            return new PsychoMirrorNpc
+            {
+                id = id,
+                name = displayName,
+                examine = "A hosted Unity village resident.",
+                combat = role == "Guard" ? 24 : 0,
+                size = 1,
+                attackable = role == "Guard",
+                aggressive = false,
+                retreats = false,
+                poisonous = false,
+                respawn = 30,
+                hitpoints = role == "Guard" ? 45 : 12,
+                visualClass = visualClass,
+                materialClass = role == "Guard" ? "Metal" : role == "Merchant" ? "Cloth" : "Leather",
+                scale = 0.98f + Deterministic01(seed + 31) * 0.08f
+            };
+        }
+
+        private static string VillageNpcRole(int index, int villageIndex)
+        {
+            int roll = (index + villageIndex) % 7;
+            if (roll == 0)
+            {
+                return "Merchant";
+            }
+
+            if (roll == 3)
+            {
+                return "Guard";
+            }
+
+            if (roll == 5)
+            {
+                return "Banker";
+            }
+
+            return "Citizen";
+        }
+
+        private static string[] VillageNpcActions(string role)
+        {
+            if (role == "Merchant")
+            {
+                return new[] { "Talk-to", "Trade", "Examine" };
+            }
+
+            if (role == "Guard")
+            {
+                return new[] { "Talk-to", "Ask-for-directions", "Examine" };
+            }
+
+            if (role == "Banker")
+            {
+                return new[] { "Talk-to", "Bank", "Examine" };
+            }
+
+            return new[] { "Talk-to", "Examine" };
+        }
+
         private static void BuildHighlandForestDressing(HostedBuildContext context, HostedMaterials materials)
         {
             GameObject root = new GameObject("Rugged Highland Conifer Dressing");
@@ -1832,6 +2269,11 @@ namespace Psycho.Editor
                     float radius = 3.5f + Mathf.Pow(Deterministic01(seed + 23), 0.62f) * 17.5f;
                     int worldX = anchor.x + Mathf.RoundToInt(Mathf.Cos(angle) * radius);
                     int worldY = anchor.y + Mathf.RoundToInt(Mathf.Sin(angle) * radius);
+                    if (IsHostedVillageClearingTile(worldX, worldY))
+                    {
+                        continue;
+                    }
+
                     if (!TryGetNaturalDressingPosition(context, worldX, worldY, seed, out Vector3 position))
                     {
                         continue;
@@ -4524,6 +4966,28 @@ namespace Psycho.Editor
             public Material LandmarkGlass;
         }
 
+        private readonly struct HostedVillageSpec
+        {
+            public readonly string Name;
+            public readonly int WorldX;
+            public readonly int WorldY;
+            public readonly int HouseCount;
+            public readonly int NpcCount;
+            public readonly float Yaw;
+            public readonly float Scale;
+
+            public HostedVillageSpec(string name, int worldX, int worldY, int houseCount, int npcCount, float yaw, float scale)
+            {
+                Name = name;
+                WorldX = worldX;
+                WorldY = worldY;
+                HouseCount = houseCount;
+                NpcCount = npcCount;
+                Yaw = yaw;
+                Scale = scale;
+            }
+        }
+
         [Serializable]
         private sealed class HostedPlayerSave
         {
@@ -4619,6 +5083,9 @@ namespace Psycho.Editor
             public int visualReplacementNpcs;
             public int visualReplacementObjects;
             public int decodedObjectAccents;
+            public int hostedVillages;
+            public int hostedVillageNpcs;
+            public int villageClearedObjects;
             public int terrainCollisionSamples;
             public int terrainCollisionMisses;
             public int groundCoverPatches;
