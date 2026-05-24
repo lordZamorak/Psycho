@@ -12,4 +12,520 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef5d1b02684e7fe4f9cead3048e81ad0, type: 3}
   m_Name: PsychoArtAssetManifest
   m_EditorClassIdentifier: Assembly-CSharp::Psycho.Rendering.PsychoArtAssetManifest
-  entries: []
+  entries:
+  - kind: 0
+    displayName: Psycho Warrior Player
+    prefab: {fileID: 7504423489776852682, guid: 3e82fbb07638cbb4aa58eea73c0b3112, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments: []
+    matchAny: 1
+    targetHeight: 1.85
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 180, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Citizen Monk
+    prefab: {fileID: 2179173994476211751, guid: 2554f09f88015d942a2d57006fae139f, type: 3}
+    ids: 
+    visualClass: Citizen
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 1.72
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 180, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Citizen Ranger
+    prefab: {fileID: 5952298911773358565, guid: b056106fa1f43214987cc523910918db, type: 3}
+    ids: 
+    visualClass: Citizen
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 1.72
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 180, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Citizen Wizard
+    prefab: {fileID: 234413958877835247, guid: 06a83a98c1936234ca462d611fb5553a, type: 3}
+    ids: 
+    visualClass: Citizen
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 1.72
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 180, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Merchant Rogue
+    prefab: {fileID: 520353135902904260, guid: 70632165b7129f8469f8e972ca5c7e0f, type: 3}
+    ids: 
+    visualClass: Merchant
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 1.72
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 180, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Banker Cleric
+    prefab: {fileID: 4099077945151628910, guid: e499b6490020011469c83978fc2eff9a, type: 3}
+    ids: 
+    visualClass: Banker
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 1.72
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 180, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 1
+    displayName: Guard Warrior
+    prefab: {fileID: 7504423489776852682, guid: 3e82fbb07638cbb4aa58eea73c0b3112, type: 3}
+    ids: 
+    visualClass: Guard
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 1.78
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 180, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 0
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Common Tree A
+    prefab: {fileID: 4572776465274567089, guid: 60f8683f53426514bade152dc88d59f7, type: 3}
+    ids: 
+    visualClass: Tree
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 3.4
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.012
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Common Tree B
+    prefab: {fileID: 6028485090607158552, guid: fd84f9e9d9df7a543ab1971106132ea8, type: 3}
+    ids: 
+    visualClass: Tree
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 3.7
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.012
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Common Tree C
+    prefab: {fileID: 221647765051984788, guid: 1632748f9a2e8854cb87d0d7b0a29df3, type: 3}
+    ids: 
+    visualClass: Tree
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 3.2
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.012
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Pine Tree A
+    prefab: {fileID: 7524162706907021540, guid: 6fde9febd9efed64abb4edf044dcef04, type: 3}
+    ids: 
+    visualClass: Tree
+    nameFragments:
+    - pine
+    - conifer
+    - evergreen
+    matchAny: 0
+    targetHeight: 4.2
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.01
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Pine Tree B
+    prefab: {fileID: 4404050740758689695, guid: 330045f851cbe2f46acbae31ad8bba49, type: 3}
+    ids: 
+    visualClass: Tree
+    nameFragments:
+    - pine
+    - conifer
+    - evergreen
+    matchAny: 0
+    targetHeight: 4.5
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.01
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Twisted Tree
+    prefab: {fileID: 2264201433739846873, guid: bb05b78aaf21cb3428460b9057133b1f, type: 3}
+    ids: 
+    visualClass: Tree
+    nameFragments:
+    - dead tree
+    - dying tree
+    - twisted tree
+    matchAny: 0
+    targetHeight: 3.8
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.01
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Dead Tree
+    prefab: {fileID: 4292161567651394233, guid: 051dd0b9bb6f5b747b7f20aee9588fc4, type: 3}
+    ids: 
+    visualClass: Tree
+    nameFragments:
+    - dead tree
+    - burnt tree
+    - hollow tree
+    matchAny: 0
+    targetHeight: 3.3
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.01
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Rock A
+    prefab: {fileID: 9058169726973156633, guid: 663e1161fead1494087646b50698c4c9, type: 3}
+    ids: 
+    visualClass: Rock
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.75
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.02
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Rock B
+    prefab: {fileID: 4709024657867379878, guid: 545f15580f8eab241baf9ae426670be2, type: 3}
+    ids: 
+    visualClass: Rock
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.68
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.02
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Rock C
+    prefab: {fileID: 2632108527844210879, guid: a289351dc98e99e4f9d12b1730133ade, type: 3}
+    ids: 
+    visualClass: Rock
+    nameFragments: []
+    matchAny: 0
+    targetHeight: 0.82
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.02
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Medieval House
+    prefab: {fileID: 2390391268390895596, guid: 2bdd8cbef292447468dc3a2a734798dd, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - house
+    - home
+    - hut
+    matchAny: 0
+    targetHeight: 2.9
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Medieval Market
+    prefab: {fileID: 8355628808477262130, guid: 6f4139b0b111baf4998b881493dda7f3, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - market
+    - stall
+    - shop
+    matchAny: 0
+    targetHeight: 2.7
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Barracks
+    prefab: {fileID: 6595580111246468435, guid: 2f86cfadafaafc043a3c63b00bd93674, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - barracks
+    - guild
+    - hall
+    matchAny: 0
+    targetHeight: 3.1
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Castle
+    prefab: {fileID: 5036380165083088428, guid: 79fd944a5fae81b46a438d2d34eef660, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - castle
+    - keep
+    - fortress
+    matchAny: 0
+    targetHeight: 4.4
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.014
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Wall Gate
+    prefab: {fileID: 3506313847663581527, guid: 053b320b718ec3642aa81c57f55f06bf, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - gate
+    matchAny: 0
+    targetHeight: 2.7
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Wall
+    prefab: {fileID: 46177754398550549, guid: d268c659d389d5344a1da7402b969d59, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - wall
+    matchAny: 0
+    targetHeight: 1.7
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.02
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Watchtower
+    prefab: {fileID: 1769770979052943732, guid: b4f7def70dd8d494d90e8c81ce5dfdbb, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - watchtower
+    - tower
+    matchAny: 0
+    targetHeight: 4.1
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.014
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Well
+    prefab: {fileID: 4016955401413332859, guid: abb0ea14fa3d7c04a917462368b85def, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - well
+    matchAny: 0
+    targetHeight: 1.15
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.024
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Bridge
+    prefab: {fileID: 3293960087588281799, guid: 7bbec2c3e0c283d45a1c0c3353187873, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - bridge
+    matchAny: 0
+    targetHeight: 0.9
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.02
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Mine
+    prefab: {fileID: 264425424078414399, guid: b4b3b89a6c0709f40aa16bdd0a85e40c, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - mine
+    - mining
+    matchAny: 0
+    targetHeight: 2.2
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Lumbermill
+    prefab: {fileID: 2070338399396255453, guid: 6c09617f585fa2a478f0d8cf7b405957, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - lumber
+    - sawmill
+    matchAny: 0
+    targetHeight: 2.8
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Watermill
+    prefab: {fileID: 750145163940147947, guid: a74773692732b5e42b1e603b22b9b5a8, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - watermill
+    matchAny: 0
+    targetHeight: 3.1
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1
+  - kind: 2
+    displayName: Mill
+    prefab: {fileID: 368734509237372392, guid: f4fde64b6881ae94d891c458d5dde4af, type: 3}
+    ids: 
+    visualClass: 
+    nameFragments:
+    - mill
+    matchAny: 0
+    targetHeight: 3.3
+    localPosition: {x: 0, y: 0, z: 0}
+    localEuler: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    markStatic: 1
+    ensureCullLod: 1
+    cullScreenRelativeHeight: 0.018
+    receiveShadows: 1
+    castShadows: 1

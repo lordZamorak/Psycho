@@ -14,32 +14,32 @@ namespace Psycho.Rendering
         public static bool TryInstantiatePlayer(string playerName, Transform parent, out GameObject instance)
         {
             instance = null;
-            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesPlayer(playerName));
+            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesPlayer(playerName), StableHash(playerName));
             return TryInstantiate(entry, parent, out instance);
         }
 
         public static bool TryInstantiateNpc(PsychoMirrorNpc npc, Transform parent, out GameObject instance)
         {
             instance = null;
-            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesNpc(npc));
+            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesNpc(npc), StableHash(npc?.id ?? 0, npc?.name, npc?.visualClass));
             return TryInstantiate(entry, parent, out instance);
         }
 
         public static bool TryInstantiateObject(PsychoMirrorObject worldObject, Transform parent, out GameObject instance)
         {
             instance = null;
-            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesObject(worldObject));
+            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesObject(worldObject), StableHash(worldObject?.id ?? 0, worldObject?.name, worldObject?.visualClass));
             return TryInstantiate(entry, parent, out instance);
         }
 
         public static bool TryInstantiateItem(PsychoMirrorItem item, Transform parent, out GameObject instance)
         {
             instance = null;
-            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesItem(item));
+            PsychoArtAssetEntry entry = FindEntry(entryCandidate => entryCandidate.MatchesItem(item), StableHash(item?.id ?? 0, item?.name, item?.visualClass));
             return TryInstantiate(entry, parent, out instance);
         }
 
-        private static PsychoArtAssetEntry FindEntry(System.Predicate<PsychoArtAssetEntry> predicate)
+        private static PsychoArtAssetEntry FindEntry(System.Predicate<PsychoArtAssetEntry> predicate, int seed)
         {
             PsychoArtAssetManifest manifest = LoadManifest();
             if (manifest == null || predicate == null)
@@ -48,16 +48,22 @@ namespace Psycho.Rendering
             }
 
             PsychoArtAssetEntry[] entries = manifest.Entries;
+            int matchCount = 0;
+            PsychoArtAssetEntry selected = null;
             for (int i = 0; i < entries.Length; i++)
             {
                 PsychoArtAssetEntry entry = entries[i];
                 if (entry != null && entry.prefab != null && predicate(entry))
                 {
-                    return entry;
+                    matchCount++;
+                    if (PositiveModulo(seed, matchCount) == 0)
+                    {
+                        selected = entry;
+                    }
                 }
             }
 
-            return null;
+            return selected;
         }
 
         private static bool TryInstantiate(PsychoArtAssetEntry entry, Transform parent, out GameObject instance)
@@ -193,6 +199,48 @@ namespace Psycho.Rendering
             {
                 children[i].gameObject.isStatic = true;
             }
+        }
+
+        private static int StableHash(int id, string name, string visualClass)
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 31 + id;
+                hash = hash * 31 + StableHash(name);
+                hash = hash * 31 + StableHash(visualClass);
+                return hash;
+            }
+        }
+
+        private static int StableHash(string value)
+        {
+            unchecked
+            {
+                int hash = 23;
+                if (string.IsNullOrEmpty(value))
+                {
+                    return hash;
+                }
+
+                for (int i = 0; i < value.Length; i++)
+                {
+                    hash = hash * 31 + char.ToLowerInvariant(value[i]);
+                }
+
+                return hash;
+            }
+        }
+
+        private static int PositiveModulo(int value, int divisor)
+        {
+            if (divisor <= 0)
+            {
+                return 0;
+            }
+
+            int remainder = value % divisor;
+            return remainder < 0 ? remainder + divisor : remainder;
         }
     }
 }

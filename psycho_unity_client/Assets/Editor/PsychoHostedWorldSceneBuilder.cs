@@ -28,6 +28,7 @@ namespace Psycho.Editor
         private const int MaxModelsPerNpc = 12;
         private const int MaxNpcSpawns = 460;
         private const int GroundDetailCount = 1850;
+        private const int MaxWindAnimatedComponents = 1200;
         private const float DogSizedImpHeight = 0.62f;
         private const float CharacterNormalSmoothingTolerance = 0.00075f;
         private const float TileScale = 0.72f;
@@ -75,6 +76,7 @@ namespace Psycho.Editor
         private const string FallbackMaterialPath = GeneratedRoot + "/Psycho_Hosted_Fallback.mat";
         private const bool EnableHostedJCacheScenePlacement = false;
         private static readonly bool EnableHostedRewardModelShowcases = false;
+        private static int windAnimatedComponentsAdded;
         private static readonly string[] WindResponsiveObjectNameFragments =
         {
             "tree",
@@ -100,6 +102,7 @@ namespace Psycho.Editor
         public static void BuildHostedTestWorldScene()
         {
             EnsureFolders();
+            windAnimatedComponentsAdded = 0;
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             PsychoMirrorDatabase database = PsychoMirrorDatabase.LoadFromStreamingAssets();
             Material vertexColorMaterial = PsychoCacheMeshImporter.LoadOrCreateVertexColorMaterial();
@@ -577,10 +580,12 @@ namespace Psycho.Editor
                 placed.transform.localScale = Vector3.one * TileScale;
 
                 int addedMeshes = 0;
+                bool usedArtReplacement = false;
                 if (hasDefinition && PsychoArtAssetResolver.TryInstantiateObject(definition, placed.transform, out GameObject artObject))
                 {
                     artObject.name = $"Art Replacement - {definition.name}";
                     context.Report.visualReplacementObjects++;
+                    usedArtReplacement = true;
                     addedMeshes++;
                 }
 
@@ -642,15 +647,18 @@ namespace Psycho.Editor
                         addedWind = true;
                     }
                 }
-                else if (windResponsive && ShouldAddFoliageSilhouette(placed.transform, definition))
+                else if (!usedArtReplacement && windResponsive && ShouldAddFoliageSilhouette(placed.transform, definition))
                 {
                     AddFoliageSilhouette(placed.transform, definition, placement, hostedMaterials);
                     context.Report.enhancedFoliageObjects++;
                     addedWind = true;
                 }
 
-                context.Report.decodedObjectAccents += PsychoHostedVisualOverrides.AddObjectAccents(definition, placed.transform, material);
-                context.Report.decodedObjectAccents += AddArchitecturalDressing(definition, placed.transform, hostedMaterials);
+                if (!usedArtReplacement)
+                {
+                    context.Report.decodedObjectAccents += PsychoHostedVisualOverrides.AddObjectAccents(definition, placed.transform, material);
+                    context.Report.decodedObjectAccents += AddArchitecturalDressing(definition, placed.transform, hostedMaterials);
+                }
                 AddInteractionAndCollision(placed, definition, placement);
                 if (addedWind)
                 {
@@ -2307,7 +2315,7 @@ namespace Psycho.Editor
             if (PsychoArtAssetResolver.TryInstantiatePlayer(PlayerDisplayName(playerSave), parent, out GameObject artPlayer))
             {
                 artPlayer.name = "Psycho Hero Art Prefab";
-                CreatePlayerNameplate(artPlayer.transform, playerSave);
+                CreatePlayerNameplate(artPlayer.transform, playerSave, 180f);
                 Debug.Log($"Hosted player visual uses art-pipeline prefab for {PlayerDisplayName(playerSave)}.");
                 return;
             }
@@ -2768,11 +2776,12 @@ namespace Psycho.Editor
             CreatePlayerPrimitive(visualRoot, PrimitiveType.Cylinder, "Shield Boss", new Vector3(-0.51f, 0.88f, -0.02f), new Vector3(0.09f, 0.025f, 0.09f), materials.PlayerMetal, shield).transform.localRotation = Quaternion.Euler(90f, 0f, 4f);
         }
 
-        private static void CreatePlayerNameplate(Transform visualRoot, HostedPlayerSave playerSave)
+        private static void CreatePlayerNameplate(Transform visualRoot, HostedPlayerSave playerSave, float localYaw = 0f)
         {
             GameObject plate = new GameObject("Player Nameplate");
             plate.transform.SetParent(visualRoot, false);
             plate.transform.localPosition = new Vector3(0f, 2.06f, 0f);
+            plate.transform.localRotation = Quaternion.Euler(0f, localYaw, 0f);
             TextMesh text = plate.AddComponent<TextMesh>();
             text.text = PlayerDisplayName(playerSave);
             text.anchor = TextAnchor.MiddleCenter;
@@ -3591,6 +3600,11 @@ namespace Psycho.Editor
 
         private static void AddWind(GameObject target, float amplitude, float speed, float gustStrength, float spatialFrequency = 1.4f, float turbulence = 0.045f)
         {
+            if (windAnimatedComponentsAdded >= MaxWindAnimatedComponents)
+            {
+                return;
+            }
+
             WindAnimatedFoliage wind = target.AddComponent<WindAnimatedFoliage>();
             SerializedObject windObject = new SerializedObject(wind);
             SetSerializedFloat(windObject, "amplitude", amplitude);
@@ -3599,6 +3613,7 @@ namespace Psycho.Editor
             SetSerializedFloat(windObject, "spatialFrequency", spatialFrequency);
             SetSerializedFloat(windObject, "turbulence", turbulence);
             windObject.ApplyModifiedPropertiesWithoutUndo();
+            windAnimatedComponentsAdded++;
         }
 
         private static void RemoveCollider(GameObject target)

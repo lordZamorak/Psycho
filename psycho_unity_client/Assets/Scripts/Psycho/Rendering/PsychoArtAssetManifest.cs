@@ -20,6 +20,13 @@ namespace Psycho.Rendering
         [SerializeField] private PsychoArtAssetEntry[] entries = Array.Empty<PsychoArtAssetEntry>();
 
         public PsychoArtAssetEntry[] Entries => entries ?? Array.Empty<PsychoArtAssetEntry>();
+
+#if UNITY_EDITOR
+        public void SetEntriesForEditor(PsychoArtAssetEntry[] newEntries)
+        {
+            entries = newEntries ?? Array.Empty<PsychoArtAssetEntry>();
+        }
+#endif
     }
 
     [Serializable]
@@ -31,6 +38,7 @@ namespace Psycho.Rendering
         public int[] ids = Array.Empty<int>();
         public string visualClass;
         public string[] nameFragments = Array.Empty<string>();
+        public bool matchAny;
         public float targetHeight = 0f;
         public Vector3 localPosition = Vector3.zero;
         public Vector3 localEuler = Vector3.zero;
@@ -43,7 +51,7 @@ namespace Psycho.Rendering
 
         public bool MatchesPlayer(string playerName)
         {
-            return kind == PsychoArtAssetKind.Player && MatchesName(playerName);
+            return kind == PsychoArtAssetKind.Player && (matchAny || MatchesName(playerName));
         }
 
         public bool MatchesNpc(PsychoMirrorNpc npc)
@@ -53,7 +61,7 @@ namespace Psycho.Rendering
                 return false;
             }
 
-            return MatchesId(npc.id) || MatchesVisualClass(npc.visualClass) || MatchesName(npc.name);
+            return matchAny || MatchesId(npc.id) || MatchesVisualClass(npc.visualClass) || MatchesName(npc.name);
         }
 
         public bool MatchesObject(PsychoMirrorObject worldObject)
@@ -63,7 +71,7 @@ namespace Psycho.Rendering
                 return false;
             }
 
-            return MatchesId(worldObject.id) || MatchesVisualClass(worldObject.visualClass) || MatchesName(worldObject.name);
+            return matchAny || MatchesId(worldObject.id) || MatchesVisualClass(worldObject.visualClass) || MatchesName(worldObject.name);
         }
 
         public bool MatchesItem(PsychoMirrorItem item)
@@ -73,7 +81,7 @@ namespace Psycho.Rendering
                 return false;
             }
 
-            return MatchesId(item.id) || MatchesVisualClass(item.visualClass) || MatchesName(item.name);
+            return matchAny || MatchesId(item.id) || MatchesVisualClass(item.visualClass) || MatchesName(item.name);
         }
 
         private bool MatchesId(int id)
