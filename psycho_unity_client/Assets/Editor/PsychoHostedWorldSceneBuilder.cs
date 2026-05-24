@@ -31,6 +31,17 @@ namespace Psycho.Editor
         private const int GroundCoverPatchesPerAnchor = 24;
         private const int MaxWindAnimatedComponents = 1200;
         private const float DogSizedImpHeight = 0.62f;
+        private const float RegularRatHeight = 0.18f;
+        private const float GiantRatHeight = 0.36f;
+        private const float ChickenHeight = 0.38f;
+        private const float DuckHeight = 0.28f;
+        private const float DogHeight = 0.58f;
+        private const float PigHeight = 0.46f;
+        private const float PigletHeight = 0.28f;
+        private const float SheepHeight = 0.58f;
+        private const float CowHeight = 0.95f;
+        private const float CamelHeight = 1.25f;
+        private const float YakHeight = 1.05f;
         private const float CharacterNormalSmoothingTolerance = 0.00075f;
         private const float TileScale = 0.72f;
         private const float HeightScale = 1f / 96f;
@@ -293,6 +304,37 @@ namespace Psycho.Editor
         public static void RenderHostedImpScalePreviewBatch()
         {
             RenderHostedImpScalePreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted Rat Scale Preview")]
+        public static void RenderHostedRatScalePreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject rat = FindHostedNpcByNameFragment(" - Rat (");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (rat == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both a Rat NPC and camera.");
+            }
+
+            Bounds bounds = BuildObjectPreviewBounds(rat.transform);
+            Vector3 focus = bounds.center + Vector3.up * 0.04f;
+            camera.transform.position = focus + new Vector3(-0.95f, 0.44f, -1.08f);
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 27f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-rat-scale-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1200, 900);
+        }
+
+        public static void RenderHostedRatScalePreviewBatch()
+        {
+            RenderHostedRatScalePreview();
         }
 
         [MenuItem("Psycho/Render Hosted Grand Exchange Preview")]
@@ -1229,12 +1271,154 @@ namespace Psycho.Editor
             }
 
             float declaredSize = Mathf.Max(1f, Mathf.Max(npc.size, model.size));
-            float targetHeight = ShouldUseDogSizedImpScale(npc)
-                ? DogSizedImpHeight
-                : Mathf.Clamp(1.72f + (declaredSize - 1f) * 0.58f, 1.35f, 5.8f);
+            float targetHeight;
+            if (TryGetSmallAnimalNpcHeight(npc, out float smallAnimalHeight))
+            {
+                targetHeight = smallAnimalHeight;
+            }
+            else if (ShouldUseDogSizedImpScale(npc))
+            {
+                targetHeight = DogSizedImpHeight;
+            }
+            else
+            {
+                targetHeight = Mathf.Clamp(1.72f + (declaredSize - 1f) * 0.58f, 1.35f, 5.8f);
+            }
+
             float scale = targetHeight / bounds.size.y;
             modelRoot.localScale = Vector3.one * scale;
             modelRoot.localPosition = new Vector3(-bounds.center.x * scale, -bounds.min.y * scale, -bounds.center.z * scale);
+        }
+
+        private static bool TryGetSmallAnimalNpcHeight(PsychoMirrorNpc npc, out float targetHeight)
+        {
+            targetHeight = 0f;
+            if (npc == null || string.IsNullOrWhiteSpace(npc.name))
+            {
+                return false;
+            }
+
+            string name = npc.name.Trim().ToLowerInvariant();
+            if (name.Contains("rat burgiss"))
+            {
+                return false;
+            }
+
+            if (HasNpcNameToken(name, "rat") || HasNpcNameToken(name, "rats"))
+            {
+                targetHeight = IsLargerRatVariant(name) ? GiantRatHeight : RegularRatHeight;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "duckling"))
+            {
+                targetHeight = 0.20f;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "duck"))
+            {
+                targetHeight = DuckHeight;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "chicken") || HasNpcNameToken(name, "rooster") || HasNpcNameToken(name, "hen"))
+            {
+                targetHeight = ChickenHeight;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "piglet"))
+            {
+                targetHeight = PigletHeight;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "pig"))
+            {
+                targetHeight = PigHeight;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "puppy"))
+            {
+                targetHeight = 0.34f;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "dog") || HasNpcNameToken(name, "sheepdog"))
+            {
+                targetHeight = name.Contains("terror") ? 0.85f : DogHeight;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "calf"))
+            {
+                targetHeight = 0.70f;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "cow") || HasNpcNameToken(name, "bull"))
+            {
+                targetHeight = CowHeight;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "sheep") || HasNpcNameToken(name, "lamb"))
+            {
+                targetHeight = SheepHeight;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "camel"))
+            {
+                targetHeight = CamelHeight;
+                return true;
+            }
+
+            if (HasNpcNameToken(name, "yak"))
+            {
+                targetHeight = YakHeight;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool IsLargerRatVariant(string name)
+        {
+            return HasNpcNameToken(name, "giant")
+                || HasNpcNameToken(name, "dungeon")
+                || HasNpcNameToken(name, "crypt")
+                || HasNpcNameToken(name, "brine")
+                || HasNpcNameToken(name, "zombie")
+                || HasNpcNameToken(name, "albino")
+                || HasNpcNameToken(name, "king")
+                || HasNpcNameToken(name, "hell")
+                || HasNpcNameToken(name, "warped")
+                || HasNpcNameToken(name, "corrupted")
+                || HasNpcNameToken(name, "crystalline")
+                || HasNpcNameToken(name, "blessed")
+                || HasNpcNameToken(name, "angry");
+        }
+
+        private static bool HasNpcNameToken(string name, string token)
+        {
+            int index = name.IndexOf(token, StringComparison.OrdinalIgnoreCase);
+            while (index >= 0)
+            {
+                bool leftBoundary = index == 0 || !char.IsLetterOrDigit(name[index - 1]);
+                int rightIndex = index + token.Length;
+                bool rightBoundary = rightIndex >= name.Length || !char.IsLetterOrDigit(name[rightIndex]);
+                if (leftBoundary && rightBoundary)
+                {
+                    return true;
+                }
+
+                index = name.IndexOf(token, index + 1, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return false;
         }
 
         private static bool ShouldUseDogSizedImpScale(PsychoMirrorNpc npc)
