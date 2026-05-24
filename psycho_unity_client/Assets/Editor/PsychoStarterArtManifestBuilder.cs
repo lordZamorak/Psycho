@@ -295,6 +295,78 @@ namespace Psycho.Editor
             RenderStarterCreaturePreview();
         }
 
+        [MenuItem("Psycho/Art Pipeline/Render Starter Humanoid Preview")]
+        public static void RenderStarterHumanoidPreview()
+        {
+            if (!File.Exists($"{PrefabRoot}/Warrior_Player.prefab"))
+            {
+                BuildStarterManifest();
+            }
+
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+
+            GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            ground.name = "Humanoid Preview Ground";
+            ground.transform.localScale = new Vector3(2.4f, 1f, 1.0f);
+            Renderer groundRenderer = ground.GetComponent<Renderer>();
+            groundRenderer.sharedMaterial = new Material(Shader.Find("Standard"))
+            {
+                color = new Color(0.20f, 0.23f, 0.20f)
+            };
+
+            GameObject lightRoot = new GameObject("Humanoid Preview Key Light");
+            Light keyLight = lightRoot.AddComponent<Light>();
+            keyLight.type = LightType.Directional;
+            keyLight.intensity = 1.18f;
+            keyLight.color = new Color(1f, 0.92f, 0.82f);
+            lightRoot.transform.rotation = Quaternion.Euler(44f, -32f, 0f);
+
+            string[] humanoidPrefabs =
+            {
+                "Warrior_Player", "Monk_Citizen", "Ranger_Citizen", "Wizard_Citizen",
+                "Rogue_Merchant", "Cleric_Banker", "Rogue_Undead", "Rogue_Goblin", "Warrior_Dwarf"
+            };
+
+            float startX = -4.25f;
+            for (int i = 0; i < humanoidPrefabs.Length; i++)
+            {
+                string prefabName = humanoidPrefabs[i];
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabRoot}/{prefabName}.prefab");
+                if (prefab == null)
+                {
+                    Debug.LogWarning($"Humanoid preview prefab missing: {prefabName}");
+                    continue;
+                }
+
+                GameObject instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                if (instance == null)
+                {
+                    continue;
+                }
+
+                instance.name = prefabName;
+                instance.transform.position = new Vector3(startX + i * 1.05f, 0f, 0f);
+                instance.transform.rotation = Quaternion.Euler(0f, 158f, 0f);
+            }
+
+            GameObject cameraRoot = new GameObject("Humanoid Preview Camera");
+            Camera camera = cameraRoot.AddComponent<Camera>();
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color(0.075f, 0.090f, 0.10f);
+            camera.orthographic = true;
+            camera.orthographicSize = 1.55f;
+            camera.transform.position = new Vector3(0.05f, 1.43f, -6.1f);
+            camera.transform.LookAt(new Vector3(0.05f, 0.78f, 0f));
+
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-starter-humanoid-preview.png"));
+            RenderPreviewCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderStarterHumanoidPreviewBatch()
+        {
+            RenderStarterHumanoidPreview();
+        }
+
         private static List<PsychoArtAssetEntry> BuildManifestEntries(Dictionary<string, GameObject> prefabs)
         {
             List<PsychoArtAssetEntry> entries = new List<PsychoArtAssetEntry>();
@@ -670,7 +742,7 @@ namespace Psycho.Editor
             UnityEngine.Object.DestroyImmediate(capture);
             target.Release();
             UnityEngine.Object.DestroyImmediate(target);
-            Debug.Log($"Rendered starter creature preview to {outputPath}");
+            Debug.Log($"Rendered starter art preview to {outputPath}");
         }
 
         private static void AddMeshPart(Transform root, string name, Mesh mesh, Material material, Vector3 localPosition, Quaternion localRotation, Vector3 localScale)

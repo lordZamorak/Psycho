@@ -1,0 +1,4 @@
+Quaternius RPG Characters
+Source: https://quaternius.com/packs/rpgcharacters.html
+License: Creative Commons CC0 1.0 Universal (public domain dedication)
+Imported into Psycho for starter player and humanoid NPC visual replacements.

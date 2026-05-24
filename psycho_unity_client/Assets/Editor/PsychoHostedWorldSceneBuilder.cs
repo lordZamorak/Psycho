@@ -2721,7 +2721,7 @@ namespace Psycho.Editor
             if (PsychoArtAssetResolver.TryInstantiatePlayer(PlayerDisplayName(playerSave), parent, out GameObject artPlayer))
             {
                 artPlayer.name = "Psycho Hero Art Prefab";
-                CreatePlayerNameplate(artPlayer.transform, playerSave);
+                BuildResolvedHeroGearOverlay(parent, materials, playerSave);
                 Debug.Log($"Hosted player visual uses art-pipeline prefab for {PlayerDisplayName(playerSave)}.");
                 return;
             }
@@ -2771,6 +2771,24 @@ namespace Psycho.Editor
 
             CreatePlayerNameplate(visualRoot.transform, playerSave);
             Debug.Log($"Hosted player visual uses original Psycho hero art for {PlayerDisplayName(playerSave)}; Java equipment slots are ignored in the Unity visual preview.");
+        }
+
+        private static void BuildResolvedHeroGearOverlay(Transform parent, HostedMaterials materials, HostedPlayerSave playerSave)
+        {
+            GameObject overlay = new GameObject("Psycho Hero Gear Overlay");
+            overlay.transform.SetParent(parent, false);
+
+            PsychoMirrorItem heroCape = CreateHostedHeroItem("Psycho Highland Cloak", "Cape", "Cloth");
+            PsychoMirrorItem heroAmulet = CreateHostedHeroItem("Psycho Dawn Crystal Amulet", "Amulet", "Crystal");
+            PsychoMirrorItem heroBlade = CreateHostedHeroItem("Psycho Frost Runeblade", "TwoHandedWeapon", "Metal");
+            PsychoMirrorItem heroShield = CreateHostedHeroItem("Psycho Rune-Kite Ward", "Shield", "Metal");
+
+            CreateHighlandFurMantle(overlay.transform, materials);
+            CreatePlayerAmulet(overlay.transform, heroAmulet, materials);
+            CreateCapePanel(overlay.transform, materials.PlayerCloth, materials, heroCape);
+            CreatePsychoRuneblade(overlay.transform, materials, heroBlade);
+            CreatePsychoRuneKiteShield(overlay.transform, materials, heroShield);
+            CreatePlayerNameplate(overlay.transform, playerSave);
         }
 
         private static PsychoMirrorItem CreateHostedHeroItem(string name, string visualClass, string materialClass)
