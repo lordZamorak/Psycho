@@ -28,6 +28,9 @@ namespace Psycho.Editor
         private const int MaxModelsPerNpc = 12;
         private const int MaxNpcSpawns = 460;
         private const int HostedVillageNpcBaseId = 900000;
+        private const int HostedWildlifeNpcBaseId = 910000;
+        private const int HostedGiantNpcBaseId = 930000;
+        private const int HostedMammothNpcBaseId = 940000;
         private const bool UseFlatHostedVisualBase = true;
         private const bool PlaceCacheObjectsOnFlatBase = false;
         private const bool PlaceCacheNpcsOnFlatBase = false;
@@ -65,6 +68,10 @@ namespace Psycho.Editor
         private const int EquipmentFeetSlot = 10;
         private const string GrassMaterialPath = GeneratedRoot + "/Psycho_Hosted_Grass.mat";
         private const string FlowerMaterialPath = GeneratedRoot + "/Psycho_Hosted_Flowers.mat";
+        private const string HerbMaterialPath = GeneratedRoot + "/Psycho_Hosted_Herbs.mat";
+        private const string WildflowerBlueMaterialPath = GeneratedRoot + "/Psycho_Hosted_Wildflower_Blue.mat";
+        private const string WildflowerPurpleMaterialPath = GeneratedRoot + "/Psycho_Hosted_Wildflower_Purple.mat";
+        private const string WildflowerGoldMaterialPath = GeneratedRoot + "/Psycho_Hosted_Wildflower_Gold.mat";
         private const string ReedMaterialPath = GeneratedRoot + "/Psycho_Hosted_Reeds.mat";
         private const string WaterMaterialPath = GeneratedRoot + "/Psycho_Hosted_Water.mat";
         private const string HillMaterialPath = GeneratedRoot + "/Psycho_Hosted_Hills.mat";
@@ -96,6 +103,10 @@ namespace Psycho.Editor
         private const string LandmarkRoadMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Road.mat";
         private const string LandmarkBannerMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Banner.mat";
         private const string LandmarkGlassMaterialPath = GeneratedRoot + "/Psycho_Hosted_Landmark_Glass.mat";
+        private const string WildlifeHideMaterialPath = GeneratedRoot + "/Psycho_Hosted_Wildlife_Hide.mat";
+        private const string MammothFurMaterialPath = GeneratedRoot + "/Psycho_Hosted_Mammoth_Fur.mat";
+        private const string MammothTuskMaterialPath = GeneratedRoot + "/Psycho_Hosted_Mammoth_Tusk.mat";
+        private const string GiantSkinMaterialPath = GeneratedRoot + "/Psycho_Hosted_Giant_Skin.mat";
         private const string FallbackMaterialPath = GeneratedRoot + "/Psycho_Hosted_Fallback.mat";
         private const bool EnableHostedJCacheScenePlacement = false;
         private static readonly bool EnableHostedRewardModelShowcases = false;
@@ -149,7 +160,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, flat terrain regions {context.Report.flatBaseTerrainRegions}, objects {context.Report.placedObjects}, clean-base skipped cache objects {context.Report.cleanBaseSkippedCacheObjects}, NPCs {context.Report.npcSpawns}, clean-base skipped cache NPCs {context.Report.cleanBaseSkippedCacheNpcs}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, settlements {context.Report.hostedSettlements}, villages {context.Report.hostedVillages}, towns {context.Report.hostedTowns}, cities {context.Report.hostedCities}, settlement NPCs {context.Report.hostedSettlementNpcs}, village-cleared trees {context.Report.villageClearedObjects}, biome regions {context.Report.seasonalBiomeRegions}, mountains {context.Report.mountainMassifs}, hills {context.Report.hillMounds}, dense forest trees {context.Report.denseForestTrees}, snow patches {context.Report.snowPatches}, seasonal dressing {context.Report.seasonalDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, flat terrain regions {context.Report.flatBaseTerrainRegions}, objects {context.Report.placedObjects}, clean-base skipped cache objects {context.Report.cleanBaseSkippedCacheObjects}, NPCs {context.Report.npcSpawns}, clean-base skipped cache NPCs {context.Report.cleanBaseSkippedCacheNpcs}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, settlements {context.Report.hostedSettlements}, villages {context.Report.hostedVillages}, towns {context.Report.hostedTowns}, cities {context.Report.hostedCities}, settlement NPCs {context.Report.hostedSettlementNpcs}, village-cleared trees {context.Report.villageClearedObjects}, biome regions {context.Report.seasonalBiomeRegions}, mountains {context.Report.mountainMassifs}, hills {context.Report.hillMounds}, dense forest trees {context.Report.denseForestTrees}, snow patches {context.Report.snowPatches}, seasonal dressing {context.Report.seasonalDressingObjects}, lush meadow patches {context.Report.lushMeadowPatches}, wildflower clusters {context.Report.wildflowerClusters}, herb clusters {context.Report.herbClusters}, wildlife NPCs {context.Report.wildlifeNpcs}, giant camps {context.Report.giantCamps}, giants {context.Report.giants}, mammoth companions {context.Report.mammothCompanions}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -482,6 +493,74 @@ namespace Psycho.Editor
         public static void RenderHostedSeasonalBiomePreviewBatch()
         {
             RenderHostedSeasonalBiomePreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted Lush Meadow Preview")]
+        public static void RenderHostedLushMeadowPreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject meadow = GameObject.Find("Edgeville Player Start Lush Field")
+                ?? GameObject.Find("Falador Lush Wildflower Field")
+                ?? GameObject.Find("Draynor Herb Meadow")
+                ?? GameObject.Find("River Lum Wildflower Bank");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (meadow == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both a lush meadow field and camera.");
+            }
+
+            Vector3 focus = meadow.transform.position + new Vector3(0.65f, 0.42f, -0.35f);
+            camera.transform.position = focus + new Vector3(5.8f, 1.95f, -6.7f);
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 32f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-lush-meadow-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedLushMeadowPreviewBatch()
+        {
+            RenderHostedLushMeadowPreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted Giant Mammoth Preview")]
+        public static void RenderHostedGiantMammothPreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject camp = GameObject.Find("Frostpine Giant Camp")
+                ?? GameObject.Find("Autumnreach Giant Camp")
+                ?? GameObject.Find("Highland Lake Giant Camp");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (camp == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both a giant camp and camera.");
+            }
+
+            Bounds bounds = BuildObjectPreviewBounds(camp.transform);
+            Vector3 focus = bounds.center + Vector3.up * 1.75f;
+            float viewSize = Mathf.Max(bounds.size.x, bounds.size.z, bounds.size.y * 1.8f);
+            float cameraDistance = Mathf.Clamp(viewSize * 0.64f, 13f, 34f);
+            camera.transform.position = focus + new Vector3(-0.58f, 0.30f, -0.76f).normalized * cameraDistance;
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 36f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-giant-mammoth-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedGiantMammothPreviewBatch()
+        {
+            RenderHostedGiantMammothPreview();
         }
 
         private static Bounds BuildVillagePreviewBounds(GameObject village)
@@ -1727,6 +1806,8 @@ namespace Psycho.Editor
             BuildWorldLandmarks(context, materials);
             BuildHostedVillageNetwork(context, materials);
             BuildRegionalBiomeDressing(context, materials);
+            BuildLushWildflowerMeadows(context, materials);
+            BuildWildlifeAndGiantEcology(context, materials);
             BuildHighlandForestDressing(context, materials);
             BuildRockOutcropDressing(context, materials);
             BuildHighlandCliffDressing(context, materials);
@@ -2513,6 +2594,581 @@ namespace Psycho.Editor
             }
 
             return new[] { "Talk-to", "Examine" };
+        }
+
+        private static void BuildLushWildflowerMeadows(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Lush Wildflower Meadow Ecology");
+            HostedMeadowSpec[] meadows = CreateHostedMeadowSpecs();
+            for (int i = 0; i < meadows.Length; i++)
+            {
+                CreateLushWildflowerMeadow(root.transform, context, materials, meadows[i], i);
+            }
+        }
+
+        private static HostedMeadowSpec[] CreateHostedMeadowSpecs()
+        {
+            return new[]
+            {
+                new HostedMeadowSpec("Edgeville Player Start Lush Field", 3087, 3491, 18f, 42, 64, 34),
+                new HostedMeadowSpec("Falador Lush Wildflower Field", 2968, 3378, 25f, 42, 58, 32),
+                new HostedMeadowSpec("Draynor Herb Meadow", 3078, 3270, 23f, 36, 42, 38),
+                new HostedMeadowSpec("River Lum Wildflower Bank", 3144, 3478, 21f, 34, 48, 26),
+                new HostedMeadowSpec("South Meadow Village Flowering Common", 3192, 3298, 22f, 34, 44, 30),
+                new HostedMeadowSpec("Western Autumn Herb Glade", 2922, 3448, 24f, 38, 36, 34),
+                new HostedMeadowSpec("North Edgeville Wayside Meadow", 3082, 3516, 20f, 30, 36, 24),
+                new HostedMeadowSpec("Highland Lake Alpine Flower Shelf", 3292, 3516, 19f, 28, 30, 28)
+            };
+        }
+
+        private static void CreateLushWildflowerMeadow(Transform parent, HostedBuildContext context, HostedMaterials materials, HostedMeadowSpec meadow, int meadowIndex)
+        {
+            if (!TryFindNearbyNaturalAnchor(context, meadow.WorldX, meadow.WorldY, 24, out Vector3 anchor))
+            {
+                return;
+            }
+
+            GameObject meadowRoot = new GameObject(meadow.Name);
+            meadowRoot.transform.SetParent(parent, false);
+            meadowRoot.transform.position = anchor;
+
+            int patches = 0;
+            int flowers = 0;
+            int herbs = 0;
+            for (int i = 0; i < meadow.PatchCount; i++)
+            {
+                int seed = 122000 + meadowIndex * 3571 + i * 131;
+                if (!TryGetRadialNaturalPosition(context, meadow.WorldX, meadow.WorldY, meadow.Radius, seed, 0.76f, out int worldX, out int worldY, out Vector3 position))
+                {
+                    continue;
+                }
+
+                if (IsHostedSettlementCoreTile(worldX, worldY))
+                {
+                    continue;
+                }
+
+                float roll = Deterministic01(seed + 19);
+                Material material = roll > 0.72f
+                    ? materials.Flowers
+                    : roll > 0.48f
+                        ? materials.Herbs
+                        : materials.Grass;
+                float width = Mathf.Lerp(2.2f, 6.8f, Deterministic01(seed + 23));
+                float depth = Mathf.Lerp(1.4f, 4.8f, Deterministic01(seed + 29));
+                GameObject patch = CreateGroundCoverPatch($"{meadow.Name} Lush Ground Blend {patches + 1}", position + Vector3.up * (0.018f + patches * 0.00008f), width, depth, material, seed);
+                patch.transform.SetParent(meadowRoot.transform, true);
+                patches++;
+            }
+
+            for (int i = 0; i < meadow.WildflowerCount; i++)
+            {
+                int seed = 132000 + meadowIndex * 4027 + i * 149;
+                if (!TryGetRadialNaturalPosition(context, meadow.WorldX, meadow.WorldY, meadow.Radius * 0.92f, seed, 0.82f, out int worldX, out int worldY, out Vector3 position))
+                {
+                    continue;
+                }
+
+                if (IsHostedSettlementCoreTile(worldX, worldY))
+                {
+                    continue;
+                }
+
+                Material petalMaterial = WildflowerMaterialForSeed(materials, seed);
+                float radius = Mathf.Lerp(0.34f, 0.86f, Deterministic01(seed + 31));
+                float height = Mathf.Lerp(0.16f, 0.34f, Deterministic01(seed + 37));
+                CreateWildflowerCluster(meadowRoot.transform, $"{meadow.Name} Wildflower Cluster {flowers + 1}", position + Vector3.up * 0.052f, radius, height, petalMaterial, seed);
+                flowers++;
+            }
+
+            for (int i = 0; i < meadow.HerbCount; i++)
+            {
+                int seed = 142000 + meadowIndex * 3769 + i * 157;
+                if (!TryGetRadialNaturalPosition(context, meadow.WorldX, meadow.WorldY, meadow.Radius * 0.88f, seed, 0.70f, out int worldX, out int worldY, out Vector3 position))
+                {
+                    continue;
+                }
+
+                if (IsHostedSettlementCoreTile(worldX, worldY))
+                {
+                    continue;
+                }
+
+                float radius = Mathf.Lerp(0.30f, 0.74f, Deterministic01(seed + 41));
+                float height = Mathf.Lerp(0.18f, 0.42f, Deterministic01(seed + 43));
+                CreateHerbCluster(meadowRoot.transform, $"{meadow.Name} Herb Cluster {herbs + 1}", position + Vector3.up * 0.048f, radius, height, materials.Herbs, seed);
+                herbs++;
+            }
+
+            context.Report.lushMeadowPatches += patches;
+            context.Report.wildflowerClusters += flowers;
+            context.Report.herbClusters += herbs;
+            context.Report.groundCoverPatches += patches;
+            context.Report.seasonalDressingObjects += patches + flowers + herbs;
+            context.Report.windAnimatedObjects += flowers + herbs;
+        }
+
+        private static Material WildflowerMaterialForSeed(HostedMaterials materials, int seed)
+        {
+            float roll = Deterministic01(seed + 11);
+            if (roll > 0.66f)
+            {
+                return materials.WildflowerBlue;
+            }
+
+            if (roll > 0.33f)
+            {
+                return materials.WildflowerPurple;
+            }
+
+            return materials.WildflowerGold;
+        }
+
+        private static bool TryGetRadialNaturalPosition(
+            HostedBuildContext context,
+            int anchorX,
+            int anchorY,
+            float radius,
+            int seed,
+            float radiusPower,
+            out int worldX,
+            out int worldY,
+            out Vector3 position)
+        {
+            float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+            float distance = Mathf.Pow(Deterministic01(seed + 5), radiusPower) * radius;
+            worldX = anchorX + Mathf.RoundToInt(Mathf.Cos(angle) * distance);
+            worldY = anchorY + Mathf.RoundToInt(Mathf.Sin(angle) * distance);
+            if (!IsWorldTileInsideHostedBounds(worldX, worldY))
+            {
+                position = default;
+                return false;
+            }
+
+            return TryGetNaturalDressingPosition(context, worldX, worldY, seed, out position);
+        }
+
+        private static bool IsHostedSettlementCoreTile(int worldX, int worldY)
+        {
+            HostedVillageSpec[] villages = CreateHostedVillageSpecs();
+            for (int i = 0; i < villages.Length; i++)
+            {
+                HostedVillageSpec village = villages[i];
+                float dx = worldX - village.WorldX;
+                float dy = worldY - village.WorldY;
+                float tierRadius = village.Tier == HostedSettlementTier.City
+                    ? 10.5f
+                    : village.Tier == HostedSettlementTier.Town
+                        ? 7.4f
+                        : 5.2f;
+                float radius = tierRadius + village.Scale * village.HouseCount * 0.34f;
+                if (dx * dx + dy * dy <= radius * radius)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static GameObject CreateWildflowerCluster(Transform parent, string name, Vector3 position, float radius, float height, Material material, int seed)
+        {
+            int blossomCount = 6 + Mathf.FloorToInt(Deterministic01(seed + 17) * 7f);
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            Vector3[] vertices = new Vector3[blossomCount * 5];
+            int[] triangles = new int[blossomCount * 12];
+            for (int i = 0; i < blossomCount; i++)
+            {
+                float angle = Deterministic01(seed + i * 31) * Mathf.PI * 2f;
+                float distance = Mathf.Sqrt(Deterministic01(seed + i * 37)) * radius;
+                Vector3 center = new Vector3(Mathf.Cos(angle) * distance, height * (0.42f + Deterministic01(seed + i * 41) * 0.40f), Mathf.Sin(angle) * distance);
+                float yaw = Deterministic01(seed + i * 43) * Mathf.PI * 2f;
+                float petal = Mathf.Lerp(0.026f, 0.048f, Deterministic01(seed + i * 47));
+                Vector3 axisA = new Vector3(Mathf.Cos(yaw), 0f, Mathf.Sin(yaw)) * petal;
+                Vector3 axisB = Vector3.up * petal * 1.22f;
+                int v = i * 5;
+                vertices[v] = center;
+                vertices[v + 1] = center + axisB;
+                vertices[v + 2] = center + axisA;
+                vertices[v + 3] = center - axisB * 0.52f;
+                vertices[v + 4] = center - axisA;
+                int t = i * 12;
+                triangles[t] = v;
+                triangles[t + 1] = v + 1;
+                triangles[t + 2] = v + 2;
+                triangles[t + 3] = v;
+                triangles[t + 4] = v + 2;
+                triangles[t + 5] = v + 3;
+                triangles[t + 6] = v;
+                triangles[t + 7] = v + 3;
+                triangles[t + 8] = v + 4;
+                triangles[t + 9] = v;
+                triangles[t + 10] = v + 4;
+                triangles[t + 11] = v + 1;
+            }
+
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject cluster = new GameObject(name);
+            cluster.transform.SetParent(parent, true);
+            cluster.transform.position = position;
+            MeshFilter filter = cluster.AddComponent<MeshFilter>();
+            filter.sharedMesh = mesh;
+            MeshRenderer renderer = cluster.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            AddWind(cluster, 0.035f, 1.45f, 0.22f, 1.05f, 0.026f);
+            return cluster;
+        }
+
+        private static GameObject CreateHerbCluster(Transform parent, string name, Vector3 position, float radius, float height, Material material, int seed)
+        {
+            int leafCount = 7 + Mathf.FloorToInt(Deterministic01(seed + 13) * 8f);
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            Vector3[] vertices = new Vector3[leafCount * 4];
+            int[] triangles = new int[leafCount * 6];
+            for (int i = 0; i < leafCount; i++)
+            {
+                float angle = Deterministic01(seed + i * 19) * Mathf.PI * 2f;
+                float distance = Deterministic01(seed + i * 23) * radius;
+                Vector3 root = new Vector3(Mathf.Cos(angle) * distance, 0f, Mathf.Sin(angle) * distance);
+                Vector3 side = new Vector3(-Mathf.Sin(angle), 0f, Mathf.Cos(angle)) * Mathf.Lerp(0.024f, 0.052f, Deterministic01(seed + i * 29));
+                Vector3 lean = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * height * Mathf.Lerp(0.10f, 0.28f, Deterministic01(seed + i * 31));
+                Vector3 tip = root + Vector3.up * (height * Mathf.Lerp(0.58f, 1.0f, Deterministic01(seed + i * 37))) + lean;
+                int v = i * 4;
+                vertices[v] = root - side;
+                vertices[v + 1] = root + side;
+                vertices[v + 2] = tip - side * 0.18f;
+                vertices[v + 3] = tip + side * 0.18f;
+                int t = i * 6;
+                triangles[t] = v;
+                triangles[t + 1] = v + 2;
+                triangles[t + 2] = v + 1;
+                triangles[t + 3] = v + 1;
+                triangles[t + 4] = v + 2;
+                triangles[t + 5] = v + 3;
+            }
+
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            GameObject cluster = new GameObject(name);
+            cluster.transform.SetParent(parent, true);
+            cluster.transform.position = position;
+            cluster.transform.rotation = Quaternion.Euler(0f, Deterministic01(seed + 59) * 360f, 0f);
+            MeshFilter filter = cluster.AddComponent<MeshFilter>();
+            filter.sharedMesh = mesh;
+            MeshRenderer renderer = cluster.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            AddWind(cluster, 0.045f, 1.18f, 0.26f, 0.92f, 0.028f);
+            return cluster;
+        }
+
+        private static void BuildWildlifeAndGiantEcology(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Hosted Wildlife And Giant Ecology");
+            BuildWildlifeHerds(root.transform, context, materials);
+            BuildGiantMammothCamps(root.transform, context, materials);
+        }
+
+        private static void BuildWildlifeHerds(Transform parent, HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Hosted Wildlife Herds");
+            root.transform.SetParent(parent, false);
+            HostedWildlifeSpec[] specs =
+            {
+                new HostedWildlifeSpec("Falador Meadow Deer", "Deer", 2970, 3388, 9, 20f),
+                new HostedWildlifeSpec("Draynor Meadow Hares", "Hare", 3070, 3266, 12, 18f),
+                new HostedWildlifeSpec("River Lum Red Foxes", "Fox", 3148, 3468, 7, 17f),
+                new HostedWildlifeSpec("Western Autumn Stags", "Deer", 2928, 3460, 8, 22f),
+                new HostedWildlifeSpec("Highland Lake Elk", "Deer", 3298, 3524, 7, 18f),
+                new HostedWildlifeSpec("South Meadow Hares", "Hare", 3194, 3298, 12, 19f),
+                new HostedWildlifeSpec("North Pine Foxes", "Fox", 3096, 3548, 6, 18f)
+            };
+
+            int created = 0;
+            for (int group = 0; group < specs.Length; group++)
+            {
+                HostedWildlifeSpec spec = specs[group];
+                for (int i = 0; i < spec.Count; i++)
+                {
+                    int seed = 152000 + group * 2221 + i * 173;
+                    if (!TryGetRadialNaturalPosition(context, spec.WorldX, spec.WorldY, spec.Radius, seed, 0.64f, out int worldX, out int worldY, out Vector3 position))
+                    {
+                        continue;
+                    }
+
+                    if (IsHostedSettlementCoreTile(worldX, worldY))
+                    {
+                        continue;
+                    }
+
+                    GameObject wildlife = CreateProceduralWildlife(root.transform, $"{spec.Kind} {created + 1} ({spec.Name})", spec.Kind, position, Deterministic01(seed + 3) * 360f, materials, seed);
+                    PsychoInteractable interactable = wildlife.AddComponent<PsychoInteractable>();
+                    interactable.Configure(HostedWildlifeNpcBaseId + created, spec.Kind, new[] { "Observe", "Examine" });
+                    wildlife.AddComponent<PsychoGroundFollower>();
+                    ConfigureWander(wildlife, spec.Kind == "Hare" ? 2.2f : 4.8f, spec.Kind == "Hare" ? 1.55f : 1.18f, 0.55f, 0.0018f, 0.18f);
+                    created++;
+                }
+            }
+
+            context.Report.wildlifeNpcs += created;
+            context.Report.visualReplacementNpcs += created;
+        }
+
+        private static GameObject CreateProceduralWildlife(Transform parent, string name, string kind, Vector3 position, float yaw, HostedMaterials materials, int seed)
+        {
+            GameObject animal = new GameObject(name);
+            animal.transform.SetParent(parent, true);
+            animal.transform.position = position;
+            animal.transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+            GameObject visual = new GameObject($"{kind} Visual");
+            visual.transform.SetParent(animal.transform, false);
+
+            if (kind == "Hare")
+            {
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Compact Hare Body", new Vector3(0f, 0.17f, 0f), new Vector3(0.16f, 0.10f, 0.24f), materials.WildlifeHide);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Hare Chest", new Vector3(0f, 0.22f, 0.17f), new Vector3(0.13f, 0.11f, 0.12f), materials.WildlifeHide);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Hare Head", new Vector3(0f, 0.30f, 0.29f), new Vector3(0.10f, 0.09f, 0.10f), materials.WildlifeHide);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Left Hare Ear", new Vector3(-0.045f, 0.45f, 0.30f), new Vector3(0.020f, 0.12f, 0.020f), materials.WildlifeHide).transform.localRotation = Quaternion.Euler(-12f, 0f, -9f);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Right Hare Ear", new Vector3(0.045f, 0.45f, 0.30f), new Vector3(0.020f, 0.12f, 0.020f), materials.WildlifeHide).transform.localRotation = Quaternion.Euler(-12f, 0f, 9f);
+                SphereCollider collider = animal.AddComponent<SphereCollider>();
+                collider.center = new Vector3(0f, 0.22f, 0.07f);
+                collider.radius = 0.32f;
+                return animal;
+            }
+
+            if (kind == "Fox")
+            {
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Lean Fox Body", new Vector3(0f, 0.36f, 0f), new Vector3(0.16f, 0.33f, 0.16f), materials.WildlifeHide).transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Fox Head", new Vector3(0f, 0.43f, 0.41f), new Vector3(0.12f, 0.10f, 0.13f), materials.WildlifeHide);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Cube, "Fox Muzzle", new Vector3(0f, 0.40f, 0.54f), new Vector3(0.09f, 0.055f, 0.13f), materials.MammothTusk);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Fox Tail", new Vector3(0f, 0.40f, -0.47f), new Vector3(0.065f, 0.32f, 0.065f), materials.WildlifeHide).transform.localRotation = Quaternion.Euler(58f, 0f, 0f);
+                for (int leg = 0; leg < 4; leg++)
+                {
+                    float side = leg % 2 == 0 ? -1f : 1f;
+                    float z = leg < 2 ? 0.22f : -0.22f;
+                    CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, $"Fox Leg {leg + 1}", new Vector3(side * 0.10f, 0.16f, z), new Vector3(0.030f, 0.14f, 0.030f), materials.WildlifeHide);
+                }
+
+                CapsuleCollider collider = animal.AddComponent<CapsuleCollider>();
+                collider.center = new Vector3(0f, 0.36f, 0.02f);
+                collider.height = 0.78f;
+                collider.radius = 0.22f;
+                return animal;
+            }
+
+            float bodyScale = 0.92f + Deterministic01(seed + 71) * 0.20f;
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Highland Deer Body", new Vector3(0f, 0.58f, 0f), new Vector3(0.24f * bodyScale, 0.48f * bodyScale, 0.24f * bodyScale), materials.WildlifeHide).transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Deer Chest", new Vector3(0f, 0.66f, 0.34f), new Vector3(0.19f, 0.22f, 0.18f), materials.WildlifeHide);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Deer Head", new Vector3(0f, 0.96f, 0.56f), new Vector3(0.13f, 0.16f, 0.12f), materials.WildlifeHide);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Deer Neck", new Vector3(0f, 0.82f, 0.42f), new Vector3(0.070f, 0.24f, 0.070f), materials.WildlifeHide).transform.localRotation = Quaternion.Euler(-28f, 0f, 0f);
+            for (int leg = 0; leg < 4; leg++)
+            {
+                float side = leg % 2 == 0 ? -1f : 1f;
+                float z = leg < 2 ? 0.28f : -0.28f;
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, $"Deer Leg {leg + 1}", new Vector3(side * 0.14f, 0.29f, z), new Vector3(0.040f, 0.31f, 0.040f), materials.WildlifeHide);
+            }
+
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Left Antler Stem", new Vector3(-0.055f, 1.14f, 0.58f), new Vector3(0.018f, 0.14f, 0.018f), materials.MammothTusk).transform.localRotation = Quaternion.Euler(-15f, 0f, -28f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Right Antler Stem", new Vector3(0.055f, 1.14f, 0.58f), new Vector3(0.018f, 0.14f, 0.018f), materials.MammothTusk).transform.localRotation = Quaternion.Euler(-15f, 0f, 28f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Left Antler Branch", new Vector3(-0.115f, 1.20f, 0.61f), new Vector3(0.014f, 0.09f, 0.014f), materials.MammothTusk).transform.localRotation = Quaternion.Euler(10f, 0f, -58f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Right Antler Branch", new Vector3(0.115f, 1.20f, 0.61f), new Vector3(0.014f, 0.09f, 0.014f), materials.MammothTusk).transform.localRotation = Quaternion.Euler(10f, 0f, 58f);
+            CapsuleCollider deerCollider = animal.AddComponent<CapsuleCollider>();
+            deerCollider.center = new Vector3(0f, 0.58f, 0.06f);
+            deerCollider.height = 1.28f;
+            deerCollider.radius = 0.34f;
+            return animal;
+        }
+
+        private static void BuildGiantMammothCamps(Transform parent, HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Hosted Giant Mammoth Camps");
+            root.transform.SetParent(parent, false);
+            HostedGiantCampSpec[] camps =
+            {
+                new HostedGiantCampSpec("Frostpine Giant Camp", 3136, 3588, 2, 3, 18f),
+                new HostedGiantCampSpec("Autumnreach Giant Camp", 2924, 3468, 2, 2, 17f),
+                new HostedGiantCampSpec("Highland Lake Giant Camp", 3290, 3528, 2, 2, 16f),
+                new HostedGiantCampSpec("Southern Amber Giant Camp", 3180, 3268, 1, 2, 15f),
+                new HostedGiantCampSpec("Snowwood Mammoth Camp", 3320, 3606, 2, 3, 18f)
+            };
+
+            int giantCount = 0;
+            int mammothCount = 0;
+            for (int campIndex = 0; campIndex < camps.Length; campIndex++)
+            {
+                HostedGiantCampSpec camp = camps[campIndex];
+                if (!TryFindNearbyNaturalAnchor(context, camp.WorldX, camp.WorldY, 28, out Vector3 anchor))
+                {
+                    continue;
+                }
+
+                GameObject campRoot = new GameObject(camp.Name);
+                campRoot.transform.SetParent(root.transform, false);
+                campRoot.transform.position = anchor;
+                CreateGiantCampDressing(campRoot.transform, materials, camp, campIndex);
+                context.Report.giantCamps++;
+
+                List<GameObject> giants = new List<GameObject>(camp.GiantCount);
+                for (int i = 0; i < camp.GiantCount; i++)
+                {
+                    int seed = 172000 + campIndex * 3541 + i * 211;
+                    Vector3 local = CampLocalPosition(camp.Radius * 0.34f, seed);
+                    GameObject giant = CreateProceduralGiant(campRoot.transform, $"Hosted Giant {giantCount + 1} ({camp.Name})", local, Deterministic01(seed + 7) * 360f, materials, seed);
+                    PsychoInteractable interactable = giant.AddComponent<PsychoInteractable>();
+                    interactable.Configure(HostedGiantNpcBaseId + giantCount, "Giant", new[] { "Provoke", "Talk-to", "Examine" });
+                    giant.AddComponent<PsychoGroundFollower>();
+                    ConfigureWander(giant, 2.8f, 0.82f, 1.2f, 0.0020f, 0.14f);
+                    giants.Add(giant);
+                    giantCount++;
+                }
+
+                List<PsychoMammothCompanion> companions = new List<PsychoMammothCompanion>(camp.MammothCount);
+                for (int i = 0; i < camp.MammothCount; i++)
+                {
+                    int seed = 182000 + campIndex * 4021 + i * 223;
+                    Vector3 local = CampLocalPosition(camp.Radius * 0.46f, seed);
+                    GameObject mammoth = CreateProceduralMammoth(campRoot.transform, $"Mammoth Companion {mammothCount + 1} ({camp.Name})", local, Deterministic01(seed + 7) * 360f, materials, seed);
+                    PsychoInteractable interactable = mammoth.AddComponent<PsychoInteractable>();
+                    interactable.Configure(HostedMammothNpcBaseId + mammothCount, "Mammoth Companion", new[] { "Observe", "Examine" });
+                    mammoth.AddComponent<PsychoGroundFollower>();
+                    ConfigureWander(mammoth, 3.8f, 0.72f, 1.0f, 0.0014f, 0.10f);
+                    PsychoMammothCompanion companion = mammoth.AddComponent<PsychoMammothCompanion>();
+                    Transform leader = giants.Count == 0 ? campRoot.transform : giants[i % giants.Count].transform;
+                    float side = i % 2 == 0 ? -1f : 1f;
+                    companion.Configure(leader, new Vector3(side * 3.1f, 0f, -2.6f - i * 0.35f), 2.2f, 5.8f, 1.18f, 3.25f, 8.0f + Deterministic01(seed + 31) * 3.5f);
+                    companions.Add(companion);
+                    mammothCount++;
+                }
+
+                PsychoMammothCompanion[] sharedCompanions = companions.ToArray();
+                for (int i = 0; i < giants.Count; i++)
+                {
+                    PsychoGiantProvocation provocation = giants[i].AddComponent<PsychoGiantProvocation>();
+                    provocation.Configure(sharedCompanions, 0.52f + Deterministic01(192000 + campIndex * 73 + i * 17) * 0.26f, camp.Name);
+                }
+            }
+
+            context.Report.giants += giantCount;
+            context.Report.mammothCompanions += mammothCount;
+            context.Report.visualReplacementNpcs += giantCount + mammothCount;
+        }
+
+        private static Vector3 CampLocalPosition(float radius, int seed)
+        {
+            float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+            float distance = Mathf.Lerp(radius * 0.28f, radius, Deterministic01(seed + 5));
+            return new Vector3(Mathf.Cos(angle) * distance, 0.055f, Mathf.Sin(angle) * distance);
+        }
+
+        private static void CreateGiantCampDressing(Transform root, HostedMaterials materials, HostedGiantCampSpec camp, int campIndex)
+        {
+            CreateGroundCoverPatch("Trampled Giant Camp Ground", root.position + Vector3.up * 0.022f, camp.Radius * 0.95f, camp.Radius * 0.72f, materials.AutumnGround, 202000 + campIndex * 97).transform.SetParent(root, true);
+            CreateLandmarkCylinder(root, "Stone Fire Ring", new Vector3(0f, 0.10f, 0f), new Vector3(1.20f, 0.10f, 1.20f), materials.FrostStone);
+            CreateLandmarkCylinder(root, "Low Camp Ember Bed", new Vector3(0f, 0.18f, 0f), new Vector3(0.86f, 0.035f, 0.86f), materials.LandmarkBanner);
+            for (int i = 0; i < 8; i++)
+            {
+                float angle = i * Mathf.PI * 2f / 8f;
+                Vector3 rock = new Vector3(Mathf.Cos(angle) * 1.15f, 0.22f, Mathf.Sin(angle) * 1.15f);
+                CreateLandmarkDetailBox(root, $"Camp Ring Stone {i + 1}", rock, new Vector3(0.34f, 0.26f, 0.28f), materials.FrostStone).transform.localRotation = Quaternion.Euler(0f, angle * Mathf.Rad2Deg, 0f);
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                int seed = 203000 + campIndex * 191 + i * 29;
+                Vector3 log = CampLocalPosition(camp.Radius * 0.32f, seed) + Vector3.up * 0.22f;
+                GameObject bench = CreateLandmarkBox(root, $"Giant Camp Log Seat {i + 1}", log, new Vector3(1.65f, 0.28f, 0.32f), materials.TreeBark);
+                bench.transform.localRotation = Quaternion.Euler(0f, Deterministic01(seed + 7) * 360f, 0f);
+            }
+        }
+
+        private static GameObject CreateProceduralGiant(Transform parent, string name, Vector3 localPosition, float yaw, HostedMaterials materials, int seed)
+        {
+            GameObject giant = new GameObject(name);
+            giant.transform.SetParent(parent, false);
+            giant.transform.localPosition = localPosition;
+            giant.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            GameObject visual = new GameObject("Original Procedural Giant Visual");
+            visual.transform.SetParent(giant.transform, false);
+
+            float heightScale = 1.0f + Deterministic01(seed + 11) * 0.16f;
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Giant Hide Torso", new Vector3(0f, 1.95f * heightScale, 0f), new Vector3(0.50f, 0.78f * heightScale, 0.35f), materials.GiantSkin);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Heavy Chest", new Vector3(0f, 2.35f * heightScale, -0.05f), new Vector3(0.46f, 0.34f, 0.30f), materials.PlayerLeather);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Head", new Vector3(0f, 3.05f * heightScale, 0.02f), new Vector3(0.26f, 0.31f, 0.24f), materials.GiantSkin);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Cube, "Giant Brow", new Vector3(0f, 3.12f * heightScale, -0.23f), new Vector3(0.25f, 0.055f, 0.035f), materials.PlayerHair);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Beard", new Vector3(0f, 2.88f * heightScale, -0.21f), new Vector3(0.18f, 0.12f, 0.06f), materials.PlayerHair);
+            for (int sideIndex = 0; sideIndex < 2; sideIndex++)
+            {
+                float side = sideIndex == 0 ? -1f : 1f;
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, side < 0f ? "Left Giant Arm" : "Right Giant Arm", new Vector3(side * 0.52f, 2.03f * heightScale, 0.02f), new Vector3(0.105f, 0.58f * heightScale, 0.105f), materials.GiantSkin).transform.localRotation = Quaternion.Euler(0f, 0f, side * 13f);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, side < 0f ? "Left Giant Hand" : "Right Giant Hand", new Vector3(side * 0.62f, 1.32f * heightScale, 0.03f), new Vector3(0.13f, 0.11f, 0.12f), materials.GiantSkin);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, side < 0f ? "Left Giant Leg" : "Right Giant Leg", new Vector3(side * 0.20f, 0.86f * heightScale, 0.02f), new Vector3(0.14f, 0.56f * heightScale, 0.13f), materials.PlayerLeather);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Cube, side < 0f ? "Left Giant Foot" : "Right Giant Foot", new Vector3(side * 0.20f, 0.16f, -0.08f), new Vector3(0.24f, 0.13f, 0.38f), materials.PlayerLeather);
+            }
+
+            GameObject club = CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Giant Pine Club", new Vector3(0.72f, 1.72f, -0.12f), new Vector3(0.10f, 0.72f, 0.10f), materials.TreeBark);
+            club.transform.localRotation = Quaternion.Euler(0f, 0f, -24f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Club Knotted Head", new Vector3(0.88f, 2.48f, -0.14f), new Vector3(0.22f, 0.26f, 0.20f), materials.TreeBark);
+
+            CapsuleCollider collider = giant.AddComponent<CapsuleCollider>();
+            collider.center = new Vector3(0f, 1.58f * heightScale, 0f);
+            collider.height = 3.25f * heightScale;
+            collider.radius = 0.54f;
+            return giant;
+        }
+
+        private static GameObject CreateProceduralMammoth(Transform parent, string name, Vector3 localPosition, float yaw, HostedMaterials materials, int seed)
+        {
+            GameObject mammoth = new GameObject(name);
+            mammoth.transform.SetParent(parent, false);
+            mammoth.transform.localPosition = localPosition;
+            mammoth.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            GameObject visual = new GameObject("Original Procedural Mammoth Visual");
+            visual.transform.SetParent(mammoth.transform, false);
+
+            float scale = 0.96f + Deterministic01(seed + 13) * 0.14f;
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Mammoth Barrel Body", new Vector3(0f, 1.10f * scale, 0f), new Vector3(0.82f * scale, 0.56f * scale, 1.12f * scale), materials.MammothFur);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Mammoth Shoulder Hump", new Vector3(0f, 1.45f * scale, 0.28f), new Vector3(0.62f * scale, 0.42f * scale, 0.58f * scale), materials.MammothFur);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Mammoth Head", new Vector3(0f, 1.22f * scale, 1.10f * scale), new Vector3(0.44f * scale, 0.38f * scale, 0.42f * scale), materials.MammothFur);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Mammoth Trunk", new Vector3(0f, 0.78f * scale, 1.44f * scale), new Vector3(0.105f * scale, 0.46f * scale, 0.105f * scale), materials.MammothFur).transform.localRotation = Quaternion.Euler(23f, 0f, 0f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Left Mammoth Ear", new Vector3(-0.42f * scale, 1.22f * scale, 1.02f * scale), new Vector3(0.19f * scale, 0.28f * scale, 0.07f * scale), materials.MammothFur).transform.localRotation = Quaternion.Euler(0f, -18f, 8f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Right Mammoth Ear", new Vector3(0.42f * scale, 1.22f * scale, 1.02f * scale), new Vector3(0.19f * scale, 0.28f * scale, 0.07f * scale), materials.MammothFur).transform.localRotation = Quaternion.Euler(0f, 18f, -8f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Left Mammoth Tusk", new Vector3(-0.26f * scale, 0.95f * scale, 1.48f * scale), new Vector3(0.045f * scale, 0.56f * scale, 0.045f * scale), materials.MammothTusk).transform.localRotation = Quaternion.Euler(63f, 0f, -24f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Right Mammoth Tusk", new Vector3(0.26f * scale, 0.95f * scale, 1.48f * scale), new Vector3(0.045f * scale, 0.56f * scale, 0.045f * scale), materials.MammothTusk).transform.localRotation = Quaternion.Euler(63f, 0f, 24f);
+            for (int leg = 0; leg < 4; leg++)
+            {
+                float side = leg % 2 == 0 ? -1f : 1f;
+                float z = leg < 2 ? 0.54f : -0.54f;
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, $"Mammoth Pillar Leg {leg + 1}", new Vector3(side * 0.42f * scale, 0.48f * scale, z * scale), new Vector3(0.14f * scale, 0.43f * scale, 0.14f * scale), materials.MammothFur);
+            }
+
+            BoxCollider collider = mammoth.AddComponent<BoxCollider>();
+            collider.center = new Vector3(0f, 1.03f * scale, 0.18f * scale);
+            collider.size = new Vector3(1.85f * scale, 1.62f * scale, 2.72f * scale);
+            return mammoth;
+        }
+
+        private static void ConfigureWander(GameObject target, float radius, float speed, float pause, float strideBob, float strideSway)
+        {
+            PrototypeNpcWander wander = target.AddComponent<PrototypeNpcWander>();
+            SerializedObject wanderObject = new SerializedObject(wander);
+            wanderObject.FindProperty("wanderRadius").floatValue = radius;
+            wanderObject.FindProperty("speed").floatValue = speed;
+            wanderObject.FindProperty("pauseDuration").floatValue = pause;
+            SetSerializedFloat(wanderObject, "turnSpeed", 4.5f);
+            SetSerializedFloat(wanderObject, "acceleration", 2.4f);
+            SetSerializedFloat(wanderObject, "visualStrideBob", strideBob);
+            SetSerializedFloat(wanderObject, "visualStrideSway", strideSway);
+            wanderObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void BuildRegionalBiomeDressing(HostedBuildContext context, HostedMaterials materials)
@@ -5448,11 +6104,15 @@ namespace Psycho.Editor
         {
             HostedMaterials materials = new HostedMaterials
             {
-                Grass = LoadOrCreateTexturedMaterial(GrassMaterialPath, "Grass", new Color(0.20f, 0.34f, 0.18f, 1f), 0.18f, new Vector2(11.0f, 11.0f), 0.86f),
+                Grass = LoadOrCreateTexturedMaterial(GrassMaterialPath, "Grass", new Color(0.28f, 0.47f, 0.24f, 1f), 0.18f, new Vector2(11.0f, 11.0f), 0.86f),
                 Flowers = LoadOrCreateTexturedMaterial(FlowerMaterialPath, "Organic", new Color(0.76f, 0.63f, 0.34f, 1f), 0.24f, new Vector2(6.4f, 6.4f), 0.62f),
+                Herbs = LoadOrCreateTexturedMaterial(HerbMaterialPath, "Leaf", new Color(0.34f, 0.53f, 0.27f, 1f), 0.20f, new Vector2(5.6f, 5.6f), 0.72f),
+                WildflowerBlue = LoadOrCreateSolidMaterial(WildflowerBlueMaterialPath, new Color(0.38f, 0.52f, 0.88f, 1f), 0.26f),
+                WildflowerPurple = LoadOrCreateSolidMaterial(WildflowerPurpleMaterialPath, new Color(0.62f, 0.42f, 0.82f, 1f), 0.28f),
+                WildflowerGold = LoadOrCreateSolidMaterial(WildflowerGoldMaterialPath, new Color(0.96f, 0.75f, 0.28f, 1f), 0.22f),
                 Reeds = LoadOrCreateTexturedMaterial(ReedMaterialPath, "Leaf", new Color(0.26f, 0.37f, 0.20f, 1f), 0.16f, new Vector2(4.2f, 6.6f), 0.82f),
                 Water = LoadOrCreateTexturedMaterial(WaterMaterialPath, "Water", new Color(0.035f, 0.18f, 0.27f, 0.62f), 0.92f, new Vector2(2.8f, 7.8f), 1.08f),
-                Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.18f, 0.28f, 0.18f, 1f), 0.22f, new Vector2(7.6f, 7.6f), 0.78f),
+                Hills = LoadOrCreateTexturedMaterial(HillMaterialPath, "Grass", new Color(0.24f, 0.38f, 0.22f, 1f), 0.22f, new Vector2(7.6f, 7.6f), 0.78f),
                 Mountains = LoadOrCreateTexturedMaterial(MountainMaterialPath, "Mountain", new Color(0.39f, 0.40f, 0.39f, 1f), 0.42f, new Vector2(3.8f, 3.8f), 0.98f),
                 Snow = LoadOrCreatePlainMaterial(SnowMaterialPath, new Color(0.92f, 0.97f, 1.00f, 1f), 0.64f),
                 AutumnCanopy = LoadOrCreateTexturedMaterial(AutumnCanopyMaterialPath, "Leaf", new Color(0.70f, 0.42f, 0.17f, 1f), 0.18f, new Vector2(4.0f, 4.0f), 0.52f),
@@ -5480,7 +6140,11 @@ namespace Psycho.Editor
                 LandmarkRoof = LoadOrCreateTexturedMaterial(LandmarkRoofMaterialPath, "Wood", new Color(0.13f, 0.12f, 0.11f, 1f), 0.34f, new Vector2(3.0f, 3.0f), 0.82f),
                 LandmarkRoad = LoadOrCreateTexturedMaterial(LandmarkRoadMaterialPath, "Stone", new Color(0.34f, 0.33f, 0.29f, 1f), 0.24f, new Vector2(5.8f, 5.8f), 0.72f),
                 LandmarkBanner = LoadOrCreateTexturedMaterial(LandmarkBannerMaterialPath, "Cloth", new Color(0.27f, 0.42f, 0.63f, 1f), 0.32f, new Vector2(1.6f, 1.6f), 0.44f),
-                LandmarkGlass = LoadOrCreateSolidMaterial(LandmarkGlassMaterialPath, new Color(0.40f, 0.63f, 0.72f, 0.46f), 0.72f)
+                LandmarkGlass = LoadOrCreateSolidMaterial(LandmarkGlassMaterialPath, new Color(0.40f, 0.63f, 0.72f, 0.46f), 0.72f),
+                WildlifeHide = LoadOrCreateTexturedMaterial(WildlifeHideMaterialPath, "Leather", new Color(0.58f, 0.38f, 0.20f, 1f), 0.22f, new Vector2(2.4f, 2.4f), 0.42f),
+                MammothFur = LoadOrCreateTexturedMaterial(MammothFurMaterialPath, "Leather", new Color(0.27f, 0.20f, 0.15f, 1f), 0.34f, new Vector2(2.6f, 3.4f), 0.60f),
+                MammothTusk = LoadOrCreateSolidMaterial(MammothTuskMaterialPath, new Color(0.82f, 0.76f, 0.62f, 1f), 0.35f),
+                GiantSkin = LoadOrCreateSolidMaterial(GiantSkinMaterialPath, new Color(0.62f, 0.47f, 0.34f, 1f), 0.24f)
             };
             ConfigureTransparent(materials.Water);
             ConfigureTransparent(materials.Cloud);
@@ -5490,6 +6154,11 @@ namespace Psycho.Editor
             ConfigureTransparent(materials.LandmarkGlass);
             ConfigureDoubleSided(materials.CliffFace);
             ConfigureDoubleSided(materials.Snow);
+            ConfigureDoubleSided(materials.Flowers);
+            ConfigureDoubleSided(materials.Herbs);
+            ConfigureDoubleSided(materials.WildflowerBlue);
+            ConfigureDoubleSided(materials.WildflowerPurple);
+            ConfigureDoubleSided(materials.WildflowerGold);
             return materials;
         }
 
@@ -5756,6 +6425,10 @@ namespace Psycho.Editor
         {
             public Material Grass;
             public Material Flowers;
+            public Material Herbs;
+            public Material WildflowerBlue;
+            public Material WildflowerPurple;
+            public Material WildflowerGold;
             public Material Reeds;
             public Material Water;
             public Material Hills;
@@ -5787,6 +6460,10 @@ namespace Psycho.Editor
             public Material LandmarkRoad;
             public Material LandmarkBanner;
             public Material LandmarkGlass;
+            public Material WildlifeHide;
+            public Material MammothFur;
+            public Material MammothTusk;
+            public Material GiantSkin;
         }
 
         private enum HostedSeasonBiome
@@ -5803,6 +6480,68 @@ namespace Psycho.Editor
             Village,
             Town,
             City
+        }
+
+        private readonly struct HostedMeadowSpec
+        {
+            public readonly string Name;
+            public readonly int WorldX;
+            public readonly int WorldY;
+            public readonly float Radius;
+            public readonly int PatchCount;
+            public readonly int WildflowerCount;
+            public readonly int HerbCount;
+
+            public HostedMeadowSpec(string name, int worldX, int worldY, float radius, int patchCount, int wildflowerCount, int herbCount)
+            {
+                Name = name;
+                WorldX = worldX;
+                WorldY = worldY;
+                Radius = radius;
+                PatchCount = patchCount;
+                WildflowerCount = wildflowerCount;
+                HerbCount = herbCount;
+            }
+        }
+
+        private readonly struct HostedWildlifeSpec
+        {
+            public readonly string Name;
+            public readonly string Kind;
+            public readonly int WorldX;
+            public readonly int WorldY;
+            public readonly int Count;
+            public readonly float Radius;
+
+            public HostedWildlifeSpec(string name, string kind, int worldX, int worldY, int count, float radius)
+            {
+                Name = name;
+                Kind = kind;
+                WorldX = worldX;
+                WorldY = worldY;
+                Count = count;
+                Radius = radius;
+            }
+        }
+
+        private readonly struct HostedGiantCampSpec
+        {
+            public readonly string Name;
+            public readonly int WorldX;
+            public readonly int WorldY;
+            public readonly int GiantCount;
+            public readonly int MammothCount;
+            public readonly float Radius;
+
+            public HostedGiantCampSpec(string name, int worldX, int worldY, int giantCount, int mammothCount, float radius)
+            {
+                Name = name;
+                WorldX = worldX;
+                WorldY = worldY;
+                GiantCount = giantCount;
+                MammothCount = mammothCount;
+                Radius = radius;
+            }
         }
 
         private readonly struct HostedBiomeSpec
@@ -5969,6 +6708,13 @@ namespace Psycho.Editor
             public int denseForestTrees;
             public int snowPatches;
             public int seasonalDressingObjects;
+            public int lushMeadowPatches;
+            public int wildflowerClusters;
+            public int herbClusters;
+            public int wildlifeNpcs;
+            public int giantCamps;
+            public int giants;
+            public int mammothCompanions;
             public int terrainCollisionSamples;
             public int terrainCollisionMisses;
             public int groundCoverPatches;
