@@ -28,6 +28,7 @@ namespace Psycho.Editor
         private const int MaxModelsPerNpc = 12;
         private const int MaxNpcSpawns = 460;
         private const int GroundDetailCount = 1850;
+        private const int GroundCoverPatchesPerAnchor = 24;
         private const int MaxWindAnimatedComponents = 1200;
         private const float DogSizedImpHeight = 0.62f;
         private const float CharacterNormalSmoothingTolerance = 0.00075f;
@@ -127,7 +128,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, cliffs {context.Report.cliffDressingObjects}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -1285,6 +1286,7 @@ namespace Psycho.Editor
         private static void BuildWorldDressing(HostedBuildContext context, HostedMaterials materials)
         {
             BuildGrassField(context, materials);
+            BuildGroundCoverPatches(context, materials);
             BuildWaterways(context, materials);
             BuildWorldLandmarks(context, materials);
             BuildHighlandForestDressing(context, materials);
@@ -1339,6 +1341,63 @@ namespace Psycho.Editor
                 Vector3 position = WorldTilePosition(context, worldX, worldY) + Vector3.up * 0.11f;
                 CreateReed(root.transform, position, 0.48f + Deterministic01(i * 41 + 13) * 0.42f, materials.Reeds);
             }
+        }
+
+        private static void BuildGroundCoverPatches(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Blended Meadow Ground Cover Patches");
+            Vector2Int[] anchors =
+            {
+                new Vector2Int(3088, 3492),
+                new Vector2Int(3100, 3508),
+                new Vector2Int(3164, 3486),
+                new Vector2Int(3218, 3430),
+                new Vector2Int(3094, 3248),
+                new Vector2Int(2964, 3378),
+                new Vector2Int(3031, 3218),
+                new Vector2Int(3120, 3515),
+                new Vector2Int(3188, 3456),
+                new Vector2Int(3068, 3514)
+            };
+
+            int created = 0;
+            for (int cluster = 0; cluster < anchors.Length; cluster++)
+            {
+                Vector2Int anchor = anchors[cluster];
+                for (int i = 0; i < GroundCoverPatchesPerAnchor; i++)
+                {
+                    int seed = 4300 + cluster * 811 + i * 97;
+                    float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+                    float radius = 2.0f + Mathf.Pow(Deterministic01(seed + 5), 0.72f) * 20.5f;
+                    int worldX = anchor.x + Mathf.RoundToInt(Mathf.Cos(angle) * radius);
+                    int worldY = anchor.y + Mathf.RoundToInt(Mathf.Sin(angle) * radius);
+                    if (!TryGetNaturalDressingPosition(context, worldX, worldY, seed, out Vector3 position))
+                    {
+                        continue;
+                    }
+
+                    if (!TryGetLandscapeTile(context, worldX, worldY, out PsychoMapLandscape landscape, out int localX, out int localY))
+                    {
+                        continue;
+                    }
+
+                    byte overlay = landscape.OverlayIds[0, localX, localY];
+                    if (overlay != 0 && Deterministic01(seed + 7) < 0.78f)
+                    {
+                        continue;
+                    }
+
+                    float roll = Deterministic01(seed + 11);
+                    Material material = roll > 0.76f ? materials.Flowers : roll > 0.42f ? materials.Moss : materials.Grass;
+                    float width = 1.15f + Deterministic01(seed + 17) * 2.55f;
+                    float depth = 0.72f + Deterministic01(seed + 23) * 1.90f;
+                    GameObject patch = CreateGroundCoverPatch($"Meadow Ground Cover Patch {created + 1}", position + Vector3.up * 0.018f, width, depth, material, seed);
+                    patch.transform.SetParent(root.transform, true);
+                    created++;
+                }
+            }
+
+            context.Report.groundCoverPatches += created;
         }
 
         private static void BuildWorldLandmarks(HostedBuildContext context, HostedMaterials materials)
@@ -2373,7 +2432,8 @@ namespace Psycho.Editor
             controller.stepOffset = 0.45f;
             controller.slopeLimit = 48f;
 
-            player.transform.position = WorldTilePosition(context, spawnX, spawnY) + Vector3.up * 0.04f;
+            Vector3 requestedSpawn = WorldTilePosition(context, spawnX, spawnY);
+            player.transform.position = TerrainSurfacePosition(requestedSpawn, 0.04f);
             PsychoPlayableCharacter playableCharacter = player.AddComponent<PsychoPlayableCharacter>();
             player.AddComponent<PsychoCharacterGroundGuard>();
             player.AddComponent<PsychoInteractionController>();
@@ -3303,24 +3363,66 @@ namespace Psycho.Editor
             for (int i = 0; i < hitCount; i++)
             {
                 Collider hitCollider = hits[i].collider;
-                if (hitCollider == null)
-                {
-                    continue;
-                }
-
-                if (hitCollider.gameObject.name.Contains("Terrain"))
-                {
-                    return true;
-                }
-
-                MeshCollider meshCollider = hitCollider as MeshCollider;
-                if (meshCollider != null && meshCollider.sharedMesh != null && meshCollider.sharedMesh.name.StartsWith("psycho_map_region_"))
+                if (IsTerrainCollider(hitCollider))
                 {
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private static Vector3 TerrainSurfacePosition(Vector3 approximatePosition, float yOffset)
+        {
+            Physics.SyncTransforms();
+            RaycastHit[] hits = Physics.RaycastAll(
+                approximatePosition + Vector3.up * 128f,
+                Vector3.down,
+                256f,
+                Physics.DefaultRaycastLayers,
+                QueryTriggerInteraction.Ignore);
+            float bestDistance = float.MaxValue;
+            float surfaceY = approximatePosition.y;
+            bool foundTerrain = false;
+
+            for (int i = 0; i < hits.Length; i++)
+            {
+                RaycastHit hit = hits[i];
+                if (!IsTerrainCollider(hit.collider))
+                {
+                    continue;
+                }
+
+                if (hit.distance < bestDistance)
+                {
+                    bestDistance = hit.distance;
+                    surfaceY = hit.point.y;
+                    foundTerrain = true;
+                }
+            }
+
+            if (!foundTerrain)
+            {
+                return approximatePosition + Vector3.up * yOffset;
+            }
+
+            return new Vector3(approximatePosition.x, surfaceY + yOffset, approximatePosition.z);
+        }
+
+        private static bool IsTerrainCollider(Collider hitCollider)
+        {
+            if (hitCollider == null)
+            {
+                return false;
+            }
+
+            if (hitCollider.gameObject.name.Contains("Terrain"))
+            {
+                return true;
+            }
+
+            MeshCollider meshCollider = hitCollider as MeshCollider;
+            return meshCollider != null && meshCollider.sharedMesh != null && meshCollider.sharedMesh.name.StartsWith("psycho_map_region_");
         }
 
         private static void CreateWaterStrip(Transform root, string name, HostedBuildContext context, int worldX, int worldY, float width, float depth, Material material, Material foamMaterial, Material depthMaterial, HostedBuildContext buildContext)
@@ -3386,6 +3488,53 @@ namespace Psycho.Editor
             plane.AddComponent<MeshFilter>().sharedMesh = mesh;
             plane.AddComponent<MeshRenderer>().sharedMaterial = material;
             return plane;
+        }
+
+        private static GameObject CreateGroundCoverPatch(string name, Vector3 position, float width, float depth, Material material, int seed)
+        {
+            const int segments = 18;
+            Mesh mesh = new Mesh { name = name + " Mesh" };
+            Vector3[] vertices = new Vector3[segments + 1];
+            Vector2[] uv = new Vector2[segments + 1];
+            int[] triangles = new int[segments * 3];
+            vertices[0] = Vector3.zero;
+            uv[0] = new Vector2(0.5f, 0.5f);
+
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = i * Mathf.PI * 2f / segments;
+                float wobble = 0.68f + Deterministic01(seed + i * 31) * 0.46f;
+                float px = Mathf.Cos(angle) * width * 0.5f * wobble;
+                float pz = Mathf.Sin(angle) * depth * 0.5f * (0.82f + Deterministic01(seed + i * 37) * 0.32f);
+                vertices[i + 1] = new Vector3(px, Mathf.Sin(angle * 3.0f + seed * 0.013f) * 0.012f, pz);
+                uv[i + 1] = new Vector2(0.5f + Mathf.Cos(angle) * 0.5f * wobble, 0.5f + Mathf.Sin(angle) * 0.5f * wobble);
+            }
+
+            int triangle = 0;
+            for (int i = 0; i < segments; i++)
+            {
+                triangles[triangle++] = 0;
+                triangles[triangle++] = i + 1;
+                triangles[triangle++] = i == segments - 1 ? 1 : i + 2;
+            }
+
+            mesh.vertices = vertices;
+            mesh.uv = uv;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateTangents();
+            mesh.RecalculateBounds();
+
+            GameObject patch = new GameObject(name);
+            patch.isStatic = true;
+            patch.transform.position = position;
+            patch.transform.rotation = Quaternion.Euler(0f, Deterministic01(seed + 41) * 360f, 0f);
+            patch.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = patch.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = true;
+            return patch;
         }
 
         private static void CreateWaterDepthRibbon(Transform parent, string name, float width, float depth, Material material)
@@ -3651,10 +3800,10 @@ namespace Psycho.Editor
                 AssetDatabase.CreateAsset(skybox, skyboxPath);
             }
 
-            skybox.SetColor("_SkyTint", new Color(0.31f, 0.45f, 0.58f));
-            skybox.SetColor("_GroundColor", new Color(0.21f, 0.24f, 0.24f));
-            skybox.SetFloat("_AtmosphereThickness", 0.92f);
-            skybox.SetFloat("_Exposure", 0.98f);
+            skybox.SetColor("_SkyTint", new Color(0.36f, 0.50f, 0.63f));
+            skybox.SetColor("_GroundColor", new Color(0.24f, 0.28f, 0.26f));
+            skybox.SetFloat("_AtmosphereThickness", 0.86f);
+            skybox.SetFloat("_Exposure", 1.04f);
             skybox.SetFloat("_SunSize", 0.028f);
             skybox.SetFloat("_SunSizeConvergence", 6.2f);
             EditorUtility.SetDirty(skybox);
@@ -4014,6 +4163,7 @@ namespace Psycho.Editor
             public int decodedObjectAccents;
             public int terrainCollisionSamples;
             public int terrainCollisionMisses;
+            public int groundCoverPatches;
             public int enhancedFoliageObjects;
             public int cliffDressingObjects;
             public int waterFoamEdges;
