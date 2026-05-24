@@ -11,6 +11,7 @@ This file exists so a future Codex session can quickly recover the working conte
 - Remote: `https://github.com/lordZamorak/Psycho.git`
 - Built Unity executable: `psycho_unity_client\Builds\PsychoHostedTestWorld\Psycho.exe`
 - iCloud backups are stored under: `C:\Users\xzero\iCloudDrive\PsychoBackups`
+- Latest pushed checkpoint: `77f5e4a0 Import creature art replacements`
 
 ## Studio Role To Resume
 
@@ -54,7 +55,7 @@ Build Psycho's own NXT-style Unity MMO client:
 - Mirror the Java game's layout/gameplay feel, not its low-poly final visuals.
 - Replace weak placeholders one category at a time with optimized real authored assets.
 
-## Recently Completed
+## Latest Stable Checkpoint
 
 - Rebranded toward Psycho/Psychotic naming.
 - Created Unity hosted test world generation from cache/world references.
@@ -65,7 +66,33 @@ Build Psycho's own NXT-style Unity MMO client:
 - Brightened skybox and tuned terrain material response.
 - Built and verified the Windows Unity playable.
 - Backed up runnable states to iCloud.
-- Pushed latest stable milestone at commit `501c473a` with message `Enrich Unity terrain visuals and spawn grounding`.
+- Imported CC0 Quaternius creature assets into the Unity art pipeline:
+  - `Pug` drives dog, puppy, and terror dog replacements.
+  - `Cow` drives cow and calf replacements.
+  - `Sheep` drives sheep, lamb, and ram replacements.
+  - `Dragon` is the current starter imp replacement.
+- Added exact NPC-id-first art resolution so fuzzy words like `guard` or `champion` do not override dog/imp bodies.
+- Rendered proof screenshots:
+  - `run-logs\unity-starter-creature-preview.png`
+  - `run-logs\unity-hosted-third-person-preview.png`
+  - `run-logs\unity-hosted-npc-preview.png`
+- Latest verified hosted world report:
+  - Regions: `81`
+  - NPC spawns: `460`
+  - Visual NPC replacements: `417`
+  - Cache NPC visuals remaining: `43`
+  - Terrain collision samples: `331776`
+  - Terrain collision misses: `0`
+- Latest verified budget report:
+  - Renderers: `46163`
+  - Triangles: `975119`
+  - LOD groups: `1251`
+- Latest successful Windows build:
+  - `psycho_unity_client\Builds\PsychoHostedTestWorld\Psycho.exe`
+  - Size reported by Unity: `991795872` bytes
+- iCloud checkpoint for creature source assets:
+  - `C:\Users\xzero\iCloudDrive\PsychoBackups\SourceFileBackups\creature_source_assets_20260524-072415`
+- Pushed latest stable milestone at commit `77f5e4a0` with message `Import creature art replacements`.
 
 ## Latest Verified Commands
 
@@ -82,11 +109,17 @@ cd "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
 .\psycho_unity_client\Builds\PsychoHostedTestWorld\Psycho.exe
 ```
 
+Render starter creature proof screenshot:
+
+```powershell
+& "C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe" -batchmode -quit -projectPath "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\psycho_unity_client" -executeMethod Psycho.Editor.PsychoStarterArtManifestBuilder.RenderStarterCreaturePreviewBatch -logFile "C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes\run-logs\unity-starter-creature-preview.log"
+```
+
 ## Next Best Work
 
 Continue graphics/stability in this order:
 
-1. Replace low-poly player/NPC bodies with real optimized original/licensed humanoid and creature assets.
+1. Replace low-poly player/NPC humanoid bodies with real optimized original/licensed humanoid assets.
 2. Add rigs, animation controllers, smoothing, scale correction, and outward-facing third-person presentation.
 3. Replace weak tree/foliage silhouettes with real foliage meshes, LOD groups, GPU instancing, and wind.
 4. Replace weak building/object meshes with higher-fidelity medieval assets while preserving world layout.
