@@ -998,19 +998,24 @@ namespace Psycho.Editor
                 }
 
                 bool cacheVisual = false;
+                bool artVisual = false;
+                bool proceduralVisual = false;
                 GameObject npcObject;
                 if (PsychoArtAssetResolver.TryInstantiateNpc(npc, null, out npcObject))
                 {
                     context.Report.visualReplacementNpcs++;
+                    artVisual = true;
                 }
                 else if (ShouldUseProceduralHumanoidNpc(npc))
                 {
                     npcObject = factory.CreateNpcVisual(npc);
                     context.Report.visualReplacementNpcs++;
+                    proceduralVisual = true;
                 }
                 else if (PsychoHostedVisualOverrides.TryCreateNpcReplacement(npc, npcMaterial, out npcObject, out _))
                 {
                     context.Report.visualReplacementNpcs++;
+                    artVisual = true;
                 }
                 else
                 {
@@ -1021,6 +1026,7 @@ namespace Psycho.Editor
                 {
                     npcObject = factory.CreateNpcVisual(npc);
                     context.Report.fallbackNpcVisuals++;
+                    proceduralVisual = true;
                 }
 
                 npcObject.transform.SetParent(npcRoot.transform, false);
@@ -1032,6 +1038,10 @@ namespace Psycho.Editor
                 wanderObject.FindProperty("wanderRadius").floatValue = Mathf.Clamp(spawn.walkRadius > 0 ? spawn.walkRadius * TileScale : 2.4f, 1.4f, 7.5f);
                 wanderObject.FindProperty("speed").floatValue = Mathf.Clamp(0.85f + npc.scale * 0.42f, 0.85f, 2.35f);
                 wanderObject.FindProperty("pauseDuration").floatValue = 0.65f + (spawn.npcId % 5) * 0.14f;
+                SetSerializedFloat(wanderObject, "turnSpeed", artVisual ? 5.25f : 4.75f);
+                SetSerializedFloat(wanderObject, "acceleration", proceduralVisual ? 3.0f : 3.35f);
+                SetSerializedFloat(wanderObject, "visualStrideBob", artVisual ? 0.0028f : cacheVisual ? 0.0036f : 0.0022f);
+                SetSerializedFloat(wanderObject, "visualStrideSway", artVisual ? 0.34f : cacheVisual ? 0.46f : 0.28f);
                 wanderObject.ApplyModifiedPropertiesWithoutUndo();
                 context.Report.npcSpawns++;
             }

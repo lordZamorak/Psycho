@@ -6,12 +6,12 @@ namespace Psycho.Rendering
     {
         [SerializeField] private float wanderRadius = 4f;
         [SerializeField] private float speed = 2.4f;
-        [SerializeField] private float turnSpeed = 8f;
-        [SerializeField] private float acceleration = 4.6f;
+        [SerializeField] private float turnSpeed = 5.5f;
+        [SerializeField] private float acceleration = 3.35f;
         [SerializeField] private float arrivalDistance = 0.32f;
         [SerializeField] private float pauseDuration = 0.8f;
-        [SerializeField] private float visualStrideBob = 0.012f;
-        [SerializeField] private float visualStrideSway = 1.6f;
+        [SerializeField] private float visualStrideBob = 0.0035f;
+        [SerializeField] private float visualStrideSway = 0.42f;
 
         private Vector3 origin;
         private Vector3 destination;
@@ -141,8 +141,8 @@ namespace Psycho.Rendering
 
             float planarSpeed = new Vector3(velocity.x, 0f, velocity.z).magnitude;
             float motion = Mathf.Clamp01(planarSpeed / Mathf.Max(0.01f, speed));
-            stride += deltaTime * Mathf.Lerp(1.4f, 6.0f, motion);
-            float idleBreath = Mathf.Sin(Time.time * 1.35f + phase) * 0.004f;
+            stride += deltaTime * Mathf.Lerp(1.05f, 3.85f, motion);
+            float idleBreath = Mathf.Sin(Time.time * 1.15f + phase) * 0.0022f;
             float walkBob = Mathf.Sin(stride * Mathf.PI * 2f) * visualStrideBob * motion;
             float walkSway = Mathf.Sin(stride * Mathf.PI) * visualStrideSway * motion;
             visualRoot.localPosition = visualBaseLocalPosition + Vector3.up * (idleBreath + walkBob);

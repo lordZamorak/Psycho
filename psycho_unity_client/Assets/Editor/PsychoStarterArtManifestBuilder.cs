@@ -40,6 +40,9 @@ namespace Psycho.Editor
             BuildCharacterPrefab(prefabs, "Cleric", "Cleric_Banker", 1.72f);
             BuildCharacterPrefab(prefabs, "Ranger", "Ranger_Citizen", 1.72f);
             BuildCharacterPrefab(prefabs, "Wizard", "Wizard_Citizen", 1.72f);
+            BuildCharacterPrefab(prefabs, "Rogue", "Rogue_Undead", 1.66f, new Color(0.60f, 0.68f, 0.56f), "Rogue_Undead");
+            BuildCharacterPrefab(prefabs, "Rogue", "Rogue_Goblin", 1.34f, new Color(0.50f, 0.68f, 0.38f), "Rogue_Goblin");
+            BuildCharacterPrefab(prefabs, "Warrior", "Warrior_Dwarf", 1.36f, new Color(0.82f, 0.66f, 0.48f), "Warrior_Dwarf");
 
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "CommonTree_1", "CommonTree_1", 3.4f, true);
             BuildStaticPrefab(prefabs, FoliageFbxRoot, "CommonTree_2", "CommonTree_2", 3.7f, true);
@@ -97,6 +100,16 @@ namespace Psycho.Editor
             Add(entries, prefabs, "Rogue_Merchant", PsychoArtAssetKind.Npc, "Merchant Rogue", visualClass: "Merchant", targetHeight: 1.72f, localEuler: new Vector3(0f, 180f, 0f));
             Add(entries, prefabs, "Cleric_Banker", PsychoArtAssetKind.Npc, "Banker Cleric", visualClass: "Banker", targetHeight: 1.72f, localEuler: new Vector3(0f, 180f, 0f));
             Add(entries, prefabs, "Warrior_Player", PsychoArtAssetKind.Npc, "Guard Warrior", visualClass: "Guard", targetHeight: 1.78f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Monk_Citizen", PsychoArtAssetKind.Npc, "Town Citizen Monk", nameFragments: new[] { "man", "woman", "citizen", "villager", "farmer", "cook", "guide", "master", "trainer" }, targetHeight: 1.72f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Ranger_Citizen", PsychoArtAssetKind.Npc, "Ranger Archer", nameFragments: new[] { "archer", "ranger", "bowman", "hunter", "fletcher" }, targetHeight: 1.74f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Wizard_Citizen", PsychoArtAssetKind.Npc, "Wizard Mage", nameFragments: new[] { "wizard", "mage", "magician", "sorcerer", "witch", "enchanter" }, targetHeight: 1.74f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Rogue_Merchant", PsychoArtAssetKind.Npc, "Shopkeeper Rogue", nameFragments: new[] { "shop", "merchant", "trader", "seller", "buyer", "rogue", "thief" }, targetHeight: 1.72f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Cleric_Banker", PsychoArtAssetKind.Npc, "Banking Cleric", nameFragments: new[] { "banker", "clerk", "exchange", "account" }, targetHeight: 1.72f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Warrior_Player", PsychoArtAssetKind.Npc, "Armored Warrior", nameFragments: new[] { "guard", "warrior", "knight", "soldier", "champion", "fighter", "barbarian", "paladin" }, targetHeight: 1.80f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Cleric_Banker", PsychoArtAssetKind.Npc, "Priest Cleric", nameFragments: new[] { "monk", "priest", "cleric", "brother", "druid", "sage" }, targetHeight: 1.72f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Rogue_Undead", PsychoArtAssetKind.Npc, "Undead Rogue", nameFragments: new[] { "zombie", "skeleton", "undead", "revenant", "shade", "wight" }, targetHeight: 1.66f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Rogue_Goblin", PsychoArtAssetKind.Npc, "Goblin Rogue", nameFragments: new[] { "goblin", "hobgoblin" }, targetHeight: 1.34f, localEuler: new Vector3(0f, 180f, 0f));
+            Add(entries, prefabs, "Warrior_Dwarf", PsychoArtAssetKind.Npc, "Dwarf Warrior", nameFragments: new[] { "dwarf" }, targetHeight: 1.36f, localEuler: new Vector3(0f, 180f, 0f));
 
             Add(entries, prefabs, "CommonTree_1", PsychoArtAssetKind.Object, "Common Tree A", visualClass: "Tree", targetHeight: 3.4f, markStatic: true, cullHeight: 0.012f);
             Add(entries, prefabs, "CommonTree_2", PsychoArtAssetKind.Object, "Common Tree B", visualClass: "Tree", targetHeight: 3.7f, markStatic: true, cullHeight: 0.012f);
@@ -168,10 +181,10 @@ namespace Psycho.Editor
             });
         }
 
-        private static void BuildCharacterPrefab(Dictionary<string, GameObject> prefabs, string modelName, string prefabName, float targetHeight)
+        private static void BuildCharacterPrefab(Dictionary<string, GameObject> prefabs, string modelName, string prefabName, float targetHeight, Color? materialTint = null, string materialKey = null)
         {
             string modelPath = $"{CharacterFbxRoot}/{modelName}.fbx";
-            Material overrideMaterial = LoadOrCreateCharacterMaterial(modelName);
+            Material overrideMaterial = LoadOrCreateCharacterMaterial(modelName, materialKey ?? modelName, materialTint ?? Color.white);
             GameObject prefab = BuildPrefab(modelPath, prefabName, targetHeight, false, true, false, overrideMaterial);
             if (prefab != null)
             {
@@ -263,7 +276,7 @@ namespace Psycho.Editor
             }
         }
 
-        private static Material LoadOrCreateCharacterMaterial(string modelName)
+        private static Material LoadOrCreateCharacterMaterial(string modelName, string materialKey, Color tint)
         {
             string texturePath = $"{CharacterTextureRoot}/{modelName}_Texture.png";
             Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
@@ -273,7 +286,7 @@ namespace Psycho.Editor
                 return null;
             }
 
-            string materialPath = $"{MaterialRoot}/{modelName}_Textured.mat";
+            string materialPath = $"{MaterialRoot}/{materialKey}_Textured.mat";
             Material material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
             if (material == null)
             {
@@ -281,9 +294,9 @@ namespace Psycho.Editor
                 AssetDatabase.CreateAsset(material, materialPath);
             }
 
-            material.name = $"{modelName}_Textured";
+            material.name = $"{materialKey}_Textured";
             material.mainTexture = texture;
-            material.color = Color.white;
+            material.color = tint;
             material.enableInstancing = true;
             material.SetFloat("_Glossiness", 0.34f);
             material.SetFloat("_Metallic", 0.02f);
