@@ -68,7 +68,9 @@ namespace Psycho.Editor
         private const string CloudMaterialPath = GeneratedRoot + "/Psycho_Hosted_Clouds.mat";
         private const string HorizonMistMaterialPath = GeneratedRoot + "/Psycho_Hosted_Horizon_Mist.mat";
         private const string TreeCanopyMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Canopy.mat";
+        private const string TreeCanopyFarMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Canopy_Far.mat";
         private const string TreeBarkMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Bark.mat";
+        private const string TreeBarkFarMaterialPath = GeneratedRoot + "/Psycho_Hosted_Tree_Bark_Far.mat";
         private const string FrostStoneMaterialPath = GeneratedRoot + "/Psycho_Hosted_Frost_Stone.mat";
         private const string MossMaterialPath = GeneratedRoot + "/Psycho_Hosted_Moss.mat";
         private const string CliffFaceMaterialPath = GeneratedRoot + "/Psycho_Hosted_Cliff_Face.mat";
@@ -139,7 +141,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, objects {context.Report.placedObjects}, NPCs {context.Report.npcSpawns}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, landmarks {context.Report.landmarkDressingObjects}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -688,6 +690,7 @@ namespace Psycho.Editor
                     {
                         AddFoliageSilhouette(placed.transform, definition, placement, hostedMaterials);
                         context.Report.enhancedFoliageObjects++;
+                        context.Report.foliageLodProxies++;
                         addedWind = true;
                     }
                 }
@@ -695,6 +698,7 @@ namespace Psycho.Editor
                 {
                     AddFoliageSilhouette(placed.transform, definition, placement, hostedMaterials);
                     context.Report.enhancedFoliageObjects++;
+                    context.Report.foliageLodProxies++;
                     addedWind = true;
                 }
 
@@ -819,18 +823,22 @@ namespace Psycho.Editor
         {
             float footprint = Mathf.Max(1f, Mathf.Max(definition.sizeX, definition.sizeY));
             float trunkHeight = 1.55f + footprint * 0.30f;
+            float trunkRadius = 0.16f + footprint * 0.030f;
             float canopyWidth = 1.58f + footprint * 0.42f;
             float canopyHeight = 1.18f + footprint * 0.20f;
             float seed = placement.ObjectId * 0.071f + placement.LocalX * 0.19f + placement.LocalY * 0.13f;
             string name = definition.name == null ? string.Empty : definition.name.ToLowerInvariant();
             bool broadleaf = name.Contains("oak") || name.Contains("willow") || name.Contains("maple") || name.Contains("dead");
 
+            GameObject tree = new GameObject("Hosted Foliage Silhouette LOD");
+            tree.transform.SetParent(parent, false);
+
             GameObject trunk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             trunk.name = "Detailed Bark Trunk Silhouette";
-            trunk.transform.SetParent(parent, false);
+            trunk.transform.SetParent(tree.transform, false);
             trunk.transform.localPosition = new Vector3(0f, trunkHeight * 0.46f, 0f);
             trunk.transform.localRotation = Quaternion.Euler(0f, seed * 73f, Mathf.Sin(seed) * 2.5f);
-            trunk.transform.localScale = new Vector3(0.16f + footprint * 0.030f, trunkHeight * 0.46f, 0.16f + footprint * 0.030f);
+            trunk.transform.localScale = new Vector3(trunkRadius, trunkHeight * 0.46f, trunkRadius);
             trunk.GetComponent<MeshRenderer>().sharedMaterial = materials.TreeBark;
             RemoveCollider(trunk);
 
@@ -839,7 +847,7 @@ namespace Psycho.Editor
                 float angle = seed + i * Mathf.PI * 0.5f;
                 Vector3 start = new Vector3(0f, trunkHeight * (0.46f + i * 0.10f), 0f);
                 Vector3 end = start + new Vector3(Mathf.Cos(angle), 0.18f + i * 0.03f, Mathf.Sin(angle)) * (0.42f + footprint * 0.07f);
-                CreateFoliageBranch(parent, $"Wind Branch Silhouette {i + 1}", start, end, 0.040f + footprint * 0.006f, materials.TreeBark);
+                CreateFoliageBranch(tree.transform, $"Wind Branch Silhouette {i + 1}", start, end, 0.040f + footprint * 0.006f, materials.TreeBark);
             }
 
             if (broadleaf)
@@ -855,7 +863,7 @@ namespace Psycho.Editor
                         canopyWidth * (0.46f + Deterministic01(placement.ObjectId * 61 + i * 11) * 0.22f));
                     GameObject canopy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     canopy.name = "Wind Broadleaf Canopy Silhouette";
-                    canopy.transform.SetParent(parent, false);
+                    canopy.transform.SetParent(tree.transform, false);
                     canopy.transform.localPosition = offset;
                     canopy.transform.localRotation = Quaternion.Euler(0f, i * 47f + seed * 29f, 0f);
                     canopy.transform.localScale = scale;
@@ -867,6 +875,9 @@ namespace Psycho.Editor
                     AddWind(canopy, 0.052f + i * 0.005f, 0.86f + i * 0.08f, 0.30f, 0.82f, 0.055f);
                 }
 
+                Renderer[] highRenderers = parent.GetComponentsInChildren<Renderer>(true);
+                Renderer[] farRenderers = CreateBroadleafFarLodProxy(tree.transform, trunkHeight, canopyWidth, canopyHeight, materials.TreeBarkFar, materials.TreeCanopyFar, placement.ObjectId);
+                AddGeneratedFoliageLodGroup(parent.gameObject, highRenderers, farRenderers);
                 return;
             }
 
@@ -877,7 +888,7 @@ namespace Psycho.Editor
                 float layerRadius = canopyWidth * Mathf.Lerp(0.54f, 0.14f, t);
                 float layerHeight = canopyHeight * Mathf.Lerp(0.32f, 0.20f, t);
                 GameObject canopy = new GameObject($"Wind Conifer Bough Silhouette {i + 1}");
-                canopy.transform.SetParent(parent, false);
+                canopy.transform.SetParent(tree.transform, false);
                 canopy.transform.localPosition = new Vector3(
                     (Deterministic01(placement.ObjectId * 41 + i * 7) - 0.5f) * 0.12f,
                     trunkHeight * 0.66f + t * canopyHeight * 1.05f,
@@ -895,7 +906,7 @@ namespace Psycho.Editor
                     float branchAngle = seed + i * 0.67f + arm * Mathf.PI * 2f / 3f;
                     Vector3 sprayOffset = new Vector3(Mathf.Cos(branchAngle) * layerRadius * 0.34f, -layerHeight * 0.10f, Mathf.Sin(branchAngle) * layerRadius * 0.34f);
                     CreateFoliageSpray(
-                        parent,
+                        tree.transform,
                         $"Wind Conifer Needle Spray {i + 1}.{arm + 1}",
                         canopy.transform.localPosition + sprayOffset,
                         new Vector3(layerRadius * 0.54f, layerHeight * 0.115f, layerRadius * 0.20f),
@@ -905,6 +916,10 @@ namespace Psycho.Editor
                         0.78f + i * 0.09f);
                 }
             }
+
+            Renderer[] coniferHighRenderers = parent.GetComponentsInChildren<Renderer>(true);
+            Renderer[] coniferFarRenderers = CreateConiferFarLodProxy(tree.transform, Mathf.Max(trunkHeight + canopyHeight, canopyHeight * 2.1f), trunkRadius, materials.TreeBarkFar, materials.TreeCanopyFar, placement.ObjectId);
+            AddGeneratedFoliageLodGroup(parent.gameObject, coniferHighRenderers, coniferFarRenderers);
         }
 
         private static void CreateFoliageSpray(Transform parent, string name, Vector3 localPosition, Vector3 localScale, float yaw, Material material, float windAmplitude, float windSpeed)
@@ -1823,12 +1838,13 @@ namespace Psycho.Editor
                     }
 
                     float height = 2.45f + Deterministic01(seed + 37) * 2.35f;
-                    CreateHighlandConifer(root.transform, position, height, materials.TreeBark, materials.TreeCanopy, seed);
+                    CreateHighlandConifer(root.transform, position, height, materials.TreeBark, materials.TreeCanopy, materials.TreeBarkFar, materials.TreeCanopyFar, seed);
                     created++;
                 }
             }
 
             context.Report.enhancedFoliageObjects += created;
+            context.Report.foliageLodProxies += created;
             context.Report.windAnimatedObjects += created;
         }
 
@@ -2070,7 +2086,7 @@ namespace Psycho.Editor
             return true;
         }
 
-        private static void CreateHighlandConifer(Transform parent, Vector3 position, float height, Material barkMaterial, Material canopyMaterial, int seed)
+        private static void CreateHighlandConifer(Transform parent, Vector3 position, float height, Material barkMaterial, Material canopyMaterial, Material farBarkMaterial, Material farCanopyMaterial, int seed)
         {
             GameObject tree = new GameObject("Wind Swept Highland Conifer");
             tree.transform.SetParent(parent, false);
@@ -2126,6 +2142,148 @@ namespace Psycho.Editor
                         0.68f + t * 0.32f);
                 }
             }
+
+            Renderer[] highRenderers = tree.GetComponentsInChildren<Renderer>(true);
+            Renderer[] farRenderers = CreateConiferFarLodProxy(tree.transform, height, trunkRadius, farBarkMaterial, farCanopyMaterial, seed);
+            AddGeneratedFoliageLodGroup(tree, highRenderers, farRenderers);
+        }
+
+        private static Renderer[] CreateConiferFarLodProxy(Transform parent, float height, float trunkRadius, Material barkMaterial, Material canopyMaterial, int seed)
+        {
+            List<Renderer> renderers = new List<Renderer>(4);
+            GameObject root = new GameObject("Far Conifer Silhouette Proxy");
+            root.transform.SetParent(parent, false);
+
+            float trunkHeight = height * 0.62f;
+            renderers.Add(CreateFoliageLodPrimitive(
+                root.transform,
+                PrimitiveType.Cylinder,
+                "Far Readable Trunk",
+                barkMaterial,
+                new Vector3(0f, trunkHeight * 0.45f, 0f),
+                Quaternion.identity,
+                new Vector3(Mathf.Max(0.030f, trunkRadius * 1.35f), trunkHeight * 0.45f, Mathf.Max(0.030f, trunkRadius * 1.35f))));
+
+            for (int layer = 0; layer < 3; layer++)
+            {
+                float t = layer / 2f;
+                float radius = height * Mathf.Lerp(0.34f, 0.13f, t);
+                float layerHeight = height * Mathf.Lerp(0.30f, 0.20f, t);
+                Vector3 localPosition = new Vector3(
+                    (Deterministic01(seed + layer * 31) - 0.5f) * height * 0.018f,
+                    height * Mathf.Lerp(0.22f, 0.74f, t),
+                    (Deterministic01(seed + layer * 37) - 0.5f) * height * 0.018f);
+                renderers.Add(CreateFoliageLodMesh(
+                    root.transform,
+                    $"Far Conifer Mass {layer + 1}",
+                    CreateTaperedConeMesh($"Far Conifer Proxy Mesh {seed}_{layer}", 8, radius, radius * 0.16f, layerHeight, seed + layer * 43),
+                    canopyMaterial,
+                    localPosition,
+                    Quaternion.Euler(0f, layer * 41f + Deterministic01(seed + layer * 47) * 22f, 0f),
+                    Vector3.one));
+            }
+
+            return renderers.ToArray();
+        }
+
+        private static Renderer[] CreateBroadleafFarLodProxy(Transform parent, float trunkHeight, float canopyWidth, float canopyHeight, Material barkMaterial, Material canopyMaterial, int seed)
+        {
+            List<Renderer> renderers = new List<Renderer>(4);
+            GameObject root = new GameObject("Far Broadleaf Silhouette Proxy");
+            root.transform.SetParent(parent, false);
+
+            renderers.Add(CreateFoliageLodPrimitive(
+                root.transform,
+                PrimitiveType.Cylinder,
+                "Far Broadleaf Trunk",
+                barkMaterial,
+                new Vector3(0f, trunkHeight * 0.43f, 0f),
+                Quaternion.identity,
+                new Vector3(0.075f + canopyWidth * 0.018f, trunkHeight * 0.43f, 0.075f + canopyWidth * 0.018f)));
+
+            renderers.Add(CreateFoliageLodPrimitive(
+                root.transform,
+                PrimitiveType.Sphere,
+                "Far Broadleaf Crown",
+                canopyMaterial,
+                new Vector3(0f, trunkHeight + canopyHeight * 0.18f, 0f),
+                Quaternion.Euler(0f, Deterministic01(seed + 17) * 360f, 0f),
+                new Vector3(canopyWidth * 0.66f, canopyHeight * 0.48f, canopyWidth * 0.60f)));
+            renderers.Add(CreateFoliageLodPrimitive(
+                root.transform,
+                PrimitiveType.Sphere,
+                "Far Broadleaf Side Crown",
+                canopyMaterial,
+                new Vector3(canopyWidth * 0.18f, trunkHeight + canopyHeight * 0.04f, -canopyWidth * 0.06f),
+                Quaternion.Euler(0f, Deterministic01(seed + 23) * 360f, 0f),
+                new Vector3(canopyWidth * 0.45f, canopyHeight * 0.34f, canopyWidth * 0.42f)));
+
+            return renderers.ToArray();
+        }
+
+        private static Renderer CreateFoliageLodPrimitive(Transform parent, PrimitiveType primitiveType, string name, Material material, Vector3 localPosition, Quaternion localRotation, Vector3 localScale)
+        {
+            GameObject part = GameObject.CreatePrimitive(primitiveType);
+            part.name = name;
+            part.isStatic = true;
+            part.transform.SetParent(parent, false);
+            part.transform.localPosition = localPosition;
+            part.transform.localRotation = localRotation;
+            part.transform.localScale = localScale;
+            Renderer renderer = ConfigureFarFoliageRenderer(part, material);
+            RemoveCollider(part);
+            return renderer;
+        }
+
+        private static Renderer CreateFoliageLodMesh(Transform parent, string name, Mesh mesh, Material material, Vector3 localPosition, Quaternion localRotation, Vector3 localScale)
+        {
+            GameObject part = new GameObject(name);
+            part.isStatic = true;
+            part.transform.SetParent(parent, false);
+            part.transform.localPosition = localPosition;
+            part.transform.localRotation = localRotation;
+            part.transform.localScale = localScale;
+            part.AddComponent<MeshFilter>().sharedMesh = mesh;
+            return ConfigureFarFoliageRenderer(part, material);
+        }
+
+        private static Renderer ConfigureFarFoliageRenderer(GameObject part, Material material)
+        {
+            MeshRenderer renderer = part.GetComponent<MeshRenderer>();
+            if (renderer == null)
+            {
+                renderer = part.AddComponent<MeshRenderer>();
+            }
+
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            renderer.lightProbeUsage = LightProbeUsage.Off;
+            renderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
+            return renderer;
+        }
+
+        private static void AddGeneratedFoliageLodGroup(GameObject root, Renderer[] highRenderers, Renderer[] farRenderers)
+        {
+            if (highRenderers == null || highRenderers.Length == 0 || farRenderers == null || farRenderers.Length == 0)
+            {
+                return;
+            }
+
+            LODGroup lodGroup = root.GetComponent<LODGroup>();
+            if (lodGroup == null)
+            {
+                lodGroup = root.AddComponent<LODGroup>();
+            }
+
+            lodGroup.fadeMode = LODFadeMode.CrossFade;
+            lodGroup.animateCrossFading = true;
+            lodGroup.SetLODs(new[]
+            {
+                new LOD(0.10f, highRenderers),
+                new LOD(0.026f, farRenderers)
+            });
+            lodGroup.RecalculateBounds();
         }
 
         private static Mesh CreateTaperedConeMesh(string name, int segments, float bottomRadius, float topRadius, float height, int seed)
@@ -4057,7 +4215,9 @@ namespace Psycho.Editor
                 Cloud = LoadOrCreateSolidMaterial(CloudMaterialPath, new Color(0.68f, 0.76f, 0.82f, 0.18f), 0.12f),
                 HorizonMist = LoadOrCreateSolidMaterial(HorizonMistMaterialPath, new Color(0.54f, 0.62f, 0.70f, 0.085f), 0.08f),
                 TreeCanopy = LoadOrCreateTexturedMaterial(TreeCanopyMaterialPath, "Leaf", new Color(0.20f, 0.36f, 0.19f, 1f), 0.14f, new Vector2(4.8f, 4.8f), 0.58f),
+                TreeCanopyFar = LoadOrCreateTexturedMaterial(TreeCanopyFarMaterialPath, "Leaf", new Color(0.24f, 0.43f, 0.22f, 1f), 0.10f, new Vector2(3.2f, 3.2f), 0.28f),
                 TreeBark = LoadOrCreateTexturedMaterial(TreeBarkMaterialPath, "Wood", new Color(0.26f, 0.18f, 0.12f, 1f), 0.16f, new Vector2(3.2f, 5.6f), 0.74f),
+                TreeBarkFar = LoadOrCreateTexturedMaterial(TreeBarkFarMaterialPath, "Wood", new Color(0.34f, 0.25f, 0.17f, 1f), 0.10f, new Vector2(2.4f, 4.0f), 0.24f),
                 FrostStone = LoadOrCreateTexturedMaterial(FrostStoneMaterialPath, "Stone", new Color(0.48f, 0.50f, 0.49f, 1f), 0.36f, new Vector2(3.6f, 3.6f), 1.02f),
                 Moss = LoadOrCreateTexturedMaterial(MossMaterialPath, "Organic", new Color(0.22f, 0.30f, 0.17f, 1f), 0.18f, new Vector2(7.2f, 7.2f), 0.72f),
                 CliffFace = LoadOrCreateTexturedMaterial(CliffFaceMaterialPath, "Stone", new Color(0.36f, 0.31f, 0.25f, 1f), 0.44f, new Vector2(4.6f, 3.2f), 1.18f),
@@ -4342,7 +4502,9 @@ namespace Psycho.Editor
             public Material Cloud;
             public Material HorizonMist;
             public Material TreeCanopy;
+            public Material TreeCanopyFar;
             public Material TreeBark;
+            public Material TreeBarkFar;
             public Material FrostStone;
             public Material Moss;
             public Material CliffFace;
@@ -4461,6 +4623,7 @@ namespace Psycho.Editor
             public int terrainCollisionMisses;
             public int groundCoverPatches;
             public int enhancedFoliageObjects;
+            public int foliageLodProxies;
             public int cliffDressingObjects;
             public int waterFoamEdges;
             public int waterDepthChannels;

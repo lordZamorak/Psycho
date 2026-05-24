@@ -1450,8 +1450,8 @@ namespace Psycho.Editor
             GameObject proxyRoot = new GameObject("Foliage LOD Proxy");
             proxyRoot.transform.SetParent(root, false);
 
-            Material leaf = LoadOrCreateStarterMaterial("Foliage_LOD_Leaf", new Color(0.22f, 0.40f, 0.20f), 0f, 0.20f);
-            Material bark = LoadOrCreateStarterMaterial("Foliage_LOD_Bark", new Color(0.27f, 0.19f, 0.12f), 0f, 0.24f);
+            Material leaf = LoadOrCreateStarterMaterial("Foliage_LOD_Leaf", new Color(0.27f, 0.48f, 0.24f), 0f, 0.12f);
+            Material bark = LoadOrCreateStarterMaterial("Foliage_LOD_Bark", new Color(0.34f, 0.25f, 0.17f), 0f, 0.12f);
             Material flower = LoadOrCreateStarterMaterial("Foliage_LOD_Flower", new Color(0.70f, 0.64f, 0.38f), 0f, 0.36f);
             Mesh trunkMesh = LoadOrCreateMeshAsset("Foliage_LOD_Trunk_8", CreateTaperedCylinderYMesh(8, 0.62f));
             Mesh ellipsoidMesh = LoadOrCreateMeshAsset("Foliage_LOD_Ellipsoid_10x5", CreateEllipsoidMesh(10, 5));
@@ -1501,6 +1501,7 @@ namespace Psycho.Editor
         private static Renderer CreateFoliageProxyPart(Transform root, string name, Mesh mesh, Material material, Vector3 localPosition, Quaternion localRotation, Vector3 localScale)
         {
             GameObject part = new GameObject(name);
+            part.isStatic = true;
             part.transform.SetParent(root, false);
             part.transform.localPosition = localPosition;
             part.transform.localRotation = localRotation;
@@ -1508,10 +1509,10 @@ namespace Psycho.Editor
             part.AddComponent<MeshFilter>().sharedMesh = mesh;
             MeshRenderer renderer = part.AddComponent<MeshRenderer>();
             renderer.sharedMaterial = material;
-            renderer.shadowCastingMode = ShadowCastingMode.On;
-            renderer.receiveShadows = true;
-            renderer.lightProbeUsage = LightProbeUsage.BlendProbes;
-            renderer.reflectionProbeUsage = ReflectionProbeUsage.BlendProbes;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            renderer.lightProbeUsage = LightProbeUsage.Off;
+            renderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
             return renderer;
         }
 
@@ -1529,8 +1530,8 @@ namespace Psycho.Editor
                 lodGroup = root.AddComponent<LODGroup>();
             }
 
-            float nearHeight = Mathf.Clamp(cullHeight * 6.5f, 0.055f, 0.095f);
-            float farHeight = Mathf.Clamp(cullHeight, 0.006f, 0.045f);
+            float nearHeight = Mathf.Clamp(cullHeight * 10.0f, 0.090f, 0.140f);
+            float farHeight = Mathf.Clamp(cullHeight * 2.40f, 0.022f, 0.070f);
             lodGroup.fadeMode = LODFadeMode.CrossFade;
             lodGroup.animateCrossFading = true;
             lodGroup.SetLODs(lowRenderers != null && lowRenderers.Length > 0
