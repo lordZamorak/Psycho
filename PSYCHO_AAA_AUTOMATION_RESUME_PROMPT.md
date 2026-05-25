@@ -10,8 +10,8 @@ Use this when resuming Codex for Psycho work.
 - Remote: `https://github.com/lordZamorak/Psycho.git`
 - iCloud backups: `C:\Users\xzero\iCloudDrive\PsychoBackups`
 - Current full client build: `psycho_unity_client\Builds\PsychoUnityClient\Psycho.exe`
-- Latest pushed checkpoint: `8c0c66c0 Add intro quest and authored meadow assets`
-- Latest runnable backup: `C:\Users\xzero\iCloudDrive\PsychoBackups\Psycho_Runnable_20260524-205355_IntroQuestMenuAssets`
+- Latest pushed checkpoint: `cd362b97 Improve intro sequence and nature staging`
+- Latest runnable backup: `C:\Users\xzero\iCloudDrive\PsychoBackups\Psycho_Runnable_20260525-025437_IntroSequenceNature`
 
 ## Role
 
@@ -65,6 +65,25 @@ Build Psycho's own NXT-style Unity MMO client:
 - 4K ultra presentation for strong PCs, with lower graphics presets available from the Esc menu.
 
 ## Latest Verified Milestone
+
+Commit `cd362b97` added:
+
+- Authored KayKit prison barracks, gate, watchtower, props, well, cell details, gallows details, and warm point lights.
+- Authored story NPC visuals for the prison priest, sleeping keep, and breakout stranger.
+- Runtime opening-sequence staging with cinematic cameras, timed dialogue beats, speaker labels, auto-advance, escape objective, and a live golden quest marker.
+- Authored giant bases using local character prefabs with added giant gear/club detail.
+- Open Vale nature frame with treeline, rocks, bloom carpet, and stronger meadow composition.
+- Unity-client-only changes; server/cache/protocol remained untouched.
+
+Latest verification:
+
+- Hosted scene rebuilt.
+- Terrain collision audit: `0` misses across `331776` samples.
+- Budget: `29825` renderers, `940342` triangles, `1429` LOD groups, `1795` wind-animated foliage objects.
+- Windows client build: `459821220` bytes.
+- Smoke launch stayed alive for 12 seconds.
+- Runnable iCloud backup created:
+  `C:\Users\xzero\iCloudDrive\PsychoBackups\Psycho_Runnable_20260525-025437_IntroSequenceNature`
 
 Commit `8c0c66c0` added:
 
@@ -142,4 +161,4 @@ When the environment exposes them, use the relevant installed skills/plugins:
 - Web search only for current facts, licenses, asset source verification, or up-to-date tool docs.
 - Prefer Unity batch methods, local screenshots, budget reports, smoke tests, backups, commits, and pushes over unverified claims.
 
-The Desktop batch launches Codex with `-s danger-full-access`, `-a never`, and `--search` so the agent has full filesystem permissions, no approval prompts, and web search when current verification is needed.
+The Desktop batch launches Codex with `--yolo`, `-s danger-full-access`, `-a never`, and `--search` so the agent has full filesystem permissions, no approval prompts, and web search when current verification is needed.

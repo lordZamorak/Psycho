@@ -6,6 +6,7 @@ set "PROJECT=C:\Users\xzero\Downloads\kandarin\necrotic_server-item_attributes"
 set "UNITY_PROJECT=%PROJECT%\psycho_unity_client"
 set "UNITY_EXE=C:\Program Files\Unity\Hub\Editor\6000.4.7f1\Editor\Unity.exe"
 set "CODEX_EXE=C:\Users\xzero\AppData\Roaming\npm\codex.cmd"
+set "CODEX_YOLO=--yolo -s danger-full-access -a never --search"
 set "PROMPT_FILE=%PROJECT%\PSYCHO_AAA_AUTOMATION_RESUME_PROMPT.md"
 set "PLAYABLE=%UNITY_PROJECT%\Builds\PsychoUnityClient\Psycho.exe"
 set "ICLOUD_BACKUPS=C:\Users\xzero\iCloudDrive\PsychoBackups"
@@ -31,9 +32,10 @@ echo Psycho AAA Resume + Automation
 echo ============================================================
 echo Project: %PROJECT%
 echo Branch:  codex/psycho-rebrand
-echo Latest:  8c0c66c0 Add intro quest and authored meadow assets
+echo Latest:  cd362b97 Improve intro sequence and nature staging
 echo.
 echo This launcher uses:
+echo   Codex mode: codex --yolo
 echo   Codex sandbox: danger-full-access
 echo   Codex approval policy: never
 echo   Codex web search: enabled
@@ -66,7 +68,7 @@ if not exist "%CODEX_EXE%" (
   goto MENU
 )
 echo Resuming the last Codex session in this project...
-"%CODEX_EXE%" resume --last -C "%PROJECT%" -s danger-full-access -a never --search "Read PSYCHO_AAA_AUTOMATION_RESUME_PROMPT.md first. Resume the Psycho Unity MMO work from the latest checkpoint, obey the hard rules, and continue the recommended next pass with safe backups, verification, commit, and push."
+"%CODEX_EXE%" resume --last -C "%PROJECT%" %CODEX_YOLO% "Read PSYCHO_AAA_AUTOMATION_RESUME_PROMPT.md first. Resume the Psycho Unity MMO work from the latest checkpoint, obey the hard rules, and continue the recommended next pass with safe backups, verification, commit, and push."
 pause
 goto MENU
 
@@ -79,7 +81,7 @@ if not exist "%CODEX_EXE%" (
 if not exist "%PROJECT%\run-logs" mkdir "%PROJECT%\run-logs"
 echo Starting one non-interactive autonomous Codex work pass...
 echo Codex will read the resume prompt, choose the next strongest graphics/gameplay pass, verify, back up, commit, and push if stable.
-"%CODEX_EXE%" exec -C "%PROJECT%" -s danger-full-access -a never --search --output-last-message "%PROJECT%\run-logs\codex-aaa-automation-last-message.txt" "Read PSYCHO_AAA_AUTOMATION_RESUME_PROMPT.md first. Continue the Psycho AAA-quality Unity MMO work autonomously. Pick the next strongest pass from the prompt, keep server/cache/protocol untouched unless explicitly justified, use only licensed/original/local assets, rebuild, render proof screenshots, write budget report, build Windows playable, smoke launch, create iCloud backup, commit and push stable milestones, then report results and next pass."
+"%CODEX_EXE%" exec -C "%PROJECT%" %CODEX_YOLO% --output-last-message "%PROJECT%\run-logs\codex-aaa-automation-last-message.txt" "Read PSYCHO_AAA_AUTOMATION_RESUME_PROMPT.md first. Continue the Psycho AAA-quality Unity MMO work autonomously. Pick the next strongest pass from the prompt, keep server/cache/protocol untouched unless explicitly justified, use only licensed/original/local assets, rebuild, render proof screenshots, write budget report, build Windows playable, smoke launch, create iCloud backup, commit and push stable milestones, then report results and next pass."
 pause
 goto MENU
 
