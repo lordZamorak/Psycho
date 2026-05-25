@@ -2283,6 +2283,8 @@ namespace Psycho.Editor
             dressing += CreateHostedVillageFencing(root, materials, scale, villageIndex);
             dressing += CreateHostedVillageProps(root, materials, scale, villageIndex);
             dressing += CreateHostedSettlementTierDressing(root, materials, scale, villageIndex, village);
+            dressing += CreateHostedVillageAuthoredLandmarks(root, materials, scale, villageIndex, village);
+            dressing += CreateHostedVillageLivingEdges(root, context, materials, scale, villageIndex, village);
             CreateHostedVillageNpcCluster(npcParent, root, context, factory, village, villageIndex);
 
             context.Report.hostedSettlements++;
@@ -2453,6 +2455,105 @@ namespace Psycho.Editor
             return created + 2;
         }
 
+        private static int CreateHostedVillageAuthoredLandmarks(Transform root, HostedMaterials materials, float scale, int villageIndex, HostedVillageSpec settlement)
+        {
+            int created = 0;
+            float tierScale = SettlementTierScale(settlement.Tier);
+            float civicScale = scale * tierScale;
+            string civicPrefab = settlement.Tier == HostedSettlementTier.City
+                ? "KayKit_Castle"
+                : settlement.Tier == HostedSettlementTier.Town
+                    ? "KayKit_Market"
+                    : "KayKit_House";
+            string civicName = $"Authored {settlement.Tier} Civic Anchor";
+            float civicDistance = settlement.Tier == HostedSettlementTier.City ? 5.35f : 3.28f;
+            float civicPrefabScale = settlement.Tier == HostedSettlementTier.City ? 0.34f : settlement.Tier == HostedSettlementTier.Town ? 0.78f : 0.66f;
+            Vector3 civicPosition = new Vector3(0f, 0.035f, scale * tierScale * civicDistance);
+            Vector3 civicLocalScale = Vector3.one * civicPrefabScale * civicScale;
+            if (TryInstantiateStarterPrefabLocal(root, civicPrefab, civicName, civicPosition, Quaternion.Euler(0f, 180f, 0f), civicLocalScale, out _, keepColliders: true))
+            {
+                created++;
+            }
+
+            if (TryInstantiateStarterPrefabLocal(root, "KayKit_Well", "Authored Settlement Water Well", new Vector3(-scale * tierScale * 1.75f, 0.035f, -scale * tierScale * 1.55f), Quaternion.Euler(0f, -18f, 0f), Vector3.one * (0.46f * civicScale), out _, keepColliders: true))
+            {
+                created++;
+            }
+
+            int landmarkCount = settlement.Tier == HostedSettlementTier.City ? 6 : settlement.Tier == HostedSettlementTier.Town ? 4 : 3;
+            string[] edgePrefabs = settlement.Tier == HostedSettlementTier.City
+                ? new[] { "KayKit_House", "KayKit_Market", "KayKit_Watchtower", "KayKit_House", "KayKit_Lumbermill", "KayKit_WallGate" }
+                : settlement.Tier == HostedSettlementTier.Town
+                    ? new[] { "KayKit_House", "KayKit_Market", "KayKit_Lumbermill", "KayKit_Mill" }
+                    : new[] { "KayKit_House", "KayKit_Market", "KayKit_House" };
+            for (int i = 0; i < landmarkCount; i++)
+            {
+                int seed = 64500 + villageIndex * 811 + i * 73;
+                float angle = (i / (float)landmarkCount) * Mathf.PI * 2f + Mathf.Lerp(-0.18f, 0.18f, Deterministic01(seed + 3));
+                float radius = scale * tierScale * Mathf.Lerp(4.55f, 6.85f, Deterministic01(seed + 7));
+                Vector3 position = new Vector3(Mathf.Cos(angle) * radius, 0.035f, Mathf.Sin(angle) * radius);
+                string prefabName = edgePrefabs[i % edgePrefabs.Length];
+                float yaw = -angle * Mathf.Rad2Deg + 180f + Mathf.Lerp(-12f, 12f, Deterministic01(seed + 11));
+                float authoredScale = scale * Mathf.Lerp(0.42f, 0.72f, Deterministic01(seed + 17)) * (settlement.Tier == HostedSettlementTier.City ? 0.74f : 0.88f);
+                if (TryInstantiateStarterPrefabLocal(root, prefabName, $"Authored Settlement Landmark {i + 1}", position, Quaternion.Euler(0f, yaw, 0f), Vector3.one * authoredScale, out _, keepColliders: true))
+                {
+                    created++;
+                }
+            }
+
+            return created;
+        }
+
+        private static int CreateHostedVillageLivingEdges(Transform root, HostedBuildContext context, HostedMaterials materials, float scale, int villageIndex, HostedVillageSpec settlement)
+        {
+            int created = 0;
+            int patches = settlement.Tier == HostedSettlementTier.City ? 18 : settlement.Tier == HostedSettlementTier.Town ? 14 : 10;
+            int clusters = settlement.Tier == HostedSettlementTier.City ? 28 : settlement.Tier == HostedSettlementTier.Town ? 22 : 16;
+            float tierScale = SettlementTierScale(settlement.Tier);
+            for (int i = 0; i < patches; i++)
+            {
+                int seed = 68200 + villageIndex * 1009 + i * 89;
+                float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+                float radius = scale * tierScale * Mathf.Lerp(4.20f, 8.45f, Deterministic01(seed + 7));
+                Vector3 local = new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+                Vector3 world = TerrainSurfacePosition(root.TransformPoint(local), 0.030f + i * 0.00006f);
+                Material material = i % 4 == 0
+                    ? materials.Flowers
+                    : i % 4 == 1
+                        ? materials.Herbs
+                        : materials.Grass;
+                float width = scale * Mathf.Lerp(1.8f, 4.8f, Deterministic01(seed + 13));
+                float depth = scale * Mathf.Lerp(1.2f, 3.4f, Deterministic01(seed + 19));
+                GameObject patch = CreateGroundCoverPatch($"{settlement.Name} Living Field Blend {i + 1}", world, width, depth, material, seed);
+                patch.transform.SetParent(root, true);
+                created++;
+            }
+
+            string[] plantPrefabs = { "Bush_Common_Flowers", "Grass_Common_Tall", "Grass_Wispy_Tall", "Bush_Common" };
+            for (int i = 0; i < clusters; i++)
+            {
+                int seed = 70400 + villageIndex * 1231 + i * 97;
+                float angle = Deterministic01(seed + 3) * Mathf.PI * 2f;
+                float radius = scale * tierScale * Mathf.Lerp(3.35f, 8.20f, Deterministic01(seed + 5));
+                Vector3 local = new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+                Vector3 world = TerrainSurfacePosition(root.TransformPoint(local), 0.038f);
+                string prefab = plantPrefabs[Mathf.FloorToInt(Deterministic01(seed + 11) * plantPrefabs.Length) % plantPrefabs.Length];
+                float plantScale = Mathf.Lerp(0.28f, 0.64f, Deterministic01(seed + 17)) * scale;
+                if (TryInstantiateStarterPrefab(root, prefab, $"{settlement.Name} Authored Village Edge Flora {i + 1}", world, Quaternion.Euler(0f, Deterministic01(seed + 23) * 360f, 0f), Vector3.one * plantScale))
+                {
+                    created++;
+                }
+            }
+
+            context.Report.groundCoverPatches += patches;
+            context.Report.wildflowerClusters += clusters;
+            context.Report.herbClusters += clusters / 3;
+            context.Report.seasonalDressingObjects += patches + clusters;
+            context.Report.enhancedFoliageObjects += clusters;
+            context.Report.windAnimatedObjects += clusters;
+            return created;
+        }
+
         private static int CreateHostedSettlementTierDressing(Transform root, HostedMaterials materials, float scale, int villageIndex, HostedVillageSpec settlement)
         {
             if (settlement.Tier == HostedSettlementTier.Village)
@@ -2533,7 +2634,16 @@ namespace Psycho.Editor
                 Vector3 local = new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
                 string role = VillageNpcRole(i, villageIndex, village.Tier);
                 PsychoMirrorNpc npc = CreateHostedVillageNpc(HostedVillageNpcBaseId + villageIndex * 100 + i, role, village.Tier, seed);
-                GameObject npcObject = factory.CreateNpcVisual(npc);
+                bool hasAuthoredNpc = PsychoArtAssetResolver.TryInstantiateNpc(npc, null, out GameObject npcObject);
+                if (!hasAuthoredNpc || npcObject == null)
+                {
+                    npcObject = factory.CreateNpcVisual(npc);
+                }
+                else
+                {
+                    context.Report.visualReplacementNpcs++;
+                }
+
                 npcObject.name = $"Settlement NPC {npc.id} - {npc.name} ({village.Name})";
                 npcObject.transform.SetParent(npcParent, true);
                 npcObject.transform.position = TerrainSurfacePosition(villageRoot.TransformPoint(local), 0.035f);
@@ -2800,15 +2910,15 @@ namespace Psycho.Editor
         {
             return new[]
             {
-                new HostedMeadowSpec("Open Vale Wildflower Preserve", 3030, 3425, 28f, 50, 82, 46),
-                new HostedMeadowSpec("Edgeville Player Start Lush Field", 3087, 3491, 18f, 42, 64, 34),
-                new HostedMeadowSpec("Falador Lush Wildflower Field", 2968, 3378, 25f, 42, 58, 32),
-                new HostedMeadowSpec("Draynor Herb Meadow", 3078, 3270, 23f, 36, 42, 38),
-                new HostedMeadowSpec("River Lum Wildflower Bank", 3144, 3478, 21f, 34, 48, 26),
-                new HostedMeadowSpec("South Meadow Village Flowering Common", 3192, 3298, 22f, 34, 44, 30),
-                new HostedMeadowSpec("Western Autumn Herb Glade", 2922, 3448, 24f, 38, 36, 34),
-                new HostedMeadowSpec("North Edgeville Wayside Meadow", 3082, 3516, 20f, 30, 36, 24),
-                new HostedMeadowSpec("Highland Lake Alpine Flower Shelf", 3292, 3516, 19f, 28, 30, 28)
+                new HostedMeadowSpec("Open Vale Wildflower Preserve", 3030, 3425, 30f, 82, 178, 104),
+                new HostedMeadowSpec("Edgeville Player Start Lush Field", 3087, 3491, 20f, 64, 132, 78),
+                new HostedMeadowSpec("Falador Lush Wildflower Field", 2968, 3378, 26f, 62, 104, 64),
+                new HostedMeadowSpec("Draynor Herb Meadow", 3078, 3270, 24f, 54, 82, 72),
+                new HostedMeadowSpec("River Lum Wildflower Bank", 3144, 3478, 22f, 52, 86, 54),
+                new HostedMeadowSpec("South Meadow Village Flowering Common", 3192, 3298, 23f, 50, 78, 56),
+                new HostedMeadowSpec("Western Autumn Herb Glade", 2922, 3448, 25f, 56, 70, 68),
+                new HostedMeadowSpec("North Edgeville Wayside Meadow", 3082, 3516, 21f, 46, 66, 46),
+                new HostedMeadowSpec("Highland Lake Alpine Flower Shelf", 3292, 3516, 20f, 44, 58, 52)
             };
         }
 
@@ -2969,7 +3079,7 @@ namespace Psycho.Editor
                 }
             }
 
-            for (int i = 0; i < 18; i++)
+            for (int i = 0; i < 36; i++)
             {
                 int seed = 177000 + meadowIndex * 1709 + i * 197;
                 if (!TryGetRadialNaturalPosition(context, meadow.WorldX, meadow.WorldY, meadow.Radius * 0.86f, seed, 0.72f, out _, out _, out Vector3 position))

@@ -21,6 +21,8 @@ namespace Psycho.Gameplay
         private Text bodyText;
         private Text hintText;
         private Text objectiveText;
+        private Image topLetterbox;
+        private Image bottomLetterbox;
         private Button continueButton;
         private PsychoPlayableCharacter playableCharacter;
         private CharacterController characterController;
@@ -36,6 +38,7 @@ namespace Psycho.Gameplay
         private float questMarkerBaseY;
         private Coroutine autoAdvanceRoutine;
         private Coroutine hidePanelRoutine;
+        private Coroutine cameraMoveRoutine;
 
         private enum IntroStep
         {
@@ -110,7 +113,8 @@ namespace Psycho.Gameplay
             string prisonerName = PlayerPrefs.GetString("PsychoPlayerName", "Prisoner");
             string race = PlayerPrefs.GetString("PsychoPlayerRace", "Human");
             string hair = PlayerPrefs.GetString("PsychoPlayerHair", "Short");
-            SetCinematicCamera(intakePosition + new Vector3(3.1f, 2.0f, -3.5f), intakePosition + new Vector3(-0.35f, 1.15f, -0.25f), 42f);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(intakePosition + new Vector3(3.1f, 2.0f, -3.5f), intakePosition + new Vector3(-0.35f, 1.15f, -0.25f), 42f, 1.25f);
             MoveQuestMarker(intakePosition + Vector3.up * 2.15f);
             SetPanel(
                 "Prison Intake",
@@ -126,7 +130,8 @@ namespace Psycho.Gameplay
             step = IntroStep.Cell;
             TeleportPlayer(cellPosition);
             SetPlayerLocked(true);
-            SetCinematicCamera(cellPosition + new Vector3(2.6f, 1.8f, -3.0f), cellPosition + new Vector3(0f, 1.02f, 0.18f), 40f);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(cellPosition + new Vector3(2.6f, 1.8f, -3.0f), cellPosition + new Vector3(0f, 1.02f, 0.18f), 40f, 1.0f);
             MoveQuestMarker(cellPosition + Vector3.up * 2.35f);
             SetPanel(
                 "The Cell",
@@ -142,7 +147,8 @@ namespace Psycho.Gameplay
             step = IntroStep.Breakout;
             TeleportPlayer(cellPosition);
             SetPlayerLocked(true);
-            SetCinematicCamera(releasePosition + new Vector3(2.0f, 1.55f, -2.8f), cellPosition + new Vector3(0.2f, 1.05f, -0.42f), 44f);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(releasePosition + new Vector3(2.0f, 1.55f, -2.8f), cellPosition + new Vector3(0.2f, 1.05f, -0.42f), 44f, 0.85f);
             MoveQuestMarker(releasePosition + Vector3.up * 1.85f);
             SetPanel(
                 "Prison Break",
@@ -159,6 +165,7 @@ namespace Psycho.Gameplay
             TeleportPlayer(releasePosition);
             SetPlayerLocked(false);
             RestorePlayerCamera();
+            SetLetterboxVisible(false);
             MoveQuestMarker(villageGoalPosition + Vector3.up * 2.5f);
             SetPanel(
                 "Escape",
@@ -183,6 +190,7 @@ namespace Psycho.Gameplay
             PlayerPrefs.Save();
             SetPlayerLocked(false);
             RestorePlayerCamera();
+            SetLetterboxVisible(false);
             MoveQuestMarker(villageGoalPosition + Vector3.up * 2.5f);
             SetPanel(
                 "Quest Complete",
@@ -356,7 +364,7 @@ namespace Psycho.Gameplay
             }
         }
 
-        private void SetCinematicCamera(Vector3 position, Vector3 lookAt, float fieldOfView)
+        private void SetCinematicCamera(Vector3 position, Vector3 lookAt, float fieldOfView, float blendSeconds = 0f)
         {
             cinematicCamera = cinematicCamera != null ? cinematicCamera : Camera.main;
             if (cinematicCamera == null)
@@ -374,13 +382,22 @@ namespace Psycho.Gameplay
             }
 
             cinematicCamera.transform.SetParent(null, true);
-            cinematicCamera.transform.position = position;
-            cinematicCamera.transform.rotation = Quaternion.LookRotation(lookAt - position, Vector3.up);
-            cinematicCamera.fieldOfView = fieldOfView;
+            Quaternion targetRotation = Quaternion.LookRotation(lookAt - position, Vector3.up);
+            if (blendSeconds <= 0.01f)
+            {
+                cinematicCamera.transform.position = position;
+                cinematicCamera.transform.rotation = targetRotation;
+                cinematicCamera.fieldOfView = fieldOfView;
+                return;
+            }
+
+            CancelCameraMove();
+            cameraMoveRoutine = StartCoroutine(BlendCameraTo(position, targetRotation, fieldOfView, blendSeconds));
         }
 
         private void RestorePlayerCamera()
         {
+            CancelCameraMove();
             if (!capturedCamera || cinematicCamera == null)
             {
                 return;
@@ -391,6 +408,38 @@ namespace Psycho.Gameplay
             cinematicCamera.transform.localRotation = originalCameraLocalRotation;
             cinematicCamera.fieldOfView = originalCameraFov;
             capturedCamera = false;
+        }
+
+        private IEnumerator BlendCameraTo(Vector3 targetPosition, Quaternion targetRotation, float targetFov, float seconds)
+        {
+            Vector3 startPosition = cinematicCamera.transform.position;
+            Quaternion startRotation = cinematicCamera.transform.rotation;
+            float startFov = cinematicCamera.fieldOfView;
+            float elapsed = 0f;
+            while (elapsed < seconds)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / seconds);
+                t = t * t * (3f - 2f * t);
+                cinematicCamera.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+                cinematicCamera.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
+                cinematicCamera.fieldOfView = Mathf.Lerp(startFov, targetFov, t);
+                yield return null;
+            }
+
+            cinematicCamera.transform.position = targetPosition;
+            cinematicCamera.transform.rotation = targetRotation;
+            cinematicCamera.fieldOfView = targetFov;
+            cameraMoveRoutine = null;
+        }
+
+        private void CancelCameraMove()
+        {
+            if (cameraMoveRoutine != null)
+            {
+                StopCoroutine(cameraMoveRoutine);
+                cameraMoveRoutine = null;
+            }
         }
 
         private void BuildQuestMarker()
@@ -460,6 +509,10 @@ namespace Psycho.Gameplay
             scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             scaler.matchWidthOrHeight = 0.5f;
 
+            topLetterbox = CreateLetterbox("Top Cinematic Bar", canvas.transform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(1920f, 92f), Vector2.zero);
+            bottomLetterbox = CreateLetterbox("Bottom Cinematic Bar", canvas.transform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(1920f, 92f), Vector2.zero);
+            SetLetterboxVisible(false);
+
             RectTransform panel = CreateRect("Intro Dialogue Panel", canvas.transform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(940f, 292f), new Vector2(0f, 50f));
             Image image = panel.gameObject.AddComponent<Image>();
             image.color = new Color(0.015f, 0.040f, 0.055f, 0.92f);
@@ -491,6 +544,20 @@ namespace Psycho.Gameplay
             objectiveText.rectTransform.sizeDelta = new Vector2(760f, 68f);
         }
 
+        private void SetLetterboxVisible(bool visible)
+        {
+            Color color = visible ? new Color(0f, 0f, 0f, 0.72f) : new Color(0f, 0f, 0f, 0f);
+            if (topLetterbox != null)
+            {
+                topLetterbox.color = color;
+            }
+
+            if (bottomLetterbox != null)
+            {
+                bottomLetterbox.color = color;
+            }
+        }
+
         private static RectTransform CreateRect(string name, Transform parent, Vector2 anchor, Vector2 pivot, Vector2 size, Vector2 position)
         {
             GameObject obj = new GameObject(name, typeof(RectTransform));
@@ -502,6 +569,15 @@ namespace Psycho.Gameplay
             rect.sizeDelta = size;
             rect.anchoredPosition = position;
             return rect;
+        }
+
+        private static Image CreateLetterbox(string name, Transform parent, Vector2 anchor, Vector2 pivot, Vector2 size, Vector2 position)
+        {
+            RectTransform rect = CreateRect(name, parent, anchor, pivot, size, position);
+            Image image = rect.gameObject.AddComponent<Image>();
+            image.color = new Color(0f, 0f, 0f, 0f);
+            image.raycastTarget = false;
+            return image;
         }
 
         private static Text CreateText(string value, Transform parent, int size, FontStyle style, Color color, TextAnchor anchor)
