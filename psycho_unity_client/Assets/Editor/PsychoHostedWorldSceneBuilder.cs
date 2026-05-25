@@ -562,6 +562,38 @@ namespace Psycho.Editor
             RenderHostedPrisonIntroPreview();
         }
 
+        [MenuItem("Psycho/Render Hosted Burning Fortress Intro Preview")]
+        public static void RenderHostedBurningFortressIntroPreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject burningIntro = GameObject.Find("Frost Road Convoy And Burning Keep")
+                ?? GameObject.Find("Burning Fortress Escape Sequence Set");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (burningIntro == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both the burning fortress intro set and camera.");
+            }
+
+            Bounds bounds = BuildObjectPreviewBounds(burningIntro.transform);
+            Vector3 focus = bounds.center + Vector3.up * 1.28f;
+            camera.transform.position = focus + new Vector3(11.6f, 5.4f, -13.8f);
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 42f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-burning-fortress-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedBurningFortressIntroPreviewBatch()
+        {
+            RenderHostedBurningFortressIntroPreview();
+        }
+
         [MenuItem("Psycho/Render Hosted Quest Path Preview")]
         public static void RenderHostedQuestPathPreview()
         {
@@ -1873,6 +1905,7 @@ namespace Psycho.Editor
             BuildWorldLandmarks(context, materials);
             BuildHostedVillageNetwork(context, materials);
             BuildPrisonBreakIntroDressing(context, materials);
+            BuildBurningFortressEscapeDressing(context, materials);
             BuildStoryQuestPathDressing(context, materials);
             BuildRegionalBiomeDressing(context, materials);
             BuildLushWildflowerMeadows(context, materials);
@@ -2981,6 +3014,197 @@ namespace Psycho.Editor
 
             context.Report.introQuestDressingObjects += created;
             context.Report.landmarkDressingObjects += created;
+        }
+
+        private static void BuildBurningFortressEscapeDressing(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject rootObject = new GameObject("Burning Fortress Escape Sequence Set");
+            if (!TryCreateLandmarkRoot(rootObject.transform, "Frost Road Convoy And Burning Keep", context, 3087, 3491, out Transform root))
+            {
+                return;
+            }
+
+            root.localRotation = Quaternion.Euler(0f, -18f, 0f);
+            int created = 0;
+
+            CreateGroundPlate(root, "Frozen Convoy Road", new Vector3(0f, 0.018f, 9.0f), 9.4f, 9.8f, materials.LandmarkRoad);
+            CreateGroundPlate(root, "Execution Yard Ash Mud", new Vector3(3.6f, 0.028f, 2.6f), 6.8f, 4.8f, materials.AutumnGround);
+            CreateGroundPlate(root, "Underkeep Armory Stone Floor", new Vector3(-2.55f, 0.022f, -8.0f), 6.4f, 4.2f, materials.FrostStone);
+            CreateGroundPlate(root, "Lower Cave Escape Path", new Vector3(0f, 0.020f, -15.2f), 5.2f, 9.5f, materials.LandmarkRoad);
+            created += 4;
+
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Cart", "Lead Prisoner Wagon", new Vector3(-2.65f, 0.06f, 8.25f), Quaternion.Euler(0f, 178f, 0f), new Vector3(1.14f, 1.08f, 1.14f), out _, keepColliders: true))
+            {
+                created++;
+            }
+
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Cart", "Rear Prisoner Wagon", new Vector3(1.62f, 0.06f, 9.42f), Quaternion.Euler(0f, 171f, 0f), new Vector3(1.03f, 1.0f, 1.03f), out _, keepColliders: true))
+            {
+                created++;
+            }
+
+            CreateLandmarkBox(root, "Wagon Iron Foot Shackle Rack", new Vector3(-1.24f, 0.54f, 7.50f), new Vector3(1.65f, 0.12f, 0.16f), materials.PlayerMetal).transform.localRotation = Quaternion.Euler(0f, -10f, 0f);
+            CreateLandmarkBox(root, "Convoy Snow Packed Wheel Rut Left", new Vector3(-3.85f, 0.06f, 8.78f), new Vector3(0.24f, 0.035f, 5.8f), materials.Snow);
+            CreateLandmarkBox(root, "Convoy Snow Packed Wheel Rut Right", new Vector3(2.84f, 0.06f, 9.18f), new Vector3(0.24f, 0.035f, 5.8f), materials.Snow);
+            created += 3;
+
+            CreateProceduralStoryNpc(root, "Bound Rebel Prisoner", new Vector3(-2.68f, 0.08f, 7.85f), 7f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950010, new[] { "Talk-to", "Examine" }, "Ranger_Citizen", new Vector3(0.98f, 0.98f, 0.98f));
+            CreateProceduralStoryNpc(root, "Silent Cart Prisoner", new Vector3(1.30f, 0.08f, 9.05f), -12f, materials.PlayerCloth, materials.PlayerSkin, materials.PlayerHair, 950011, new[] { "Talk-to", "Examine" }, "Monk_Citizen", new Vector3(0.98f, 0.98f, 0.98f));
+            CreateProceduralStoryNpc(root, "Fortress Spear Guard", new Vector3(-4.40f, 0.08f, 8.58f), 96f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950012, new[] { "Talk-to", "Examine" }, "Warrior_Player", new Vector3(1.05f, 1.05f, 1.05f));
+            CreateProceduralStoryNpc(root, "Gate Sergeant", new Vector3(3.92f, 0.08f, 8.48f), -82f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950013, new[] { "Talk-to", "Examine" }, "Warrior_Player", new Vector3(1.05f, 1.05f, 1.05f));
+            created += 4;
+
+            CreateProceduralStoryNpc(root, "Condemned Prisoner Line", new Vector3(2.05f, 0.08f, 1.68f), 112f, materials.PlayerCloth, materials.PlayerSkin, materials.PlayerHair, 950014, new[] { "Talk-to", "Examine" }, "Monk_Citizen", new Vector3(0.98f, 0.98f, 0.98f));
+            CreateProceduralStoryNpc(root, "Fortress Headsman", new Vector3(4.62f, 0.08f, 1.86f), -70f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950015, new[] { "Examine" }, "Warrior_Player", new Vector3(1.10f, 1.10f, 1.10f));
+            CreateProceduralStoryNpc(root, "Ash-Smoke Town Witness", new Vector3(5.82f, 0.08f, 3.82f), -128f, materials.PlayerPaper, materials.PlayerSkin, materials.PlayerHair, 950016, new[] { "Talk-to", "Examine" }, "Rogue_Merchant", new Vector3(0.98f, 0.98f, 0.98f));
+            created += 3;
+
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Imp", "Ash-Wyrm Tower Assault", new Vector3(7.10f, 5.56f, 4.72f), Quaternion.Euler(0f, -126f, 0f), new Vector3(4.8f, 4.8f, 4.8f), out _))
+            {
+                created++;
+            }
+
+            created += CreateBurningFortressFireCluster(root, materials, "Tower Roof", new Vector3(7.20f, 4.10f, 4.72f), 1.18f, 1);
+            created += CreateBurningFortressFireCluster(root, materials, "Fallen Gate Beam", new Vector3(1.18f, 0.44f, -5.56f), 0.90f, 2);
+            created += CreateBurningFortressFireCluster(root, materials, "Execution Block Ember", new Vector3(4.22f, 0.64f, 2.44f), 0.58f, 3);
+
+            CreateLandmarkBox(root, "Collapsed Tower Stone Slab", new Vector3(5.88f, 1.08f, 4.92f), new Vector3(2.1f, 0.34f, 1.2f), materials.LandmarkStone).transform.localRotation = Quaternion.Euler(-14f, -28f, 9f);
+            CreateLandmarkBox(root, "Burning Street Broken Beam", new Vector3(-0.22f, 0.72f, -4.88f), new Vector3(3.2f, 0.18f, 0.22f), materials.TreeBark).transform.localRotation = Quaternion.Euler(0f, 22f, 14f);
+            CreateLandmarkBox(root, "Charred Prison Gate Plank", new Vector3(1.86f, 0.92f, -6.26f), new Vector3(1.8f, 0.18f, 0.24f), materials.TreeBark).transform.localRotation = Quaternion.Euler(0f, -40f, -8f);
+            created += 3;
+
+            CreateLandmarkBox(root, "Underkeep Rear Wall", new Vector3(-2.55f, 1.16f, -9.96f), new Vector3(6.5f, 2.32f, 0.28f), materials.LandmarkStone);
+            CreateLandmarkBox(root, "Underkeep Left Wall", new Vector3(-5.72f, 1.16f, -8.02f), new Vector3(0.28f, 2.32f, 4.2f), materials.LandmarkStone);
+            CreateLandmarkBox(root, "Underkeep Right Wall Broken", new Vector3(0.62f, 1.02f, -8.08f), new Vector3(0.28f, 2.04f, 2.7f), materials.LandmarkStone);
+            CreateLandmarkBox(root, "Underkeep Open Passage Lintel", new Vector3(-0.02f, 2.34f, -6.38f), new Vector3(2.0f, 0.28f, 0.34f), materials.LandmarkStone);
+            created += 4;
+
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Chest", "Underkeep Confiscated Gear Chest", new Vector3(-4.58f, 0.08f, -8.78f), Quaternion.Euler(0f, 24f, 0f), Vector3.one * 0.86f, out _))
+            {
+                created++;
+            }
+
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Crate", "Underkeep Supply Crate", new Vector3(-3.32f, 0.08f, -7.18f), Quaternion.Euler(0f, -18f, 0f), Vector3.one * 0.84f, out _))
+            {
+                created++;
+            }
+
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Barrel", "Underkeep Water Barrel", new Vector3(-1.18f, 0.08f, -9.02f), Quaternion.Euler(0f, 8f, 0f), Vector3.one * 0.76f, out _))
+            {
+                created++;
+            }
+
+            created += CreateUnderkeepWeaponRack(root, materials, new Vector3(-4.82f, 0.10f, -7.08f), -12f);
+            CreateIntroPointLight(root, "Underkeep Torch Light", new Vector3(-1.04f, 1.82f, -8.86f), new Color(1.0f, 0.46f, 0.18f, 1f), 4.7f, 1.4f);
+            created++;
+
+            created += CreateCaveMouthEscapeSet(root, materials);
+
+            CreateQuestMarkerDressing(root, "Convoy Runtime Target", new Vector3(-0.56f, 2.16f, 8.30f), materials.WildflowerGold);
+            CreateQuestMarkerDressing(root, "Execution Runtime Target", new Vector3(3.92f, 2.68f, 2.35f), materials.WildflowerGold);
+            CreateQuestMarkerDressing(root, "Underkeep Runtime Target", new Vector3(-2.56f, 2.42f, -8.0f), materials.WildflowerGold);
+            CreateQuestMarkerDressing(root, "Cave Exit Runtime Target", new Vector3(0f, 2.62f, -17.95f), materials.WildflowerGold);
+            created += 4;
+
+            context.Report.introQuestDressingObjects += created;
+            context.Report.landmarkDressingObjects += created;
+        }
+
+        private static int CreateBurningFortressFireCluster(Transform parent, HostedMaterials materials, string prefix, Vector3 localPosition, float scale, int seed)
+        {
+            int created = 0;
+            CreateIntroPointLight(parent, prefix + " Firelight", localPosition + new Vector3(0f, 0.72f * scale, 0f), new Color(1.0f, 0.36f, 0.10f, 1f), 4.8f * scale, 1.25f * scale);
+            created++;
+
+            for (int i = 0; i < 3; i++)
+            {
+                float angle = (seed * 41f + i * 112f) * Mathf.Deg2Rad;
+                Vector3 offset = new Vector3(Mathf.Cos(angle) * 0.22f * scale, 0.28f + i * 0.18f * scale, Mathf.Sin(angle) * 0.18f * scale);
+                Material flame = i == 1 ? materials.WildflowerGold : materials.AutumnGround;
+                GameObject tongue = CreateLandmarkCylinder(parent, $"{prefix} Flame Tongue {i + 1}", localPosition + offset, new Vector3(0.13f * scale, (0.42f + i * 0.11f) * scale, 0.13f * scale), flame);
+                tongue.transform.localRotation = Quaternion.Euler(18f + i * 9f, seed * 29f + i * 54f, 12f - i * 7f);
+                RemoveCollider(tongue);
+                created++;
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                float angle = (seed * 53f + i * 67f) * Mathf.Deg2Rad;
+                Vector3 offset = new Vector3(Mathf.Cos(angle) * 0.35f * scale, 0.96f * scale + i * 0.36f * scale, Mathf.Sin(angle) * 0.28f * scale);
+                created += CreateIntroSmokePuff(parent, $"{prefix} Smoke Puff {i + 1}", localPosition + offset, scale * Mathf.Lerp(0.56f, 0.88f, Deterministic01(seed * 100 + i * 17)), materials.Cloud);
+            }
+
+            return created;
+        }
+
+        private static int CreateIntroSmokePuff(Transform parent, string name, Vector3 localPosition, float scale, Material material)
+        {
+            GameObject smoke = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            smoke.name = name;
+            smoke.transform.SetParent(parent, false);
+            smoke.transform.localPosition = localPosition;
+            smoke.transform.localScale = new Vector3(scale * 1.18f, scale * 0.78f, scale);
+            MeshRenderer renderer = smoke.GetComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            RemoveCollider(smoke);
+            return 1;
+        }
+
+        private static int CreateUnderkeepWeaponRack(Transform parent, HostedMaterials materials, Vector3 localPosition, float yaw)
+        {
+            GameObject rack = new GameObject("Underkeep Training Weapon Rack");
+            rack.transform.SetParent(parent, false);
+            rack.transform.localPosition = localPosition;
+            rack.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            int created = 0;
+
+            CreateLandmarkBox(rack.transform, "Weapon Rack Back Rail", new Vector3(0f, 0.82f, 0f), new Vector3(1.48f, 0.10f, 0.12f), materials.TreeBark);
+            CreateLandmarkCylinder(rack.transform, "Weapon Rack Left Leg", new Vector3(-0.62f, 0.48f, 0f), new Vector3(0.045f, 0.48f, 0.045f), materials.TreeBark);
+            CreateLandmarkCylinder(rack.transform, "Weapon Rack Right Leg", new Vector3(0.62f, 0.48f, 0f), new Vector3(0.045f, 0.48f, 0.045f), materials.TreeBark);
+            created += 3;
+
+            for (int i = 0; i < 4; i++)
+            {
+                float x = Mathf.Lerp(-0.48f, 0.48f, i / 3f);
+                GameObject blade = CreateLandmarkBox(rack.transform, $"Rack Iron Blade {i + 1}", new Vector3(x, 0.92f, -0.08f), new Vector3(0.055f, 0.88f, 0.035f), materials.PlayerMetal);
+                blade.transform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(-10f, 10f, i / 3f));
+                CreateLandmarkBox(rack.transform, $"Rack Leather Grip {i + 1}", new Vector3(x, 0.42f, -0.08f), new Vector3(0.075f, 0.18f, 0.055f), materials.PlayerLeather);
+                created += 2;
+            }
+
+            return created;
+        }
+
+        private static int CreateCaveMouthEscapeSet(Transform parent, HostedMaterials materials)
+        {
+            int created = 0;
+            CreateLandmarkBox(parent, "Cave Mouth Left Rock Face", new Vector3(-2.45f, 1.42f, -16.80f), new Vector3(1.18f, 2.84f, 2.85f), materials.CliffFace).transform.localRotation = Quaternion.Euler(0f, 8f, -4f);
+            CreateLandmarkBox(parent, "Cave Mouth Right Rock Face", new Vector3(2.45f, 1.34f, -16.72f), new Vector3(1.08f, 2.68f, 2.62f), materials.CliffFace).transform.localRotation = Quaternion.Euler(0f, -10f, 5f);
+            CreateLandmarkBox(parent, "Cave Mouth Overhang", new Vector3(0f, 2.86f, -16.86f), new Vector3(4.2f, 0.72f, 1.55f), materials.CliffFace).transform.localRotation = Quaternion.Euler(-6f, 0f, 0f);
+            CreateLandmarkBox(parent, "Snow Lit Cave Exit Lip", new Vector3(0f, 0.10f, -18.95f), new Vector3(4.0f, 0.06f, 1.12f), materials.Snow);
+            created += 4;
+
+            for (int i = 0; i < 5; i++)
+            {
+                float x = Mathf.Lerp(-1.6f, 1.6f, i / 4f);
+                float z = Mathf.Lerp(-12.28f, -16.20f, Deterministic01(214000 + i * 17));
+                GameObject rubble = CreateLandmarkBox(parent, $"Lower Tunnel Fallen Stone {i + 1}", new Vector3(x, 0.20f, z), new Vector3(0.52f, 0.26f, 0.42f), i % 2 == 0 ? materials.FrostStone : materials.CliffFace);
+                rubble.transform.localRotation = Quaternion.Euler(Mathf.Lerp(-8f, 8f, Deterministic01(214010 + i)), Mathf.Lerp(-40f, 40f, Deterministic01(214020 + i)), Mathf.Lerp(-12f, 12f, Deterministic01(214030 + i)));
+                created++;
+            }
+
+            GameObject webLeft = CreateLandmarkDetailBox(parent, "Lower Tunnel Web Sheet Left", new Vector3(-1.52f, 1.12f, -13.95f), new Vector3(0.045f, 1.34f, 1.08f), materials.PlayerPaper);
+            webLeft.transform.localRotation = Quaternion.Euler(0f, 18f, -8f);
+            GameObject webRight = CreateLandmarkDetailBox(parent, "Lower Tunnel Web Sheet Right", new Vector3(1.58f, 1.22f, -14.42f), new Vector3(0.045f, 1.46f, 1.18f), materials.PlayerPaper);
+            webRight.transform.localRotation = Quaternion.Euler(0f, -16f, 7f);
+            CreateLandmarkBox(parent, "Bear Scratched Exit Timber", new Vector3(0.72f, 0.74f, -17.88f), new Vector3(0.22f, 1.32f, 0.18f), materials.TreeBark).transform.localRotation = Quaternion.Euler(0f, -20f, -7f);
+            created += 3;
+
+            CreateIntroPointLight(parent, "Cold Daylight Cave Exit", new Vector3(0f, 2.26f, -18.88f), new Color(0.62f, 0.72f, 0.90f, 1f), 6.4f, 1.1f);
+            created++;
+            return created;
         }
 
         private static void BuildStoryQuestPathDressing(HostedBuildContext context, HostedMaterials materials)
@@ -5729,14 +5953,18 @@ namespace Psycho.Editor
         {
             GameObject questObject = new GameObject("Gallows Dawn Intro Quest");
             PsychoIntroQuestController quest = questObject.AddComponent<PsychoIntroQuestController>();
+            Vector3 convoy = TerrainSurfacePosition(WorldTilePosition(context, 3087, 3497), 0.08f);
             Vector3 intake = TerrainSurfacePosition(WorldTilePosition(context, 3087, 3490), 0.08f);
+            Vector3 execution = TerrainSurfacePosition(WorldTilePosition(context, 3090, 3493), 0.08f);
             Vector3 cell = TerrainSurfacePosition(WorldTilePosition(context, 3083, 3492), 0.08f);
             Vector3 release = TerrainSurfacePosition(WorldTilePosition(context, 3087, 3483), 0.08f);
+            Vector3 keepEntry = TerrainSurfacePosition(WorldTilePosition(context, 3085, 3482), 0.08f);
+            Vector3 tunnelExit = TerrainSurfacePosition(WorldTilePosition(context, 3087, 3475), 0.08f);
             Vector3 village = TerrainSurfacePosition(WorldTilePosition(context, 3086, 3522), 0.08f);
             Vector3 noticeBoard = TerrainSurfacePosition(WorldTilePosition(context, 3078, 3514), 0.08f);
             Vector3 barrowScout = TerrainSurfacePosition(WorldTilePosition(context, 3098, 3538), 0.08f);
             Vector3 northwatchReport = TerrainSurfacePosition(WorldTilePosition(context, 3060, 3634), 0.08f);
-            quest.Configure(player, intake, cell, release, village, noticeBoard, barrowScout, northwatchReport, 9.0f);
+            quest.Configure(player, convoy, intake, execution, cell, release, keepEntry, tunnelExit, village, noticeBoard, barrowScout, northwatchReport, 9.0f);
         }
 
         private static void BuildPlayerVisual(Transform parent, HostedMaterials materials, PsychoMirrorDatabase database, HostedPlayerSave playerSave)

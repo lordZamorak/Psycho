@@ -9,9 +9,13 @@ namespace Psycho.Gameplay
     public sealed class PsychoIntroQuestController : MonoBehaviour
     {
         [SerializeField] private Transform player;
+        [SerializeField] private Vector3 convoyPosition;
         [SerializeField] private Vector3 intakePosition;
+        [SerializeField] private Vector3 executionPosition;
         [SerializeField] private Vector3 cellPosition;
         [SerializeField] private Vector3 releasePosition;
+        [SerializeField] private Vector3 keepEntryPosition;
+        [SerializeField] private Vector3 tunnelExitPosition;
         [SerializeField] private Vector3 villageGoalPosition;
         [SerializeField] private Vector3 noticeBoardPosition;
         [SerializeField] private Vector3 barrowScoutPosition;
@@ -46,7 +50,13 @@ namespace Psycho.Gameplay
 
         private enum IntroStep
         {
+            Convoy,
             Intake,
+            ExecutionLine,
+            WyrmAttack,
+            BurningStreets,
+            KeepEntry,
+            TunnelExit,
             Cell,
             Breakout,
             Escape,
@@ -85,7 +95,7 @@ namespace Psycho.Gameplay
             EnsureEventSystem();
             BuildCanvas();
             BuildQuestMarker();
-            BeginIntake();
+            BeginConvoyAwakening();
         }
 
         private void Update()
@@ -134,9 +144,13 @@ namespace Psycho.Gameplay
         {
             Configure(
                 playerTransform,
+                intake + new Vector3(0f, 0f, 7.0f),
                 intake,
+                intake + new Vector3(3.9f, 0f, 2.4f),
                 cell,
                 release,
+                release + new Vector3(-2.5f, 0f, -1.0f),
+                release + new Vector3(0f, 0f, -8.2f),
                 villageGoal,
                 villageGoal + new Vector3(-2.6f, 0f, -2.2f),
                 villageGoal + new Vector3(4.0f, 0f, 8.5f),
@@ -155,15 +169,69 @@ namespace Psycho.Gameplay
             Vector3 northwatchReport,
             float goalRadius)
         {
+            Configure(
+                playerTransform,
+                intake + new Vector3(0f, 0f, 7.0f),
+                intake,
+                intake + new Vector3(3.9f, 0f, 2.4f),
+                cell,
+                release,
+                release + new Vector3(-2.5f, 0f, -1.0f),
+                release + new Vector3(0f, 0f, -8.2f),
+                villageGoal,
+                noticeBoard,
+                barrowScout,
+                northwatchReport,
+                goalRadius);
+        }
+
+        public void Configure(
+            Transform playerTransform,
+            Vector3 convoy,
+            Vector3 intake,
+            Vector3 execution,
+            Vector3 cell,
+            Vector3 release,
+            Vector3 keepEntry,
+            Vector3 tunnelExit,
+            Vector3 villageGoal,
+            Vector3 noticeBoard,
+            Vector3 barrowScout,
+            Vector3 northwatchReport,
+            float goalRadius)
+        {
             player = playerTransform;
+            convoyPosition = convoy;
             intakePosition = intake;
+            executionPosition = execution;
             cellPosition = cell;
             releasePosition = release;
+            keepEntryPosition = keepEntry;
+            tunnelExitPosition = tunnelExit;
             villageGoalPosition = villageGoal;
             noticeBoardPosition = noticeBoard;
             barrowScoutPosition = barrowScout;
             northwatchReportPosition = northwatchReport;
             villageGoalRadius = goalRadius;
+        }
+
+        private void BeginConvoyAwakening()
+        {
+            step = IntroStep.Convoy;
+            TeleportPlayer(convoyPosition);
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(convoyPosition + new Vector3(4.2f, 2.1f, -6.4f), convoyPosition + new Vector3(0f, 1.12f, 0.35f), 43f, 0.75f);
+            MoveQuestMarker(intakePosition + Vector3.up * 2.15f);
+            SetPanel(
+                "Frost Road Convoy",
+                "Bound Rebel",
+                "Wooden wheels grind over frozen stone. You wake bound in a prison cart as the road climbs toward a fortress village under gray mountains.\n\n\"Easy. They took all of us before dawn. Keep your head down until the gates open.\"",
+                "Enter the fortress",
+                8.5f);
+            SetObjective(
+                "Quest: Gallows Dawn\nObjective: survive the convoy to the fortress.",
+                "Gallows Dawn\n1. Wake in the prison cart\n2. Face the fortress intake\n3. Escape before dawn");
         }
 
         private void BeginIntake()
@@ -180,12 +248,107 @@ namespace Psycho.Gameplay
             SetPanel(
                 "Prison Intake",
                 "Rough-Cloth Priest",
-                "The priest keeps his eyes on the ledger while the rope creaks outside.\n\n\"Name for the record: " + prisonerName + ". Race: " + race + ". Hair: " + hair + ". At dawn, the village watches. Until then, you belong to the cell.\"",
+                "The priest keeps his eyes on the ledger while the rope creaks outside.\n\n\"Name for the record: " + prisonerName + ". Race: " + race + ". Hair: " + hair + ". No house, no banner, no witness. At dawn, the fortress watches.\"",
                 "Accept the record",
                 9.0f);
             SetObjective(
-                "Quest: Gallows Dawn\nObjective: survive the prison intake.",
-                "Gallows Dawn\n1. Prison intake: active\n2. Reach North Edgeville\n3. Open the village road journal");
+                "Objective: answer the intake and stay alive.",
+                "Gallows Dawn\n1. Convoy: complete\n2. Intake: active\n3. Execution line: pending");
+        }
+
+        private void BeginExecutionLine()
+        {
+            step = IntroStep.ExecutionLine;
+            TeleportPlayer(executionPosition);
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(executionPosition + new Vector3(4.8f, 2.25f, -5.6f), executionPosition + new Vector3(0.1f, 1.0f, 0.0f), 38f, 0.95f);
+            MoveQuestMarker(executionPosition + Vector3.up * 2.25f);
+            SetPanel(
+                "Execution Line",
+                "Fortress Captain",
+                "The prisoners are pushed before the block. Soldiers lower their spears. The crowd goes quiet as the captain raises a gloved hand.\n\nThen a roar rolls over the peaks, too deep for any horn.",
+                "Look to the sky",
+                8.0f);
+            SetObjective(
+                "Objective: survive the execution line.",
+                "Gallows Dawn\n1. Intake: complete\n2. Execution line: interrupted\n3. Something is above the fortress");
+        }
+
+        private void BeginWyrmAttack()
+        {
+            step = IntroStep.WyrmAttack;
+            TeleportPlayer(executionPosition);
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(executionPosition + new Vector3(-5.5f, 3.1f, -5.2f), executionPosition + new Vector3(1.8f, 2.2f, 1.8f), 42f, 0.85f);
+            MoveQuestMarker(releasePosition + Vector3.up * 2.0f);
+            SetPanel(
+                "The Ash-Wyrm",
+                "Fortress Yard",
+                "A horned ash-wyrm slams onto the tower roof. Fire washes across the stone. Soldiers scatter, prisoners break their line, and the execution block disappears under smoke.",
+                "Run for cover",
+                7.0f);
+            SetObjective(
+                "Objective: run while the fortress burns.",
+                "Gallows Dawn\nThe ash-wyrm has broken the execution. Follow the survivor through the smoke.");
+        }
+
+        private void BeginBurningStreets()
+        {
+            step = IntroStep.BurningStreets;
+            TeleportPlayer(releasePosition);
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(releasePosition + new Vector3(3.2f, 1.75f, -4.1f), releasePosition + new Vector3(-0.4f, 1.05f, -0.8f), 45f, 0.85f);
+            MoveQuestMarker(keepEntryPosition + Vector3.up * 2.0f);
+            SetPanel(
+                "Burning Streets",
+                "Breakout Stranger",
+                "\"Move. The tower is coming down.\" The stranger cuts your wrist rope and shoves you through a broken gate as burning beams fall behind you.",
+                "Enter the keep",
+                7.0f);
+            SetObjective(
+                "Objective: reach the underground keep.",
+                "Gallows Dawn\nEscape the yard and enter the old keep below the fortress.");
+        }
+
+        private void BeginKeepEntry()
+        {
+            step = IntroStep.KeepEntry;
+            TeleportPlayer(keepEntryPosition);
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(keepEntryPosition + new Vector3(2.6f, 1.65f, -3.4f), keepEntryPosition + new Vector3(0f, 0.95f, 0.15f), 40f, 0.9f);
+            MoveQuestMarker(tunnelExitPosition + Vector3.up * 2.15f);
+            SetPanel(
+                "Underkeep Armory",
+                "Breakout Stranger",
+                "\"Bindings off. Take a blade, take boots, take anything that keeps you breathing.\" The roar above becomes muffled stone thunder as the lower passages open.",
+                "Take supplies",
+                7.0f);
+            SetObjective(
+                "Objective: gather basic gear and push through the underkeep.",
+                "Gallows Dawn\nBindings cut. Learn the basics, search the room, and find the lower tunnel.");
+        }
+
+        private void BeginTunnelExit()
+        {
+            step = IntroStep.TunnelExit;
+            TeleportPlayer(tunnelExitPosition);
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(tunnelExitPosition + new Vector3(3.4f, 1.8f, -4.0f), tunnelExitPosition + new Vector3(0f, 1.0f, 0.7f), 42f, 0.9f);
+            MoveQuestMarker(villageGoalPosition + Vector3.up * 2.5f);
+            SetPanel(
+                "Cave Mouth",
+                "Breakout Stranger",
+                "Smoke thins into cold air. Behind you, the fortress burns. Ahead, pine forests, rivers, giant country, and old ruins spread beneath the mountains.\n\n\"North Edgeville. We warn them first.\"",
+                "Step into the wild",
+                7.0f);
+            SetObjective(
+                "Objective: leave the cave and reach North Edgeville.",
+                "Gallows Dawn\nThe escape tunnel is open. Head for North Edgeville.");
         }
 
         private void MoveToCell()
@@ -237,7 +400,7 @@ namespace Psycho.Gameplay
             SetPanel(
                 "Escape",
                 "Quest",
-                "The gate is open. Follow the road markers to North Edgeville Farmstead. Reach the village to finish Gallows Dawn and begin free exploration.",
+                "The cave opens onto the northern wilds. Follow the road markers to North Edgeville Farmstead, warn the village, and begin the Black Road investigation.",
                 string.Empty,
                 0f);
             if (continueButton != null)
@@ -248,7 +411,7 @@ namespace Psycho.Gameplay
             SchedulePanelHide(5.0f);
             SetObjective(
                 "Objective: reach North Edgeville Farmstead.",
-                "Gallows Dawn\nFollow the road north to the farmstead before dawn.");
+                "Gallows Dawn\nWarn North Edgeville about the burning fortress and the ash-wyrm.");
         }
 
         private void BeginVillageHandoff()
@@ -413,8 +576,26 @@ namespace Psycho.Gameplay
             CancelAutoAdvance();
             switch (step)
             {
+                case IntroStep.Convoy:
+                    BeginIntake();
+                    break;
                 case IntroStep.Intake:
-                    MoveToCell();
+                    BeginExecutionLine();
+                    break;
+                case IntroStep.ExecutionLine:
+                    BeginWyrmAttack();
+                    break;
+                case IntroStep.WyrmAttack:
+                    BeginBurningStreets();
+                    break;
+                case IntroStep.BurningStreets:
+                    BeginKeepEntry();
+                    break;
+                case IntroStep.KeepEntry:
+                    BeginTunnelExit();
+                    break;
+                case IntroStep.TunnelExit:
+                    ReleasePlayer();
                     break;
                 case IntroStep.Cell:
                     BeginBreakout();

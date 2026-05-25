@@ -45,6 +45,12 @@ namespace Psycho.Rendering
                 return;
             }
 
+            if (!filter.sharedMesh.isReadable)
+            {
+                enabled = false;
+                return;
+            }
+
             mesh = Instantiate(filter.sharedMesh);
             mesh.MarkDynamic();
             filter.sharedMesh = mesh;
