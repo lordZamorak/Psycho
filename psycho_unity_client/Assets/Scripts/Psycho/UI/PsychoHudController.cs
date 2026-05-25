@@ -24,7 +24,7 @@ namespace Psycho.UI
         [SerializeField] private long moneyPouch;
         [SerializeField] private string recipeForDisasterStatus = "Recipe for Disaster: Not started";
         [SerializeField] private string nomadStatus = "Nomad's Requiem: Not started";
-        [SerializeField] private string questSummary = "Quest Progress: 0/2";
+        [SerializeField] private string questSummary = "Gallows Dawn: Not started";
 
         private Canvas canvas;
         private RectTransform escapeMenu;

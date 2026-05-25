@@ -13,7 +13,11 @@ namespace Psycho.Gameplay
         [SerializeField] private Vector3 cellPosition;
         [SerializeField] private Vector3 releasePosition;
         [SerializeField] private Vector3 villageGoalPosition;
+        [SerializeField] private Vector3 noticeBoardPosition;
+        [SerializeField] private Vector3 barrowScoutPosition;
+        [SerializeField] private Vector3 northwatchReportPosition;
         [SerializeField] private float villageGoalRadius = 7.0f;
+        [SerializeField] private float worldObjectiveRadius = 6.5f;
 
         private Canvas canvas;
         private Text titleText;
@@ -46,6 +50,12 @@ namespace Psycho.Gameplay
             Cell,
             Breakout,
             Escape,
+            VillageHandoff,
+            NoticeBoardObjective,
+            NoticeBoardScene,
+            BarrowObjective,
+            BarrowScene,
+            NorthwatchObjective,
             Complete
         }
 
@@ -82,26 +92,77 @@ namespace Psycho.Gameplay
         {
             UpdateQuestMarker();
 
-            if (step != IntroStep.Escape || player == null)
+            if (player == null)
             {
                 return;
             }
 
-            Vector3 delta = player.position - villageGoalPosition;
-            delta.y = 0f;
-            if (delta.magnitude <= villageGoalRadius)
+            switch (step)
             {
-                CompleteQuest();
+                case IntroStep.Escape:
+                    if (IsPlayerNear(villageGoalPosition, villageGoalRadius))
+                    {
+                        BeginVillageHandoff();
+                    }
+
+                    break;
+                case IntroStep.NoticeBoardObjective:
+                    if (IsPlayerNear(noticeBoardPosition, worldObjectiveRadius))
+                    {
+                        BeginNoticeBoardScene();
+                    }
+
+                    break;
+                case IntroStep.BarrowObjective:
+                    if (IsPlayerNear(barrowScoutPosition, worldObjectiveRadius))
+                    {
+                        BeginBarrowScene();
+                    }
+
+                    break;
+                case IntroStep.NorthwatchObjective:
+                    if (IsPlayerNear(northwatchReportPosition, worldObjectiveRadius))
+                    {
+                        CompleteActOnePath();
+                    }
+
+                    break;
             }
         }
 
         public void Configure(Transform playerTransform, Vector3 intake, Vector3 cell, Vector3 release, Vector3 villageGoal, float goalRadius)
+        {
+            Configure(
+                playerTransform,
+                intake,
+                cell,
+                release,
+                villageGoal,
+                villageGoal + new Vector3(-2.6f, 0f, -2.2f),
+                villageGoal + new Vector3(4.0f, 0f, 8.5f),
+                villageGoal + new Vector3(-8.0f, 0f, 18.0f),
+                goalRadius);
+        }
+
+        public void Configure(
+            Transform playerTransform,
+            Vector3 intake,
+            Vector3 cell,
+            Vector3 release,
+            Vector3 villageGoal,
+            Vector3 noticeBoard,
+            Vector3 barrowScout,
+            Vector3 northwatchReport,
+            float goalRadius)
         {
             player = playerTransform;
             intakePosition = intake;
             cellPosition = cell;
             releasePosition = release;
             villageGoalPosition = villageGoal;
+            noticeBoardPosition = noticeBoard;
+            barrowScoutPosition = barrowScout;
+            northwatchReportPosition = northwatchReport;
             villageGoalRadius = goalRadius;
         }
 
@@ -122,7 +183,9 @@ namespace Psycho.Gameplay
                 "The priest keeps his eyes on the ledger while the rope creaks outside.\n\n\"Name for the record: " + prisonerName + ". Race: " + race + ". Hair: " + hair + ". At dawn, the village watches. Until then, you belong to the cell.\"",
                 "Accept the record",
                 9.0f);
-            SetObjective("Quest: Gallows Dawn\nObjective: survive the prison intake.");
+            SetObjective(
+                "Quest: Gallows Dawn\nObjective: survive the prison intake.",
+                "Gallows Dawn\n1. Prison intake: active\n2. Reach North Edgeville\n3. Open the village road journal");
         }
 
         private void MoveToCell()
@@ -139,7 +202,9 @@ namespace Psycho.Gameplay
                 "Iron slams shut. The keep sets your confiscated gear by the door, drinks from a clay cup, and mutters through the bars.\n\n\"Sleep if you can. Morning comes quick for condemned folk.\"",
                 "Wait through the night",
                 8.0f);
-            SetObjective("Objective: wait in the village prison while the keep sleeps.");
+            SetObjective(
+                "Objective: wait in the village prison while the keep sleeps.",
+                "Gallows Dawn\n1. Prison intake: complete\n2. Wait for the cell break\n3. Reach North Edgeville");
         }
 
         private void BeginBreakout()
@@ -156,7 +221,9 @@ namespace Psycho.Gameplay
                 "A side gate bursts open in the rain. The keep does not wake. A stranger throws a ring of keys into the mud.\n\n\"Move. Follow the road lamps north. If you stop at the gallows, you die here.\"",
                 "Run",
                 7.5f);
-            SetObjective("Objective: escape before morning.");
+            SetObjective(
+                "Objective: escape before morning.",
+                "Gallows Dawn\n1. The cell is open\n2. Follow the road lamps\n3. Reach North Edgeville");
         }
 
         private void ReleasePlayer()
@@ -179,30 +246,165 @@ namespace Psycho.Gameplay
             }
 
             SchedulePanelHide(5.0f);
-            SetObjective("Objective: reach North Edgeville Farmstead.");
+            SetObjective(
+                "Objective: reach North Edgeville Farmstead.",
+                "Gallows Dawn\nFollow the road north to the farmstead before dawn.");
         }
 
-        private void CompleteQuest()
+        private void BeginVillageHandoff()
         {
-            step = IntroStep.Complete;
+            step = IntroStep.VillageHandoff;
             PlayerPrefs.SetInt("PsychoIntroQuestCompleted", 1);
             PlayerPrefs.SetInt("PsychoNewGameActive", 0);
             PlayerPrefs.Save();
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(villageGoalPosition + new Vector3(3.2f, 1.85f, -3.2f), villageGoalPosition + new Vector3(0.1f, 1.05f, 0.2f), 42f, 1.1f);
+            MoveQuestMarker(villageGoalPosition + Vector3.up * 2.5f);
+            SetPanel(
+                "Gallows Dawn Complete",
+                "North Edgeville Reeve",
+                "The village gate closes behind you. A reeve with a frost-burned face presses a road journal into your hands.\n\n\"You are free for now. Read the board, learn the roads, and stay away from the mammoth herds unless you want the giants to remember your name.\"",
+                "Read the road board",
+                0f);
+            SetObjective(
+                "Quest complete: Gallows Dawn.\nNew objective: read the North Edgeville road board.",
+                "Gallows Dawn: complete\nAct I - The Black Road\n1. Read North Edgeville board\n2. Scout Frost-Barrow shrine\n3. Report to Northwatch");
+            if (hud != null)
+            {
+                hud.ShowToastMessage("Gallows Dawn complete");
+            }
+        }
+
+        private void StartNoticeBoardObjective()
+        {
+            step = IntroStep.NoticeBoardObjective;
             SetPlayerLocked(false);
             RestorePlayerCamera();
             SetLetterboxVisible(false);
-            MoveQuestMarker(villageGoalPosition + Vector3.up * 2.5f);
+            MoveQuestMarker(noticeBoardPosition + Vector3.up * 2.25f);
             SetPanel(
-                "Quest Complete",
-                "Quest",
-                "Gallows Dawn complete. The village lights are behind you now, and the roads, forests, mountains, giant camps, and cities of Psycho are open.",
+                "Act I: The Black Road",
+                "Quest Journal",
+                "The road journal opens to a rough charcoal map. The first mark is the North Edgeville board, where villagers pin missing kin, bounty warnings, and ruin notices.",
+                string.Empty,
+                0f);
+            if (continueButton != null)
+            {
+                continueButton.gameObject.SetActive(false);
+            }
+
+            SchedulePanelHide(5.5f);
+            SetObjective(
+                "Act I: The Black Road\nObjective: read the North Edgeville road board.",
+                "Act I - The Black Road\nReach the road board at North Edgeville.");
+        }
+
+        private void BeginNoticeBoardScene()
+        {
+            step = IntroStep.NoticeBoardScene;
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(noticeBoardPosition + new Vector3(2.0f, 1.45f, -2.35f), noticeBoardPosition + new Vector3(0f, 1.05f, 0f), 38f, 0.75f);
+            MoveQuestMarker(barrowScoutPosition + Vector3.up * 2.35f);
+            SetPanel(
+                "The Road Board",
+                "Pinned Notices",
+                "Three fresh notices stand out: missing scouts near Frost-Barrow, a Northwatch call for witnesses, and a warning that giants have been seen moving with mammoth companions near the highland lake.",
+                "Scout the barrow road",
+                0f);
+            SetObjective(
+                "Objective: scout Frost-Barrow Road Shrine.",
+                "Act I - The Black Road\nBoard read. Scout Frost-Barrow Road Shrine.");
+        }
+
+        private void StartBarrowObjective()
+        {
+            step = IntroStep.BarrowObjective;
+            SetPlayerLocked(false);
+            RestorePlayerCamera();
+            SetLetterboxVisible(false);
+            MoveQuestMarker(barrowScoutPosition + Vector3.up * 2.35f);
+            SetPanel(
+                "The Barrow Road",
+                "Quest Journal",
+                "The road bends into cold stones and old ash. Follow the marker to Frost-Barrow and look for what the missing scouts found.",
+                string.Empty,
+                0f);
+            if (continueButton != null)
+            {
+                continueButton.gameObject.SetActive(false);
+            }
+
+            SchedulePanelHide(5.0f);
+            SetObjective(
+                "Objective: scout Frost-Barrow Road Shrine.",
+                "Act I - The Black Road\nTravel to Frost-Barrow Road Shrine.");
+        }
+
+        private void BeginBarrowScene()
+        {
+            step = IntroStep.BarrowScene;
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(barrowScoutPosition + new Vector3(2.8f, 1.75f, -2.7f), barrowScoutPosition + new Vector3(0f, 0.98f, 0.15f), 40f, 0.9f);
+            MoveQuestMarker(northwatchReportPosition + Vector3.up * 2.7f);
+            SetPanel(
+                "Frost-Barrow Sign",
+                "Quest Journal",
+                "The shrine stones are scratched with a black-road sigil. Someone dragged iron-shod boots north after the scouts vanished.\n\nNorthwatch needs to hear this before the next caravan leaves.",
+                "Report to Northwatch",
+                0f);
+            SetObjective(
+                "Objective: report the black-road sign at Northwatch.",
+                "Act I - The Black Road\nFrost-Barrow scouted. Report to Northwatch.");
+        }
+
+        private void StartNorthwatchObjective()
+        {
+            step = IntroStep.NorthwatchObjective;
+            SetPlayerLocked(false);
+            RestorePlayerCamera();
+            SetLetterboxVisible(false);
+            MoveQuestMarker(northwatchReportPosition + Vector3.up * 2.7f);
+            SetPanel(
+                "Northwatch Road",
+                "Quest Journal",
+                "The road journal now marks Northwatch. This is the first long-form route: village, ruin, guard post, and then the wider world.",
+                string.Empty,
+                0f);
+            if (continueButton != null)
+            {
+                continueButton.gameObject.SetActive(false);
+            }
+
+            SchedulePanelHide(5.0f);
+            SetObjective(
+                "Objective: report to Northwatch.",
+                "Act I - The Black Road\nReport to Northwatch.");
+        }
+
+        private void CompleteActOnePath()
+        {
+            step = IntroStep.Complete;
+            PlayerPrefs.SetInt("PsychoActOnePathOpened", 1);
+            PlayerPrefs.Save();
+            SetPlayerLocked(true);
+            SetLetterboxVisible(true);
+            SetCinematicCamera(northwatchReportPosition + new Vector3(3.0f, 2.0f, -3.8f), northwatchReportPosition + new Vector3(0f, 1.1f, 0f), 44f, 0.9f);
+            MoveQuestMarker(northwatchReportPosition + Vector3.up * 2.7f);
+            SetPanel(
+                "Act I Path Opened",
+                "Northwatch Guard",
+                "\"A black-road sigil, then. That means this was not a village hanging. Someone wanted you erased.\"\n\nThe guard marks three roads in your journal: the old barrows, the giant highlands, and the capital road. The first true adventure path is open.",
                 "Continue",
                 0f);
-            SetObjective("Quest complete: Gallows Dawn.");
+            SetObjective(
+                "Act I path opened: investigate barrows, giant camps, and city leads.",
+                "Act I - The Black Road: open\nAvailable leads:\n- Old barrows\n- Giant highlands\n- Capital road");
             if (hud != null)
             {
-                hud.SetQuestSummary("Gallows Dawn: Complete");
-                hud.ShowToastMessage("Gallows Dawn complete");
+                hud.ShowToastMessage("Act I quest path opened");
             }
         }
 
@@ -220,7 +422,19 @@ namespace Psycho.Gameplay
                 case IntroStep.Breakout:
                     ReleasePlayer();
                     break;
+                case IntroStep.VillageHandoff:
+                    StartNoticeBoardObjective();
+                    break;
+                case IntroStep.NoticeBoardScene:
+                    StartBarrowObjective();
+                    break;
+                case IntroStep.BarrowScene:
+                    StartNorthwatchObjective();
+                    break;
                 case IntroStep.Complete:
+                    SetPlayerLocked(false);
+                    RestorePlayerCamera();
+                    SetLetterboxVisible(false);
                     if (canvas != null)
                     {
                         canvas.gameObject.SetActive(false);
@@ -279,7 +493,7 @@ namespace Psycho.Gameplay
             }
         }
 
-        private void SetObjective(string objective)
+        private void SetObjective(string objective, string hudSummary = null)
         {
             if (objectiveText != null)
             {
@@ -288,8 +502,20 @@ namespace Psycho.Gameplay
 
             if (hud != null)
             {
-                hud.SetQuestSummary(objective);
+                hud.SetQuestSummary(string.IsNullOrWhiteSpace(hudSummary) ? objective : hudSummary);
             }
+        }
+
+        private bool IsPlayerNear(Vector3 target, float radius)
+        {
+            if (player == null)
+            {
+                return false;
+            }
+
+            Vector3 delta = player.position - target;
+            delta.y = 0f;
+            return delta.magnitude <= radius;
         }
 
         private void SetPlayerLocked(bool locked)
@@ -314,7 +540,11 @@ namespace Psycho.Gameplay
         {
             yield return new WaitForSeconds(seconds);
             hidePanelRoutine = null;
-            if (canvas != null && step == IntroStep.Escape)
+            if (canvas != null
+                && (step == IntroStep.Escape
+                    || step == IntroStep.NoticeBoardObjective
+                    || step == IntroStep.BarrowObjective
+                    || step == IntroStep.NorthwatchObjective))
             {
                 canvas.gameObject.SetActive(false);
             }
@@ -513,30 +743,30 @@ namespace Psycho.Gameplay
             bottomLetterbox = CreateLetterbox("Bottom Cinematic Bar", canvas.transform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(1920f, 92f), Vector2.zero);
             SetLetterboxVisible(false);
 
-            RectTransform panel = CreateRect("Intro Dialogue Panel", canvas.transform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(940f, 292f), new Vector2(0f, 50f));
+            RectTransform panel = CreateRect("Intro Dialogue Panel", canvas.transform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(980f, 332f), new Vector2(0f, 48f));
             Image image = panel.gameObject.AddComponent<Image>();
-            image.color = new Color(0.015f, 0.040f, 0.055f, 0.92f);
+            image.color = new Color(0.020f, 0.023f, 0.025f, 0.94f);
 
-            titleText = CreateText("Prison Intake", panel, 28, FontStyle.Bold, new Color(1f, 0.86f, 0.58f, 1f), TextAnchor.UpperLeft);
-            titleText.rectTransform.anchoredPosition = new Vector2(28f, -16f);
-            titleText.rectTransform.sizeDelta = new Vector2(850f, 34f);
+            titleText = CreateText("Prison Intake", panel, 28, FontStyle.Bold, new Color(0.78f, 0.77f, 0.68f, 1f), TextAnchor.UpperLeft);
+            titleText.rectTransform.anchoredPosition = new Vector2(30f, -18f);
+            titleText.rectTransform.sizeDelta = new Vector2(900f, 34f);
 
-            speakerText = CreateText(string.Empty, panel, 17, FontStyle.Bold, new Color(0.62f, 0.88f, 1f, 1f), TextAnchor.UpperLeft);
-            speakerText.rectTransform.anchoredPosition = new Vector2(28f, -52f);
-            speakerText.rectTransform.sizeDelta = new Vector2(850f, 28f);
+            speakerText = CreateText(string.Empty, panel, 17, FontStyle.Bold, new Color(0.58f, 0.67f, 0.68f, 1f), TextAnchor.UpperLeft);
+            speakerText.rectTransform.anchoredPosition = new Vector2(30f, -56f);
+            speakerText.rectTransform.sizeDelta = new Vector2(900f, 28f);
 
-            bodyText = CreateText(string.Empty, panel, 18, FontStyle.Normal, new Color(0.86f, 0.94f, 0.98f, 1f), TextAnchor.UpperLeft);
-            bodyText.rectTransform.anchoredPosition = new Vector2(28f, -82f);
-            bodyText.rectTransform.sizeDelta = new Vector2(872f, 142f);
+            bodyText = CreateText(string.Empty, panel, 18, FontStyle.Normal, new Color(0.78f, 0.82f, 0.80f, 1f), TextAnchor.UpperLeft);
+            bodyText.rectTransform.anchoredPosition = new Vector2(30f, -88f);
+            bodyText.rectTransform.sizeDelta = new Vector2(916f, 174f);
 
-            hintText = CreateText(string.Empty, panel, 14, FontStyle.Italic, new Color(0.74f, 0.86f, 0.90f, 0.92f), TextAnchor.MiddleLeft);
-            hintText.rectTransform.anchoredPosition = new Vector2(28f, 18f);
-            hintText.rectTransform.sizeDelta = new Vector2(430f, 32f);
+            hintText = CreateText(string.Empty, panel, 14, FontStyle.Italic, new Color(0.60f, 0.67f, 0.66f, 0.92f), TextAnchor.MiddleLeft);
+            hintText.rectTransform.anchoredPosition = new Vector2(30f, 20f);
+            hintText.rectTransform.sizeDelta = new Vector2(500f, 32f);
 
-            continueButton = CreateButton("Continue", panel, new Vector2(704f, 24f), new Vector2(190f, 48f));
+            continueButton = CreateButton("Continue", panel, new Vector2(744f, 24f), new Vector2(202f, 50f));
             continueButton.onClick.AddListener(OnContinueClicked);
 
-            objectiveText = CreateText(string.Empty, canvas.transform, 19, FontStyle.Bold, new Color(1f, 0.92f, 0.62f, 1f), TextAnchor.UpperLeft);
+            objectiveText = CreateText(string.Empty, canvas.transform, 19, FontStyle.Bold, new Color(0.78f, 0.75f, 0.56f, 1f), TextAnchor.UpperLeft);
             objectiveText.rectTransform.anchorMin = new Vector2(0f, 1f);
             objectiveText.rectTransform.anchorMax = new Vector2(0f, 1f);
             objectiveText.rectTransform.pivot = new Vector2(0f, 1f);
@@ -601,10 +831,10 @@ namespace Psycho.Gameplay
         {
             RectTransform rect = CreateRect(label + " Button", parent, new Vector2(0f, 0f), new Vector2(0f, 0f), size, position);
             Image image = rect.gameObject.AddComponent<Image>();
-            image.color = new Color(0.12f, 0.32f, 0.40f, 0.96f);
+            image.color = new Color(0.15f, 0.15f, 0.13f, 0.96f);
             Button button = rect.gameObject.AddComponent<Button>();
             button.targetGraphic = image;
-            Text text = CreateText(label, rect, 18, FontStyle.Bold, new Color(1f, 0.88f, 0.62f, 1f), TextAnchor.MiddleCenter);
+            Text text = CreateText(label, rect, 18, FontStyle.Bold, new Color(0.82f, 0.78f, 0.62f, 1f), TextAnchor.MiddleCenter);
             text.rectTransform.anchorMin = Vector2.zero;
             text.rectTransform.anchorMax = Vector2.one;
             text.rectTransform.offsetMin = Vector2.zero;

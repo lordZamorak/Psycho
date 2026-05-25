@@ -562,6 +562,38 @@ namespace Psycho.Editor
             RenderHostedPrisonIntroPreview();
         }
 
+        [MenuItem("Psycho/Render Hosted Quest Path Preview")]
+        public static void RenderHostedQuestPathPreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject questPath = GameObject.Find("North Edgeville Road Board")
+                ?? GameObject.Find("Act I Black Road Quest Path");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (questPath == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both the Act I quest path and camera.");
+            }
+
+            Bounds bounds = BuildObjectPreviewBounds(questPath.transform);
+            Vector3 focus = bounds.center + Vector3.up * 1.02f;
+            camera.transform.position = focus + new Vector3(4.8f, 2.25f, -5.4f);
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 32f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-quest-path-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedQuestPathPreviewBatch()
+        {
+            RenderHostedQuestPathPreview();
+        }
+
         [MenuItem("Psycho/Render Hosted Giant Mammoth Preview")]
         public static void RenderHostedGiantMammothPreview()
         {
@@ -1841,6 +1873,7 @@ namespace Psycho.Editor
             BuildWorldLandmarks(context, materials);
             BuildHostedVillageNetwork(context, materials);
             BuildPrisonBreakIntroDressing(context, materials);
+            BuildStoryQuestPathDressing(context, materials);
             BuildRegionalBiomeDressing(context, materials);
             BuildLushWildflowerMeadows(context, materials);
             BuildWildlifeAndGiantEcology(context, materials);
@@ -2948,6 +2981,112 @@ namespace Psycho.Editor
 
             context.Report.introQuestDressingObjects += created;
             context.Report.landmarkDressingObjects += created;
+        }
+
+        private static void BuildStoryQuestPathDressing(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject root = new GameObject("Act I Black Road Quest Path");
+            int created = 0;
+            created += CreateQuestNoticeBoard(root.transform, context, materials, "North Edgeville Road Board", 3078, 3514, -18f);
+            created += CreateQuestScoutClue(root.transform, context, materials, "Frost-Barrow Black Road Sign", 3098, 3538, 24f);
+            created += CreateQuestReportPost(root.transform, context, materials, "Northwatch Report Post", 3060, 3634, 34f);
+            created += CreateGiantWarningTotem(root.transform, context, materials, "Highland Giant Warning Totem", 3298, 3522, -38f);
+
+            context.Report.introQuestDressingObjects += created;
+            context.Report.landmarkDressingObjects += created;
+        }
+
+        private static int CreateQuestNoticeBoard(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY, float yaw)
+        {
+            if (!TryCreateLandmarkRoot(parent, name, context, worldX, worldY, out Transform root))
+            {
+                return 0;
+            }
+
+            root.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            int created = 0;
+            CreateGroundPlate(root, "Trampled Notice Board Mud", Vector3.zero, 4.8f, 3.2f, materials.AutumnGround);
+            CreateLandmarkCylinder(root, "Left Road Board Post", new Vector3(-0.98f, 0.92f, 0f), new Vector3(0.08f, 0.92f, 0.08f), materials.TreeBark);
+            CreateLandmarkCylinder(root, "Right Road Board Post", new Vector3(0.98f, 0.92f, 0f), new Vector3(0.08f, 0.92f, 0.08f), materials.TreeBark);
+            CreateLandmarkBox(root, "Ironbound Road Board", new Vector3(0f, 1.22f, 0f), new Vector3(2.35f, 1.18f, 0.16f), materials.TreeBark);
+            CreateLandmarkDetailBox(root, "Cold Iron Board Rim Top", new Vector3(0f, 1.84f, -0.09f), new Vector3(2.48f, 0.08f, 0.05f), materials.PlayerMetal);
+            CreateLandmarkDetailBox(root, "Cold Iron Board Rim Bottom", new Vector3(0f, 0.60f, -0.09f), new Vector3(2.48f, 0.08f, 0.05f), materials.PlayerMetal);
+            created += 6;
+
+            for (int i = 0; i < 5; i++)
+            {
+                int seed = 176000 + i * 47;
+                float x = Mathf.Lerp(-0.76f, 0.76f, Deterministic01(seed + 3));
+                float y = Mathf.Lerp(0.88f, 1.56f, Deterministic01(seed + 7));
+                GameObject notice = CreateLandmarkDetailBox(root, $"Pinned Quest Notice {i + 1}", new Vector3(x, y, -0.19f), new Vector3(0.42f, 0.30f, 0.026f), materials.PlayerPaper);
+                notice.transform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(-8f, 8f, Deterministic01(seed + 11)));
+                created++;
+            }
+
+            CreateLandmarkBox(root, "Road Journal Drop Crate", new Vector3(1.72f, 0.30f, -0.55f), new Vector3(0.62f, 0.34f, 0.52f), materials.TreeBark);
+            CreateQuestMarkerDressing(root, "Road Board Runtime Target", new Vector3(0f, 2.32f, -0.22f), materials.WildflowerGold);
+            created += 2;
+            return created;
+        }
+
+        private static int CreateQuestScoutClue(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY, float yaw)
+        {
+            if (!TryCreateLandmarkRoot(parent, name, context, worldX, worldY, out Transform root))
+            {
+                return 0;
+            }
+
+            root.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            int created = 0;
+            CreateGroundPlate(root, "Ash Scraped Shrine Ground", Vector3.zero, 4.6f, 3.7f, materials.FrostStone);
+            CreateLandmarkCylinder(root, "Black Road Cold Brazier", new Vector3(0f, 0.44f, -0.48f), new Vector3(0.36f, 0.26f, 0.36f), materials.PlayerMetal);
+            CreateLandmarkDetailBox(root, "Dead Ember Bed", new Vector3(0f, 0.72f, -0.48f), new Vector3(0.56f, 0.04f, 0.48f), materials.AutumnGround);
+            CreateLandmarkBox(root, "Broken Scout Shield", new Vector3(-1.18f, 0.24f, 0.58f), new Vector3(0.70f, 0.10f, 0.48f), materials.PlayerMetal).transform.localRotation = Quaternion.Euler(9f, 18f, -12f);
+            CreateLandmarkBox(root, "Iron Shod Boot Trail", new Vector3(0.92f, 0.06f, 0.85f), new Vector3(1.75f, 0.035f, 0.28f), materials.LandmarkRoad).transform.localRotation = Quaternion.Euler(0f, -28f, 0f);
+            CreateLandmarkDetailBox(root, "Charcoal Black Road Sigil", new Vector3(0f, 0.76f, -0.86f), new Vector3(0.52f, 0.035f, 0.08f), materials.TreeBark);
+            CreateQuestMarkerDressing(root, "Frost-Barrow Scout Target", new Vector3(0f, 2.18f, -0.42f), materials.WildflowerGold);
+            created += 7;
+            return created;
+        }
+
+        private static int CreateQuestReportPost(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY, float yaw)
+        {
+            if (!TryCreateLandmarkRoot(parent, name, context, worldX, worldY, out Transform root))
+            {
+                return 0;
+            }
+
+            root.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            int created = 0;
+            CreateGroundPlate(root, "Northwatch Briefing Stones", Vector3.zero, 5.8f, 4.4f, materials.LandmarkRoad);
+            CreateLandmarkBox(root, "War Table", new Vector3(0f, 0.62f, 0f), new Vector3(1.85f, 0.26f, 1.10f), materials.TreeBark);
+            CreateLandmarkDetailBox(root, "Pinned Northern Map", new Vector3(0f, 0.79f, 0f), new Vector3(1.44f, 0.035f, 0.82f), materials.PlayerPaper);
+            CreateLandmarkCylinder(root, "Report Post Banner Pole", new Vector3(-2.18f, 1.28f, -0.62f), new Vector3(0.06f, 1.28f, 0.06f), materials.TreeBark);
+            CreateLandmarkDetailBox(root, "Northwatch Worn Banner", new Vector3(-2.18f, 2.12f, -0.82f), new Vector3(0.76f, 0.74f, 0.035f), materials.LandmarkBanner);
+            CreateIntroPointLight(root, "Northwatch Briefing Fire", new Vector3(1.98f, 0.88f, -0.82f), new Color(0.96f, 0.58f, 0.28f, 1f), 3.5f, 1.0f);
+            CreateProceduralStoryNpc(root, "Northwatch Road Guard", new Vector3(-0.95f, 0.06f, 1.22f), 156f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950004, new[] { "Talk-to", "Report", "Examine" }, "Warrior_Player", new Vector3(1.05f, 1.05f, 1.05f));
+            CreateQuestMarkerDressing(root, "Northwatch Report Target", new Vector3(0f, 2.54f, 0f), materials.WildflowerGold);
+            created += 8;
+            return created;
+        }
+
+        private static int CreateGiantWarningTotem(Transform parent, HostedBuildContext context, HostedMaterials materials, string name, int worldX, int worldY, float yaw)
+        {
+            if (!TryCreateLandmarkRoot(parent, name, context, worldX, worldY, out Transform root))
+            {
+                return 0;
+            }
+
+            root.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            int created = 0;
+            CreateGroundPlate(root, "Trampled Giant Warning Ground", Vector3.zero, 4.8f, 3.9f, materials.AutumnGround);
+            CreateLandmarkCylinder(root, "Cracked Warning Totem Pole", new Vector3(0f, 1.38f, 0f), new Vector3(0.13f, 1.38f, 0.13f), materials.TreeBark);
+            CreateLandmarkBox(root, "Weathered Mammoth Tusk Left", new Vector3(-0.48f, 1.85f, -0.12f), new Vector3(0.12f, 0.92f, 0.12f), materials.MammothTusk).transform.localRotation = Quaternion.Euler(0f, 0f, -28f);
+            CreateLandmarkBox(root, "Weathered Mammoth Tusk Right", new Vector3(0.48f, 1.85f, -0.12f), new Vector3(0.12f, 0.92f, 0.12f), materials.MammothTusk).transform.localRotation = Quaternion.Euler(0f, 0f, 28f);
+            CreateLandmarkDetailBox(root, "Carved Giant Warning Slate", new Vector3(0f, 0.88f, -0.18f), new Vector3(0.86f, 0.50f, 0.05f), materials.FrostStone);
+            CreateLandmarkBox(root, "Broken Cart Axle Warning", new Vector3(1.45f, 0.20f, 0.42f), new Vector3(1.18f, 0.12f, 0.12f), materials.TreeBark).transform.localRotation = Quaternion.Euler(0f, 32f, 0f);
+            created += 6;
+            return created;
         }
 
         private static void BuildNorthernAncientRuins(HostedBuildContext context, HostedMaterials materials)
@@ -5582,7 +5721,7 @@ namespace Psycho.Editor
             SetSerializedLong(hudSerializedObject, "moneyPouch", Math.Max(0L, playerSave?.moneyPouch ?? 0L));
             SetSerializedString(hudSerializedObject, "recipeForDisasterStatus", playerSave?.recipeForDisasterStatus ?? "Recipe for Disaster: Not started");
             SetSerializedString(hudSerializedObject, "nomadStatus", playerSave?.nomadStatus ?? "Nomad's Requiem: Not started");
-            SetSerializedString(hudSerializedObject, "questSummary", playerSave?.questSummary ?? "Quest Progress: 0/2");
+            SetSerializedString(hudSerializedObject, "questSummary", playerSave?.questSummary ?? "Gallows Dawn: Not started");
             hudSerializedObject.ApplyModifiedPropertiesWithoutUndo();
         }
 
@@ -5594,7 +5733,10 @@ namespace Psycho.Editor
             Vector3 cell = TerrainSurfacePosition(WorldTilePosition(context, 3083, 3492), 0.08f);
             Vector3 release = TerrainSurfacePosition(WorldTilePosition(context, 3087, 3483), 0.08f);
             Vector3 village = TerrainSurfacePosition(WorldTilePosition(context, 3086, 3522), 0.08f);
-            quest.Configure(player, intake, cell, release, village, 9.0f);
+            Vector3 noticeBoard = TerrainSurfacePosition(WorldTilePosition(context, 3078, 3514), 0.08f);
+            Vector3 barrowScout = TerrainSurfacePosition(WorldTilePosition(context, 3098, 3538), 0.08f);
+            Vector3 northwatchReport = TerrainSurfacePosition(WorldTilePosition(context, 3060, 3634), 0.08f);
+            quest.Configure(player, intake, cell, release, village, noticeBoard, barrowScout, northwatchReport, 9.0f);
         }
 
         private static void BuildPlayerVisual(Transform parent, HostedMaterials materials, PsychoMirrorDatabase database, HostedPlayerSave playerSave)
@@ -6242,7 +6384,7 @@ namespace Psycho.Editor
                 : nomadStarted
                     ? "Nomad's Requiem: In progress"
                     : "Nomad's Requiem: Not started";
-            save.questSummary = "Quest Progress: " + completed + "/2";
+            save.questSummary = "Legacy quests: " + completed + "/2\nGallows Dawn: available\nAct I - The Black Road: locked";
         }
 
         private static long ReadLongProperty(string json, string propertyName, long fallback)
@@ -7493,7 +7635,7 @@ namespace Psycho.Editor
             [NonSerialized] public int maxPrayer = 1;
             [NonSerialized] public string recipeForDisasterStatus = "Recipe for Disaster: Not started";
             [NonSerialized] public string nomadStatus = "Nomad's Requiem: Not started";
-            [NonSerialized] public string questSummary = "Quest Progress: 0/2";
+            [NonSerialized] public string questSummary = "Gallows Dawn: Not started";
         }
 
         [Serializable]
