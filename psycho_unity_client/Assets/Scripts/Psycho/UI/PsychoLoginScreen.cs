@@ -39,6 +39,8 @@ namespace Psycho.UI
         private Button newGameButton;
         private Font uiFont;
         private Texture2D crystalPanelTexture;
+        private Texture2D northernBackgroundTexture;
+        private Texture2D ironCrestTexture;
         private Sprite softDiscSprite;
         private LoginParticle[] particles;
         private CancellationTokenSource loginCancellation;
@@ -67,7 +69,14 @@ namespace Psycho.UI
 
             if (panelRoot != null)
             {
-                panelRoot.anchoredPosition = new Vector2(0f, Mathf.Sin(time * 0.68f) * 7f);
+                if (panelRoot.gameObject.name == "Northern Main Menu")
+                {
+                    panelRoot.anchoredPosition = new Vector2(-92f, -28f + Mathf.Sin(time * 0.46f) * 3f);
+                }
+                else
+                {
+                    panelRoot.anchoredPosition = new Vector2(0f, Mathf.Sin(time * 0.40f) * 2f);
+                }
             }
 
             AnimateParticles(time);
@@ -116,89 +125,96 @@ namespace Psycho.UI
 
         private void BuildBackground()
         {
-            Texture2D background = Resources.Load<Texture2D>(BackgroundResource);
-            GameObject backgroundObject = CreateUiObject("Smithing Background", canvas.transform);
+            Texture2D background = GetNorthernTitleBackgroundTexture();
+            GameObject backgroundObject = CreateUiObject("Northern Fog Background", canvas.transform);
             backgroundImage = backgroundObject.AddComponent<RawImage>();
             backgroundImage.texture = background;
-            backgroundImage.color = Color.white;
+            backgroundImage.color = new Color(0.86f, 0.90f, 0.94f, 1f);
             Stretch(backgroundImage.rectTransform, Vector2.zero, Vector2.zero);
 
-            CreateVignette("Top Vignette", new Color(0f, 0f, 0f, 0.34f), true, 128f);
-            CreateVignette("Bottom Vignette", new Color(0f, 0f, 0f, 0.46f), false, 190f);
+            CreateVignette("Top Vignette", new Color(0f, 0f, 0f, 0.64f), true, 220f);
+            CreateVignette("Bottom Vignette", new Color(0f, 0f, 0f, 0.78f), false, 260f);
         }
 
         private void BuildParticles()
         {
             softDiscSprite = CreateSoftDiscSprite();
-            GameObject particleRoot = CreateUiObject("Live Photo Particles", canvas.transform);
+            GameObject particleRoot = CreateUiObject("Northern Snow And Smoke Drift", canvas.transform);
             RectTransform rootTransform = particleRoot.GetComponent<RectTransform>();
             Stretch(rootTransform, Vector2.zero, Vector2.zero);
 
             System.Random random = new System.Random(9437);
-            particles = new LoginParticle[58];
+            particles = new LoginParticle[76];
             for (int i = 0; i < particles.Length; i++)
             {
-                bool smoke = i < 12;
-                GameObject particleObject = CreateUiObject(smoke ? "Smoke Drift" : "Forge Ember", rootTransform);
+                bool smoke = i < 20;
+                GameObject particleObject = CreateUiObject(smoke ? "Low Fog Drift" : "Wind Snow Fleck", rootTransform);
                 Image image = particleObject.AddComponent<Image>();
                 image.sprite = softDiscSprite;
                 image.raycastTarget = false;
                 RectTransform rect = image.rectTransform;
-                float size = smoke ? random.Next(38, 96) : random.Next(3, 9);
+                float size = smoke ? random.Next(42, 116) : random.Next(3, 7);
                 rect.sizeDelta = new Vector2(size, size);
+                rect.anchoredPosition = new Vector2(random.Next(-ReferenceWidth / 2, ReferenceWidth / 2), random.Next(-ReferenceHeight / 2, ReferenceHeight / 2));
+                float speed = smoke
+                    ? Mathf.Lerp(0.015f, 0.046f, (float)random.NextDouble())
+                    : Mathf.Lerp(0.09f, 0.26f, (float)random.NextDouble());
+                float baseAlpha = smoke
+                    ? Mathf.Lerp(0.020f, 0.055f, (float)random.NextDouble())
+                    : Mathf.Lerp(0.10f, 0.24f, (float)random.NextDouble());
+                Color particleColor = smoke
+                    ? new Color(0.30f, 0.35f, 0.37f, 1f)
+                    : new Color(0.58f, 0.66f, 0.70f, 1f);
+                image.color = new Color(particleColor.r, particleColor.g, particleColor.b, baseAlpha);
                 particles[i] = new LoginParticle
                 {
                     rect = rect,
                     image = image,
                     smoke = smoke,
                     seed = (float)random.NextDouble() * 999f,
-                    speed = smoke ? UnityEngine.Random.Range(0.025f, 0.07f) : UnityEngine.Random.Range(0.18f, 0.42f),
-                    baseAlpha = smoke ? UnityEngine.Random.Range(0.05f, 0.13f) : UnityEngine.Random.Range(0.34f, 0.72f),
-                    color = smoke
-                        ? new Color(0.56f, 0.63f, 0.69f, 1f)
-                        : (i % 5 == 0 ? new Color(0.46f, 0.86f, 1f, 1f) : new Color(1f, UnityEngine.Random.Range(0.46f, 0.78f), 0.24f, 1f))
+                    speed = speed,
+                    baseAlpha = baseAlpha,
+                    color = particleColor
                 };
             }
         }
 
+        private void BuildOriginalIronCrest()
+        {
+            RawImage crest = CreateUiObject("Original Psycho Iron Crest", canvas.transform).AddComponent<RawImage>();
+            crest.texture = GetIronCrestTexture();
+            crest.raycastTarget = false;
+            RectTransform rect = crest.rectTransform;
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = new Vector2(520f, 700f);
+            rect.anchoredPosition = new Vector2(-350f, 48f);
+        }
+
         private void BuildPanel()
         {
-            GameObject root = CreateUiObject("Floating Crystal Login", canvas.transform);
+            BuildOriginalIronCrest();
+
+            GameObject root = CreateUiObject("Northern Main Menu", canvas.transform);
             panelRoot = root.GetComponent<RectTransform>();
-            panelRoot.anchorMin = new Vector2(0.5f, 0.5f);
-            panelRoot.anchorMax = new Vector2(0.5f, 0.5f);
-            panelRoot.pivot = new Vector2(0.5f, 0.5f);
-            panelRoot.sizeDelta = panelSize;
-            panelRoot.anchoredPosition = Vector2.zero;
+            panelRoot.anchorMin = new Vector2(1f, 0.5f);
+            panelRoot.anchorMax = new Vector2(1f, 0.5f);
+            panelRoot.pivot = new Vector2(1f, 0.5f);
+            panelRoot.sizeDelta = new Vector2(360f, 520f);
+            panelRoot.anchoredPosition = new Vector2(-92f, -28f);
 
-            for (int i = 5; i >= 0; i--)
-            {
-                Image shadow = CreatePanelImage(
-                    $"Panel Scene Shadow {i}",
-                    panelRoot,
-                    new Color(0f, 0f, 0f, 0.10f + i * 0.025f),
-                    new Vector2(0.5f, 0.5f),
-                    new Vector2(0.5f, 0.5f),
-                    panelSize + new Vector2(i * 24f, i * 18f),
-                    shadowOffset + new Vector2(-i * 5f, -i * 3f));
-                shadow.raycastTarget = false;
-            }
+            CreateText("PSYCHO", canvas.transform, 76, FontStyle.Bold, new Color(0.70f, 0.72f, 0.70f, 0.94f), new Vector2(-355f, -352f), new Vector2(560f, 84f));
+            CreateText("NORTHERN TEST WORLD", canvas.transform, 16, FontStyle.Bold, new Color(0.43f, 0.48f, 0.50f, 0.82f), new Vector2(-355f, -414f), new Vector2(420f, 32f));
 
-            RawImage panel = CreateUiObject("Crystal Panel Texture", panelRoot).AddComponent<RawImage>();
-            panel.texture = GetCrystalPanelTexture();
-            panel.raycastTarget = false;
-            Stretch(panel.rectTransform, Vector2.zero, Vector2.zero);
+            previewButton = CreateMenuButton("CONTINUE", new Vector2(0f, 150f), true, ContinueHostedWorld);
+            newGameButton = CreateMenuButton("NEW", new Vector2(0f, 86f), false, ShowCharacterCreator);
+            loginButton = CreateMenuButton("LOGIN", new Vector2(0f, 22f), false, OnLoginClicked);
+            CreateMenuButton("QUIT", new Vector2(0f, -42f), false, QuitToDesktop);
 
-            CreateText("Psycho", panelRoot, 58, FontStyle.Bold, new Color(0.98f, 0.86f, 0.61f, 1f), new Vector2(0f, 176f), new Vector2(620f, 72f));
-            CreateText("A condemned prisoner wakes into Psycho", panelRoot, 21, FontStyle.Normal, new Color(0.76f, 0.86f, 0.94f, 1f), new Vector2(0f, 128f), new Vector2(660f, 34f));
-            CreateText("PSYCHO UNITY CLIENT", panelRoot, 13, FontStyle.Bold, new Color(0.50f, 0.86f, 1f, 0.72f), new Vector2(0f, -232f), new Vector2(460f, 26f));
-
-            usernameField = CreateInput("Username", new Vector2(0f, 48f), false);
-            passwordField = CreateInput("Password", new Vector2(0f, -18f), true);
-            newGameButton = CreateButton("New Game", new Vector2(-222f, -92f), new Vector2(168f, 46f), ShowCharacterCreator);
-            previewButton = CreateButton("Continue", new Vector2(0f, -92f), new Vector2(168f, 46f), ContinueHostedWorld);
-            loginButton = CreateButton("Login", new Vector2(210f, -92f), new Vector2(150f, 46f), OnLoginClicked);
-            statusText = CreateText("Ready.", panelRoot, 16, FontStyle.Normal, new Color(0.80f, 0.91f, 0.96f, 1f), new Vector2(0f, -156f), new Vector2(560f, 32f));
+            usernameField = CreateInput("Username", new Vector2(-4f, -136f), false);
+            passwordField = CreateInput("Password", new Vector2(-4f, -194f), true);
+            statusText = CreateText("Cold mist rolls over the pass.", panelRoot, 14, FontStyle.Normal, new Color(0.58f, 0.66f, 0.70f, 0.86f), new Vector2(-4f, -246f), new Vector2(310f, 34f));
         }
 
         private void BuildCharacterCreatorPanel()
@@ -208,16 +224,16 @@ namespace Psycho.UI
             panelRoot.anchorMin = new Vector2(0.5f, 0.5f);
             panelRoot.anchorMax = new Vector2(0.5f, 0.5f);
             panelRoot.pivot = new Vector2(0.5f, 0.5f);
-            panelRoot.sizeDelta = panelSize;
+            panelRoot.sizeDelta = new Vector2(900f, 560f);
             panelRoot.anchoredPosition = Vector2.zero;
 
-            RawImage panel = CreateUiObject("Crystal Panel Texture", panelRoot).AddComponent<RawImage>();
+            RawImage panel = CreateUiObject("Aged Iron Parchment Panel", panelRoot).AddComponent<RawImage>();
             panel.texture = GetCrystalPanelTexture();
             panel.raycastTarget = false;
             Stretch(panel.rectTransform, Vector2.zero, Vector2.zero);
 
-            CreateText("Prison Intake", panelRoot, 48, FontStyle.Bold, new Color(0.98f, 0.86f, 0.61f, 1f), new Vector2(0f, 182f), new Vector2(620f, 64f));
-            CreateText("The priest asks for the name that will be written beside the morning noose.", panelRoot, 18, FontStyle.Normal, new Color(0.76f, 0.86f, 0.94f, 1f), new Vector2(0f, 136f), new Vector2(760f, 34f));
+            CreateText("Prison Intake", panelRoot, 48, FontStyle.Bold, new Color(0.72f, 0.70f, 0.62f, 1f), new Vector2(0f, 182f), new Vector2(620f, 64f));
+            CreateText("The priest asks for the name that will be written beside the morning noose.", panelRoot, 18, FontStyle.Normal, new Color(0.58f, 0.64f, 0.66f, 1f), new Vector2(0f, 136f), new Vector2(760f, 34f));
 
             characterNameField = CreateInput("Prisoner name", new Vector2(-180f, 72f), false);
             raceDropdown = CreateDropdown("Race", new Vector2(204f, 72f), new[] { "Human", "Highlander", "Dwarf", "Elf" });
@@ -238,28 +254,67 @@ namespace Psycho.UI
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.sizeDelta = new Vector2(460f, 48f);
+            float width = panelRoot != null && panelRoot.sizeDelta.x < 500f ? 300f : 460f;
+            rect.sizeDelta = new Vector2(width, 48f);
             rect.anchoredPosition = anchoredPosition;
 
             Image image = fieldObject.AddComponent<Image>();
-            image.color = new Color(0.015f, 0.055f, 0.085f, 0.88f);
+            image.color = new Color(0.015f, 0.018f, 0.020f, 0.84f);
 
             InputField input = fieldObject.AddComponent<InputField>();
             input.targetGraphic = image;
             input.transition = Selectable.Transition.ColorTint;
-            input.colors = CreateSelectableColors(new Color(0.72f, 0.93f, 1f, 1f));
+            input.colors = CreateSelectableColors(new Color(0.58f, 0.64f, 0.66f, 1f));
             input.contentType = password ? InputField.ContentType.Password : InputField.ContentType.Standard;
             input.asteriskChar = '*';
 
-            Text text = CreateTextObject("Text", fieldObject.transform, 22, FontStyle.Normal, Color.white, TextAnchor.MiddleLeft);
+            Text text = CreateTextObject("Text", fieldObject.transform, 20, FontStyle.Normal, new Color(0.78f, 0.82f, 0.82f, 1f), TextAnchor.MiddleLeft);
             Stretch(text.rectTransform, new Vector2(18f, 4f), new Vector2(18f, 4f));
             input.textComponent = text;
 
-            Text placeholderText = CreateTextObject("Placeholder", fieldObject.transform, 20, FontStyle.Normal, new Color(0.64f, 0.77f, 0.86f, 0.62f), TextAnchor.MiddleLeft);
+            Text placeholderText = CreateTextObject("Placeholder", fieldObject.transform, 18, FontStyle.Normal, new Color(0.42f, 0.48f, 0.50f, 0.72f), TextAnchor.MiddleLeft);
             Stretch(placeholderText.rectTransform, new Vector2(18f, 4f), new Vector2(18f, 4f));
             placeholderText.text = placeholder;
             input.placeholder = placeholderText;
             return input;
+        }
+
+        private Button CreateMenuButton(string label, Vector2 anchoredPosition, bool primary, UnityEngine.Events.UnityAction action)
+        {
+            GameObject buttonObject = CreateUiObject(label + " Menu Button", panelRoot);
+            RectTransform rect = buttonObject.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(1f, 0.5f);
+            rect.anchorMax = new Vector2(1f, 0.5f);
+            rect.pivot = new Vector2(1f, 0.5f);
+            rect.sizeDelta = new Vector2(310f, 52f);
+            rect.anchoredPosition = anchoredPosition;
+
+            Image image = buttonObject.AddComponent<Image>();
+            image.color = primary ? new Color(0.12f, 0.13f, 0.13f, 0.26f) : new Color(0f, 0f, 0f, 0f);
+
+            Button button = buttonObject.AddComponent<Button>();
+            button.targetGraphic = image;
+            button.colors = CreateMenuButtonColors(primary);
+            button.onClick.AddListener(action);
+
+            Text text = CreateTextObject("Label", buttonObject.transform, primary ? 32 : 25, primary ? FontStyle.Bold : FontStyle.Normal, primary ? new Color(0.88f, 0.88f, 0.82f, 1f) : new Color(0.56f, 0.58f, 0.57f, 0.96f), TextAnchor.MiddleRight);
+            text.text = label;
+            Stretch(text.rectTransform, Vector2.zero, Vector2.zero);
+
+            if (primary)
+            {
+                Image marker = CreateUiObject("Iron Knot Marker", buttonObject.transform).AddComponent<Image>();
+                marker.color = new Color(0.74f, 0.76f, 0.72f, 0.92f);
+                RectTransform markerRect = marker.rectTransform;
+                markerRect.anchorMin = new Vector2(1f, 0.5f);
+                markerRect.anchorMax = new Vector2(1f, 0.5f);
+                markerRect.pivot = new Vector2(0.5f, 0.5f);
+                markerRect.sizeDelta = new Vector2(18f, 18f);
+                markerRect.anchoredPosition = new Vector2(26f, 0f);
+                markerRect.localRotation = Quaternion.Euler(0f, 0f, 45f);
+            }
+
+            return button;
         }
 
         private Button CreateButton(string label, Vector2 anchoredPosition, Vector2 size, UnityEngine.Events.UnityAction action)
@@ -273,14 +328,14 @@ namespace Psycho.UI
             rect.anchoredPosition = anchoredPosition;
 
             Image image = buttonObject.AddComponent<Image>();
-            image.color = new Color(0.11f, 0.33f, 0.43f, 0.94f);
+            image.color = new Color(0.10f, 0.105f, 0.105f, 0.94f);
 
             Button button = buttonObject.AddComponent<Button>();
             button.targetGraphic = image;
-            button.colors = CreateSelectableColors(new Color(0.96f, 0.78f, 0.42f, 1f));
+            button.colors = CreateSelectableColors(new Color(0.55f, 0.57f, 0.54f, 1f));
             button.onClick.AddListener(action);
 
-            Text text = CreateTextObject("Label", buttonObject.transform, 20, FontStyle.Bold, new Color(1f, 0.91f, 0.72f, 1f), TextAnchor.MiddleCenter);
+            Text text = CreateTextObject("Label", buttonObject.transform, 20, FontStyle.Bold, new Color(0.78f, 0.74f, 0.62f, 1f), TextAnchor.MiddleCenter);
             text.text = label;
             Stretch(text.rectTransform, Vector2.zero, Vector2.zero);
             return button;
@@ -297,7 +352,7 @@ namespace Psycho.UI
             rect.anchoredPosition = anchoredPosition;
 
             Image image = dropdownObject.AddComponent<Image>();
-            image.color = new Color(0.015f, 0.055f, 0.085f, 0.88f);
+            image.color = new Color(0.015f, 0.018f, 0.020f, 0.88f);
 
             Dropdown dropdown = dropdownObject.AddComponent<Dropdown>();
             dropdown.targetGraphic = image;
@@ -307,7 +362,7 @@ namespace Psycho.UI
                 dropdown.options.Add(new Dropdown.OptionData(options[i]));
             }
 
-            Text caption = CreateTextObject("Label", dropdownObject.transform, 18, FontStyle.Bold, new Color(1f, 0.91f, 0.72f, 1f), TextAnchor.MiddleLeft);
+            Text caption = CreateTextObject("Label", dropdownObject.transform, 18, FontStyle.Bold, new Color(0.76f, 0.72f, 0.62f, 1f), TextAnchor.MiddleLeft);
             caption.text = label + ": " + (options.Length == 0 ? string.Empty : options[0]);
             Stretch(caption.rectTransform, new Vector2(16f, 4f), new Vector2(16f, 4f));
             dropdown.captionText = caption;
@@ -319,7 +374,7 @@ namespace Psycho.UI
             template.anchoredPosition = new Vector2(0f, -4f);
             template.sizeDelta = new Vector2(0f, 158f);
             Image templateImage = template.gameObject.AddComponent<Image>();
-            templateImage.color = new Color(0.015f, 0.055f, 0.085f, 0.98f);
+            templateImage.color = new Color(0.015f, 0.018f, 0.020f, 0.98f);
 
             RectTransform itemRoot = CreateUiObject("Item", template).GetComponent<RectTransform>();
             itemRoot.anchorMin = new Vector2(0f, 1f);
@@ -329,7 +384,7 @@ namespace Psycho.UI
             itemRoot.anchoredPosition = Vector2.zero;
             Toggle toggle = itemRoot.gameObject.AddComponent<Toggle>();
             Image itemBackground = itemRoot.gameObject.AddComponent<Image>();
-            itemBackground.color = new Color(0.08f, 0.22f, 0.28f, 0.94f);
+            itemBackground.color = new Color(0.075f, 0.080f, 0.080f, 0.94f);
             toggle.targetGraphic = itemBackground;
 
             Text item = CreateTextObject("Item Label", itemRoot, 16, FontStyle.Normal, Color.white, TextAnchor.MiddleLeft);
@@ -357,7 +412,7 @@ namespace Psycho.UI
             rect.sizeDelta = new Vector2(300f, 52f);
             rect.anchoredPosition = anchoredPosition;
 
-            Text labelText = CreateTextObject("Label", root.transform, 16, FontStyle.Bold, new Color(1f, 0.91f, 0.72f, 1f), TextAnchor.UpperLeft);
+            Text labelText = CreateTextObject("Label", root.transform, 16, FontStyle.Bold, new Color(0.76f, 0.72f, 0.62f, 1f), TextAnchor.UpperLeft);
             labelText.text = label;
             labelText.rectTransform.anchorMin = new Vector2(0f, 1f);
             labelText.rectTransform.anchorMax = new Vector2(1f, 1f);
@@ -372,7 +427,7 @@ namespace Psycho.UI
             track.offsetMin = new Vector2(8f, -8f);
             track.offsetMax = new Vector2(-8f, 8f);
             Image trackImage = track.gameObject.AddComponent<Image>();
-            trackImage.color = new Color(0.015f, 0.055f, 0.085f, 0.88f);
+            trackImage.color = new Color(0.015f, 0.018f, 0.020f, 0.88f);
 
             RectTransform fill = CreateUiObject("Fill", track).GetComponent<RectTransform>();
             fill.anchorMin = Vector2.zero;
@@ -380,12 +435,12 @@ namespace Psycho.UI
             fill.offsetMin = Vector2.zero;
             fill.offsetMax = Vector2.zero;
             Image fillImage = fill.gameObject.AddComponent<Image>();
-            fillImage.color = new Color(0.96f, 0.78f, 0.42f, 0.90f);
+            fillImage.color = new Color(0.48f, 0.50f, 0.47f, 0.92f);
 
             RectTransform handle = CreateUiObject("Handle", track).GetComponent<RectTransform>();
             handle.sizeDelta = new Vector2(18f, 26f);
             Image handleImage = handle.gameObject.AddComponent<Image>();
-            handleImage.color = new Color(0.76f, 0.96f, 1f, 1f);
+            handleImage.color = new Color(0.70f, 0.72f, 0.68f, 1f);
 
             Slider slider = root.AddComponent<Slider>();
             slider.minValue = min;
@@ -413,6 +468,12 @@ namespace Psycho.UI
         {
             PlayerPrefs.SetInt("PsychoNewGameActive", 0);
             LoadHostedWorld();
+        }
+
+        private void QuitToDesktop()
+        {
+            Application.Quit();
+            SetStatus("Quit requested.");
         }
 
         private void StartNewGameFromCreator()
@@ -564,18 +625,18 @@ namespace Psycho.UI
                 float phase = time * particle.speed + particle.seed;
                 if (particle.smoke)
                 {
-                    float x = -610f + Mathf.Sin(phase * 1.7f) * 70f + (i % 4) * 42f;
-                    float y = -140f + Mathf.Repeat(phase * 118f, 620f);
+                    float x = -820f + Mathf.Repeat(phase * 150f + i * 83f, 1640f);
+                    float y = -260f + Mathf.Sin(phase * 1.2f) * 44f + (i % 5) * 34f;
                     particle.rect.anchoredPosition = new Vector2(x, y);
                     particle.image.color = new Color(particle.color.r, particle.color.g, particle.color.b, particle.baseAlpha * (0.55f + Mathf.Sin(phase) * 0.25f));
                 }
                 else
                 {
-                    float x = -740f + Mathf.Repeat(phase * 520f + i * 37f, 1120f);
-                    float y = -290f + Mathf.Repeat(phase * 390f + i * 53f, 590f);
-                    x += Mathf.Sin(phase * 3.1f) * 34f;
+                    float x = -910f + Mathf.Repeat(phase * 360f + i * 47f, 1840f);
+                    float y = 520f - Mathf.Repeat(phase * 270f + i * 71f, 1040f);
+                    x += Mathf.Sin(phase * 2.1f) * 26f;
                     particle.rect.anchoredPosition = new Vector2(x, y);
-                    particle.image.color = new Color(particle.color.r, particle.color.g, particle.color.b, particle.baseAlpha * (0.55f + Mathf.Sin(phase * 4.3f) * 0.35f));
+                    particle.image.color = new Color(particle.color.r, particle.color.g, particle.color.b, particle.baseAlpha * (0.55f + Mathf.Sin(phase * 3.3f) * 0.28f));
                 }
             }
         }
@@ -657,12 +718,75 @@ namespace Psycho.UI
             ColorBlock colors = ColorBlock.defaultColorBlock;
             colors.normalColor = Color.white;
             colors.highlightedColor = highlight;
-            colors.pressedColor = new Color(0.76f, 0.96f, 1f, 1f);
+            colors.pressedColor = new Color(0.34f, 0.36f, 0.34f, 1f);
             colors.selectedColor = highlight;
-            colors.disabledColor = new Color(0.42f, 0.48f, 0.52f, 0.50f);
+            colors.disabledColor = new Color(0.18f, 0.18f, 0.18f, 0.50f);
             colors.colorMultiplier = 1f;
             colors.fadeDuration = 0.08f;
             return colors;
+        }
+
+        private static ColorBlock CreateMenuButtonColors(bool primary)
+        {
+            ColorBlock colors = ColorBlock.defaultColorBlock;
+            colors.normalColor = primary ? new Color(0.12f, 0.13f, 0.13f, 0.26f) : new Color(0f, 0f, 0f, 0f);
+            colors.highlightedColor = new Color(0.22f, 0.23f, 0.22f, primary ? 0.44f : 0.22f);
+            colors.pressedColor = new Color(0.08f, 0.08f, 0.08f, 0.52f);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = new Color(0f, 0f, 0f, 0f);
+            colors.colorMultiplier = 1f;
+            colors.fadeDuration = 0.10f;
+            return colors;
+        }
+
+        private Texture2D GetNorthernTitleBackgroundTexture()
+        {
+            if (northernBackgroundTexture != null)
+            {
+                return northernBackgroundTexture;
+            }
+
+            const int width = 1024;
+            const int height = 576;
+            northernBackgroundTexture = new Texture2D(width, height, TextureFormat.RGBA32, false)
+            {
+                name = "Psycho Northern Title Background",
+                wrapMode = TextureWrapMode.Clamp
+            };
+
+            Color32[] pixels = new Color32[width * height];
+            for (int y = 0; y < height; y++)
+            {
+                float v = y / (float)(height - 1);
+                for (int x = 0; x < width; x++)
+                {
+                    float u = x / (float)(width - 1);
+                    float noise = Mathf.PerlinNoise(u * 7.0f + 13.4f, v * 5.0f + 2.1f);
+                    Color color = Color.Lerp(new Color(0.020f, 0.023f, 0.026f, 1f), new Color(0.12f, 0.15f, 0.17f, 1f), Mathf.Pow(v, 0.72f));
+                    color = Color.Lerp(color, new Color(0.18f, 0.20f, 0.21f, 1f), noise * 0.12f);
+
+                    float leftMist = Mathf.Clamp01(1f - u * 2.7f) * Mathf.Clamp01(1.25f - v);
+                    color = Color.Lerp(color, new Color(0.24f, 0.27f, 0.28f, 1f), leftMist * 0.36f);
+
+                    float mountainLine = 0.44f + Mathf.Sin(u * 17.0f) * 0.035f + Mathf.PerlinNoise(u * 6.0f, 0.43f) * 0.11f;
+                    if (v < mountainLine)
+                    {
+                        float depth = Mathf.Clamp01((mountainLine - v) * 7.0f);
+                        color = Color.Lerp(color, new Color(0.018f, 0.020f, 0.022f, 1f), depth * 0.62f);
+                    }
+
+                    float lowerFog = Mathf.Clamp01(1f - Mathf.Abs(v - 0.19f) * 5.4f) * (0.22f + noise * 0.26f);
+                    color = Color.Lerp(color, new Color(0.19f, 0.22f, 0.23f, 1f), lowerFog * 0.34f);
+
+                    float vignette = Mathf.Clamp01(Mathf.Abs(u - 0.5f) * 1.7f + Mathf.Abs(v - 0.5f) * 1.35f);
+                    color = Color.Lerp(color, Color.black, vignette * 0.55f);
+                    pixels[x + y * width] = color;
+                }
+            }
+
+            northernBackgroundTexture.SetPixels32(pixels);
+            northernBackgroundTexture.Apply();
+            return northernBackgroundTexture;
         }
 
         private Texture2D GetCrystalPanelTexture()
@@ -676,7 +800,7 @@ namespace Psycho.UI
             const int height = 432;
             crystalPanelTexture = new Texture2D(width, height, TextureFormat.RGBA32, false)
             {
-                name = "Psycho Crystal Login Panel"
+                name = "Psycho Aged Iron Login Panel"
             };
 
             Color32[] pixels = new Color32[width * height];
@@ -688,30 +812,90 @@ namespace Psycho.UI
                     float u = x / (float)(width - 1);
                     float edge = Mathf.Max(Mathf.Abs(u - 0.5f) * 2f, Mathf.Abs(v - 0.5f) * 2f);
                     float highlight = Mathf.Clamp01(1f - edge);
-                    Color color = Color.Lerp(new Color(0.015f, 0.045f, 0.075f, 0.90f), new Color(0.075f, 0.22f, 0.31f, 0.82f), highlight);
-                    color = Color.Lerp(color, new Color(0.18f, 0.42f, 0.56f, 0.65f), Mathf.Clamp01(1f - v) * 0.24f);
+                    float grime = Mathf.PerlinNoise(u * 18f + 3.1f, v * 14f + 1.7f) * 0.12f;
+                    Color color = Color.Lerp(new Color(0.018f, 0.019f, 0.018f, 0.94f), new Color(0.105f, 0.105f, 0.098f, 0.90f), highlight);
+                    color = Color.Lerp(color, new Color(0.22f, 0.20f, 0.16f, 0.88f), Mathf.Clamp01(1f - v) * 0.10f + grime);
                     if (x < 3 || y < 3 || x > width - 4 || y > height - 4)
                     {
-                        color = new Color(0.62f, 0.90f, 1f, 0.95f);
+                        color = new Color(0.48f, 0.47f, 0.42f, 0.96f);
                     }
                     else if (x < 8 || y < 8 || x > width - 9 || y > height - 9)
                     {
-                        color = Color.Lerp(color, new Color(0.26f, 0.68f, 0.90f, 0.84f), 0.75f);
+                        color = Color.Lerp(color, new Color(0.24f, 0.23f, 0.21f, 0.90f), 0.75f);
                     }
 
                     pixels[x + y * width] = color;
                 }
             }
 
-            DrawTextureLine(pixels, width, height, 54, 360, 124, 250, new Color32(190, 246, 255, 36));
-            DrawTextureLine(pixels, width, height, 124, 250, 82, 158, new Color32(255, 255, 255, 20));
-            DrawTextureLine(pixels, width, height, 704, 358, 642, 254, new Color32(114, 212, 255, 52));
-            DrawTextureLine(pixels, width, height, 642, 254, 690, 166, new Color32(255, 255, 255, 18));
-            DrawTextureLine(pixels, width, height, 28, 82, 740, 82, new Color32(245, 194, 104, 90));
+            DrawThickTextureLine(pixels, width, height, 34, 368, 128, 250, new Color32(125, 124, 116, 52), 2);
+            DrawThickTextureLine(pixels, width, height, 704, 358, 642, 254, new Color32(115, 116, 112, 50), 2);
+            DrawThickTextureLine(pixels, width, height, 28, 82, 740, 82, new Color32(118, 104, 78, 80), 2);
 
             crystalPanelTexture.SetPixels32(pixels);
             crystalPanelTexture.Apply();
             return crystalPanelTexture;
+        }
+
+        private Texture2D GetIronCrestTexture()
+        {
+            if (ironCrestTexture != null)
+            {
+                return ironCrestTexture;
+            }
+
+            const int width = 512;
+            const int height = 768;
+            ironCrestTexture = new Texture2D(width, height, TextureFormat.RGBA32, false)
+            {
+                name = "Psycho Original Iron Crest",
+                wrapMode = TextureWrapMode.Clamp
+            };
+
+            Color32[] pixels = new Color32[width * height];
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                pixels[i] = new Color32(0, 0, 0, 0);
+            }
+
+            Color32 dark = new Color32(38, 40, 40, 210);
+            Color32 mid = new Color32(105, 110, 108, 235);
+            Color32 bright = new Color32(178, 182, 174, 245);
+            Color32 shadow = new Color32(10, 10, 10, 160);
+
+            DrawThickTextureLine(pixels, width, height, 256, 102, 256, 690, shadow, 16);
+            DrawThickTextureLine(pixels, width, height, 256, 112, 256, 674, mid, 8);
+            DrawThickTextureLine(pixels, width, height, 256, 112, 226, 248, bright, 4);
+            DrawThickTextureLine(pixels, width, height, 256, 112, 286, 248, bright, 4);
+
+            DrawThickTextureLine(pixels, width, height, 250, 246, 116, 128, shadow, 18);
+            DrawThickTextureLine(pixels, width, height, 262, 246, 396, 128, shadow, 18);
+            DrawThickTextureLine(pixels, width, height, 250, 246, 116, 128, mid, 9);
+            DrawThickTextureLine(pixels, width, height, 262, 246, 396, 128, mid, 9);
+            DrawThickTextureLine(pixels, width, height, 116, 128, 70, 356, dark, 13);
+            DrawThickTextureLine(pixels, width, height, 396, 128, 442, 356, dark, 13);
+            DrawThickTextureLine(pixels, width, height, 70, 356, 168, 500, mid, 10);
+            DrawThickTextureLine(pixels, width, height, 442, 356, 344, 500, mid, 10);
+            DrawThickTextureLine(pixels, width, height, 168, 500, 230, 424, bright, 5);
+            DrawThickTextureLine(pixels, width, height, 344, 500, 282, 424, bright, 5);
+
+            DrawThickTextureLine(pixels, width, height, 178, 392, 226, 344, bright, 7);
+            DrawThickTextureLine(pixels, width, height, 334, 392, 286, 344, bright, 7);
+            DrawThickTextureLine(pixels, width, height, 198, 548, 256, 670, mid, 8);
+            DrawThickTextureLine(pixels, width, height, 314, 548, 256, 670, mid, 8);
+            DrawThickTextureLine(pixels, width, height, 218, 316, 256, 276, bright, 5);
+            DrawThickTextureLine(pixels, width, height, 294, 316, 256, 276, bright, 5);
+
+            DrawThickTextureLine(pixels, width, height, 132, 154, 94, 220, bright, 4);
+            DrawThickTextureLine(pixels, width, height, 380, 154, 418, 220, bright, 4);
+            DrawThickTextureLine(pixels, width, height, 256, 674, 232, 724, bright, 5);
+            DrawThickTextureLine(pixels, width, height, 256, 674, 280, 724, bright, 5);
+            DrawThickTextureLine(pixels, width, height, 232, 724, 256, 748, mid, 4);
+            DrawThickTextureLine(pixels, width, height, 280, 724, 256, 748, mid, 4);
+
+            ironCrestTexture.SetPixels32(pixels);
+            ironCrestTexture.Apply();
+            return ironCrestTexture;
         }
 
         private Sprite CreateSoftDiscSprite()
@@ -768,6 +952,32 @@ namespace Psycho.UI
                 {
                     error += dx;
                     y0 += sy;
+                }
+            }
+        }
+
+        private static void DrawThickTextureLine(Color32[] pixels, int width, int height, int x0, int y0, int x1, int y1, Color32 color, int radius)
+        {
+            int clampedRadius = Math.Max(1, radius);
+            int radiusSquared = clampedRadius * clampedRadius;
+            for (int offsetY = -clampedRadius; offsetY <= clampedRadius; offsetY++)
+            {
+                for (int offsetX = -clampedRadius; offsetX <= clampedRadius; offsetX++)
+                {
+                    if (offsetX * offsetX + offsetY * offsetY > radiusSquared)
+                    {
+                        continue;
+                    }
+
+                    DrawTextureLine(
+                        pixels,
+                        width,
+                        height,
+                        x0 + offsetX,
+                        y0 + offsetY,
+                        x1 + offsetX,
+                        y1 + offsetY,
+                        color);
                 }
             }
         }
