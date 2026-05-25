@@ -2645,6 +2645,21 @@ namespace Psycho.Editor
             CreateGroundPlate(root, "Worn Road To Village", new Vector3(0f, 0.012f, -8.8f), 4.2f, 9.0f, materials.LandmarkRoad);
             created += 2;
 
+            if (TryInstantiateStarterPrefabLocal(root, "KayKit_Barracks", "Authored Prison Keep Barracks", new Vector3(-4.15f, 0.02f, 1.3f), Quaternion.Euler(0f, 180f, 0f), new Vector3(1.42f, 1.28f, 1.42f), out _))
+            {
+                created++;
+            }
+
+            if (TryInstantiateStarterPrefabLocal(root, "KayKit_WallGateClosed", "Authored Prison Portcullis Gate", new Vector3(0f, 0.03f, -6.15f), Quaternion.Euler(0f, 180f, 0f), new Vector3(0.94f, 1.05f, 0.94f), out _, keepColliders: true))
+            {
+                created++;
+            }
+
+            if (TryInstantiateStarterPrefabLocal(root, "KayKit_Watchtower", "Authored Prison Watchtower", new Vector3(7.15f, 0.02f, 5.15f), Quaternion.Euler(0f, -30f, 0f), new Vector3(0.82f, 0.92f, 0.82f), out _, keepColliders: true))
+            {
+                created++;
+            }
+
             for (int i = 0; i < 4; i++)
             {
                 float z = i < 2 ? -6.2f : 6.2f;
@@ -2664,6 +2679,13 @@ namespace Psycho.Editor
             CreateLandmarkBox(root, "Cell Straw Bed", new Vector3(-5.46f, 0.19f, 2.28f), new Vector3(1.55f, 0.24f, 0.82f), materials.Flowers);
             created += 4;
 
+            CreateLandmarkStoneCourses(root, "Prison Cell Cut Stone Course", 4.9f, 4.3f, 0.44f, 2.12f, materials.FrostStone);
+            CreateLandmarkTimberBracing(root, "Prison Cell Black Timber Frame", 4.9f, 4.3f, 1.22f, 1.42f, materials.TreeBark);
+            CreateLandmarkRoofShingles(root, "Prison Cell Roof Shingles", 5.6f, 4.9f, 2.20f, 0.72f, materials.TreeBark);
+            CreateLandmarkDetailBox(root, "Cell Lock Plate", new Vector3(-4.15f, 1.05f, -0.965f), new Vector3(0.52f, 0.22f, 0.04f), materials.PlayerMetal);
+            CreateLandmarkDetailBox(root, "Cell Door Crossbar", new Vector3(-4.15f, 1.36f, -0.980f), new Vector3(1.46f, 0.12f, 0.08f), materials.TreeBark);
+            created += 5;
+
             CreateLandmarkBox(root, "Gallows Platform", new Vector3(3.9f, 0.36f, 2.4f), new Vector3(3.2f, 0.34f, 2.4f), materials.TreeBark);
             CreateLandmarkCylinder(root, "Gallows Left Upright", new Vector3(2.9f, 1.88f, 2.1f), new Vector3(0.10f, 1.62f, 0.10f), materials.TreeBark);
             CreateLandmarkCylinder(root, "Gallows Right Upright", new Vector3(4.9f, 1.88f, 2.1f), new Vector3(0.10f, 1.62f, 0.10f), materials.TreeBark);
@@ -2671,32 +2693,97 @@ namespace Psycho.Editor
             CreateLandmarkCylinder(root, "Morning Rope", new Vector3(3.9f, 2.70f, 2.1f), new Vector3(0.026f, 0.68f, 0.026f), materials.PlayerPaper);
             created += 5;
 
-            CreateProceduralStoryNpc(root, "Rough-Cloth Priest Intake Clerk", new Vector3(-0.6f, 0.06f, -3.8f), 162f, materials.PlayerPaper, materials.PlayerSkin, materials.PlayerHair, 950001, new[] { "Talk-to", "Examine" });
-            CreateProceduralStoryNpc(root, "Sleeping Prison Keep", new Vector3(2.6f, 0.06f, -3.2f), -110f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950002, new[] { "Wake", "Examine" });
+            CreateLandmarkDetailBox(root, "Gallows Trapdoor Split", new Vector3(3.9f, 0.56f, 2.4f), new Vector3(0.06f, 0.035f, 2.04f), materials.LandmarkRoad);
+            CreateLandmarkDetailBox(root, "Gallows Warning Placard", new Vector3(2.42f, 1.02f, 1.14f), new Vector3(0.62f, 0.42f, 0.05f), materials.PlayerPaper).transform.localRotation = Quaternion.Euler(0f, -12f, 0f);
             created += 2;
+
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Barrel", "Prison Yard Water Barrel", new Vector3(5.85f, 0.05f, -3.05f), Quaternion.Euler(0f, 18f, 0f), Vector3.one * 0.82f, out _))
+            {
+                created++;
+            }
+
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Crate", "Prison Evidence Crate", new Vector3(-6.55f, 0.05f, -4.55f), Quaternion.Euler(0f, -18f, 0f), Vector3.one * 0.78f, out _))
+            {
+                created++;
+            }
+
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Chest", "Confiscated Gear Chest", new Vector3(-5.85f, 0.05f, -4.05f), Quaternion.Euler(0f, 10f, 0f), Vector3.one * 0.72f, out _))
+            {
+                created++;
+            }
+
+            if (TryInstantiateStarterPrefabLocal(root, "KayKit_Well", "Roadside Prison Well", new Vector3(6.18f, 0.04f, -1.20f), Quaternion.Euler(0f, 24f, 0f), Vector3.one * 0.62f, out _))
+            {
+                created++;
+            }
+
+            CreateIntroPointLight(root, "Gate Lantern Glow", new Vector3(0f, 2.35f, -5.85f), new Color(1.0f, 0.58f, 0.28f, 1f), 4.8f, 1.75f);
+            CreateIntroPointLight(root, "Cell Torch Glow", new Vector3(-2.28f, 1.70f, -1.05f), new Color(1.0f, 0.46f, 0.20f, 1f), 3.9f, 1.15f);
+            CreateIntroPointLight(root, "Road Escape Lantern", new Vector3(0.15f, 1.35f, -9.55f), new Color(0.92f, 0.68f, 0.34f, 1f), 4.2f, 1.05f);
+            created += 3;
+
+            CreateQuestMarkerDressing(root, "Intake Quest Marker", new Vector3(-0.6f, 1.92f, -3.8f), materials.WildflowerGold);
+            CreateQuestMarkerDressing(root, "Cell Quest Marker", new Vector3(-4.15f, 2.34f, -0.88f), materials.WildflowerGold);
+            CreateQuestMarkerDressing(root, "Escape Road Quest Marker", new Vector3(0f, 1.55f, -9.80f), materials.WildflowerGold);
+            created += 3;
+
+            CreateProceduralStoryNpc(root, "Rough-Cloth Priest Intake Clerk", new Vector3(-0.6f, 0.06f, -3.8f), 162f, materials.PlayerPaper, materials.PlayerSkin, materials.PlayerHair, 950001, new[] { "Talk-to", "Examine" }, "Monk_Citizen", new Vector3(1.04f, 1.04f, 1.04f));
+            CreateProceduralStoryNpc(root, "Sleeping Prison Keep", new Vector3(2.6f, 0.06f, -3.2f), -110f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950002, new[] { "Wake", "Examine" }, "Warrior_Player", new Vector3(1.06f, 1.06f, 1.06f));
+            CreateProceduralStoryNpc(root, "Breakout Stranger", new Vector3(1.30f, 0.06f, -5.35f), -6f, materials.LandmarkBanner, materials.PlayerSkin, materials.PlayerHair, 950003, new[] { "Talk-to", "Examine" }, "Rogue_Merchant", new Vector3(1.02f, 1.02f, 1.02f));
+            created += 3;
 
             context.Report.introQuestDressingObjects += created;
             context.Report.landmarkDressingObjects += created;
         }
 
-        private static void CreateProceduralStoryNpc(Transform parent, string name, Vector3 localPosition, float yaw, Material cloth, Material skin, Material hair, int id, string[] actions)
+        private static void CreateProceduralStoryNpc(Transform parent, string name, Vector3 localPosition, float yaw, Material cloth, Material skin, Material hair, int id, string[] actions, string authoredPrefab = null, Vector3 authoredScale = default)
         {
             GameObject npc = new GameObject(name);
             npc.transform.SetParent(parent, false);
             npc.transform.localPosition = localPosition;
             npc.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
-            GameObject visual = new GameObject("Story NPC Visual");
-            visual.transform.SetParent(npc.transform, false);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Robed Body", new Vector3(0f, 0.88f, 0f), new Vector3(0.20f, 0.45f, 0.16f), cloth);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.44f, 0f), new Vector3(0.15f, 0.18f, 0.15f), skin);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Hair", new Vector3(0f, 1.56f, 0f), new Vector3(0.16f, 0.06f, 0.15f), hair);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Left Arm", new Vector3(-0.22f, 0.88f, 0.02f), new Vector3(0.045f, 0.24f, 0.045f), cloth).transform.localRotation = Quaternion.Euler(0f, 0f, -8f);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Right Arm", new Vector3(0.22f, 0.88f, 0.02f), new Vector3(0.045f, 0.24f, 0.045f), cloth).transform.localRotation = Quaternion.Euler(0f, 0f, 8f);
+
+            bool hasAuthoredVisual = !string.IsNullOrWhiteSpace(authoredPrefab)
+                && TryInstantiateStarterPrefabLocal(npc.transform, authoredPrefab, "Authored Story NPC Visual", Vector3.zero, Quaternion.identity, authoredScale == default ? Vector3.one : authoredScale, out _);
+            if (!hasAuthoredVisual)
+            {
+                GameObject visual = new GameObject("Story NPC Visual");
+                visual.transform.SetParent(npc.transform, false);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Robed Body", new Vector3(0f, 0.88f, 0f), new Vector3(0.20f, 0.45f, 0.16f), cloth);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.44f, 0f), new Vector3(0.15f, 0.18f, 0.15f), skin);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Hair", new Vector3(0f, 1.56f, 0f), new Vector3(0.16f, 0.06f, 0.15f), hair);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Left Arm", new Vector3(-0.22f, 0.88f, 0.02f), new Vector3(0.045f, 0.24f, 0.045f), cloth).transform.localRotation = Quaternion.Euler(0f, 0f, -8f);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Right Arm", new Vector3(0.22f, 0.88f, 0.02f), new Vector3(0.045f, 0.24f, 0.045f), cloth).transform.localRotation = Quaternion.Euler(0f, 0f, 8f);
+            }
+
             CapsuleCollider collider = npc.AddComponent<CapsuleCollider>();
             collider.center = new Vector3(0f, 0.82f, 0f);
             collider.height = 1.7f;
             collider.radius = 0.25f;
             npc.AddComponent<PsychoInteractable>().Configure(id, name, actions);
+        }
+
+        private static void CreateIntroPointLight(Transform parent, string name, Vector3 localPosition, Color color, float range, float intensity)
+        {
+            GameObject lightObject = new GameObject(name);
+            lightObject.transform.SetParent(parent, false);
+            lightObject.transform.localPosition = localPosition;
+            Light light = lightObject.AddComponent<Light>();
+            light.type = LightType.Point;
+            light.color = color;
+            light.range = range;
+            light.intensity = intensity;
+            light.shadows = LightShadows.Soft;
+        }
+
+        private static void CreateQuestMarkerDressing(Transform parent, string name, Vector3 localPosition, Material material)
+        {
+            GameObject marker = new GameObject(name);
+            marker.transform.SetParent(parent, false);
+            marker.transform.localPosition = localPosition;
+            CreateLandmarkCylinder(marker.transform, "Marker Stem", new Vector3(0f, -0.38f, 0f), new Vector3(0.025f, 0.38f, 0.025f), material);
+            GameObject diamond = CreateLandmarkBox(marker.transform, "Marker Diamond", Vector3.zero, new Vector3(0.28f, 0.28f, 0.28f), material);
+            diamond.transform.localRotation = Quaternion.Euler(42f, 45f, 0f);
         }
 
         private static void BuildLushWildflowerMeadows(HostedBuildContext context, HostedMaterials materials)
@@ -2830,6 +2917,11 @@ namespace Psycho.Editor
             context.Report.groundCoverPatches += patches;
             context.Report.seasonalDressingObjects += patches + flowers + herbs;
             context.Report.windAnimatedObjects += flowers + herbs;
+
+            if (meadow.Name == "Open Vale Wildflower Preserve")
+            {
+                CreateOpenValeNatureFrame(meadowRoot.transform, context, materials, meadow, meadowIndex);
+            }
         }
 
         private static Material WildflowerMaterialForSeed(HostedMaterials materials, int seed)
@@ -2846,6 +2938,70 @@ namespace Psycho.Editor
             }
 
             return materials.WildflowerGold;
+        }
+
+        private static void CreateOpenValeNatureFrame(Transform parent, HostedBuildContext context, HostedMaterials materials, HostedMeadowSpec meadow, int meadowIndex)
+        {
+            int created = 0;
+            string[] treePrefabs = { "CommonTree_1", "CommonTree_2", "CommonTree_3", "TwistedTree_1", "Pine_1", "Pine_2" };
+            for (int i = 0; i < 28; i++)
+            {
+                int seed = 172000 + meadowIndex * 1901 + i * 211;
+                float angle = i / 28f * Mathf.PI * 2f + Mathf.Lerp(-0.16f, 0.16f, Deterministic01(seed + 5));
+                float distance = Mathf.Lerp(meadow.Radius * 0.74f, meadow.Radius * 1.08f, Deterministic01(seed + 11));
+                int worldX = meadow.WorldX + Mathf.RoundToInt(Mathf.Cos(angle) * distance);
+                int worldY = meadow.WorldY + Mathf.RoundToInt(Mathf.Sin(angle) * distance);
+                if (!IsWorldTileInsideHostedBounds(worldX, worldY) || IsHostedSettlementCoreTile(worldX, worldY))
+                {
+                    continue;
+                }
+
+                if (!TryGetNaturalDressingPosition(context, worldX, worldY, seed, out Vector3 position))
+                {
+                    continue;
+                }
+
+                string prefab = treePrefabs[Mathf.FloorToInt(Deterministic01(seed + 17) * treePrefabs.Length) % treePrefabs.Length];
+                float scale = Mathf.Lerp(0.86f, 1.38f, Deterministic01(seed + 23));
+                if (TryInstantiateStarterPrefab(parent, prefab, $"Open Vale Authored Treeline {created + 1}", position, Quaternion.Euler(0f, Deterministic01(seed + 29) * 360f, 0f), Vector3.one * scale, keepColliders: true))
+                {
+                    created++;
+                }
+            }
+
+            for (int i = 0; i < 18; i++)
+            {
+                int seed = 177000 + meadowIndex * 1709 + i * 197;
+                if (!TryGetRadialNaturalPosition(context, meadow.WorldX, meadow.WorldY, meadow.Radius * 0.86f, seed, 0.72f, out _, out _, out Vector3 position))
+                {
+                    continue;
+                }
+
+                Material material = i % 3 == 0 ? materials.WildflowerGold : i % 3 == 1 ? materials.WildflowerBlue : materials.WildflowerPurple;
+                float width = Mathf.Lerp(2.8f, 6.2f, Deterministic01(seed + 31));
+                float depth = Mathf.Lerp(1.5f, 4.2f, Deterministic01(seed + 37));
+                GameObject bloom = CreateGroundCoverPatch($"Open Vale Color Bloom Carpet {i + 1}", position + Vector3.up * (0.034f + i * 0.0002f), width, depth, material, seed);
+                bloom.transform.SetParent(parent, true);
+                created++;
+            }
+
+            for (int i = 0; i < 14; i++)
+            {
+                int seed = 181000 + meadowIndex * 1601 + i * 181;
+                if (!TryGetRadialNaturalPosition(context, meadow.WorldX, meadow.WorldY, meadow.Radius * 0.95f, seed, 0.62f, out _, out _, out Vector3 position))
+                {
+                    continue;
+                }
+
+                string rockPrefab = Deterministic01(seed + 19) > 0.5f ? "Rock_Medium_2" : "Rock_Medium_3";
+                TryInstantiateStarterPrefab(parent, rockPrefab, $"Open Vale Moss Rock {i + 1}", position, Quaternion.Euler(0f, Deterministic01(seed + 41) * 360f, 0f), Vector3.one * Mathf.Lerp(0.52f, 0.92f, Deterministic01(seed + 43)), keepColliders: true);
+                created++;
+            }
+
+            context.Report.seasonalDressingObjects += created;
+            context.Report.enhancedFoliageObjects += created;
+            context.Report.foliageLodProxies += created;
+            context.Report.windAnimatedObjects += created;
         }
 
         private static bool TryGetRadialNaturalPosition(
@@ -3306,27 +3462,36 @@ namespace Psycho.Editor
             giant.transform.SetParent(parent, false);
             giant.transform.localPosition = localPosition;
             giant.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
-            GameObject visual = new GameObject("Original Procedural Giant Visual");
+            GameObject visual = new GameObject("Authored Optimized Giant Visual");
             visual.transform.SetParent(giant.transform, false);
 
             float heightScale = 1.0f + Deterministic01(seed + 11) * 0.16f;
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Giant Hide Torso", new Vector3(0f, 1.95f * heightScale, 0f), new Vector3(0.50f, 0.78f * heightScale, 0.35f), materials.GiantSkin);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Heavy Chest", new Vector3(0f, 2.35f * heightScale, -0.05f), new Vector3(0.46f, 0.34f, 0.30f), materials.PlayerLeather);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Head", new Vector3(0f, 3.05f * heightScale, 0.02f), new Vector3(0.26f, 0.31f, 0.24f), materials.GiantSkin);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Cube, "Giant Brow", new Vector3(0f, 3.12f * heightScale, -0.23f), new Vector3(0.25f, 0.055f, 0.035f), materials.PlayerHair);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Beard", new Vector3(0f, 2.88f * heightScale, -0.21f), new Vector3(0.18f, 0.12f, 0.06f), materials.PlayerHair);
-            for (int sideIndex = 0; sideIndex < 2; sideIndex++)
+            string giantPrefab = Deterministic01(seed + 43) > 0.48f ? "Warrior_Dwarf" : "Warrior_Player";
+            bool hasAuthoredGiant = TryInstantiateStarterPrefabLocal(visual.transform, giantPrefab, "CC0 Authored Giant Base", Vector3.zero, Quaternion.identity, new Vector3(2.18f * heightScale, 2.45f * heightScale, 2.18f * heightScale), out _);
+            if (!hasAuthoredGiant)
             {
-                float side = sideIndex == 0 ? -1f : 1f;
-                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, side < 0f ? "Left Giant Arm" : "Right Giant Arm", new Vector3(side * 0.52f, 2.03f * heightScale, 0.02f), new Vector3(0.105f, 0.58f * heightScale, 0.105f), materials.GiantSkin).transform.localRotation = Quaternion.Euler(0f, 0f, side * 13f);
-                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, side < 0f ? "Left Giant Hand" : "Right Giant Hand", new Vector3(side * 0.62f, 1.32f * heightScale, 0.03f), new Vector3(0.13f, 0.11f, 0.12f), materials.GiantSkin);
-                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, side < 0f ? "Left Giant Leg" : "Right Giant Leg", new Vector3(side * 0.20f, 0.86f * heightScale, 0.02f), new Vector3(0.14f, 0.56f * heightScale, 0.13f), materials.PlayerLeather);
-                CreatePlayerPrimitive(visual.transform, PrimitiveType.Cube, side < 0f ? "Left Giant Foot" : "Right Giant Foot", new Vector3(side * 0.20f, 0.16f, -0.08f), new Vector3(0.24f, 0.13f, 0.38f), materials.PlayerLeather);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Giant Hide Torso", new Vector3(0f, 1.95f * heightScale, 0f), new Vector3(0.50f, 0.78f * heightScale, 0.35f), materials.GiantSkin);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Heavy Chest", new Vector3(0f, 2.35f * heightScale, -0.05f), new Vector3(0.46f, 0.34f, 0.30f), materials.PlayerLeather);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Head", new Vector3(0f, 3.05f * heightScale, 0.02f), new Vector3(0.26f, 0.31f, 0.24f), materials.GiantSkin);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Cube, "Giant Brow", new Vector3(0f, 3.12f * heightScale, -0.23f), new Vector3(0.25f, 0.055f, 0.035f), materials.PlayerHair);
+                CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Beard", new Vector3(0f, 2.88f * heightScale, -0.21f), new Vector3(0.18f, 0.12f, 0.06f), materials.PlayerHair);
+                for (int sideIndex = 0; sideIndex < 2; sideIndex++)
+                {
+                    float side = sideIndex == 0 ? -1f : 1f;
+                    CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, side < 0f ? "Left Giant Arm" : "Right Giant Arm", new Vector3(side * 0.52f, 2.03f * heightScale, 0.02f), new Vector3(0.105f, 0.58f * heightScale, 0.105f), materials.GiantSkin).transform.localRotation = Quaternion.Euler(0f, 0f, side * 13f);
+                    CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, side < 0f ? "Left Giant Hand" : "Right Giant Hand", new Vector3(side * 0.62f, 1.32f * heightScale, 0.03f), new Vector3(0.13f, 0.11f, 0.12f), materials.GiantSkin);
+                    CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, side < 0f ? "Left Giant Leg" : "Right Giant Leg", new Vector3(side * 0.20f, 0.86f * heightScale, 0.02f), new Vector3(0.14f, 0.56f * heightScale, 0.13f), materials.PlayerLeather);
+                    CreatePlayerPrimitive(visual.transform, PrimitiveType.Cube, side < 0f ? "Left Giant Foot" : "Right Giant Foot", new Vector3(side * 0.20f, 0.16f, -0.08f), new Vector3(0.24f, 0.13f, 0.38f), materials.PlayerLeather);
+                }
             }
 
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Fur Shoulder Mass", new Vector3(0f, 2.34f * heightScale, -0.04f), new Vector3(0.72f, 0.26f, 0.38f), materials.PlayerLeather);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Cube, "Giant Hide Apron", new Vector3(0f, 1.36f * heightScale, -0.20f), new Vector3(0.62f, 0.62f, 0.06f), materials.PlayerLeather);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Giant Braided Beard", new Vector3(0f, 2.90f * heightScale, -0.23f), new Vector3(0.20f, 0.18f, 0.08f), materials.PlayerHair);
             GameObject club = CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Giant Pine Club", new Vector3(0.72f, 1.72f, -0.12f), new Vector3(0.10f, 0.72f, 0.10f), materials.TreeBark);
             club.transform.localRotation = Quaternion.Euler(0f, 0f, -24f);
             CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Club Knotted Head", new Vector3(0.88f, 2.48f, -0.14f), new Vector3(0.22f, 0.26f, 0.20f), materials.TreeBark);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Cube, "Club Iron Band", new Vector3(0.82f, 2.18f, -0.13f), new Vector3(0.21f, 0.045f, 0.21f), materials.PlayerMetal).transform.localRotation = Quaternion.Euler(0f, 0f, -24f);
 
             CapsuleCollider collider = giant.AddComponent<CapsuleCollider>();
             collider.center = new Vector3(0f, 1.58f * heightScale, 0f);
