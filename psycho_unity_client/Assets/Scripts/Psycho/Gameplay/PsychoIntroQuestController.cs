@@ -56,6 +56,8 @@ namespace Psycho.Gameplay
             WyrmAttack,
             BurningStreets,
             KeepEntry,
+            LootTutorial,
+            CombatTutorial,
             TunnelExit,
             Cell,
             Breakout,
@@ -67,6 +69,16 @@ namespace Psycho.Gameplay
             BarrowScene,
             NorthwatchObjective,
             Complete
+        }
+
+        private void OnEnable()
+        {
+            PsychoIntroTutorialInteractable.SignalRaised += HandleTutorialSignal;
+        }
+
+        private void OnDisable()
+        {
+            PsychoIntroTutorialInteractable.SignalRaised -= HandleTutorialSignal;
         }
 
         private void Start()
@@ -226,12 +238,12 @@ namespace Psycho.Gameplay
             SetPanel(
                 "Frost Road Convoy",
                 "Bound Rebel",
-                "Wooden wheels grind over frozen stone. You wake bound in a prison cart as the road climbs toward a fortress village under gray mountains.\n\n\"Easy. They took all of us before dawn. Keep your head down until the gates open.\"",
+                "Wooden wheels grind over frozen stone. You wake bound in a prison cart as the road climbs toward a fortress village under gray mountains. You are nobody to the soldiers: no title, no witness, no one expected to remember you.\n\n\"Easy. They took all of us before dawn. Keep your head down until the gates open.\"",
                 "Enter the fortress",
                 8.5f);
             SetObjective(
                 "Quest: Gallows Dawn\nObjective: survive the convoy to the fortress.",
-                "Gallows Dawn\n1. Wake in the prison cart\n2. Face the fortress intake\n3. Escape before dawn");
+                "Gallows Dawn\n1. Wake as a captured nobody\n2. Face the fortress intake\n3. Escape before dawn");
         }
 
         private void BeginIntake()
@@ -330,6 +342,58 @@ namespace Psycho.Gameplay
             SetObjective(
                 "Objective: gather basic gear and push through the underkeep.",
                 "Gallows Dawn\nBindings cut. Learn the basics, search the room, and find the lower tunnel.");
+        }
+
+        private void StartLootTutorial()
+        {
+            step = IntroStep.LootTutorial;
+            SetPlayerLocked(false);
+            RestorePlayerCamera();
+            SetLetterboxVisible(false);
+            MoveQuestMarker(keepEntryPosition + Vector3.up * 2.15f);
+            SetPanel(
+                "Loot The Underkeep",
+                "Quest",
+                "Your hands are free. Aim at the confiscated gear chest or weapon rack and press E or left click to take what you need.",
+                string.Empty,
+                0f);
+            if (continueButton != null)
+            {
+                continueButton.gameObject.SetActive(false);
+            }
+
+            SchedulePanelHide(6.0f);
+            SetObjective(
+                "Objective: loot basic gear from the underkeep.",
+                "Gallows Dawn\nTake basic gear before entering the lower tunnels.");
+        }
+
+        private void BeginCombatTutorial()
+        {
+            step = IntroStep.CombatTutorial;
+            SetPlayerLocked(false);
+            RestorePlayerCamera();
+            SetLetterboxVisible(false);
+            MoveQuestMarker(Vector3.Lerp(keepEntryPosition, tunnelExitPosition, 0.45f) + Vector3.up * 2.15f);
+            SetPanel(
+                "First Blood",
+                "Quest",
+                "A shaken fortress guard blocks the passage. Aim at the guard and press E or left click to strike, then keep moving before the roof gives way.",
+                string.Empty,
+                0f);
+            if (continueButton != null)
+            {
+                continueButton.gameObject.SetActive(false);
+            }
+
+            SchedulePanelHide(6.0f);
+            SetObjective(
+                "Objective: defeat the first guard and reach the cave exit.",
+                "Gallows Dawn\nGear taken. Defeat the underkeep guard and flee through the lower tunnel.");
+            if (hud != null)
+            {
+                hud.ShowToastMessage("Gear taken: crude blade, boots, lockpicks");
+            }
         }
 
         private void BeginTunnelExit()
@@ -592,7 +656,13 @@ namespace Psycho.Gameplay
                     BeginKeepEntry();
                     break;
                 case IntroStep.KeepEntry:
-                    BeginTunnelExit();
+                    StartLootTutorial();
+                    break;
+                case IntroStep.LootTutorial:
+                    StartLootTutorial();
+                    break;
+                case IntroStep.CombatTutorial:
+                    BeginCombatTutorial();
                     break;
                 case IntroStep.TunnelExit:
                     ReleasePlayer();
@@ -627,6 +697,25 @@ namespace Psycho.Gameplay
                     }
 
                     break;
+            }
+        }
+
+        private void HandleTutorialSignal(string signalId)
+        {
+            if (step == IntroStep.LootTutorial && signalId == PsychoIntroTutorialInteractable.LootSignal)
+            {
+                BeginCombatTutorial();
+                return;
+            }
+
+            if (step == IntroStep.CombatTutorial && signalId == PsychoIntroTutorialInteractable.CombatSignal)
+            {
+                if (hud != null)
+                {
+                    hud.ShowToastMessage("First guard defeated");
+                }
+
+                BeginTunnelExit();
             }
         }
 
@@ -723,6 +812,8 @@ namespace Psycho.Gameplay
             hidePanelRoutine = null;
             if (canvas != null
                 && (step == IntroStep.Escape
+                    || step == IntroStep.LootTutorial
+                    || step == IntroStep.CombatTutorial
                     || step == IntroStep.NoticeBoardObjective
                     || step == IntroStep.BarrowObjective
                     || step == IntroStep.NorthwatchObjective))

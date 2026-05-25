@@ -3079,8 +3079,17 @@ namespace Psycho.Editor
             CreateLandmarkBox(root, "Underkeep Open Passage Lintel", new Vector3(-0.02f, 2.34f, -6.38f), new Vector3(2.0f, 0.28f, 0.34f), materials.LandmarkStone);
             created += 4;
 
-            if (TryInstantiateStarterPrefabLocal(root, "Starter_Chest", "Underkeep Confiscated Gear Chest", new Vector3(-4.58f, 0.08f, -8.78f), Quaternion.Euler(0f, 24f, 0f), Vector3.one * 0.86f, out _))
+            if (TryInstantiateStarterPrefabLocal(root, "Starter_Chest", "Underkeep Confiscated Gear Chest", new Vector3(-4.58f, 0.08f, -8.78f), Quaternion.Euler(0f, 24f, 0f), Vector3.one * 0.86f, out GameObject gearChest, keepColliders: true))
             {
+                ConfigureIntroTutorialSignal(
+                    gearChest,
+                    950021,
+                    "Underkeep Confiscated Gear Chest",
+                    new[] { "Take", "Search", "Examine" },
+                    PsychoIntroTutorialInteractable.LootSignal,
+                    "Gear taken: crude blade, boots, lockpicks",
+                    false,
+                    false);
                 created++;
             }
 
@@ -3096,6 +3105,18 @@ namespace Psycho.Editor
 
             created += CreateUnderkeepWeaponRack(root, materials, new Vector3(-4.82f, 0.10f, -7.08f), -12f);
             CreateIntroPointLight(root, "Underkeep Torch Light", new Vector3(-1.04f, 1.82f, -8.86f), new Color(1.0f, 0.46f, 0.18f, 1f), 4.7f, 1.4f);
+            created++;
+
+            GameObject firstGuard = CreateProceduralStoryNpc(root, "Wounded Underkeep Guard", new Vector3(-0.42f, 0.08f, -11.28f), -164f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950020, new[] { "Attack", "Examine" }, "Warrior_Player", new Vector3(1.06f, 1.06f, 1.06f));
+            ConfigureIntroTutorialSignal(
+                firstGuard,
+                950020,
+                "Wounded Underkeep Guard",
+                new[] { "Attack", "Examine" },
+                PsychoIntroTutorialInteractable.CombatSignal,
+                "You strike down the shaken guard",
+                true,
+                true);
             created++;
 
             created += CreateCaveMouthEscapeSet(root, materials);
@@ -3173,6 +3194,19 @@ namespace Psycho.Editor
                 CreateLandmarkBox(rack.transform, $"Rack Leather Grip {i + 1}", new Vector3(x, 0.42f, -0.08f), new Vector3(0.075f, 0.18f, 0.055f), materials.PlayerLeather);
                 created += 2;
             }
+
+            BoxCollider collider = rack.AddComponent<BoxCollider>();
+            collider.center = new Vector3(0f, 0.76f, 0f);
+            collider.size = new Vector3(1.65f, 1.18f, 0.42f);
+            ConfigureIntroTutorialSignal(
+                rack,
+                950022,
+                "Underkeep Training Weapon Rack",
+                new[] { "Take", "Examine" },
+                PsychoIntroTutorialInteractable.LootSignal,
+                "Gear taken: crude blade, boots, lockpicks",
+                false,
+                false);
 
             return created;
         }
@@ -3402,7 +3436,7 @@ namespace Psycho.Editor
             context.Report.waterFoamEdges += created / 2;
         }
 
-        private static void CreateProceduralStoryNpc(Transform parent, string name, Vector3 localPosition, float yaw, Material cloth, Material skin, Material hair, int id, string[] actions, string authoredPrefab = null, Vector3 authoredScale = default)
+        private static GameObject CreateProceduralStoryNpc(Transform parent, string name, Vector3 localPosition, float yaw, Material cloth, Material skin, Material hair, int id, string[] actions, string authoredPrefab = null, Vector3 authoredScale = default)
         {
             GameObject npc = new GameObject(name);
             npc.transform.SetParent(parent, false);
@@ -3427,6 +3461,30 @@ namespace Psycho.Editor
             collider.height = 1.7f;
             collider.radius = 0.25f;
             npc.AddComponent<PsychoInteractable>().Configure(id, name, actions);
+            return npc;
+        }
+
+        private static void ConfigureIntroTutorialSignal(GameObject target, int id, string displayName, string[] actions, string signalId, string toastMessage, bool hideAfterUse, bool disableCollidersAfterUse)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+            PsychoInteractable interactable = target.GetComponent<PsychoInteractable>();
+            if (interactable == null)
+            {
+                interactable = target.AddComponent<PsychoInteractable>();
+            }
+
+            interactable.Configure(id, displayName, actions);
+            PsychoIntroTutorialInteractable tutorial = target.GetComponent<PsychoIntroTutorialInteractable>();
+            if (tutorial == null)
+            {
+                tutorial = target.AddComponent<PsychoIntroTutorialInteractable>();
+            }
+
+            tutorial.Configure(signalId, toastMessage, hideAfterUse, disableCollidersAfterUse);
         }
 
         private static void CreateIntroPointLight(Transform parent, string name, Vector3 localPosition, Color color, float range, float intensity)
