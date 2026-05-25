@@ -100,7 +100,20 @@ public final class PlayerSession {
 	 */
 	public void handleInputMessage(Packet msg) {
 		int op = msg.getOpcode();
+		if (op < 0 || op >= PacketConstants.PACKETS.length) {
+			System.out.println("Player " + player.getUsername() + " sent invalid packet opcode: " + op);
+			return;
+		}
 		PacketListener listener = PacketConstants.PACKETS[op];
+		if (listener == null) {
+			System.out.println("Player " + player.getUsername() + " sent unhandled packet opcode: " + op);
+			return;
+		}
+		int expectedSize = PacketConstants.MESSAGE_SIZES[op];
+		if (expectedSize >= 0 && msg.getLength() != expectedSize) {
+			System.out.println("Player " + player.getUsername() + " ignored packet opcode: " + op + ", size: " + msg.getLength() + ", expected size: " + expectedSize);
+			return;
+		}
 		/*if(op != 246 && op != 77 && op != 122 && op != 11 && op != 60 && op != 5 && op != 12 && op != 103 && op != 230 && op != 4 && op != 98 && op != 164 && op != 248 && op != 188 && op != 215 && op != 133 && op != 74 && op != 126) {
 			if(msg.getLength() != PacketConstants.MESSAGE_SIZES[op]) {
 				System.out.println("Player "+player.getUsername()+" ignored packet opcode: "+op+", size: "+msg.getLength()+", actual size: "+PacketConstants.MESSAGE_SIZES[op]);
@@ -127,7 +140,8 @@ public final class PlayerSession {
 
 			addedPackets++;
 		} else {
-			System.out.println("Refuse to add more packets to queue for "+player.getUsername()+". Already added "+addedPackets+" this cycle!!!");
+			String username = player == null ? "unbound session" : player.getUsername();
+			System.out.println("Refuse to add more packets to queue for "+username+". Already added "+addedPackets+" this cycle!!!");
 			clearMessages();
 		}
 	}

@@ -1,9 +1,13 @@
 package com.ruse.model.entity.character.player;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 
 import com.google.gson.Gson;
@@ -22,22 +26,18 @@ public  class PlayerSaving {
 	public static void save(Player player) {
 		if(player.newPlayer())
 			return;
-		// Create the path and file objects.
 		Path path = Paths.get("./data/saves/characters/", player.getUsername() + ".json");
-		File file = path.toFile();
-		file.getParentFile().setWritable(true);
+		Path tempPath = path.resolveSibling(path.getFileName() + ".tmp");
 
-		// Attempt to make the player save directory if it doesn't
-		// exist.
-		if (!file.getParentFile().exists()) {
-			try {
-				file.getParentFile().mkdirs();
-			} catch (SecurityException e) {
-				System.out.println("Unable to create directory for player data!");
-			}
+		try {
+			Files.createDirectories(path.getParent());
+			path.getParent().toFile().setWritable(true);
+		} catch (IOException | SecurityException e) {
+			GameServer.getLogger().log(Level.WARNING, "Unable to prepare directory for player data!", e);
+			return;
 		}
 
-		try (FileWriter writer = new FileWriter(file)) {
+		try {
 			JsonObject object = new JsonObject();
 			Gson builder = new GsonBuilder()
 					.registerTypeAdapter(Item.class, new ItemTypeAdapter())
@@ -202,8 +202,7 @@ public  class PlayerSaving {
 			//doneHween2016
 			//object.add("uimDungItems", builder.toJsonTre1e(player.getBank(0).getValidItems()));
 			
-			writer.write(builder.toJson(object));
-			writer.close();
+			Files.write(tempPath, builder.toJson(object).getBytes(StandardCharsets.UTF_8));
 			
 			/*
              * Housing
@@ -226,10 +225,24 @@ public  class PlayerSaving {
             out.close();
             fileOut.close();
             */
+			replaceSaveFile(tempPath, path);
 		} catch (Exception e) {
 			// An error happened while saving.
 			GameServer.getLogger().log(Level.WARNING,
 					"An error has occured while saving a character file!", e);
+			try {
+				Files.deleteIfExists(tempPath);
+			} catch (IOException deleteException) {
+				GameServer.getLogger().log(Level.WARNING, "Could not delete failed temporary character save file: " + tempPath, deleteException);
+			}
+		}
+	}
+
+	private static void replaceSaveFile(Path tempPath, Path path) throws IOException {
+		try {
+			Files.move(tempPath, path, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+		} catch (AtomicMoveNotSupportedException ex) {
+			Files.move(tempPath, path, StandardCopyOption.REPLACE_EXISTING);
 		}
 	}
 

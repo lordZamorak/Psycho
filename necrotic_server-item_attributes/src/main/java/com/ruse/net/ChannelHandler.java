@@ -56,6 +56,11 @@ public class ChannelHandler extends IdleStateAwareChannelUpstreamHandler {
 				if(player == null)
 					player = (Player) e.getMessage();
 			} else if (msg instanceof Packet) {
+				if (player == null || player.getSession() == null) {
+					logger.warning("Received packet before login completed for channel: " + e.getChannel() + ", closing...");
+					e.getChannel().close();
+					return;
+				}
 				Packet packet = (Packet)msg;
 				player.getSession().handleIncomingMessage(packet);
 			}
