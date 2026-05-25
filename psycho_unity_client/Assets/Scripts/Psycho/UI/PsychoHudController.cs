@@ -1,4 +1,5 @@
 using System;
+using Psycho.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -201,16 +202,15 @@ namespace Psycho.UI
 
             string[] labels =
             {
-                "Logout", "Settings", "Wardrobe",
-                "Graphics", "Audio", "Controls",
-                "World Map", "Report", "Resume"
+                "Resume", "Settings", "Graphics",
+                "Controls", "Quit Menu", "Quit Desktop"
             };
 
             for (int i = 0; i < labels.Length; i++)
             {
                 int column = i % 3;
                 int row = i / 3;
-                Button button = CreateButton(labels[i], escapeMenu, new Vector2(18f + column * 104f, -58f - row * 78f), new Vector2(94f, 64f));
+                Button button = CreateButton(labels[i], escapeMenu, new Vector2(18f + column * 104f, -68f - row * 82f), new Vector2(94f, 68f));
                 string capturedLabel = labels[i];
                 button.onClick.AddListener(() => HandleEscapeOption(capturedLabel));
             }
@@ -294,25 +294,49 @@ namespace Psycho.UI
         {
             switch (label)
             {
-                case "Logout":
+                case "Quit Menu":
                     BlocksPlayerInput = false;
                     SceneManager.LoadScene("PsychoLogin");
+                    break;
+                case "Quit Desktop":
+                    Application.Quit();
+                    ShowToast("Quit requested");
                     break;
                 case "Resume":
                     SetEscapeMenu(false);
                     break;
                 case "Settings":
-                case "Graphics":
-                case "Audio":
-                case "Controls":
-                case "Wardrobe":
-                case "World Map":
-                case "Report":
-                    SetContextPanel(true, label, label + " panel is ready for the next systems pass.");
+                    SetContextPanel(true, "Settings", "Graphics: " + PsychoRuntimeVisualQuality.CurrentPresetName + "\nUse Graphics to cycle Performance, Balanced, and Ultra presets.\nQuit Menu returns to the title screen.");
                     SetEscapeMenu(false);
-                    ShowToast(label + " selected");
+                    break;
+                case "Graphics":
+                    CycleGraphicsPreset();
+                    SetEscapeMenu(false);
+                    break;
+                case "Controls":
+                    SetContextPanel(true, "Controls", "Move: WASD\nSprint: Left Shift\nJump: Space\nInteract: E or Left Click\nCamera: Right Mouse / Middle Mouse / Wheel\nMenu: Esc");
+                    SetEscapeMenu(false);
                     break;
             }
+        }
+
+        public void SetQuestSummary(string summary)
+        {
+            questSummary = string.IsNullOrWhiteSpace(summary) ? questSummary : summary;
+        }
+
+        public void ShowToastMessage(string message)
+        {
+            ShowToast(message);
+        }
+
+        private void CycleGraphicsPreset()
+        {
+            int nextPreset = (PsychoRuntimeVisualQuality.CurrentPreset + 1) % 3;
+            PsychoRuntimeVisualQuality.ApplyPreset(nextPreset);
+            string presetName = PsychoRuntimeVisualQuality.PresetName(nextPreset);
+            SetContextPanel(true, "Graphics", "Preset: " + presetName + "\nPerformance lowers shadows and LOD distance.\nBalanced keeps the world readable.\nUltra favors 4K-style presentation on stronger PCs.");
+            ShowToast("Graphics set to " + presetName);
         }
 
         private void SetEscapeMenu(bool open)

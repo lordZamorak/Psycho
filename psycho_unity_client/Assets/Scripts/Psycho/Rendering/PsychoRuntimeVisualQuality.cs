@@ -5,6 +5,8 @@ namespace Psycho.Rendering
 {
     public sealed class PsychoRuntimeVisualQuality : MonoBehaviour
     {
+        public const string PresetKey = "PsychoVisualQualityPreset";
+
         [SerializeField] private int antiAliasing = 4;
         [SerializeField] private int pixelLightCount = 2;
         [SerializeField] private int shadowCascades = 2;
@@ -14,10 +16,57 @@ namespace Psycho.Rendering
 
         private void Awake()
         {
-            Apply();
+            if (PlayerPrefs.HasKey(PresetKey))
+            {
+                ApplyPreset(PlayerPrefs.GetInt(PresetKey, 2), false);
+            }
+            else
+            {
+                ApplyValues(antiAliasing, pixelLightCount, shadowCascades, shadowDistance, lodBias, targetFrameRate);
+            }
         }
 
-        private void Apply()
+        public static int CurrentPreset => Mathf.Clamp(PlayerPrefs.GetInt(PresetKey, 2), 0, 2);
+
+        public static string CurrentPresetName => PresetName(CurrentPreset);
+
+        public static void ApplyPreset(int preset, bool save = true)
+        {
+            int clamped = Mathf.Clamp(preset, 0, 2);
+            if (save)
+            {
+                PlayerPrefs.SetInt(PresetKey, clamped);
+                PlayerPrefs.Save();
+            }
+
+            switch (clamped)
+            {
+                case 0:
+                    ApplyValues(0, 1, 1, 55f, 0.80f, 60);
+                    break;
+                case 1:
+                    ApplyValues(2, 2, 2, 105f, 1.10f, 60);
+                    break;
+                default:
+                    ApplyValues(4, 3, 4, 180f, 1.55f, 60);
+                    break;
+            }
+        }
+
+        public static string PresetName(int preset)
+        {
+            switch (Mathf.Clamp(preset, 0, 2))
+            {
+                case 0:
+                    return "Performance";
+                case 1:
+                    return "Balanced";
+                default:
+                    return "Ultra";
+            }
+        }
+
+        private static void ApplyValues(int antiAliasing, int pixelLightCount, int shadowCascades, float shadowDistance, float lodBias, int targetFrameRate)
         {
             Application.targetFrameRate = targetFrameRate;
             QualitySettings.antiAliasing = Mathf.Clamp(antiAliasing, 0, 8);

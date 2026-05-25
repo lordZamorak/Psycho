@@ -28,8 +28,15 @@ namespace Psycho.UI
         private Text statusText;
         private InputField usernameField;
         private InputField passwordField;
+        private InputField characterNameField;
+        private Dropdown raceDropdown;
+        private Dropdown hairDropdown;
+        private Slider faceSlider;
+        private Slider hairColorSlider;
+        private Slider buildSlider;
         private Button loginButton;
         private Button previewButton;
+        private Button newGameButton;
         private Font uiFont;
         private Texture2D crystalPanelTexture;
         private Sprite softDiscSprite;
@@ -183,14 +190,45 @@ namespace Psycho.UI
             Stretch(panel.rectTransform, Vector2.zero, Vector2.zero);
 
             CreateText("Psycho", panelRoot, 58, FontStyle.Bold, new Color(0.98f, 0.86f, 0.61f, 1f), new Vector2(0f, 176f), new Vector2(620f, 72f));
-            CreateText("Local hosted test world", panelRoot, 21, FontStyle.Normal, new Color(0.76f, 0.86f, 0.94f, 1f), new Vector2(0f, 128f), new Vector2(580f, 34f));
+            CreateText("A condemned prisoner wakes into Psycho", panelRoot, 21, FontStyle.Normal, new Color(0.76f, 0.86f, 0.94f, 1f), new Vector2(0f, 128f), new Vector2(660f, 34f));
             CreateText("PSYCHO UNITY CLIENT", panelRoot, 13, FontStyle.Bold, new Color(0.50f, 0.86f, 1f, 0.72f), new Vector2(0f, -232f), new Vector2(460f, 26f));
 
             usernameField = CreateInput("Username", new Vector2(0f, 48f), false);
             passwordField = CreateInput("Password", new Vector2(0f, -18f), true);
-            loginButton = CreateButton("Login", new Vector2(98f, -92f), new Vector2(160f, 46f), OnLoginClicked);
-            previewButton = CreateButton("Preview World", new Vector2(-104f, -92f), new Vector2(188f, 46f), LoadHostedWorld);
+            newGameButton = CreateButton("New Game", new Vector2(-222f, -92f), new Vector2(168f, 46f), ShowCharacterCreator);
+            previewButton = CreateButton("Continue", new Vector2(0f, -92f), new Vector2(168f, 46f), ContinueHostedWorld);
+            loginButton = CreateButton("Login", new Vector2(210f, -92f), new Vector2(150f, 46f), OnLoginClicked);
             statusText = CreateText("Ready.", panelRoot, 16, FontStyle.Normal, new Color(0.80f, 0.91f, 0.96f, 1f), new Vector2(0f, -156f), new Vector2(560f, 32f));
+        }
+
+        private void BuildCharacterCreatorPanel()
+        {
+            GameObject root = CreateUiObject("Condemned Prisoner Creator", canvas.transform);
+            panelRoot = root.GetComponent<RectTransform>();
+            panelRoot.anchorMin = new Vector2(0.5f, 0.5f);
+            panelRoot.anchorMax = new Vector2(0.5f, 0.5f);
+            panelRoot.pivot = new Vector2(0.5f, 0.5f);
+            panelRoot.sizeDelta = panelSize;
+            panelRoot.anchoredPosition = Vector2.zero;
+
+            RawImage panel = CreateUiObject("Crystal Panel Texture", panelRoot).AddComponent<RawImage>();
+            panel.texture = GetCrystalPanelTexture();
+            panel.raycastTarget = false;
+            Stretch(panel.rectTransform, Vector2.zero, Vector2.zero);
+
+            CreateText("Prison Intake", panelRoot, 48, FontStyle.Bold, new Color(0.98f, 0.86f, 0.61f, 1f), new Vector2(0f, 182f), new Vector2(620f, 64f));
+            CreateText("The priest asks for the name that will be written beside the morning noose.", panelRoot, 18, FontStyle.Normal, new Color(0.76f, 0.86f, 0.94f, 1f), new Vector2(0f, 136f), new Vector2(760f, 34f));
+
+            characterNameField = CreateInput("Prisoner name", new Vector2(-180f, 72f), false);
+            raceDropdown = CreateDropdown("Race", new Vector2(204f, 72f), new[] { "Human", "Highlander", "Dwarf", "Elf" });
+            hairDropdown = CreateDropdown("Hair", new Vector2(-180f, 6f), new[] { "Short", "Braided", "Shaved", "Long" });
+            faceSlider = CreateSlider("Face", new Vector2(204f, 12f), 0f, 7f, 2f);
+            hairColorSlider = CreateSlider("Hair Tone", new Vector2(-180f, -62f), 0f, 5f, 1f);
+            buildSlider = CreateSlider("Build", new Vector2(204f, -62f), 0f, 4f, 2f);
+
+            CreateButton("Begin Sentence", new Vector2(114f, -152f), new Vector2(210f, 50f), StartNewGameFromCreator);
+            CreateButton("Back", new Vector2(-142f, -152f), new Vector2(144f, 50f), RebuildUi);
+            statusText = CreateText("The cell waits.", panelRoot, 16, FontStyle.Normal, new Color(0.80f, 0.91f, 0.96f, 1f), new Vector2(0f, -218f), new Vector2(620f, 32f));
         }
 
         private InputField CreateInput(string placeholder, Vector2 anchoredPosition, bool password)
@@ -246,6 +284,167 @@ namespace Psycho.UI
             text.text = label;
             Stretch(text.rectTransform, Vector2.zero, Vector2.zero);
             return button;
+        }
+
+        private Dropdown CreateDropdown(string label, Vector2 anchoredPosition, string[] options)
+        {
+            GameObject dropdownObject = CreateUiObject(label + " Dropdown", panelRoot);
+            RectTransform rect = dropdownObject.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = new Vector2(300f, 48f);
+            rect.anchoredPosition = anchoredPosition;
+
+            Image image = dropdownObject.AddComponent<Image>();
+            image.color = new Color(0.015f, 0.055f, 0.085f, 0.88f);
+
+            Dropdown dropdown = dropdownObject.AddComponent<Dropdown>();
+            dropdown.targetGraphic = image;
+            dropdown.options.Clear();
+            for (int i = 0; i < options.Length; i++)
+            {
+                dropdown.options.Add(new Dropdown.OptionData(options[i]));
+            }
+
+            Text caption = CreateTextObject("Label", dropdownObject.transform, 18, FontStyle.Bold, new Color(1f, 0.91f, 0.72f, 1f), TextAnchor.MiddleLeft);
+            caption.text = label + ": " + (options.Length == 0 ? string.Empty : options[0]);
+            Stretch(caption.rectTransform, new Vector2(16f, 4f), new Vector2(16f, 4f));
+            dropdown.captionText = caption;
+
+            RectTransform template = CreateUiObject("Template", dropdownObject.transform).GetComponent<RectTransform>();
+            template.anchorMin = new Vector2(0f, 0f);
+            template.anchorMax = new Vector2(1f, 0f);
+            template.pivot = new Vector2(0.5f, 1f);
+            template.anchoredPosition = new Vector2(0f, -4f);
+            template.sizeDelta = new Vector2(0f, 158f);
+            Image templateImage = template.gameObject.AddComponent<Image>();
+            templateImage.color = new Color(0.015f, 0.055f, 0.085f, 0.98f);
+
+            RectTransform itemRoot = CreateUiObject("Item", template).GetComponent<RectTransform>();
+            itemRoot.anchorMin = new Vector2(0f, 1f);
+            itemRoot.anchorMax = new Vector2(1f, 1f);
+            itemRoot.pivot = new Vector2(0.5f, 1f);
+            itemRoot.sizeDelta = new Vector2(0f, 34f);
+            itemRoot.anchoredPosition = Vector2.zero;
+            Toggle toggle = itemRoot.gameObject.AddComponent<Toggle>();
+            Image itemBackground = itemRoot.gameObject.AddComponent<Image>();
+            itemBackground.color = new Color(0.08f, 0.22f, 0.28f, 0.94f);
+            toggle.targetGraphic = itemBackground;
+
+            Text item = CreateTextObject("Item Label", itemRoot, 16, FontStyle.Normal, Color.white, TextAnchor.MiddleLeft);
+            Stretch(item.rectTransform, new Vector2(14f, 2f), new Vector2(14f, 2f));
+            dropdown.template = template;
+            dropdown.itemText = item;
+            template.gameObject.SetActive(false);
+            dropdown.onValueChanged.AddListener(index =>
+            {
+                if (caption != null && index >= 0 && index < dropdown.options.Count)
+                {
+                    caption.text = label + ": " + dropdown.options[index].text;
+                }
+            });
+            return dropdown;
+        }
+
+        private Slider CreateSlider(string label, Vector2 anchoredPosition, float min, float max, float value)
+        {
+            GameObject root = CreateUiObject(label + " Slider", panelRoot);
+            RectTransform rect = root.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = new Vector2(300f, 52f);
+            rect.anchoredPosition = anchoredPosition;
+
+            Text labelText = CreateTextObject("Label", root.transform, 16, FontStyle.Bold, new Color(1f, 0.91f, 0.72f, 1f), TextAnchor.UpperLeft);
+            labelText.text = label;
+            labelText.rectTransform.anchorMin = new Vector2(0f, 1f);
+            labelText.rectTransform.anchorMax = new Vector2(1f, 1f);
+            labelText.rectTransform.pivot = new Vector2(0f, 1f);
+            labelText.rectTransform.sizeDelta = new Vector2(0f, 22f);
+            labelText.rectTransform.anchoredPosition = new Vector2(0f, 0f);
+
+            RectTransform track = CreateUiObject("Track", root.transform).GetComponent<RectTransform>();
+            track.anchorMin = new Vector2(0f, 0.5f);
+            track.anchorMax = new Vector2(1f, 0.5f);
+            track.pivot = new Vector2(0.5f, 0.5f);
+            track.offsetMin = new Vector2(8f, -8f);
+            track.offsetMax = new Vector2(-8f, 8f);
+            Image trackImage = track.gameObject.AddComponent<Image>();
+            trackImage.color = new Color(0.015f, 0.055f, 0.085f, 0.88f);
+
+            RectTransform fill = CreateUiObject("Fill", track).GetComponent<RectTransform>();
+            fill.anchorMin = Vector2.zero;
+            fill.anchorMax = new Vector2(0.5f, 1f);
+            fill.offsetMin = Vector2.zero;
+            fill.offsetMax = Vector2.zero;
+            Image fillImage = fill.gameObject.AddComponent<Image>();
+            fillImage.color = new Color(0.96f, 0.78f, 0.42f, 0.90f);
+
+            RectTransform handle = CreateUiObject("Handle", track).GetComponent<RectTransform>();
+            handle.sizeDelta = new Vector2(18f, 26f);
+            Image handleImage = handle.gameObject.AddComponent<Image>();
+            handleImage.color = new Color(0.76f, 0.96f, 1f, 1f);
+
+            Slider slider = root.AddComponent<Slider>();
+            slider.minValue = min;
+            slider.maxValue = max;
+            slider.wholeNumbers = true;
+            slider.value = value;
+            slider.targetGraphic = handleImage;
+            slider.fillRect = fill;
+            slider.handleRect = handle;
+            slider.direction = Slider.Direction.LeftToRight;
+            return slider;
+        }
+
+        private void ShowCharacterCreator()
+        {
+            ClearExistingUi();
+            uiFont = LoadUiFont();
+            BuildCanvas();
+            BuildBackground();
+            BuildParticles();
+            BuildCharacterCreatorPanel();
+        }
+
+        private void ContinueHostedWorld()
+        {
+            PlayerPrefs.SetInt("PsychoNewGameActive", 0);
+            LoadHostedWorld();
+        }
+
+        private void StartNewGameFromCreator()
+        {
+            string prisonerName = characterNameField == null ? string.Empty : characterNameField.text.Trim();
+            if (string.IsNullOrWhiteSpace(prisonerName))
+            {
+                SetStatus("The priest refuses a blank name.");
+                return;
+            }
+
+            PlayerPrefs.SetString("PsychoPlayerName", prisonerName);
+            PlayerPrefs.SetString("PsychoPlayerRace", DropdownValue(raceDropdown, "Human"));
+            PlayerPrefs.SetString("PsychoPlayerHair", DropdownValue(hairDropdown, "Short"));
+            PlayerPrefs.SetInt("PsychoPlayerFace", Mathf.RoundToInt(faceSlider == null ? 0f : faceSlider.value));
+            PlayerPrefs.SetInt("PsychoPlayerHairTone", Mathf.RoundToInt(hairColorSlider == null ? 0f : hairColorSlider.value));
+            PlayerPrefs.SetInt("PsychoPlayerBuild", Mathf.RoundToInt(buildSlider == null ? 0f : buildSlider.value));
+            PlayerPrefs.SetInt("PsychoNewGameActive", 1);
+            PlayerPrefs.SetInt("PsychoIntroQuestCompleted", 0);
+            PlayerPrefs.Save();
+            LoadHostedWorld();
+        }
+
+        private static string DropdownValue(Dropdown dropdown, string fallback)
+        {
+            if (dropdown == null || dropdown.options == null || dropdown.options.Count == 0)
+            {
+                return fallback;
+            }
+
+            int index = Mathf.Clamp(dropdown.value, 0, dropdown.options.Count - 1);
+            return dropdown.options[index].text;
         }
 
         private async void OnLoginClicked()
@@ -305,6 +504,11 @@ namespace Psycho.UI
             if (previewButton != null)
             {
                 previewButton.interactable = enabled;
+            }
+
+            if (newGameButton != null)
+            {
+                newGameButton.interactable = enabled;
             }
 
             if (usernameField != null)

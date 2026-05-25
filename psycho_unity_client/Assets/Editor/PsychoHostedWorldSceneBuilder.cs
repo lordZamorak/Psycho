@@ -160,7 +160,7 @@ namespace Psycho.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, flat terrain regions {context.Report.flatBaseTerrainRegions}, objects {context.Report.placedObjects}, clean-base skipped cache objects {context.Report.cleanBaseSkippedCacheObjects}, NPCs {context.Report.npcSpawns}, clean-base skipped cache NPCs {context.Report.cleanBaseSkippedCacheNpcs}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, settlements {context.Report.hostedSettlements}, villages {context.Report.hostedVillages}, towns {context.Report.hostedTowns}, cities {context.Report.hostedCities}, settlement NPCs {context.Report.hostedSettlementNpcs}, village-cleared trees {context.Report.villageClearedObjects}, biome regions {context.Report.seasonalBiomeRegions}, mountains {context.Report.mountainMassifs}, hills {context.Report.hillMounds}, dense forest trees {context.Report.denseForestTrees}, snow patches {context.Report.snowPatches}, seasonal dressing {context.Report.seasonalDressingObjects}, lush meadow patches {context.Report.lushMeadowPatches}, wildflower clusters {context.Report.wildflowerClusters}, herb clusters {context.Report.herbClusters}, wildlife NPCs {context.Report.wildlifeNpcs}, giant camps {context.Report.giantCamps}, giants {context.Report.giants}, mammoth companions {context.Report.mammothCompanions}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
+            Debug.Log($"Hosted test world built: {ScenePath}. Regions {context.Report.loadedRegions}, flat terrain regions {context.Report.flatBaseTerrainRegions}, objects {context.Report.placedObjects}, clean-base skipped cache objects {context.Report.cleanBaseSkippedCacheObjects}, NPCs {context.Report.npcSpawns}, clean-base skipped cache NPCs {context.Report.cleanBaseSkippedCacheNpcs}, cache NPC visuals {context.Report.cacheNpcVisuals}, visual NPC replacements {context.Report.visualReplacementNpcs}, visual object replacements {context.Report.visualReplacementObjects}, decoded object accents {context.Report.decodedObjectAccents}, smoothed character meshes {context.Report.smoothedCharacterMeshes}, settlements {context.Report.hostedSettlements}, villages {context.Report.hostedVillages}, towns {context.Report.hostedTowns}, cities {context.Report.hostedCities}, settlement NPCs {context.Report.hostedSettlementNpcs}, village-cleared trees {context.Report.villageClearedObjects}, intro quest dressing {context.Report.introQuestDressingObjects}, biome regions {context.Report.seasonalBiomeRegions}, mountains {context.Report.mountainMassifs}, hills {context.Report.hillMounds}, dense forest trees {context.Report.denseForestTrees}, snow patches {context.Report.snowPatches}, seasonal dressing {context.Report.seasonalDressingObjects}, lush meadow patches {context.Report.lushMeadowPatches}, wildflower clusters {context.Report.wildflowerClusters}, herb clusters {context.Report.herbClusters}, wildlife NPCs {context.Report.wildlifeNpcs}, giant camps {context.Report.giantCamps}, giants {context.Report.giants}, mammoth companions {context.Report.mammothCompanions}, cliffs {context.Report.cliffDressingObjects}, ground cover {context.Report.groundCoverPatches}, foliage silhouettes {context.Report.enhancedFoliageObjects}, foliage LOD proxies {context.Report.foliageLodProxies}, foam edges {context.Report.waterFoamEdges}, water streaks {context.Report.waterSurfaceStreaks}.");
         }
 
         public static void BuildHostedTestWorldSceneBatch()
@@ -504,20 +504,23 @@ namespace Psycho.Editor
             }
 
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            GameObject meadow = GameObject.Find("Edgeville Player Start Lush Field")
+            GameObject meadow = GameObject.Find("Open Vale Wildflower Preserve")
+                ?? GameObject.Find("Highland Lake Alpine Flower Shelf")
                 ?? GameObject.Find("Falador Lush Wildflower Field")
+                ?? GameObject.Find("Western Autumn Herb Glade")
                 ?? GameObject.Find("Draynor Herb Meadow")
-                ?? GameObject.Find("River Lum Wildflower Bank");
+                ?? GameObject.Find("River Lum Wildflower Bank")
+                ?? GameObject.Find("Edgeville Player Start Lush Field");
             Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
             if (meadow == null || camera == null)
             {
                 throw new InvalidOperationException("Hosted test world scene needs both a lush meadow field and camera.");
             }
 
-            Vector3 focus = meadow.transform.position + new Vector3(0.65f, 0.42f, -0.35f);
-            camera.transform.position = focus + new Vector3(5.8f, 1.95f, -6.7f);
+            Vector3 focus = meadow.transform.position + new Vector3(0.35f, 0.42f, -0.20f);
+            camera.transform.position = focus + new Vector3(9.4f, 2.65f, -10.8f);
             camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
-            camera.fieldOfView = 32f;
+            camera.fieldOfView = 28f;
             camera.farClipPlane = 2400f;
             string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-lush-meadow-preview.png"));
             RenderCameraToPng(camera, outputPath, 1600, 900);
@@ -526,6 +529,37 @@ namespace Psycho.Editor
         public static void RenderHostedLushMeadowPreviewBatch()
         {
             RenderHostedLushMeadowPreview();
+        }
+
+        [MenuItem("Psycho/Render Hosted Prison Intro Preview")]
+        public static void RenderHostedPrisonIntroPreview()
+        {
+            if (!File.Exists(ToFullPath(ScenePath)))
+            {
+                BuildHostedTestWorldScene();
+            }
+
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject prison = GameObject.Find("North Edgeville Prison Yard");
+            Camera camera = UnityEngine.Object.FindAnyObjectByType<Camera>();
+            if (prison == null || camera == null)
+            {
+                throw new InvalidOperationException("Hosted test world scene needs both the prison intro set and camera.");
+            }
+
+            Bounds bounds = BuildObjectPreviewBounds(prison.transform);
+            Vector3 focus = bounds.center + Vector3.up * 0.92f;
+            camera.transform.position = focus + new Vector3(8.4f, 4.2f, -9.6f);
+            camera.transform.rotation = Quaternion.LookRotation(focus - camera.transform.position, Vector3.up);
+            camera.fieldOfView = 38f;
+            camera.farClipPlane = 2400f;
+            string outputPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "run-logs", "unity-hosted-prison-intro-preview.png"));
+            RenderCameraToPng(camera, outputPath, 1600, 900);
+        }
+
+        public static void RenderHostedPrisonIntroPreviewBatch()
+        {
+            RenderHostedPrisonIntroPreview();
         }
 
         [MenuItem("Psycho/Render Hosted Giant Mammoth Preview")]
@@ -1805,6 +1839,7 @@ namespace Psycho.Editor
             BuildWaterways(context, materials);
             BuildWorldLandmarks(context, materials);
             BuildHostedVillageNetwork(context, materials);
+            BuildPrisonBreakIntroDressing(context, materials);
             BuildRegionalBiomeDressing(context, materials);
             BuildLushWildflowerMeadows(context, materials);
             BuildWildlifeAndGiantEcology(context, materials);
@@ -2596,6 +2631,74 @@ namespace Psycho.Editor
             return new[] { "Talk-to", "Examine" };
         }
 
+        private static void BuildPrisonBreakIntroDressing(HostedBuildContext context, HostedMaterials materials)
+        {
+            GameObject rootObject = new GameObject("Gallows Dawn Prison Intro Set");
+            if (!TryCreateLandmarkRoot(rootObject.transform, "North Edgeville Prison Yard", context, 3087, 3491, out Transform root))
+            {
+                return;
+            }
+
+            root.localRotation = Quaternion.Euler(0f, -18f, 0f);
+            int created = 0;
+            CreateGroundPlate(root, "Packed Mud Prison Yard", Vector3.zero, 16.2f, 12.4f, materials.AutumnGround);
+            CreateGroundPlate(root, "Worn Road To Village", new Vector3(0f, 0.012f, -8.8f), 4.2f, 9.0f, materials.LandmarkRoad);
+            created += 2;
+
+            for (int i = 0; i < 4; i++)
+            {
+                float z = i < 2 ? -6.2f : 6.2f;
+                float x = i % 2 == 0 ? -8.1f : 8.1f;
+                CreateLandmarkBox(root, $"Prison Yard Wall {i + 1}", new Vector3(i < 2 ? 0f : x, 0.78f, i < 2 ? z : 0f), i < 2 ? new Vector3(16.4f, 1.56f, 0.34f) : new Vector3(0.34f, 1.56f, 12.4f), materials.LandmarkStone);
+                created++;
+            }
+
+            CreateLandmarkBox(root, "Prison Gate Left Post", new Vector3(-1.05f, 1.18f, -6.32f), new Vector3(0.28f, 2.36f, 0.34f), materials.TreeBark);
+            CreateLandmarkBox(root, "Prison Gate Right Post", new Vector3(1.05f, 1.18f, -6.32f), new Vector3(0.28f, 2.36f, 0.34f), materials.TreeBark);
+            CreateLandmarkBox(root, "Prison Gate Open Leaf", new Vector3(1.95f, 0.92f, -6.12f), new Vector3(1.35f, 1.84f, 0.18f), materials.TreeBark).transform.localRotation = Quaternion.Euler(0f, -34f, 0f);
+            created += 3;
+
+            CreateLandmarkBox(root, "Prison Cell Stone Room", new Vector3(-4.15f, 1.08f, 1.3f), new Vector3(4.8f, 2.16f, 4.2f), materials.LandmarkStone);
+            CreateLandmarkGabledRoof(root, "Prison Cell Heavy Roof", new Vector3(-4.15f, 2.46f, 1.3f), 5.4f, 4.8f, 0.72f, materials.LandmarkRoof);
+            CreateLandmarkBox(root, "Cell Door Bars", new Vector3(-4.15f, 0.98f, -0.88f), new Vector3(1.25f, 1.82f, 0.10f), materials.PlayerMetal);
+            CreateLandmarkBox(root, "Cell Straw Bed", new Vector3(-5.46f, 0.19f, 2.28f), new Vector3(1.55f, 0.24f, 0.82f), materials.Flowers);
+            created += 4;
+
+            CreateLandmarkBox(root, "Gallows Platform", new Vector3(3.9f, 0.36f, 2.4f), new Vector3(3.2f, 0.34f, 2.4f), materials.TreeBark);
+            CreateLandmarkCylinder(root, "Gallows Left Upright", new Vector3(2.9f, 1.88f, 2.1f), new Vector3(0.10f, 1.62f, 0.10f), materials.TreeBark);
+            CreateLandmarkCylinder(root, "Gallows Right Upright", new Vector3(4.9f, 1.88f, 2.1f), new Vector3(0.10f, 1.62f, 0.10f), materials.TreeBark);
+            CreateLandmarkBox(root, "Gallows Crossbeam", new Vector3(3.9f, 3.46f, 2.1f), new Vector3(2.45f, 0.16f, 0.16f), materials.TreeBark);
+            CreateLandmarkCylinder(root, "Morning Rope", new Vector3(3.9f, 2.70f, 2.1f), new Vector3(0.026f, 0.68f, 0.026f), materials.PlayerPaper);
+            created += 5;
+
+            CreateProceduralStoryNpc(root, "Rough-Cloth Priest Intake Clerk", new Vector3(-0.6f, 0.06f, -3.8f), 162f, materials.PlayerPaper, materials.PlayerSkin, materials.PlayerHair, 950001, new[] { "Talk-to", "Examine" });
+            CreateProceduralStoryNpc(root, "Sleeping Prison Keep", new Vector3(2.6f, 0.06f, -3.2f), -110f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950002, new[] { "Wake", "Examine" });
+            created += 2;
+
+            context.Report.introQuestDressingObjects += created;
+            context.Report.landmarkDressingObjects += created;
+        }
+
+        private static void CreateProceduralStoryNpc(Transform parent, string name, Vector3 localPosition, float yaw, Material cloth, Material skin, Material hair, int id, string[] actions)
+        {
+            GameObject npc = new GameObject(name);
+            npc.transform.SetParent(parent, false);
+            npc.transform.localPosition = localPosition;
+            npc.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            GameObject visual = new GameObject("Story NPC Visual");
+            visual.transform.SetParent(npc.transform, false);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Robed Body", new Vector3(0f, 0.88f, 0f), new Vector3(0.20f, 0.45f, 0.16f), cloth);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Head", new Vector3(0f, 1.44f, 0f), new Vector3(0.15f, 0.18f, 0.15f), skin);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Hair", new Vector3(0f, 1.56f, 0f), new Vector3(0.16f, 0.06f, 0.15f), hair);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Left Arm", new Vector3(-0.22f, 0.88f, 0.02f), new Vector3(0.045f, 0.24f, 0.045f), cloth).transform.localRotation = Quaternion.Euler(0f, 0f, -8f);
+            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Right Arm", new Vector3(0.22f, 0.88f, 0.02f), new Vector3(0.045f, 0.24f, 0.045f), cloth).transform.localRotation = Quaternion.Euler(0f, 0f, 8f);
+            CapsuleCollider collider = npc.AddComponent<CapsuleCollider>();
+            collider.center = new Vector3(0f, 0.82f, 0f);
+            collider.height = 1.7f;
+            collider.radius = 0.25f;
+            npc.AddComponent<PsychoInteractable>().Configure(id, name, actions);
+        }
+
         private static void BuildLushWildflowerMeadows(HostedBuildContext context, HostedMaterials materials)
         {
             GameObject root = new GameObject("Lush Wildflower Meadow Ecology");
@@ -2610,6 +2713,7 @@ namespace Psycho.Editor
         {
             return new[]
             {
+                new HostedMeadowSpec("Open Vale Wildflower Preserve", 3030, 3425, 28f, 50, 82, 46),
                 new HostedMeadowSpec("Edgeville Player Start Lush Field", 3087, 3491, 18f, 42, 64, 34),
                 new HostedMeadowSpec("Falador Lush Wildflower Field", 2968, 3378, 25f, 42, 58, 32),
                 new HostedMeadowSpec("Draynor Herb Meadow", 3078, 3270, 23f, 36, 42, 38),
@@ -2677,7 +2781,17 @@ namespace Psycho.Editor
                 Material petalMaterial = WildflowerMaterialForSeed(materials, seed);
                 float radius = Mathf.Lerp(0.34f, 0.86f, Deterministic01(seed + 31));
                 float height = Mathf.Lerp(0.16f, 0.34f, Deterministic01(seed + 37));
-                CreateWildflowerCluster(meadowRoot.transform, $"{meadow.Name} Wildflower Cluster {flowers + 1}", position + Vector3.up * 0.052f, radius, height, petalMaterial, seed);
+                string prefabName = Deterministic01(seed + 53) > 0.36f ? "Bush_Common_Flowers" : "Grass_Common_Tall";
+                Vector3 scale = Vector3.one * Mathf.Lerp(0.34f, 0.76f, Deterministic01(seed + 59));
+                if (TryInstantiateStarterPrefab(meadowRoot.transform, prefabName, $"{meadow.Name} Authored Wildflower Cluster {flowers + 1}", position + Vector3.up * 0.030f, Quaternion.Euler(0f, Deterministic01(seed + 61) * 360f, 0f), scale))
+                {
+                    CreateWildflowerCluster(meadowRoot.transform, $"{meadow.Name} Petal Detail {flowers + 1}", position + Vector3.up * 0.070f, radius * 0.72f, height * 1.10f, petalMaterial, seed + 503);
+                }
+                else
+                {
+                    CreateWildflowerCluster(meadowRoot.transform, $"{meadow.Name} Wildflower Cluster {flowers + 1}", position + Vector3.up * 0.052f, radius, height, petalMaterial, seed);
+                }
+
                 flowers++;
             }
 
@@ -2696,7 +2810,17 @@ namespace Psycho.Editor
 
                 float radius = Mathf.Lerp(0.30f, 0.74f, Deterministic01(seed + 41));
                 float height = Mathf.Lerp(0.18f, 0.42f, Deterministic01(seed + 43));
-                CreateHerbCluster(meadowRoot.transform, $"{meadow.Name} Herb Cluster {herbs + 1}", position + Vector3.up * 0.048f, radius, height, materials.Herbs, seed);
+                string prefabName = Deterministic01(seed + 47) > 0.46f ? "Grass_Wispy_Tall" : "Bush_Common";
+                Vector3 scale = Vector3.one * Mathf.Lerp(0.28f, 0.68f, Deterministic01(seed + 53));
+                if (TryInstantiateStarterPrefab(meadowRoot.transform, prefabName, $"{meadow.Name} Authored Herb Cluster {herbs + 1}", position + Vector3.up * 0.024f, Quaternion.Euler(0f, Deterministic01(seed + 57) * 360f, 0f), scale))
+                {
+                    CreateHerbCluster(meadowRoot.transform, $"{meadow.Name} Herb Detail {herbs + 1}", position + Vector3.up * 0.058f, radius * 0.68f, height * 1.10f, materials.Herbs, seed + 607);
+                }
+                else
+                {
+                    CreateHerbCluster(meadowRoot.transform, $"{meadow.Name} Herb Cluster {herbs + 1}", position + Vector3.up * 0.048f, radius, height, materials.Herbs, seed);
+                }
+
                 herbs++;
             }
 
@@ -2870,6 +2994,91 @@ namespace Psycho.Editor
             renderer.receiveShadows = false;
             AddWind(cluster, 0.045f, 1.18f, 0.26f, 0.92f, 0.028f);
             return cluster;
+        }
+
+        private static bool TryInstantiateStarterPrefab(Transform parent, string prefabName, string instanceName, Vector3 position, Quaternion rotation, Vector3 scale, bool keepColliders = false)
+        {
+            string prefabPath = $"Assets/Resources/PsychoArt/Prefabs/Starter/{prefabName}.prefab";
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            if (prefab == null)
+            {
+                return false;
+            }
+
+            GameObject instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+            if (instance == null)
+            {
+                return false;
+            }
+
+            instance.name = instanceName;
+            instance.transform.SetParent(parent, true);
+            instance.transform.position = position;
+            instance.transform.rotation = rotation;
+            instance.transform.localScale = Vector3.Scale(instance.transform.localScale, scale);
+            Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].shadowCastingMode = ShadowCastingMode.On;
+                renderers[i].receiveShadows = true;
+            }
+
+            if (!keepColliders)
+            {
+                Collider[] colliders = instance.GetComponentsInChildren<Collider>(true);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    UnityEngine.Object.DestroyImmediate(colliders[i]);
+                }
+            }
+
+            AddWind(instance, 0.040f, 0.96f, 0.24f, 0.82f, 0.030f);
+            return true;
+        }
+
+        private static bool TryInstantiateStarterPrefabLocal(Transform parent, string prefabName, string instanceName, Vector3 localPosition, Quaternion localRotation, Vector3 localScale, out GameObject instance, Material materialOverride = null, bool keepColliders = false)
+        {
+            instance = null;
+            string prefabPath = $"Assets/Resources/PsychoArt/Prefabs/Starter/{prefabName}.prefab";
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            if (prefab == null)
+            {
+                return false;
+            }
+
+            instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+            if (instance == null)
+            {
+                return false;
+            }
+
+            instance.name = instanceName;
+            instance.transform.SetParent(parent, false);
+            instance.transform.localPosition = localPosition;
+            instance.transform.localRotation = localRotation;
+            instance.transform.localScale = Vector3.Scale(instance.transform.localScale, localScale);
+
+            Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].shadowCastingMode = ShadowCastingMode.On;
+                renderers[i].receiveShadows = true;
+                if (materialOverride != null)
+                {
+                    renderers[i].sharedMaterial = materialOverride;
+                }
+            }
+
+            if (!keepColliders)
+            {
+                Collider[] colliders = instance.GetComponentsInChildren<Collider>(true);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    UnityEngine.Object.DestroyImmediate(colliders[i]);
+                }
+            }
+
+            return true;
         }
 
         private static void BuildWildlifeAndGiantEcology(HostedBuildContext context, HostedMaterials materials)
@@ -3132,29 +3341,159 @@ namespace Psycho.Editor
             mammoth.transform.SetParent(parent, false);
             mammoth.transform.localPosition = localPosition;
             mammoth.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
-            GameObject visual = new GameObject("Original Procedural Mammoth Visual");
+            GameObject visual = new GameObject("Authored Optimized Mammoth Visual");
             visual.transform.SetParent(mammoth.transform, false);
 
             float scale = 0.96f + Deterministic01(seed + 13) * 0.14f;
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Mammoth Barrel Body", new Vector3(0f, 1.10f * scale, 0f), new Vector3(0.82f * scale, 0.56f * scale, 1.12f * scale), materials.MammothFur);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Mammoth Shoulder Hump", new Vector3(0f, 1.45f * scale, 0.28f), new Vector3(0.62f * scale, 0.42f * scale, 0.58f * scale), materials.MammothFur);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Mammoth Head", new Vector3(0f, 1.22f * scale, 1.10f * scale), new Vector3(0.44f * scale, 0.38f * scale, 0.42f * scale), materials.MammothFur);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Mammoth Trunk", new Vector3(0f, 0.78f * scale, 1.44f * scale), new Vector3(0.105f * scale, 0.46f * scale, 0.105f * scale), materials.MammothFur).transform.localRotation = Quaternion.Euler(23f, 0f, 0f);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Left Mammoth Ear", new Vector3(-0.42f * scale, 1.22f * scale, 1.02f * scale), new Vector3(0.19f * scale, 0.28f * scale, 0.07f * scale), materials.MammothFur).transform.localRotation = Quaternion.Euler(0f, -18f, 8f);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Sphere, "Right Mammoth Ear", new Vector3(0.42f * scale, 1.22f * scale, 1.02f * scale), new Vector3(0.19f * scale, 0.28f * scale, 0.07f * scale), materials.MammothFur).transform.localRotation = Quaternion.Euler(0f, 18f, -8f);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Left Mammoth Tusk", new Vector3(-0.26f * scale, 0.95f * scale, 1.48f * scale), new Vector3(0.045f * scale, 0.56f * scale, 0.045f * scale), materials.MammothTusk).transform.localRotation = Quaternion.Euler(63f, 0f, -24f);
-            CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, "Right Mammoth Tusk", new Vector3(0.26f * scale, 0.95f * scale, 1.48f * scale), new Vector3(0.045f * scale, 0.56f * scale, 0.045f * scale), materials.MammothTusk).transform.localRotation = Quaternion.Euler(63f, 0f, 24f);
-            for (int leg = 0; leg < 4; leg++)
+            if (!TryInstantiateStarterPrefabLocal(visual.transform, "Starter_Cow", "CC0 Authored Mammoth Body Base", Vector3.zero, Quaternion.identity, new Vector3(1.92f * scale, 1.55f * scale, 2.42f * scale), out _, materials.MammothFur))
             {
-                float side = leg % 2 == 0 ? -1f : 1f;
-                float z = leg < 2 ? 0.54f : -0.54f;
-                CreatePlayerPrimitive(visual.transform, PrimitiveType.Capsule, $"Mammoth Pillar Leg {leg + 1}", new Vector3(side * 0.42f * scale, 0.48f * scale, z * scale), new Vector3(0.14f * scale, 0.43f * scale, 0.14f * scale), materials.MammothFur);
+                CreateOptimizedMammothPart(visual.transform, "Fallback Mammoth Barrel Body", CreateEllipsoidMesh("Mammoth Body Mesh", 18, 9), new Vector3(0f, 1.10f * scale, 0f), Quaternion.identity, new Vector3(0.86f * scale, 0.58f * scale, 1.18f * scale), materials.MammothFur);
+                CreateOptimizedMammothPart(visual.transform, "Fallback Mammoth Head", CreateEllipsoidMesh("Mammoth Head Mesh", 14, 7), new Vector3(0f, 1.22f * scale, 1.10f * scale), Quaternion.identity, new Vector3(0.44f * scale, 0.38f * scale, 0.42f * scale), materials.MammothFur);
+                for (int leg = 0; leg < 4; leg++)
+                {
+                    float side = leg % 2 == 0 ? -1f : 1f;
+                    float z = leg < 2 ? 0.54f : -0.54f;
+                    CreateOptimizedMammothPart(visual.transform, $"Fallback Mammoth Pillar Leg {leg + 1}", CreateTaperedTubeMesh("Mammoth Leg Mesh", 10, 4, 1.0f, 0.16f, 0.13f, 0.0f), new Vector3(side * 0.42f * scale, 0.48f * scale, z * scale), Quaternion.identity, new Vector3(scale, scale * 0.82f, scale), materials.MammothFur);
+                }
             }
+
+            CreateOptimizedMammothPart(visual.transform, "Mammoth Shoulder Fur Hump", CreateEllipsoidMesh("Mammoth Hump Mesh", 16, 8), new Vector3(0f, 1.50f * scale, 0.18f * scale), Quaternion.identity, new Vector3(0.68f * scale, 0.38f * scale, 0.58f * scale), materials.MammothFur);
+            CreateOptimizedMammothPart(visual.transform, "Mammoth Heavy Forehead", CreateEllipsoidMesh("Mammoth Brow Mesh", 14, 7), new Vector3(0f, 1.32f * scale, 1.08f * scale), Quaternion.identity, new Vector3(0.42f * scale, 0.26f * scale, 0.34f * scale), materials.MammothFur);
+            CreateOptimizedMammothPart(visual.transform, "Mammoth Hanging Trunk", CreateTaperedTubeMesh("Mammoth Trunk Mesh", 14, 9, 1.18f, 0.16f, 0.065f, 0.24f), new Vector3(0f, 1.03f * scale, 1.34f * scale), Quaternion.Euler(18f, 0f, 0f), new Vector3(scale, scale, scale), materials.MammothFur);
+            CreateOptimizedMammothPart(visual.transform, "Left Mammoth Ear", CreateFlattenedLeafMesh("Mammoth Ear Mesh", 12), new Vector3(-0.48f * scale, 1.28f * scale, 1.02f * scale), Quaternion.Euler(0f, -24f, 10f), new Vector3(0.44f * scale, 0.48f * scale, 0.11f * scale), materials.MammothFur);
+            CreateOptimizedMammothPart(visual.transform, "Right Mammoth Ear", CreateFlattenedLeafMesh("Mammoth Ear Mesh", 12), new Vector3(0.48f * scale, 1.28f * scale, 1.02f * scale), Quaternion.Euler(0f, 24f, -10f), new Vector3(0.44f * scale, 0.48f * scale, 0.11f * scale), materials.MammothFur);
+            CreateOptimizedMammothPart(visual.transform, "Left Mammoth Swept Tusk", CreateTaperedTubeMesh("Mammoth Tusk Mesh", 12, 9, 1.22f, 0.062f, 0.014f, 0.42f), new Vector3(-0.28f * scale, 0.98f * scale, 1.42f * scale), Quaternion.Euler(70f, -7f, -30f), new Vector3(scale, scale, scale), materials.MammothTusk);
+            CreateOptimizedMammothPart(visual.transform, "Right Mammoth Swept Tusk", CreateTaperedTubeMesh("Mammoth Tusk Mesh", 12, 9, 1.22f, 0.062f, 0.014f, 0.42f), new Vector3(0.28f * scale, 0.98f * scale, 1.42f * scale), Quaternion.Euler(70f, 7f, 30f), new Vector3(scale, scale, scale), materials.MammothTusk);
+            CreateOptimizedMammothPart(visual.transform, "Left Shaggy Belly Fur", CreateFlattenedLeafMesh("Mammoth Fur Fringe Mesh", 10), new Vector3(-0.46f * scale, 0.88f * scale, -0.06f * scale), Quaternion.Euler(0f, -92f, 180f), new Vector3(1.08f * scale, 0.70f * scale, 0.08f * scale), materials.MammothFur);
+            CreateOptimizedMammothPart(visual.transform, "Right Shaggy Belly Fur", CreateFlattenedLeafMesh("Mammoth Fur Fringe Mesh", 10), new Vector3(0.46f * scale, 0.88f * scale, -0.06f * scale), Quaternion.Euler(0f, 92f, 180f), new Vector3(1.08f * scale, 0.70f * scale, 0.08f * scale), materials.MammothFur);
 
             BoxCollider collider = mammoth.AddComponent<BoxCollider>();
             collider.center = new Vector3(0f, 1.03f * scale, 0.18f * scale);
             collider.size = new Vector3(1.85f * scale, 1.62f * scale, 2.72f * scale);
             return mammoth;
+        }
+
+        private static GameObject CreateOptimizedMammothPart(Transform parent, string name, Mesh mesh, Vector3 localPosition, Quaternion localRotation, Vector3 localScale, Material material)
+        {
+            GameObject part = new GameObject(name);
+            part.transform.SetParent(parent, false);
+            part.transform.localPosition = localPosition;
+            part.transform.localRotation = localRotation;
+            part.transform.localScale = localScale;
+            part.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer renderer = part.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.shadowCastingMode = ShadowCastingMode.On;
+            renderer.receiveShadows = true;
+            return part;
+        }
+
+        private static Mesh CreateEllipsoidMesh(string name, int segments, int rings)
+        {
+            Mesh mesh = new Mesh { name = name };
+            List<Vector3> vertices = new List<Vector3>((segments + 1) * (rings + 1));
+            List<int> triangles = new List<int>(segments * rings * 6);
+            for (int ring = 0; ring <= rings; ring++)
+            {
+                float v = ring / (float)rings;
+                float theta = v * Mathf.PI;
+                float y = Mathf.Cos(theta);
+                float radius = Mathf.Sin(theta);
+                for (int segment = 0; segment <= segments; segment++)
+                {
+                    float u = segment / (float)segments;
+                    float angle = u * Mathf.PI * 2f;
+                    vertices.Add(new Vector3(Mathf.Cos(angle) * radius, y, Mathf.Sin(angle) * radius));
+                }
+            }
+
+            for (int ring = 0; ring < rings; ring++)
+            {
+                for (int segment = 0; segment < segments; segment++)
+                {
+                    int current = ring * (segments + 1) + segment;
+                    int next = current + segments + 1;
+                    triangles.Add(current);
+                    triangles.Add(next);
+                    triangles.Add(current + 1);
+                    triangles.Add(current + 1);
+                    triangles.Add(next);
+                    triangles.Add(next + 1);
+                }
+            }
+
+            mesh.SetVertices(vertices);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            return mesh;
+        }
+
+        private static Mesh CreateTaperedTubeMesh(string name, int segments, int rings, float length, float baseRadius, float tipRadius, float forwardCurve)
+        {
+            Mesh mesh = new Mesh { name = name };
+            List<Vector3> vertices = new List<Vector3>((segments + 1) * (rings + 1));
+            List<int> triangles = new List<int>(segments * rings * 6);
+            for (int ring = 0; ring <= rings; ring++)
+            {
+                float t = ring / (float)rings;
+                float radius = Mathf.Lerp(baseRadius, tipRadius, t);
+                float y = -length * t;
+                float zCurve = Mathf.Sin(t * Mathf.PI) * forwardCurve;
+                for (int segment = 0; segment <= segments; segment++)
+                {
+                    float angle = segment / (float)segments * Mathf.PI * 2f;
+                    vertices.Add(new Vector3(Mathf.Cos(angle) * radius, y, Mathf.Sin(angle) * radius + zCurve));
+                }
+            }
+
+            for (int ring = 0; ring < rings; ring++)
+            {
+                for (int segment = 0; segment < segments; segment++)
+                {
+                    int current = ring * (segments + 1) + segment;
+                    int next = current + segments + 1;
+                    triangles.Add(current);
+                    triangles.Add(current + 1);
+                    triangles.Add(next);
+                    triangles.Add(current + 1);
+                    triangles.Add(next + 1);
+                    triangles.Add(next);
+                }
+            }
+
+            mesh.SetVertices(vertices);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            return mesh;
+        }
+
+        private static Mesh CreateFlattenedLeafMesh(string name, int segments)
+        {
+            Mesh mesh = new Mesh { name = name };
+            Vector3[] vertices = new Vector3[segments + 2];
+            int[] triangles = new int[segments * 3];
+            vertices[0] = Vector3.zero;
+            for (int i = 0; i <= segments; i++)
+            {
+                float t = i / (float)segments;
+                float angle = Mathf.Lerp(-Mathf.PI * 0.82f, Mathf.PI * 0.82f, t);
+                vertices[i + 1] = new Vector3(Mathf.Sin(angle) * 0.5f, Mathf.Cos(angle) * 0.5f, 0f);
+                if (i < segments)
+                {
+                    int tri = i * 3;
+                    triangles[tri] = 0;
+                    triangles[tri + 1] = i + 1;
+                    triangles[tri + 2] = i + 2;
+                }
+            }
+
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            return mesh;
         }
 
         private static void ConfigureWander(GameObject target, float radius, float speed, float pause, float strideBob, float strideSway)
@@ -4757,6 +5096,7 @@ namespace Psycho.Editor
             colorGradeObject.ApplyModifiedPropertiesWithoutUndo();
             cameraObject.AddComponent<AudioListener>();
             BuildGameplayHud(player.transform, playerSave);
+            BuildIntroQuestController(context, player.transform);
         }
 
         private static void BuildGameplayHud(Transform player, HostedPlayerSave playerSave)
@@ -4776,6 +5116,17 @@ namespace Psycho.Editor
             SetSerializedString(hudSerializedObject, "nomadStatus", playerSave?.nomadStatus ?? "Nomad's Requiem: Not started");
             SetSerializedString(hudSerializedObject, "questSummary", playerSave?.questSummary ?? "Quest Progress: 0/2");
             hudSerializedObject.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void BuildIntroQuestController(HostedBuildContext context, Transform player)
+        {
+            GameObject questObject = new GameObject("Gallows Dawn Intro Quest");
+            PsychoIntroQuestController quest = questObject.AddComponent<PsychoIntroQuestController>();
+            Vector3 intake = TerrainSurfacePosition(WorldTilePosition(context, 3087, 3490), 0.08f);
+            Vector3 cell = TerrainSurfacePosition(WorldTilePosition(context, 3083, 3492), 0.08f);
+            Vector3 release = TerrainSurfacePosition(WorldTilePosition(context, 3087, 3483), 0.08f);
+            Vector3 village = TerrainSurfacePosition(WorldTilePosition(context, 3086, 3522), 0.08f);
+            quest.Configure(player, intake, cell, release, village, 9.0f);
         }
 
         private static void BuildPlayerVisual(Transform parent, HostedMaterials materials, PsychoMirrorDatabase database, HostedPlayerSave playerSave)
@@ -6159,6 +6510,7 @@ namespace Psycho.Editor
             ConfigureDoubleSided(materials.WildflowerBlue);
             ConfigureDoubleSided(materials.WildflowerPurple);
             ConfigureDoubleSided(materials.WildflowerGold);
+            ConfigureDoubleSided(materials.MammothFur);
             return materials;
         }
 
@@ -6702,6 +7054,7 @@ namespace Psycho.Editor
             public int hostedVillageNpcs;
             public int hostedSettlementNpcs;
             public int villageClearedObjects;
+            public int introQuestDressingObjects;
             public int seasonalBiomeRegions;
             public int mountainMassifs;
             public int hillMounds;
