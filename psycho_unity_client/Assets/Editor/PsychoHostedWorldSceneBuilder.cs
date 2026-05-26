@@ -3007,9 +3007,30 @@ namespace Psycho.Editor
             CreateQuestMarkerDressing(root, "Escape Road Quest Marker", new Vector3(0f, 1.55f, -9.80f), materials.WildflowerGold);
             created += 3;
 
-            CreateProceduralStoryNpc(root, "Rough-Cloth Priest Intake Clerk", new Vector3(-0.6f, 0.06f, -3.8f), 162f, materials.PlayerPaper, materials.PlayerSkin, materials.PlayerHair, 950001, new[] { "Talk-to", "Examine" }, "Monk_Citizen", new Vector3(1.04f, 1.04f, 1.04f));
-            CreateProceduralStoryNpc(root, "Sleeping Prison Keep", new Vector3(2.6f, 0.06f, -3.2f), -110f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950002, new[] { "Wake", "Examine" }, "Warrior_Player", new Vector3(1.06f, 1.06f, 1.06f));
-            CreateProceduralStoryNpc(root, "Breakout Stranger", new Vector3(1.30f, 0.06f, -5.35f), -6f, materials.LandmarkBanner, materials.PlayerSkin, materials.PlayerHair, 950003, new[] { "Talk-to", "Examine" }, "Rogue_Merchant", new Vector3(1.02f, 1.02f, 1.02f));
+            GameObject priest = CreateProceduralStoryNpc(root, "Rough-Cloth Priest Intake Clerk", new Vector3(-0.6f, 0.06f, -3.8f), 162f, materials.PlayerPaper, materials.PlayerSkin, materials.PlayerHair, 950001, new[] { "Talk-to", "Examine" }, "Monk_Citizen", new Vector3(1.04f, 1.04f, 1.04f));
+            ConfigureInteractionResponse(
+                priest,
+                "The intake clerk keeps writing. In Psycho, a prisoner without a witness is a line of ink waiting to vanish.",
+                "Keep your voice steady. A name is the only property they have not taken from you.",
+                null,
+                null,
+                "His robe is patched with ash-gray thread and his ledger is bound in cracked black hide.");
+            GameObject prisonKeep = CreateProceduralStoryNpc(root, "Sleeping Prison Keep", new Vector3(2.6f, 0.06f, -3.2f), -110f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950002, new[] { "Wake", "Examine" }, "Warrior_Player", new Vector3(1.06f, 1.06f, 1.06f));
+            ConfigureInteractionResponse(
+                prisonKeep,
+                "The keep stirs, then sinks back into sleep while the fortress roof trembles above him.",
+                "He mutters about a watch change that will never arrive.",
+                null,
+                null,
+                "A tired jailer in dark leather, smelling of smoke, tallow, and cheap sour ale.");
+            GameObject breakoutStranger = CreateProceduralStoryNpc(root, "Breakout Stranger", new Vector3(1.30f, 0.06f, -5.35f), -6f, materials.LandmarkBanner, materials.PlayerSkin, materials.PlayerHair, 950003, new[] { "Talk-to", "Examine" }, "Rogue_Merchant", new Vector3(1.02f, 1.02f, 1.02f));
+            ConfigureInteractionResponse(
+                breakoutStranger,
+                "The stranger watches the smoke instead of you, already measuring the next route.",
+                "Do not thank me. Run to North Edgeville and make them believe what you saw.",
+                null,
+                null,
+                "A road-worn prisoner in faded red cloth, with soot in every seam.");
             created += 3;
 
             context.Report.introQuestDressingObjects += created;
@@ -3048,15 +3069,64 @@ namespace Psycho.Editor
             CreateLandmarkBox(root, "Convoy Snow Packed Wheel Rut Right", new Vector3(2.84f, 0.06f, 9.18f), new Vector3(0.24f, 0.035f, 5.8f), materials.Snow);
             created += 3;
 
-            CreateProceduralStoryNpc(root, "Bound Rebel Prisoner", new Vector3(-2.68f, 0.08f, 7.85f), 7f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950010, new[] { "Talk-to", "Examine" }, "Ranger_Citizen", new Vector3(0.98f, 0.98f, 0.98f));
-            CreateProceduralStoryNpc(root, "Silent Cart Prisoner", new Vector3(1.30f, 0.08f, 9.05f), -12f, materials.PlayerCloth, materials.PlayerSkin, materials.PlayerHair, 950011, new[] { "Talk-to", "Examine" }, "Monk_Citizen", new Vector3(0.98f, 0.98f, 0.98f));
-            CreateProceduralStoryNpc(root, "Fortress Spear Guard", new Vector3(-4.40f, 0.08f, 8.58f), 96f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950012, new[] { "Talk-to", "Examine" }, "Warrior_Player", new Vector3(1.05f, 1.05f, 1.05f));
-            CreateProceduralStoryNpc(root, "Gate Sergeant", new Vector3(3.92f, 0.08f, 8.48f), -82f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950013, new[] { "Talk-to", "Examine" }, "Warrior_Player", new Vector3(1.05f, 1.05f, 1.05f));
+            GameObject boundRebel = CreateProceduralStoryNpc(root, "Bound Rebel Prisoner", new Vector3(-2.68f, 0.08f, 7.85f), 7f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950010, new[] { "Talk-to", "Examine" }, "Ranger_Citizen", new Vector3(0.98f, 0.98f, 0.98f));
+            ConfigureInteractionResponse(
+                boundRebel,
+                "The bound rebel keeps his shoulders low as the cart rolls toward the gate.",
+                "Nobody survives by being brave in chains. Wait until the world breaks first.",
+                null,
+                null,
+                "A captured road fighter in damp leather and faded green wool.");
+            GameObject silentPrisoner = CreateProceduralStoryNpc(root, "Silent Cart Prisoner", new Vector3(1.30f, 0.08f, 9.05f), -12f, materials.PlayerCloth, materials.PlayerSkin, materials.PlayerHair, 950011, new[] { "Talk-to", "Examine" }, "Monk_Citizen", new Vector3(0.98f, 0.98f, 0.98f));
+            ConfigureInteractionResponse(
+                silentPrisoner,
+                "The silent prisoner will not meet your eyes.",
+                "The prisoner whispers a single prayer to a cold road god.",
+                null,
+                null,
+                "Threadbare cloth, frost-bitten hands, and a face emptied by fear.");
+            GameObject spearGuard = CreateProceduralStoryNpc(root, "Fortress Spear Guard", new Vector3(-4.40f, 0.08f, 8.58f), 96f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950012, new[] { "Talk-to", "Examine" }, "Warrior_Player", new Vector3(1.05f, 1.05f, 1.05f));
+            ConfigureInteractionResponse(
+                spearGuard,
+                "The guard knocks his spear haft against the cart and orders you to face forward.",
+                "Eyes down. Names are for clerks. You are cargo until the block.",
+                null,
+                null,
+                "Cold iron, gray cloth, and a helmet rim blackened by old smoke.");
+            GameObject gateSergeant = CreateProceduralStoryNpc(root, "Gate Sergeant", new Vector3(3.92f, 0.08f, 8.48f), -82f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950013, new[] { "Talk-to", "Examine" }, "Warrior_Player", new Vector3(1.05f, 1.05f, 1.05f));
+            ConfigureInteractionResponse(
+                gateSergeant,
+                "The sergeant counts prisoners like firewood.",
+                "Open the south gate. The ash court wants this finished before the snow turns.",
+                null,
+                null,
+                "A hard-faced fortress officer in dark steel and storm-blue cloth.");
             created += 4;
 
-            CreateProceduralStoryNpc(root, "Condemned Prisoner Line", new Vector3(2.05f, 0.08f, 1.68f), 112f, materials.PlayerCloth, materials.PlayerSkin, materials.PlayerHair, 950014, new[] { "Talk-to", "Examine" }, "Monk_Citizen", new Vector3(0.98f, 0.98f, 0.98f));
-            CreateProceduralStoryNpc(root, "Fortress Headsman", new Vector3(4.62f, 0.08f, 1.86f), -70f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950015, new[] { "Examine" }, "Warrior_Player", new Vector3(1.10f, 1.10f, 1.10f));
-            CreateProceduralStoryNpc(root, "Ash-Smoke Town Witness", new Vector3(5.82f, 0.08f, 3.82f), -128f, materials.PlayerPaper, materials.PlayerSkin, materials.PlayerHair, 950016, new[] { "Talk-to", "Examine" }, "Rogue_Merchant", new Vector3(0.98f, 0.98f, 0.98f));
+            GameObject condemned = CreateProceduralStoryNpc(root, "Condemned Prisoner Line", new Vector3(2.05f, 0.08f, 1.68f), 112f, materials.PlayerCloth, materials.PlayerSkin, materials.PlayerHair, 950014, new[] { "Talk-to", "Examine" }, "Monk_Citizen", new Vector3(0.98f, 0.98f, 0.98f));
+            ConfigureInteractionResponse(
+                condemned,
+                "The prisoner in line breathes through clenched teeth, counting each step to the block.",
+                "If you see an opening, take it. There are no fair endings here.",
+                null,
+                null,
+                "A condemned nobody, shivering under cloth too thin for the mountains.");
+            GameObject headsman = CreateProceduralStoryNpc(root, "Fortress Headsman", new Vector3(4.62f, 0.08f, 1.86f), -70f, materials.PlayerLeather, materials.PlayerSkin, materials.PlayerHair, 950015, new[] { "Examine" }, "Warrior_Player", new Vector3(1.10f, 1.10f, 1.10f));
+            ConfigureInteractionResponse(
+                headsman,
+                "The headsman waits without ceremony.",
+                null,
+                null,
+                null,
+                "A broad figure in boiled leather and iron, his axe nicked from too many dawns.");
+            GameObject witness = CreateProceduralStoryNpc(root, "Ash-Smoke Town Witness", new Vector3(5.82f, 0.08f, 3.82f), -128f, materials.PlayerPaper, materials.PlayerSkin, materials.PlayerHair, 950016, new[] { "Talk-to", "Examine" }, "Rogue_Merchant", new Vector3(0.98f, 0.98f, 0.98f));
+            ConfigureInteractionResponse(
+                witness,
+                "The witness grips a charm and stares at the tower as if it already moved.",
+                "Something is wrong with the sky. Listen. The birds have stopped.",
+                null,
+                null,
+                "A townswoman in ash-brown cloth, her hair tied back with rough cord.");
             created += 3;
 
             if (TryInstantiateStarterPrefabLocal(root, "Starter_Imp", "Ash-Wyrm Tower Assault", new Vector3(7.10f, 5.56f, 4.72f), Quaternion.Euler(0f, -126f, 0f), new Vector3(4.8f, 4.8f, 4.8f), out _))
@@ -3090,6 +3160,13 @@ namespace Psycho.Editor
                     "Gear taken: crude blade, boots, lockpicks",
                     false,
                     false);
+                ConfigureInteractionResponse(
+                    gearChest,
+                    "The chest smells of wet leather, iron filings, and stolen lives.",
+                    null,
+                    "You take a crude blade, road boots, two lockpicks, and a cracked flask.",
+                    null,
+                    "An ironbound gear chest marked with prisoner tally scratches.");
                 created++;
             }
 
@@ -3117,6 +3194,13 @@ namespace Psycho.Editor
                 "You strike down the shaken guard",
                 true,
                 true);
+            ConfigureInteractionResponse(
+                firstGuard,
+                "The guard lifts his sword, terrified enough to be dangerous.",
+                null,
+                null,
+                "Your first blow lands hard. The passage is open.",
+                "A wounded fortress guard, coughing smoke behind a dented visor.");
             created++;
 
             created += CreateCaveMouthEscapeSet(root, materials);
@@ -3207,6 +3291,13 @@ namespace Psycho.Editor
                 "Gear taken: crude blade, boots, lockpicks",
                 false,
                 false);
+            ConfigureInteractionResponse(
+                rack,
+                "Old training weapons hang crooked on a split timber rack.",
+                null,
+                "You pull down the least-rusted blade and a belt knife with a cracked grip.",
+                null,
+                "Practice blades, worn grips, and cheap iron: enough to survive a tunnel.");
 
             return created;
         }
@@ -3266,7 +3357,17 @@ namespace Psycho.Editor
             CreateGroundPlate(root, "Trampled Notice Board Mud", Vector3.zero, 4.8f, 3.2f, materials.AutumnGround);
             CreateLandmarkCylinder(root, "Left Road Board Post", new Vector3(-0.98f, 0.92f, 0f), new Vector3(0.08f, 0.92f, 0.08f), materials.TreeBark);
             CreateLandmarkCylinder(root, "Right Road Board Post", new Vector3(0.98f, 0.92f, 0f), new Vector3(0.08f, 0.92f, 0.08f), materials.TreeBark);
-            CreateLandmarkBox(root, "Ironbound Road Board", new Vector3(0f, 1.22f, 0f), new Vector3(2.35f, 1.18f, 0.16f), materials.TreeBark);
+            GameObject board = CreateLandmarkBox(root, "Ironbound Road Board", new Vector3(0f, 1.22f, 0f), new Vector3(2.35f, 1.18f, 0.16f), materials.TreeBark);
+            ConfigureInteractableResponse(
+                board,
+                950030,
+                "North Edgeville Road Board",
+                new[] { "Read", "Examine" },
+                "The board is layered with missing-caravan notices, giant warnings, and fresh ash reports.",
+                null,
+                "You read the board: Frost-Barrow scouts missing, Northwatch asks for witnesses, and mammoth herds have moved south.",
+                null,
+                "Rain-swollen wood, iron nails, and parchment curling under cold mist.");
             CreateLandmarkDetailBox(root, "Cold Iron Board Rim Top", new Vector3(0f, 1.84f, -0.09f), new Vector3(2.48f, 0.08f, 0.05f), materials.PlayerMetal);
             CreateLandmarkDetailBox(root, "Cold Iron Board Rim Bottom", new Vector3(0f, 0.60f, -0.09f), new Vector3(2.48f, 0.08f, 0.05f), materials.PlayerMetal);
             created += 6;
@@ -3297,7 +3398,17 @@ namespace Psycho.Editor
             root.localRotation = Quaternion.Euler(0f, yaw, 0f);
             int created = 0;
             CreateGroundPlate(root, "Ash Scraped Shrine Ground", Vector3.zero, 4.6f, 3.7f, materials.FrostStone);
-            CreateLandmarkCylinder(root, "Black Road Cold Brazier", new Vector3(0f, 0.44f, -0.48f), new Vector3(0.36f, 0.26f, 0.36f), materials.PlayerMetal);
+            GameObject brazier = CreateLandmarkCylinder(root, "Black Road Cold Brazier", new Vector3(0f, 0.44f, -0.48f), new Vector3(0.36f, 0.26f, 0.36f), materials.PlayerMetal);
+            ConfigureInteractableResponse(
+                brazier,
+                950031,
+                "Black Road Cold Brazier",
+                new[] { "Search", "Examine" },
+                "The brazier is cold, but the ash inside is newer than the snow around it.",
+                null,
+                "Under the ash you find black grit and one snapped scout badge.",
+                null,
+                "A road brazier scraped with a charcoal sigil that does not belong to Northwatch.");
             CreateLandmarkDetailBox(root, "Dead Ember Bed", new Vector3(0f, 0.72f, -0.48f), new Vector3(0.56f, 0.04f, 0.48f), materials.AutumnGround);
             CreateLandmarkBox(root, "Broken Scout Shield", new Vector3(-1.18f, 0.24f, 0.58f), new Vector3(0.70f, 0.10f, 0.48f), materials.PlayerMetal).transform.localRotation = Quaternion.Euler(9f, 18f, -12f);
             CreateLandmarkBox(root, "Iron Shod Boot Trail", new Vector3(0.92f, 0.06f, 0.85f), new Vector3(1.75f, 0.035f, 0.28f), materials.LandmarkRoad).transform.localRotation = Quaternion.Euler(0f, -28f, 0f);
@@ -3322,7 +3433,14 @@ namespace Psycho.Editor
             CreateLandmarkCylinder(root, "Report Post Banner Pole", new Vector3(-2.18f, 1.28f, -0.62f), new Vector3(0.06f, 1.28f, 0.06f), materials.TreeBark);
             CreateLandmarkDetailBox(root, "Northwatch Worn Banner", new Vector3(-2.18f, 2.12f, -0.82f), new Vector3(0.76f, 0.74f, 0.035f), materials.LandmarkBanner);
             CreateIntroPointLight(root, "Northwatch Briefing Fire", new Vector3(1.98f, 0.88f, -0.82f), new Color(0.96f, 0.58f, 0.28f, 1f), 3.5f, 1.0f);
-            CreateProceduralStoryNpc(root, "Northwatch Road Guard", new Vector3(-0.95f, 0.06f, 1.22f), 156f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950004, new[] { "Talk-to", "Report", "Examine" }, "Warrior_Player", new Vector3(1.05f, 1.05f, 1.05f));
+            GameObject northwatchGuard = CreateProceduralStoryNpc(root, "Northwatch Road Guard", new Vector3(-0.95f, 0.06f, 1.22f), 156f, materials.PlayerMetal, materials.PlayerSkin, materials.PlayerHair, 950004, new[] { "Talk-to", "Report", "Examine" }, "Warrior_Player", new Vector3(1.05f, 1.05f, 1.05f));
+            ConfigureInteractionResponse(
+                northwatchGuard,
+                "The guard has been awake too long and trusts nothing that comes from the south road.",
+                "Ash-wyrm at Gallows Dawn, black-road signs at Frost-Barrow... say it again, slower. I need every word.",
+                null,
+                null,
+                "A Northwatch road guard in iron-black armor and a storm-faded cloak.");
             CreateQuestMarkerDressing(root, "Northwatch Report Target", new Vector3(0f, 2.54f, 0f), materials.WildflowerGold);
             created += 8;
             return created;
@@ -3462,6 +3580,39 @@ namespace Psycho.Editor
             collider.radius = 0.25f;
             npc.AddComponent<PsychoInteractable>().Configure(id, name, actions);
             return npc;
+        }
+
+        private static void ConfigureInteractableResponse(GameObject target, int id, string displayName, string[] actions, string fallback, string talk = null, string search = null, string attack = null, string examine = null)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+            PsychoInteractable interactable = target.GetComponent<PsychoInteractable>();
+            if (interactable == null)
+            {
+                interactable = target.AddComponent<PsychoInteractable>();
+            }
+
+            interactable.Configure(id, displayName, actions);
+            ConfigureInteractionResponse(target, fallback, talk, search, attack, examine);
+        }
+
+        private static void ConfigureInteractionResponse(GameObject target, string fallback, string talk = null, string search = null, string attack = null, string examine = null)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+            PsychoInteractionResponse response = target.GetComponent<PsychoInteractionResponse>();
+            if (response == null)
+            {
+                response = target.AddComponent<PsychoInteractionResponse>();
+            }
+
+            response.Configure(fallback, talk, search, attack, examine);
         }
 
         private static void ConfigureIntroTutorialSignal(GameObject target, int id, string displayName, string[] actions, string signalId, string toastMessage, bool hideAfterUse, bool disableCollidersAfterUse)

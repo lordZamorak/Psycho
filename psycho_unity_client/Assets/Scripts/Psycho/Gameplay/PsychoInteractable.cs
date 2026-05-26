@@ -23,6 +23,12 @@ namespace Psycho.Gameplay
         {
             string verb = ActionName(actionIndex);
             string message = $"{verb} {DisplayName}";
+            PsychoInteractionResponse response = GetComponent<PsychoInteractionResponse>();
+            if (response != null)
+            {
+                message = response.BuildMessage(verb, DisplayName);
+            }
+
             Debug.Log($"Psycho interaction: {message} ({objectId})");
             SendMessage("OnPsychoInteract", verb, SendMessageOptions.DontRequireReceiver);
             return message;
